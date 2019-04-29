@@ -2,12 +2,15 @@ package com.example.gamedemo.server.game.account.model;
 
 import com.example.gamedemo.server.game.scene.model.Scene;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * 用户账号
+ * @author: wengj
+ * @date: 2019/4/25
+ * @description: 用户账号
  */
-public class Account {
+public class Account implements Serializable {
     private String countId;
     private String countName;
 

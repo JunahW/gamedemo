@@ -16,7 +16,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 /**
- * 游戏客户端
+ * @author: wengj
+ * @date: 2019/4/28
+ * @description: 游戏客户端
  */
 public class MyClient {
     private static final Logger logger = LoggerFactory.getLogger(MyClient.class);
@@ -39,6 +41,9 @@ public class MyClient {
                         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
                             System.out.println(msg);
                         }
+
+
+
                     });
                 }
             });

@@ -6,6 +6,11 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author: wengj
+ * @date: 2019/4/28
+ * @description:
+ */
 @Component
 public class AccountManager {
 
@@ -18,6 +23,19 @@ public class AccountManager {
      * 在线账户
      */
     private static ConcurrentHashMap<String, Account> loginAccountMap = new ConcurrentHashMap<String, Account>();
+
+    static {
+        Account account = new Account();
+        account.setCountId("a1001");
+        account.setCountName("tom");
+
+        Account account1 = new Account();
+        account1.setCountId("a1002");
+        account1.setCountName("jerry");
+
+        AccountManager.setAccount(account);
+        AccountManager.setAccount(account1);
+    }
 
 
     /**
@@ -42,11 +60,12 @@ public class AccountManager {
     }
 
     /**
-     * 新怎在线用户
+     * 新曾在线用户
+     *
      * @param account
      */
-    public static void setLoginAccount(Account account){
-        loginAccountMap.put(account.getCountId(),account);
+    public static void setLoginAccount(Account account) {
+        loginAccountMap.put(account.getCountId(), account);
     }
 
     public static ConcurrentHashMap<String, Account> getAccountId2AccountMap() {
@@ -59,13 +78,14 @@ public class AccountManager {
 
     /**
      * 获取所有登陆用户
+     *
      * @return
      */
-    public static List<Account> getLoginAccountList(){
+    public static List<Account> getLoginAccountList() {
         LinkedList<Account> list = new LinkedList<Account>();
         Set<Map.Entry<String, Account>> entries = loginAccountMap.entrySet();
         Iterator<Map.Entry<String, Account>> iterator = entries.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             list.add(iterator.next().getValue());
         }
 

@@ -5,6 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author: wengj
+ * @date: 2019/4/28
+ * @description:
+ */
 @SpringBootApplication
 public class GamedemoApplication {
 

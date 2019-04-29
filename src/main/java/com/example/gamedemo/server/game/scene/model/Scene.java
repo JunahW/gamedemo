@@ -3,14 +3,15 @@ package com.example.gamedemo.server.game.scene.model;
 import com.example.gamedemo.server.game.account.model.Account;
 import io.netty.util.internal.ConcurrentSet;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * @author junah
- * @date
- * @description
+ * @author: wengj
+ * @date: 2019/4/29
+ * @description: 
  */
-public class Scene {
+public class Scene implements Serializable {
     /**
      * 场景id
      */

@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author: wengj
+ * @date: 2019/4/29
+ * @description: 场景业务层
+ */
 @Service
 public class SceneServiceImpl implements SceneService {
     private static final Logger logger = LoggerFactory.getLogger(SceneServiceImpl.class);
@@ -28,9 +33,9 @@ public class SceneServiceImpl implements SceneService {
     @Override
     public void gotoScene(Account account, Scene scene) {
         account.setScene(scene);
-        logger.info(account.toString()+"进入"+scene.getSceneName());
+        logger.info(account.toString() + "进入" + scene.getSceneName());
         scene.getAccountSet().add(account);
-        logger.info("当前场景："+scene.toString());
+        logger.info("当前场景：" + scene.toString());
 
         ConcurrentHashMap<String, Account> accountId2AccountMap = AccountManager.getAccountId2AccountMap();
         ConcurrentHashMap<String, Scene> sceneId2SceneMap = SceneManager.sceneId2SceneMap;
@@ -41,5 +46,11 @@ public class SceneServiceImpl implements SceneService {
     @Override
     public Scene getSceneById(String sceneId) {
         return SceneManager.sceneId2SceneMap.get(sceneId);
+    }
+
+    @Override
+    public int move2Scene(String sceneId) {
+
+        return 0;
     }
 }

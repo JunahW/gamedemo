@@ -1,11 +1,7 @@
 package com.example.gamedemo.server;
 
-import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.service.AccountManager;
 import com.example.gamedemo.server.game.common.IController;
 import com.example.gamedemo.server.game.manager.ControllerManager;
-import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.service.SceneManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -20,12 +16,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 服务端
- *
- * @author junaha
- * @date 2019/04/25
+ * @author: wengj
+ * @date: 2019/4/25
+ * @description: 游戏服务端
  */
-
 public class MyServer {
     private static final Logger logger = LoggerFactory.getLogger(MyServer.class);
 
@@ -47,8 +41,6 @@ public class MyServer {
 
 
     public void start(String[] args) {
-        initServer();
-
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -79,6 +71,8 @@ public class MyServer {
                             }
                             ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
                         }
+
+
                     });
                 }
             });
@@ -90,43 +84,6 @@ public class MyServer {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    /**
-     * 初始化
-     */
-    private void initServer() {
-        //初始化账户
-        Account account = new Account();
-        account.setCountId("a1001");
-        account.setCountName("tom");
-
-        Account account1 = new Account();
-        account1.setCountId("a1002");
-        account1.setCountName("jerry");
-
-        AccountManager.setAccount(account);
-        AccountManager.setAccount(account1);
-
-        //初始化场景
-        Scene scene = new Scene();
-        scene.setSceneId("s1001");
-        scene.setSceneName("村落");
-        scene.setNeighbors("a1002");
-
-        Scene scene1 = new Scene();
-        scene1.setSceneId("s1002");
-        scene1.setSceneName("山洞");
-        scene1.setNeighbors("s1001,s1003");
-
-        Scene scene2 = new Scene();
-        scene2.setSceneId("s1003");
-        scene2.setSceneName("城堡");
-        scene2.setNeighbors("s1002");
-
-        SceneManager.setScene(scene);
-        SceneManager.setScene(scene1);
-        SceneManager.setScene(scene2);
     }
 
 }
