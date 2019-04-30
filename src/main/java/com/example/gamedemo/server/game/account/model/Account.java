@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.account.model;
 
+import com.alibaba.fastjson.JSON;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;

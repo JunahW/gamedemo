@@ -30,7 +30,7 @@ public class AccountTest {
         Scene scene = new Scene();
         scene.setSceneId("s101");
         scene.setSceneName("s村庄");
-        account.setScene(scene);
+        //account.setScene(scene);
 
     }
 }

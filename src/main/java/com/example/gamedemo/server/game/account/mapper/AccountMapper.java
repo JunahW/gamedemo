@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface AccountMapper {
     AccountEnt selectAccountById(String accountId);
 
-    void addAcount(AccountEnt accountEnt);
+    int addAcount(AccountEnt accountEnt);
 }

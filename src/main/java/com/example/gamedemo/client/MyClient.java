@@ -23,6 +23,11 @@ import java.io.InputStreamReader;
 public class MyClient {
     private static final Logger logger = LoggerFactory.getLogger(MyClient.class);
 
+    /**
+     * 账户id
+     */
+    private String accountId;
+
     public static void main(String[] args) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
@@ -46,6 +51,8 @@ public class MyClient {
 
                     });
                 }
+
+
             });
 
             Channel ch = b.connect("127.0.0.1", 7777).sync().channel();

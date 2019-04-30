@@ -34,40 +34,22 @@ public class GamedemoApplicationTests {
     @Test
     public void testWriteObject() {
         AccountEnt accountEnt = new AccountEnt();
-        accountEnt.setAccountId("a1005");
-        byte[] bytes = JSON.toJSONString(new Account()).getBytes();
-        accountEnt.setAccountData(bytes);
+        accountEnt.setAccountId("a1007");
+        Account account = new Account();
+        account.setCountId("a1007");
+        account.setCountName("test07");
+        String accountData = JSON.toJSONString(account);
+        accountEnt.setAccountData(accountData);
         accountMapper.addAcount(accountEnt);
 
     }
 
     @Test
-    public void readObject(){
-        AccountEnt accountEnt = accountMapper.selectAccountById("a1005");
-        Account account = (Account)JSON.parseObject(new String(accountEnt.getAccountData()),Account.class);
+    public void readObject() {
+        AccountEnt accountEnt = accountMapper.selectAccountById("a1007");
+        Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
         System.out.println(account);
     }
 
 
-}
-
-class User {
-    private Integer id;
-    private String name;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

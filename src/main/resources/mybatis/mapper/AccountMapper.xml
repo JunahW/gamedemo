@@ -5,7 +5,7 @@
             resultType="com.example.gamedemo.server.game.account.entity.AccountEnt">
         select accountId,accountData from account where accountId=#{accountId}
     </select>
-    <insert id="addAcount" parameterType="com.example.gamedemo.server.game.account.entity.AccountEnt" >
+    <insert id="addAcount" parameterType="com.example.gamedemo.server.game.account.entity.AccountEnt">
         insert into account(accountId,accountData) values (#{accountId},#{accountData})
     </insert>
 

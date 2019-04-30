@@ -1,8 +1,12 @@
 package com.example.gamedemo.server.game.account.service;
 
+import com.alibaba.fastjson.JSON;
+import com.example.gamedemo.server.game.account.entity.AccountEnt;
+import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +16,9 @@ import org.springframework.stereotype.Service;
  */
 @Service(value = "accountService")
 public class AccountServiceImpl implements AccountService {
+
+    @Autowired
+    private AccountMapper accountMapper;
 
 
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceImpl.class);
@@ -25,8 +32,18 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void setAccount(Account account) {
-        logger.info("新增/修改用户：" + account);
-        AccountManager.setAccount(account);
+        logger.info("新增用户：" + account);
+        AccountEnt accountEnt = new AccountEnt();
+        accountEnt.setAccountId(account.getCountId());
+        accountEnt.setAccountData(JSON.toJSONString(account));
+        int result = accountMapper.addAcount(accountEnt);
+        if (result == 1) {
+            AccountManager.setAccount(account);
+            logger.info("新增用户成功");
+        } else {
+            logger.info("新增用户失败");
+        }
+
     }
 
     @Override

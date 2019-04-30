@@ -32,7 +32,7 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public void gotoScene(Account account, Scene scene) {
-        account.setScene(scene);
+        //account.setScene(scene);
         logger.info(account.toString() + "进入" + scene.getSceneName());
         scene.getAccountSet().add(account);
         logger.info("当前场景：" + scene.toString());
