@@ -13,5 +13,5 @@ public interface AccountService {
 
     void setAccount(Account account);
 
-    int login(Account account);
+    Account login(String accountId);
 }

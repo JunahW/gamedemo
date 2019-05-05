@@ -17,4 +17,14 @@ public interface SceneCmd {
      */
     String GOTO = "goto";
 
+    /**
+     * 进入相邻场景
+     */
+    String MOVE = "move";
+
+    /**
+     * 查看当前场景的所有对象
+     */
+    String AOI = "aoi";
+
 }

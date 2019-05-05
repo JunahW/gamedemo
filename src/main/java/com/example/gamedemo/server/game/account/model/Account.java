@@ -15,7 +15,7 @@ public class Account implements Serializable {
     private String countId;
     private String countName;
 
-    private Scene scene;
+    private Scene scene=new Scene("s1001");
 
     public String getCountId() {
         return countId;
@@ -63,6 +63,7 @@ public class Account implements Serializable {
         return "Account{" +
                 "countId='" + countId + '\'' +
                 ", countName='" + countName + '\'' +
+                ", scene=" + scene.getSceneName() +
                 '}';
     }
 }

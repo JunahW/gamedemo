@@ -36,8 +36,10 @@ public interface SceneService {
 
     /**
      * 去其他的相邻场景
-     * @param sceneId
+     *
+     * @param account
+     * @param scene
      * @return
      */
-    int move2Scene(String sceneId);
+    int move2Scene(Account account, Scene scene);
 }

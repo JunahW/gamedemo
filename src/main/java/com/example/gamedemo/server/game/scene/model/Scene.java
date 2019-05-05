@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * @author: wengj
  * @date: 2019/4/29
- * @description: 
+ * @description:
  */
 public class Scene implements Serializable {
     /**
@@ -27,7 +27,15 @@ public class Scene implements Serializable {
      */
     private String neighbors;
 
+    /**
+     * 场景上的用户
+     */
     private ConcurrentSet<Account> accountSet = new ConcurrentSet<>();
+
+    /**
+     * 场景上的npc
+     */
+    private ConcurrentSet<Npc> npcSet = new ConcurrentSet<>();
 
 
     public String getSceneId() {
@@ -46,6 +54,10 @@ public class Scene implements Serializable {
         return accountSet;
     }
 
+    public ConcurrentSet<Npc> getNpcSet() {
+        return npcSet;
+    }
+
     public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
     }
@@ -62,11 +74,25 @@ public class Scene implements Serializable {
         this.accountSet = accountSet;
     }
 
+    public void setNpcSet(ConcurrentSet<Npc> npcSet) {
+        this.npcSet = npcSet;
+    }
+
+    public Scene() {
+    }
+
+    public Scene(String sceneId) {
+        this.sceneId = sceneId;
+    }
+
     @Override
     public String toString() {
         return "Scene{" +
                 "sceneId='" + sceneId + '\'' +
                 ", sceneName='" + sceneName + '\'' +
+                ", neighbors='" + neighbors + '\'' +
+                ", accountSet=" + accountSet +
+                ", npcSet=" + npcSet +
                 '}';
     }
 

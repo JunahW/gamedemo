@@ -45,7 +45,7 @@ public class AccountManager {
      * @return
      */
     public static Account getAccountById(String accountId) {
-        return accountId2AccountMap.get(accountId);
+        return loginAccountMap.get(accountId);
     }
 
     /**

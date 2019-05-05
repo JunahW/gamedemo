@@ -12,10 +12,11 @@
 ####用户相关指令
 创建用户：create a1003 username03
 登陆:login a1001
-账户信息:get a1002)
+账户信息:get
 ####场景相关指令
 展示场景：list
-进入场景：goto a1001 s1001
+进入场景：goto s1001
+移动场景：move s1002
 
 ####关闭客户端
 输入：close

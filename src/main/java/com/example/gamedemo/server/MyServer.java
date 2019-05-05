@@ -60,17 +60,19 @@ public class MyServer {
                         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
 
                             logger.info("===>receive msg:" + msg);
-                            //执行指令分发
 
+                            //执行请求分发
                             ControllerManager controllerManager = new ControllerManager();
                             //根据指令获取当前的指令多对应的controller
-                            IController controller = controllerManager.get(msg.split(" ")[0]);
+                            IController controller = controllerManager.get(msg.split(" ")[1]);
                             String returnMsg = "指令有误";
                             if (controller != null) {
                                 returnMsg = controllerManager.execute(controller, msg).toString();
                             }
                             ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
                         }
+
+
 
 
                     });

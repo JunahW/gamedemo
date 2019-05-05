@@ -47,13 +47,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public int login(Account account) {
-        Account existAccount = AccountManager.getAccountById(account.getCountId());
-        if (null != existAccount) {
-            logger.info(account + "登录游戏");
-            return 1;
+    public Account login(String accountid) {
+        AccountEnt accountEnt = accountMapper.selectAccountById(accountid);
+        Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
+        if (null != account) {
+            //将登陆用户放入容器
+            AccountManager.setLoginAccount(account);
         }
-        logger.info(account + "登录失败");
-        return 0;
+        return account;
     }
 }

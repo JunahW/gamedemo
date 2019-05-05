@@ -7,6 +7,7 @@ import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.manager.ControllerManager;
+import com.example.gamedemo.server.game.role.service.RoleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ import java.util.Map;
 public class GamedemoApplicationTests {
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private RoleService roleService;
 
     @Test
     public void contextLoads() {
@@ -49,6 +53,12 @@ public class GamedemoApplicationTests {
         AccountEnt accountEnt = accountMapper.selectAccountById("a1007");
         Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
         System.out.println(account);
+    }
+
+    @Test
+    public void testSingle() throws  Exception{
+        roleService.saveRole(null);
+        Thread.sleep(6000);
     }
 
 

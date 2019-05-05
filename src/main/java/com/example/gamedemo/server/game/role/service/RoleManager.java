@@ -16,6 +16,7 @@ public class RoleManager {
     /**
      * 角色map
      */
-    public static ConcurrentHashMap<String, Role> sceneId2SceneMap = new ConcurrentHashMap<String, Role>();
+    public static ConcurrentHashMap<String, Role> roleId2RoleMap = new ConcurrentHashMap<String, Role>();
+
 
 }

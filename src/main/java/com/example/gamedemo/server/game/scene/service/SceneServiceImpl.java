@@ -32,7 +32,7 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public void gotoScene(Account account, Scene scene) {
-        //account.setScene(scene);
+        account.setScene(scene);
         logger.info(account.toString() + "进入" + scene.getSceneName());
         scene.getAccountSet().add(account);
         logger.info("当前场景：" + scene.toString());
@@ -49,8 +49,31 @@ public class SceneServiceImpl implements SceneService {
     }
 
     @Override
-    public int move2Scene(String sceneId) {
+    public int move2Scene(Account account, Scene scene) {
+        //当前的场景
+        Scene currentScene = SceneManager.getSceneById(account.getScene().getSceneId());
 
-        return 0;
+        String[] neighbors = currentScene.getNeighbors().split(",");
+        //判断场景是否相邻
+        boolean isNeighor = false;
+        for (String neighbor : neighbors) {
+            if (neighbor.equals(scene.getSceneId())) {
+                isNeighor = true;
+                break;
+            }
+        }
+        if (isNeighor == false) {
+            logger.info(account.getCountName() + "进入" + scene.getSceneName() + "失败，只能进入相邻的场景");
+            return 0;
+        }
+
+        //退出当前场景
+        SceneManager.getSceneById(currentScene.getSceneId()).getAccountSet().remove(account);
+        //进入新的场景
+        account.setScene(scene);
+        scene.getAccountSet().add(account);
+        logger.info(account.getCountName() + "进入" + scene.getSceneName() + "成功");
+
+        return 1;
     }
 }
