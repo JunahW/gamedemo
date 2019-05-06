@@ -1,14 +1,12 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.service.AccountManager;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author: wengj
@@ -36,11 +34,6 @@ public class SceneServiceImpl implements SceneService {
         logger.info(account.toString() + "进入" + scene.getSceneName());
         scene.getAccountSet().add(account);
         logger.info("当前场景：" + scene.toString());
-
-        ConcurrentHashMap<String, Account> accountId2AccountMap = AccountManager.getAccountId2AccountMap();
-        ConcurrentHashMap<String, Scene> sceneId2SceneMap = SceneManager.sceneId2SceneMap;
-
-
     }
 
     @Override
@@ -55,14 +48,14 @@ public class SceneServiceImpl implements SceneService {
 
         String[] neighbors = currentScene.getNeighbors().split(",");
         //判断场景是否相邻
-        boolean isNeighor = false;
+        boolean isNeighbor = false;
         for (String neighbor : neighbors) {
             if (neighbor.equals(scene.getSceneId())) {
-                isNeighor = true;
+                isNeighbor = true;
                 break;
             }
         }
-        if (isNeighor == false) {
+        if (!isNeighbor) {
             logger.info(account.getCountName() + "进入" + scene.getSceneName() + "失败，只能进入相邻的场景");
             return 0;
         }

@@ -1,11 +1,15 @@
 package com.example.gamedemo.server.game.account.controller;
 
+
+import com.example.gamedemo.server.common.constant.SessionAttributeKey;
+import com.example.gamedemo.server.common.session.SessionManager;
+import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.server.common.utils.AttributeUtils;
 import com.example.gamedemo.server.game.account.constant.AccountCmd;
-import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.service.AccountManager;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.manager.ControllerManager;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,8 +38,12 @@ public class AccoutController {
      * @param msg
      * @return
      */
-    public Account getAccountById(String msg) {
-        return accountService.getAccountById(msg.split(" ")[0]);
+    public String getAccountById(ChannelHandlerContext cxt, String msg) {
+        //获取当前的账户信息
+        Account account = SessionManager.getAccountByChannel(cxt.channel());
+        String returnMsg = account.toString() + "\r\n";
+        cxt.channel().writeAndFlush(returnMsg);
+        return returnMsg;
     }
 
     /**
@@ -44,11 +52,11 @@ public class AccoutController {
      * @param msg
      * @return
      */
-    public int setAccount(String msg) {
+    public int setAccount(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         Account account = new Account();
-        account.setCountId(msgs[2]);
-        account.setCountName(msgs[3]);
+        account.setCountId(msgs[1]);
+        account.setCountName(msgs[2]);
         accountService.setAccount(account);
         return 1;
     }
@@ -59,19 +67,23 @@ public class AccoutController {
      * @param msg
      * @return
      */
-    public String login(String msg) {
+    public String login(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         String returnMsg = "";
 
-        Account account = accountService.login(msgs[2]);
+        Account account = accountService.login(msgs[1]);
         if (account == null) {
             returnMsg = "用户不存在";
         } else {
             /**
              * 将登陆信息写会客户端
              */
-            returnMsg = "loginSuccess " + msgs[2];
+            TSession tSession = AttributeUtils.get(cxt.channel(), SessionAttributeKey.SESSION);
+            tSession.setAccount(account);
+
+            returnMsg = "loginSuccess " + msgs[1];
         }
+        cxt.channel().writeAndFlush(returnMsg + "\r\n");
         return returnMsg;
     }
 

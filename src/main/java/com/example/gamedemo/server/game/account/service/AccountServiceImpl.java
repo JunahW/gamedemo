@@ -47,8 +47,8 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account login(String accountid) {
-        AccountEnt accountEnt = accountMapper.selectAccountById(accountid);
+    public Account login(String accountId) {
+        AccountEnt accountEnt = accountMapper.selectAccountById(accountId);
         Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
         if (null != account) {
             //将登陆用户放入容器

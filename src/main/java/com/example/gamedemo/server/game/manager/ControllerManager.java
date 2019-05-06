@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.manager;
 
-import com.example.gamedemo.server.game.common.IController;
+import com.example.gamedemo.server.game.base.controller.IController;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -36,8 +37,8 @@ public class ControllerManager {
      * @param controller 要执行的任务
      * @param msg        信息
      */
-    public Object execute(IController controller, String msg) {
-        return controller.handle(msg);
+    public Object execute(IController controller, ChannelHandlerContext cxt, String msg) {
+        return controller.handle(cxt, msg);
     }
 
 

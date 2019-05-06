@@ -23,15 +23,6 @@ import java.io.InputStreamReader;
 public class MyClient {
     private static final Logger logger = LoggerFactory.getLogger(MyClient.class);
 
-    /**
-     * 服务端返回的数据
-     */
-    private static final String LOGIN_MSG = "loginSuccess";
-
-    /**
-     * 账户id
-     */
-    private static String accountId = "noLogin";
 
     public static void main(String[] args) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
@@ -42,19 +33,14 @@ public class MyClient {
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
+                    System.out.println(ch);
                     ChannelPipeline pipeline = ch.pipeline();
-                    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
                     pipeline.addLast("decoder", new StringDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
                     pipeline.addLast("handler", new SimpleChannelInboundHandler<String>() {
                         @Override
                         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-                            if (msg.contains(LOGIN_MSG)) {
-                                /**
-                                 * 将账户存起来，相当于回话id
-                                 */
-                                accountId = msg.split(" ")[3];
-                            }
                             System.out.println(msg);
                         }
 
@@ -78,8 +64,6 @@ public class MyClient {
                 if ("close".equals(line)) {
                     break;
                 }
-                line = accountId + " " + line;
-
                 ch.writeAndFlush(line + '\n');
             }
             ch.close().sync();

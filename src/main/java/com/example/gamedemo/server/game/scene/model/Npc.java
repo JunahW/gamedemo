@@ -9,4 +9,7 @@ public class Npc extends SceneObject {
     public Npc(String objectId, String objectName, int status) {
         super(objectId, objectName, status);
     }
+
+    public Npc() {
+    }
 }

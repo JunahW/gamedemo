@@ -1,11 +1,13 @@
 package com.example.gamedemo.server.game.scene.controller;
 
+import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.manager.ControllerManager;
 import com.example.gamedemo.server.game.scene.constant.SceneCmd;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.service.SceneService;
+import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,7 +40,7 @@ public class SceneController {
      * @param msg
      * @return
      */
-    public List<Scene> getSceneList(String msg) {
+    public List<Scene> getSceneList(ChannelHandlerContext cxt, String msg) {
         return sceneService.getSceneList();
     }
 
@@ -49,14 +51,15 @@ public class SceneController {
      * @param msg
      * @return
      */
-    public String gotoScene(String msg) {
+    public String gotoScene(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
-        Account account = accountService.getAccountById(msgs[0]);
+        Account account = SessionManager.getAccountByChannel(cxt.channel());
 
-        Scene scene = sceneService.getSceneById(msgs[2]);
+        Scene scene = sceneService.getSceneById(msgs[1]);
         sceneService.gotoScene(account, scene);
         String returnMsg = account.getCountName() + "进入" + scene.getSceneName();
+        cxt.writeAndFlush(returnMsg + "\r\n");
         return returnMsg;
     }
 
@@ -66,17 +69,20 @@ public class SceneController {
      * @param msg
      * @return
      */
-    public String move2Scene(String msg) {
+    public String move2Scene(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
-        Account account = accountService.getAccountById(msgs[0]);
-        Scene scene = sceneService.getSceneById(msgs[2]);
-
+        Account account = SessionManager.getAccountByChannel(cxt.channel());
+        Scene scene = sceneService.getSceneById(msgs[1]);
+        String returnMsg = null;
         int isSuccess = sceneService.move2Scene(account, scene);
         if (isSuccess == 0) {
-            return account.getCountName() + "进入" + scene.getSceneName() + "失败";
+            returnMsg = account.getCountName() + "进入" + scene.getSceneName() + "失败";
+        } else {
+            returnMsg = account.getCountName() + "进入" + scene.getSceneName();
         }
-        return account.getCountName() + "进入" + scene.getSceneName();
+        cxt.writeAndFlush(returnMsg + "\r\n");
+        return returnMsg;
     }
 
     /**
@@ -85,12 +91,12 @@ public class SceneController {
      * @param msg
      * @return
      */
-    public String getSceneObject(String msg) {
+    public String getSceneObject(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
-        Account account = accountService.getAccountById(msgs[0]);
+        Account account = SessionManager.getAccountByChannel(cxt.channel());
         Scene scene = sceneService.getSceneById(account.getScene().getSceneId());
-
+        cxt.writeAndFlush(scene.toString() + "\r\n");
         return scene.toString();
     }
 

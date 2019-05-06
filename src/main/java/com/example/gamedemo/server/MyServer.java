@@ -1,6 +1,7 @@
 package com.example.gamedemo.server;
 
-import com.example.gamedemo.server.game.common.IController;
+import com.example.gamedemo.server.game.SessionHandler;
+import com.example.gamedemo.server.game.base.controller.IController;
 import com.example.gamedemo.server.game.manager.ControllerManager;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -52,9 +53,10 @@ public class MyServer {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
-                    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(8192, Delimiters.lineDelimiter()));
+                    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
                     pipeline.addLast("decoder", new StringDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
+                    pipeline.addLast("sessionHandler", new SessionHandler());
                     pipeline.addLast("handler", new SimpleChannelInboundHandler<String>() {
                         @Override
                         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
@@ -64,15 +66,13 @@ public class MyServer {
                             //执行请求分发
                             ControllerManager controllerManager = new ControllerManager();
                             //根据指令获取当前的指令多对应的controller
-                            IController controller = controllerManager.get(msg.split(" ")[1]);
-                            String returnMsg = "指令有误";
+                            IController controller = controllerManager.get(msg.split(" ")[0]);
+                            //String returnMsg = "指令有误";
                             if (controller != null) {
-                                returnMsg = controllerManager.execute(controller, msg).toString();
+                                controllerManager.execute(controller, ctx, msg);
                             }
-                            ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
+                            //ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
                         }
-
-
 
 
                     });
