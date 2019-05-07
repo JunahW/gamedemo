@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.scene.model;
 
+import com.example.gamedemo.server.common.anno.ExcelColumn;
+
 import java.util.Objects;
 
 /**
@@ -12,17 +14,26 @@ public class SceneObject {
     /**
      * 实体id
      */
+    @ExcelColumn(columnName = "objectId")
     private String objectId;
 
     /**
      * 实体名称
      */
+    @ExcelColumn(columnName = "objectName")
     private String objectName;
 
     /**
      * 实体状态 0 死亡 1 生存
      */
+    @ExcelColumn(columnName = "status")
     private int status;
+
+    /**
+     * 场景id
+     */
+    @ExcelColumn(columnName = "sceneId")
+    private String sceneId;
 
     public String getObjectId() {
         return objectId;
@@ -36,6 +47,10 @@ public class SceneObject {
         return objectName;
     }
 
+    public String getSceneId() {
+        return sceneId;
+    }
+
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
@@ -46,6 +61,10 @@ public class SceneObject {
 
     public void setObjectName(String objectName) {
         this.objectName = objectName;
+    }
+
+    public void setSceneId(String sceneId) {
+        this.sceneId = sceneId;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server;
 
+import com.example.gamedemo.server.game.RequestHandler;
 import com.example.gamedemo.server.game.SessionHandler;
 import com.example.gamedemo.server.game.base.controller.IController;
 import com.example.gamedemo.server.game.manager.ControllerManager;
@@ -24,23 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class MyServer {
     private static final Logger logger = LoggerFactory.getLogger(MyServer.class);
 
-    /**
-     * 初始化spring容器
-     * <p>
-     * public static ApplicationContext ac = null;
-     * <p>
-     * static {
-     * ac = new ClassPathXmlApplicationContext("applicationContext.xml");
-     * }
-     * <p>
-     * public static ApplicationContext getAc() {
-     * return ac;
-     * }
-     */
-    @Autowired
-    private ControllerManager controllerManager;
-
-
     public void start(String[] args) {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -57,25 +41,7 @@ public class MyServer {
                     pipeline.addLast("decoder", new StringDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
                     pipeline.addLast("sessionHandler", new SessionHandler());
-                    pipeline.addLast("handler", new SimpleChannelInboundHandler<String>() {
-                        @Override
-                        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-
-                            logger.info("===>receive msg:" + msg);
-
-                            //执行请求分发
-                            ControllerManager controllerManager = new ControllerManager();
-                            //根据指令获取当前的指令多对应的controller
-                            IController controller = controllerManager.get(msg.split(" ")[0]);
-                            //String returnMsg = "指令有误";
-                            if (controller != null) {
-                                controllerManager.execute(controller, ctx, msg);
-                            }
-                            //ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
-                        }
-
-
-                    });
+                    pipeline.addLast("requestHandler", new RequestHandler());
                 }
             });
             ChannelFuture future = bootstrap.bind(7777).sync();

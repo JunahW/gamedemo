@@ -9,4 +9,8 @@
         insert into account(accountId,accountData) values (#{accountId},#{accountData})
     </insert>
 
+    <update id="updateAccount" parameterType="com.example.gamedemo.server.game.account.entity.AccountEnt">
+        update account set accountData = #{accountData} where accountId=#{accountId}
+    </update>
+
 </mapper>

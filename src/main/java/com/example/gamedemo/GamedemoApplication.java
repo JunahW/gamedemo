@@ -1,6 +1,7 @@
 package com.example.gamedemo;
 
 import com.example.gamedemo.server.MyServer;
+import com.example.gamedemo.server.game.manager.ControllerManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.scene.controller;
 
+import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
@@ -19,6 +20,7 @@ import java.util.List;
  * @date 2019/4/28
  */
 @Component
+@HandlerClass
 public class SceneController {
     @Autowired
     private SceneService sceneService;
@@ -41,6 +43,8 @@ public class SceneController {
      * @return
      */
     public List<Scene> getSceneList(ChannelHandlerContext cxt, String msg) {
+        List<Scene> sceneList = sceneService.getSceneList();
+        cxt.channel().writeAndFlush(sceneList + "\r\n");
         return sceneService.getSceneList();
     }
 

@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.base.executor;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -10,8 +12,9 @@ import java.util.concurrent.*;
  * @date: 2019/4/30
  * @description: 程序线程组
  */
-@Component
 public final class WorkThreadPool {
+
+    private static final Logger loger = LoggerFactory.getLogger(WorkThreadPool.class);
 
     /**
      * 单线程循环执行器
@@ -30,6 +33,7 @@ public final class WorkThreadPool {
      * @return
      */
     public static Future singleThreadSchedule(long delay, Runnable runnable) {
+        loger.info("异步保存数据");
         return singleThreadSchedule.schedule(runnable, delay, TimeUnit.MILLISECONDS);
     }
 }

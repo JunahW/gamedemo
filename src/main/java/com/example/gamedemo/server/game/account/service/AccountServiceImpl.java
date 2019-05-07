@@ -49,11 +49,22 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account login(String accountId) {
         AccountEnt accountEnt = accountMapper.selectAccountById(accountId);
-        Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
+        Account account = null;
+        if (accountEnt != null) {
+            account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
+        }
         if (null != account) {
             //将登陆用户放入容器
             AccountManager.setLoginAccount(account);
         }
         return account;
+    }
+
+    @Override
+    public void updateAccount(Account account) {
+        AccountEnt accountEnt = new AccountEnt();
+        accountEnt.setAccountId(account.getCountId());
+        accountEnt.setAccountData(JSON.toJSONString(account));
+        accountMapper.updateAccount(accountEnt);
     }
 }

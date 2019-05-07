@@ -19,8 +19,11 @@ public interface AccountCmd {
     /**
      * 登陆
      */
-
     String LOGIN = "login";
 
+    /**
+     * 登出
+     */
+    String LOGOUT = "logout";
 
 }

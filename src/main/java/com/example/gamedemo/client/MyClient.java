@@ -33,7 +33,6 @@ public class MyClient {
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    System.out.println(ch);
                     ChannelPipeline pipeline = ch.pipeline();
                     pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
                     pipeline.addLast("decoder", new StringDecoder());
@@ -41,7 +40,7 @@ public class MyClient {
                     pipeline.addLast("handler", new SimpleChannelInboundHandler<String>() {
                         @Override
                         protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-                            System.out.println(msg);
+                            logger.info(msg);
                         }
 
 
@@ -54,8 +53,8 @@ public class MyClient {
             Channel ch = b.connect("127.0.0.1", 7777).sync().channel();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("================请输入指令===================");
-            System.out.println("账户：create->创建(create a1003 user03)；login->登陆(login a1001)；get->账户信息(get a1002)");
-            System.out.println("场景：list->所有场景(list)；goto->进入场景(goto a1001 s1001)");
+            System.out.println("账户：create->创建(create a1003 user03)；login->登陆(login a1001)；get->账户信息(get)");
+            System.out.println("场景：list->所有场景(list)；goto->进入场景(goto s2002)；aoi->查看当前场景上的实例");
             System.out.println("=============================================");
 
             String line = null;
@@ -64,7 +63,7 @@ public class MyClient {
                 if ("close".equals(line)) {
                     break;
                 }
-                ch.writeAndFlush(line + '\n');
+                ch.writeAndFlush(line + "\r\n");
             }
             ch.close().sync();
         } catch (Exception e) {

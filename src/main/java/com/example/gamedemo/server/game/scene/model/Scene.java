@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.scene.model;
 
+import com.example.gamedemo.server.common.anno.ExcelColumn;
 import com.example.gamedemo.server.game.account.model.Account;
 import io.netty.util.internal.ConcurrentSet;
 
@@ -15,16 +16,19 @@ public class Scene implements Serializable {
     /**
      * 场景id
      */
+    @ExcelColumn(columnName = "sceneId")
     private String sceneId;
 
     /**
      * 场景名称
      */
+    @ExcelColumn(columnName = "sceneName")
     private String sceneName;
 
     /**
      * 临近场景 用‘,’隔开
      */
+    @ExcelColumn(columnName = "neighbors")
     private String neighbors;
 
     /**

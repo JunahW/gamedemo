@@ -2,25 +2,32 @@ package com.example.gamedemo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.gamedemo.server.common.anno.HandlerClass;
+import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.manager.ControllerManager;
 import com.example.gamedemo.server.game.role.service.RoleService;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,6 +37,9 @@ public class GamedemoApplicationTests {
 
     @Autowired
     private RoleService roleService;
+
+    @Autowired
+    ApplicationContext applicationContext;
 
     @Test
     public void contextLoads() {
@@ -56,10 +66,41 @@ public class GamedemoApplicationTests {
     }
 
     @Test
-    public void testSingle() throws  Exception{
+    public void testSingle() throws Exception {
         roleService.saveRole(null);
         Thread.sleep(6000);
     }
 
+    @Test
+    public void testClass() {
+        Class<Scene> sceneClass = Scene.class;
+        System.out.println(sceneClass.getSimpleName());
+    }
+
+    @Test
+    public void testApplication() {
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(HandlerClass.class);
+        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Class<?> aClass = entry.getValue().getClass();
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            for (Method method:declaredMethods){
+                try {
+                    if (method.isAnnotationPresent(HandlerMethod.class)){
+                        method.invoke(entry.getValue(),null,"create a1112 test112");
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        ;
+
+
+
+    }
 
 }
