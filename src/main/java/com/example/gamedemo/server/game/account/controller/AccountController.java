@@ -49,7 +49,13 @@ public class AccountController {
         Account account = new Account();
         account.setAcountId(msgs[1]);
         account.setAcountName(msgs[2]);
-        accountService.setAccount(account);
+        int flag = accountService.setAccount(account);
+        if (flag == 1) {
+            SessionManager.sendMessage(session, "注册成功\r\n");
+        } else {
+            SessionManager.sendMessage(session, "注册失败\r\n");
+        }
+
     }
 
     /**
@@ -89,10 +95,22 @@ public class AccountController {
         String returnMsg = null;
         Account account = session.getAccount();
         //异步保存用户信息
-        WorkThreadPool.singleThreadSchedule(5000, () -> accountService.updateAccount(account));
-        returnMsg = "注销登录\n";
+        WorkThreadPool.singleThreadSchedule(0, () -> accountService.updateAccount(account));
+        returnMsg = "注销登录\r\n";
         SessionManager.sendMessage(session, returnMsg);
         SessionManager.close(session.getChannel());
+    }
+
+    /**
+     * 获取当前位置
+     *
+     * @param session
+     * @param msg
+     */
+    @HandlerMethod(cmd = "where")
+    public void getWhere(TSession session, String msg) {
+        Account account = session.getAccount();
+        SessionManager.sendMessage(session, account.getScene().getSceneName() + "\r\n");
     }
 
 }

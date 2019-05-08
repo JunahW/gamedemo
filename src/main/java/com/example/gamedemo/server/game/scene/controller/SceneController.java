@@ -5,7 +5,6 @@ import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
 import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.service.SceneService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,10 @@ public class SceneController {
     @HandlerMethod(cmd = "list")
     public void getSceneList(TSession session, String msg) {
         List<Scene> sceneList = sceneService.getSceneList();
-        SessionManager.sendMessage(session, sceneList + "\r\n");
+        for (Scene scene : sceneList) {
+            SessionManager.sendMessage(session, scene + "\r\n");
+        }
+
     }
 
     /**

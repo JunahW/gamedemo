@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void setAccount(Account account) {
+    public int setAccount(Account account) {
         logger.info("新增用户：{}", account);
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(account.getAcountId());
@@ -43,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
         } else {
             logger.info("新增用户失败");
         }
-
+        return result;
     }
 
     @Override

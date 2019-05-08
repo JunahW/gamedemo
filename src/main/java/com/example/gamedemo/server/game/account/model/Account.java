@@ -1,10 +1,8 @@
 package com.example.gamedemo.server.game.account.model;
 
-import com.alibaba.fastjson.JSON;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * @author: wengj
@@ -15,7 +13,7 @@ public class Account implements Serializable {
     private String acountId;
     private String acountName;
 
-    private Scene scene = new Scene("s2001");
+    private Scene scene = new Scene("s2001", "区庄");
 
     public String getAcountId() {
         return acountId;

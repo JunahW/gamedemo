@@ -89,6 +89,11 @@ public class Scene implements Serializable {
         this.sceneId = sceneId;
     }
 
+    public Scene(String sceneId, String sceneName) {
+        this.sceneId = sceneId;
+        this.sceneName = sceneName;
+    }
+
     @Override
     public String toString() {
         return "Scene{" +
