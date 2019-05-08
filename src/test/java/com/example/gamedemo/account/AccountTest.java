@@ -23,10 +23,10 @@ import java.io.ObjectOutputStream;
 public class AccountTest {
 
     @Test
-    public void testAccountSerializable() throws Exception{
+    public void testAccountSerializable() throws Exception {
         Account account = new Account();
-        account.setCountId("t101");
-        account.setCountName("t噬魂");
+        account.setAcountId("t101");
+        account.setAcountName("t噬魂");
         Scene scene = new Scene();
         scene.setSceneId("s101");
         scene.setSceneName("s村庄");

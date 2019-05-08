@@ -34,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     public void setAccount(Account account) {
         logger.info("新增用户：" + account);
         AccountEnt accountEnt = new AccountEnt();
-        accountEnt.setAccountId(account.getCountId());
+        accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));
         int result = accountMapper.addAcount(accountEnt);
         if (result == 1) {
@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void updateAccount(Account account) {
         AccountEnt accountEnt = new AccountEnt();
-        accountEnt.setAccountId(account.getCountId());
+        accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));
         accountMapper.updateAccount(accountEnt);
     }

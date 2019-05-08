@@ -4,11 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
+import com.example.gamedemo.server.common.dispatcher.ControllerManager;
+import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
-import com.example.gamedemo.server.game.manager.ControllerManager;
 import com.example.gamedemo.server.game.role.service.RoleService;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.junit.Test;
@@ -50,8 +51,8 @@ public class GamedemoApplicationTests {
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId("a1007");
         Account account = new Account();
-        account.setCountId("a1007");
-        account.setCountName("test07");
+        account.setAcountId("a1007");
+        account.setAcountName("test07");
         String accountData = JSON.toJSONString(account);
         accountEnt.setAccountData(accountData);
         accountMapper.addAcount(accountEnt);
@@ -84,22 +85,15 @@ public class GamedemoApplicationTests {
         for (Map.Entry<String, Object> entry : entries) {
             Class<?> aClass = entry.getValue().getClass();
             Method[] declaredMethods = aClass.getDeclaredMethods();
-            for (Method method:declaredMethods){
-                try {
-                    if (method.isAnnotationPresent(HandlerMethod.class)){
-                        method.invoke(entry.getValue(),null,"create a1112 test112");
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+            for (Method method : declaredMethods) {
+                if (method.isAnnotationPresent(HandlerMethod.class)) {
+                    HandlerMethod annotation = method.getAnnotation(HandlerMethod.class);
+                    String cmd = annotation.cmd();
+                    InvokeMethod invokeMethod = new InvokeMethod(entry.getValue(), method);
+                    ControllerManager.add(cmd, invokeMethod);
                 }
             }
         }
-
-        ;
-
-
 
     }
 

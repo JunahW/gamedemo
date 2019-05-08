@@ -12,57 +12,40 @@ import java.util.Objects;
  * @description: 用户账号
  */
 public class Account implements Serializable {
-    private String countId;
-    private String countName;
+    private String acountId;
+    private String acountName;
 
-    private Scene scene=new Scene("s1001");
+    private Scene scene = new Scene("s2001");
 
-    public String getCountId() {
-        return countId;
+    public String getAcountId() {
+        return acountId;
     }
 
-    public String getCountName() {
-        return countName;
+    public String getAcountName() {
+        return acountName;
     }
 
     public Scene getScene() {
         return scene;
     }
 
+    public void setAcountId(String acountId) {
+        this.acountId = acountId;
+    }
+
+    public void setAcountName(String acountName) {
+        this.acountName = acountName;
+    }
+
     public void setScene(Scene scene) {
         this.scene = scene;
-    }
-
-    public void setCountId(String countId) {
-        this.countId = countId;
-    }
-
-    public void setCountName(String countName) {
-        this.countName = countName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Account account = (Account) o;
-        return Objects.equals(countId, account.countId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(countId);
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "countId='" + countId + '\'' +
-                ", countName='" + countName + '\'' +
+                "acountId='" + acountId + '\'' +
+                ", acountName='" + acountName + '\'' +
                 ", scene=" + scene.getSceneName() +
                 '}';
     }

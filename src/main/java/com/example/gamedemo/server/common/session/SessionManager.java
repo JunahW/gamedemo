@@ -62,7 +62,7 @@ public class SessionManager {
      */
     public static void register(TSession session, Account account) {
         session.registerAccount(account);
-        accountIdSessionMap.put(session.getAccount().getCountId(), session);
+        accountIdSessionMap.put(session.getAccount().getAcountId(), session);
     }
 
     /**
@@ -100,8 +100,8 @@ public class SessionManager {
 
             Account account = session.getAccount();
             if (account != null) {
-                boolean remove = accountIdSessionMap.remove(account.getCountId(), session);
-                logger.info("Session unregister, userId={}, remove={}", account.getCountId(), remove);
+                boolean remove = accountIdSessionMap.remove(account.getAcountId(), session);
+                logger.info("Session unregister, userId={}, remove={}", account.getAcountId(), remove);
             }
         }
     }

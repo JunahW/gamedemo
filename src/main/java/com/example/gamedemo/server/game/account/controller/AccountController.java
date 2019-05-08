@@ -7,11 +7,9 @@ import com.example.gamedemo.server.common.constant.SessionAttributeKey;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
 import com.example.gamedemo.server.common.utils.AttributeUtils;
-import com.example.gamedemo.server.game.account.constant.AccountCmd;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.base.executor.WorkThreadPool;
-import com.example.gamedemo.server.game.manager.ControllerManager;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,20 +21,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @HandlerClass
-public class AccoutController {
-
+public class AccountController {
 
     @Autowired
     private AccountService accountService;
-
-
-    {
-        ControllerManager.add(AccountCmd.GET, this::getAccountById);
-        ControllerManager.add(AccountCmd.LOGIN, this::login);
-        ControllerManager.add(AccountCmd.CREATE, this::setAccount);
-        ControllerManager.add(AccountCmd.LOGOUT, this::logout);
-
-    }
 
     /**
      * 通过id获取账户信息
@@ -44,6 +32,7 @@ public class AccoutController {
      * @param msg
      * @return
      */
+    @HandlerMethod(cmd = "get")
     public String getAccountById(ChannelHandlerContext cxt, String msg) {
         //获取当前的账户信息
         Account account = SessionManager.getAccountByChannel(cxt.channel());
@@ -58,12 +47,12 @@ public class AccoutController {
      * @param msg
      * @return
      */
-    @HandlerMethod
+    @HandlerMethod(cmd = "create")
     public int setAccount(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         Account account = new Account();
-        account.setCountId(msgs[1]);
-        account.setCountName(msgs[2]);
+        account.setAcountId(msgs[1]);
+        account.setAcountName(msgs[2]);
         accountService.setAccount(account);
         return 1;
     }
@@ -74,6 +63,7 @@ public class AccoutController {
      * @param msg
      * @return
      */
+    @HandlerMethod(cmd = "login")
     public String login(ChannelHandlerContext cxt, String msg) {
         String[] msgs = msg.split(" ");
         String returnMsg = "";
@@ -101,6 +91,7 @@ public class AccoutController {
      * @param msg
      * @return
      */
+    @HandlerMethod(cmd = "logout")
     public String logout(ChannelHandlerContext cxt, String msg) {
         String returnMsg = null;
         Account account = SessionManager.getAccountByChannel(cxt.channel());

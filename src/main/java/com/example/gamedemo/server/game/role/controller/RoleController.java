@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.role.controller;
 
+import com.example.gamedemo.server.common.anno.HandlerClass;
 import org.springframework.stereotype.Component;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Component;
  * @description
  * @date 2019/4/29
  */
+@HandlerClass
 @Component
 public class RoleController {
 }

@@ -56,7 +56,7 @@ public class SceneServiceImpl implements SceneService {
             }
         }
         if (!isNeighbor) {
-            logger.info(account.getCountName() + "进入" + scene.getSceneName() + "失败，只能进入相邻的场景");
+            logger.info(account.getAcountName() + "进入" + scene.getSceneName() + "失败，只能进入相邻的场景");
             return 0;
         }
 
@@ -65,7 +65,7 @@ public class SceneServiceImpl implements SceneService {
         //进入新的场景
         account.setScene(scene);
         scene.getAccountSet().add(account);
-        logger.info(account.getCountName() + "进入" + scene.getSceneName() + "成功");
+        logger.info(account.getAcountName() + "进入" + scene.getSceneName() + "成功");
 
         return 1;
     }

@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game;
 
-import com.example.gamedemo.server.game.base.controller.IController;
-import com.example.gamedemo.server.game.manager.ControllerManager;
+import com.example.gamedemo.server.common.dispatcher.ControllerManager;
+import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
@@ -21,10 +21,10 @@ public class RequestHandler extends SimpleChannelInboundHandler<String> {
         logger.info("===>receive msg:" + msg);
         //执行请求分发
         //根据指令获取当前的指令多对应的controller
-        IController controller = ControllerManager.get(msg.split(" ")[0]);
+        InvokeMethod invokeMethod = ControllerManager.get(msg.split(" ")[0]);
         //String returnMsg = "指令有误";
-        if (controller != null) {
-            ControllerManager.execute(controller, ctx, msg);
+        if (invokeMethod != null) {
+            invokeMethod.invoke(ctx, msg);
         }
         //ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
     }

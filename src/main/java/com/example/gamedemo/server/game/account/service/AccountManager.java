@@ -24,19 +24,6 @@ public class AccountManager {
      */
     private static ConcurrentHashMap<String, Account> loginAccountMap = new ConcurrentHashMap<String, Account>();
 
-    static {
-        Account account = new Account();
-        account.setCountId("a1001");
-        account.setCountName("tom");
-
-        Account account1 = new Account();
-        account1.setCountId("a1002");
-        account1.setCountName("jerry");
-
-        AccountManager.setAccount(account);
-        AccountManager.setAccount(account1);
-    }
-
 
     /**
      * 通过ID获取账户信息
@@ -55,7 +42,7 @@ public class AccountManager {
      */
     public static void setAccount(Account account) {
         if (null != account) {
-            accountId2AccountMap.put(account.getCountId(), account);
+            accountId2AccountMap.put(account.getAcountId(), account);
         }
     }
 
@@ -65,7 +52,7 @@ public class AccountManager {
      * @param account
      */
     public static void setLoginAccount(Account account) {
-        loginAccountMap.put(account.getCountId(), account);
+        loginAccountMap.put(account.getAcountId(), account);
     }
 
     public static ConcurrentHashMap<String, Account> getAccountId2AccountMap() {
