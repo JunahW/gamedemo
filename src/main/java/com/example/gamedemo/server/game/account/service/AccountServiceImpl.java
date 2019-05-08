@@ -26,13 +26,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account getAccountById(String accountId) {
-        logger.info("客户端查询accountId：" + accountId);
+        logger.info("客户端查询accountId：{}", accountId);
         return AccountManager.getAccountById(accountId);
     }
 
     @Override
     public void setAccount(Account account) {
-        logger.info("新增用户：" + account);
+        logger.info("新增用户：{}", account);
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));
@@ -52,16 +52,18 @@ public class AccountServiceImpl implements AccountService {
         Account account = null;
         if (accountEnt != null) {
             account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
-        }
-        if (null != account) {
             //将登陆用户放入容器
             AccountManager.setLoginAccount(account);
+            logger.info("{}登陆成功", account);
+        } else {
+            logger.info("{}登陆失败", accountId);
         }
         return account;
     }
 
     @Override
     public void updateAccount(Account account) {
+        logger.info("异步保存数据");
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));

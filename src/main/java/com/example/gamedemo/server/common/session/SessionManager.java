@@ -7,6 +7,7 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -62,7 +63,7 @@ public class SessionManager {
      */
     public static void register(TSession session, Account account) {
         session.registerAccount(account);
-        accountIdSessionMap.put(session.getAccount().getAcountId(), session);
+        accountIdSessionMap.put(account.getAcountId(), session);
     }
 
     /**
@@ -101,7 +102,7 @@ public class SessionManager {
             Account account = session.getAccount();
             if (account != null) {
                 boolean remove = accountIdSessionMap.remove(account.getAcountId(), session);
-                logger.info("Session unregister, userId={}, remove={}", account.getAcountId(), remove);
+                logger.info("Session unregister, accountId={}, remove={}", account.getAcountId(), remove);
             }
         }
     }
@@ -144,5 +145,15 @@ public class SessionManager {
      */
     public static Account getAccountByChannel(Channel channel) {
         return AttributeUtils.get(channel, SessionAttributeKey.SESSION).getAccount();
+    }
+
+    /**
+     * 获取当前的session集合
+     *
+     * @return
+     */
+    public TSession[] getSessionArray() {
+        Collection<TSession> values = accountIdSessionMap.values();
+        return values.toArray(new TSession[values.size()]);
     }
 }

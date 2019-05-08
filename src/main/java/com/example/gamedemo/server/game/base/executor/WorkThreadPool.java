@@ -33,7 +33,6 @@ public final class WorkThreadPool {
      * @return
      */
     public static Future singleThreadSchedule(long delay, Runnable runnable) {
-        loger.info("异步保存数据");
         return singleThreadSchedule.schedule(runnable, delay, TimeUnit.MILLISECONDS);
     }
 }

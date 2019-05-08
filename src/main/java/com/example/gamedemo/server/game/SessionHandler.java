@@ -21,9 +21,7 @@ public class SessionHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-
         ctx.fireChannelRead(msg);
-
     }
 
     @Override

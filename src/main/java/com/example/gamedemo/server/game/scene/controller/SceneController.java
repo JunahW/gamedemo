@@ -24,9 +24,6 @@ public class SceneController {
     @Autowired
     private SceneService sceneService;
 
-    @Autowired
-    private AccountService accountService;
-
     /**
      * 获取场景列表
      *

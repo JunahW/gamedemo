@@ -18,6 +18,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -85,7 +86,19 @@ public class GamedemoApplicationTests {
                 }
             }
         }
+    }
 
+    @Test
+    public void testObjectSize() {
+        LinkedList<Account> accounts = new LinkedList<>();
+        for (int i = 0; i < 1000; i++) {
+            Account account = new Account();
+            account.setAcountId("54654546");
+            account.setAcountName("5465465的店了解到");
+            account.setScene(new Scene("555"));
+            accounts.add(account);
+        }
+        System.out.println();
     }
 
 }

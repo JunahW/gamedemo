@@ -23,12 +23,10 @@ import java.util.Set;
  * @description 系统初始化
  * @date 2019/5/7
  */
-
 @Component
 public class SystemInitializer {
 
     private static Logger logger = LoggerFactory.getLogger(SystemInitializer.class);
-
 
 
     /**

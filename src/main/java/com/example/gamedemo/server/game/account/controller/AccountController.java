@@ -3,15 +3,11 @@ package com.example.gamedemo.server.game.account.controller;
 
 import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.constant.SessionAttributeKey;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
-import com.example.gamedemo.server.common.utils.AttributeUtils;
-import com.example.gamedemo.server.game.account.constant.AccountCmd;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.base.executor.WorkThreadPool;
-import io.netty.channel.ChannelHandlerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -74,7 +70,7 @@ public class AccountController {
             /**
              * 将登陆信息写会客户端
              */
-            session.setAccount(account);
+            SessionManager.register(session, account);
 
             returnMsg = "loginSuccess " + msgs[1] + "\r\n";
         }

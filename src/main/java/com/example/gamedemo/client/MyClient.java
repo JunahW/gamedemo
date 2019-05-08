@@ -52,18 +52,18 @@ public class MyClient {
 
             Channel ch = b.connect("127.0.0.1", 7777).sync().channel();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-            System.out.println("================请输入指令===================");
-            System.out.println("账户：create->创建(create a1003 user03)；login->登陆(login a1001)；get->账户信息(get)");
-            System.out.println("场景：list->所有场景(list)；goto->进入场景(goto s2002)；aoi->查看当前场景上的实例");
-            System.out.println("=============================================");
+            System.out.println("=======================================请输入指令===================================");
+            System.out.println("账户：创建(create a2002 user2002)   登陆(login a2002；  账户信息(get)   退出（logout）");
+            System.out.println("场景：所有场景(list)   进入场景(goto s2002)   查看当前场景上的实例(aoi)");
+            System.out.println("===================================================================================");
 
             String line = null;
             while (true) {
                 line = in.readLine();
-                if ("close".equals(line)) {
+                ch.writeAndFlush(line + "\r\n");
+                if ("logout".equals(line)) {
                     break;
                 }
-                ch.writeAndFlush(line + "\r\n");
             }
             ch.close().sync();
         } catch (Exception e) {
