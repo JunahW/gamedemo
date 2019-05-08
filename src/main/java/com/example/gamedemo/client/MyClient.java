@@ -58,6 +58,7 @@ public class MyClient {
             System.out.println("===================================================================================");
 
             String line = null;
+
             while (true) {
                 line = in.readLine();
                 ch.writeAndFlush(line + "\r\n");
