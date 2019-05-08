@@ -21,22 +21,6 @@ public class SessionHandler extends SimpleChannelInboundHandler<String> {
 
     @Override
     public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-        logger.info("session handler invoke...");
-
-        Channel channel = ctx.channel();
-
-        TSession session = SessionManager.getSessionByChannel(channel);
-        System.out.println(session);
-
-        Account account = session.getAccount();
-
-        // 登陆之后account属性 这里可以对登陆放行
-        /*if (account != null || msg.startsWith(AccountCmd.LOGIN)) {
-            ctx.fireChannelRead(msg);
-        } else {
-            channel.writeAndFlush("请先登录");
-            return;
-        }*/
 
         ctx.fireChannelRead(msg);
 
@@ -45,6 +29,7 @@ public class SessionHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         //创建session
+        logger.info("创建session");
         SessionManager.create(ctx.channel());
         ctx.fireChannelActive();
     }

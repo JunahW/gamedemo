@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.common.dispatcher;
 
+import com.example.gamedemo.server.common.session.TSession;
 import io.netty.channel.ChannelHandlerContext;
 import org.springframework.util.ReflectionUtils;
 
@@ -47,11 +48,11 @@ public class InvokeMethod {
     /**
      * 执行请求
      *
-     * @param cxt
+     * @param session
      * @param msg
      * @return
      */
-    public Object invoke(ChannelHandlerContext cxt, String msg) {
-        return ReflectionUtils.invokeMethod(method, object, cxt, msg);
+    public Object invoke(TSession session, String msg) {
+        return ReflectionUtils.invokeMethod(method, object, session, msg);
     }
 }

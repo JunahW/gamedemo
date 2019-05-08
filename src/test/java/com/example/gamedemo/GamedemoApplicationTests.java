@@ -1,7 +1,6 @@
 package com.example.gamedemo;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.dispatcher.ControllerManager;
@@ -9,7 +8,6 @@ import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.role.service.RoleService;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.junit.Test;
@@ -17,16 +15,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.io.ObjectInputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 

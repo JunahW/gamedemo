@@ -43,6 +43,10 @@ public class SceneServiceImpl implements SceneService {
 
     @Override
     public int move2Scene(Account account, Scene scene) {
+        if (null == scene) {
+            logger.info("该场景不存在");
+            return 0;
+        }
         //当前的场景
         Scene currentScene = SceneManager.getSceneById(account.getScene().getSceneId());
 
