@@ -4,6 +4,7 @@ import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.service.SceneService;
@@ -31,6 +32,10 @@ public class SceneController {
      */
     @HandlerMethod(cmd = "list")
     public void getSceneList(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
+        if (flag == false) {
+            return;
+        }
         List<Scene> sceneList = sceneService.getSceneList();
         for (Scene scene : sceneList) {
             SessionManager.sendMessage(session, scene + "\r\n");
@@ -46,6 +51,10 @@ public class SceneController {
      */
     @HandlerMethod(cmd = "goto")
     public void gotoScene(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
+        if (flag == false) {
+            return;
+        }
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
         Account account = session.getAccount();
@@ -64,6 +73,10 @@ public class SceneController {
      */
     @HandlerMethod(cmd = "move")
     public void move2Scene(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
+        if (flag == false) {
+            return;
+        }
         String returnMsg = null;
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
@@ -91,6 +104,10 @@ public class SceneController {
      */
     @HandlerMethod(cmd = "aoi")
     public void getSceneObject(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
+        if (flag == false) {
+            return;
+        }
         String[] msgs = msg.split(" ");
         //获取当前的账户信息
         Account account = session.getAccount();

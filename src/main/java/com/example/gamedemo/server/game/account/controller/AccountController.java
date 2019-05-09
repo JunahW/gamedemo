@@ -5,6 +5,7 @@ import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.base.executor.WorkThreadPool;
@@ -66,6 +67,10 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "login")
     public void login(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 3);
+        if (flag == false) {
+            return;
+        }
         String[] msgs = msg.split(" ");
         String returnMsg = "";
 
@@ -92,6 +97,10 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "logout")
     public void logout(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
+        if (flag == false) {
+            return;
+        }
         String returnMsg = null;
         Account account = session.getAccount();
         //异步保存用户信息
@@ -109,6 +118,10 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "where")
     public void getWhere(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
+        if (flag == false) {
+            return;
+        }
         Account account = session.getAccount();
         SessionManager.sendMessage(session, account.getScene().getSceneName() + "\r\n");
     }

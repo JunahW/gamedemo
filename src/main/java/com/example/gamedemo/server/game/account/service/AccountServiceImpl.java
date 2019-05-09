@@ -32,6 +32,11 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public int setAccount(Account account) {
+        Account accountById = getAccountById(account.getAcountId());
+        if (null == accountById) {
+            logger.info("该用户已存在");
+            return 0;
+        }
         logger.info("新增用户：{}", account);
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(account.getAcountId());
