@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public int setAccount(Account account) {
         Account accountById = getAccountById(account.getAcountId());
-        if (null == accountById) {
+        if (null != accountById) {
             logger.info("该用户已存在");
             return 0;
         }

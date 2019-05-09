@@ -67,7 +67,7 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "login")
     public void login(TSession session, String msg) {
-        boolean flag = ParameterCheckUtils.checkParams(session, msg, 3);
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
         if (flag == false) {
             return;
         }

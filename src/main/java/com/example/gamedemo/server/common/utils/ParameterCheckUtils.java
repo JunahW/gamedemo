@@ -19,7 +19,7 @@ public class ParameterCheckUtils {
      */
     public static boolean checkParams(TSession session, String msg, int paramLength) {
         boolean flag = true;
-        if (null == msg || msg.length() != paramLength) {
+        if (null == msg || msg.length() < paramLength) {
             flag = false;
             SessionManager.sendMessage(session, "请求参数有误\r\n");
         }
