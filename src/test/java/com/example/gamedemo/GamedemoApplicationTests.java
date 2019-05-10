@@ -101,4 +101,10 @@ public class GamedemoApplicationTests {
         System.out.println();
     }
 
+    @Test
+    public void testArray() {
+        int[][] a = {{1, 1}, {2, 2}};
+        System.out.println(a);
+    }
+
 }

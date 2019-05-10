@@ -167,8 +167,26 @@ public class ExcelUtils {
     private static <T> void setEntityFieldValue(T entity, Field field, String value) {
         Class<?> fieldType = field.getType();
         try {
-            if (String.class == fieldType) {
-
+            //判断是否为数组
+            if (fieldType.isArray()) {
+                String[] rows = value.split("\n");
+                int x = 0, y = 0;
+                if (rows != null && rows.length > 0) {
+                    x = rows.length;
+                    String[] columns = rows[0].split(",");
+                    if (columns != null && columns.length > 0) {
+                        y = columns.length;
+                    }
+                }
+                int[][] array = new int[x][y];
+                for (int i = 0; i < rows.length; i++) {
+                    String[] columns = rows[i].split(",");
+                    for (int j = 0; j < columns.length; j++) {
+                        array[i][j] = Integer.parseInt(columns[j]);
+                    }
+                }
+                field.set(entity, array);
+            } else if (String.class == fieldType) {
                 field.set(entity, String.valueOf(value));
             } else if ((Integer.TYPE == fieldType)
                     || (Integer.class == fieldType)) {

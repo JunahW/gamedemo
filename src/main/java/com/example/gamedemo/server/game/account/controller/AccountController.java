@@ -46,12 +46,16 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "create")
     public void setAccount(TSession session, String msg) {
+        boolean flag = ParameterCheckUtils.checkParams(session, msg, 3);
+        if (flag == false) {
+            return;
+        }
         String[] msgs = msg.split(" ");
         Account account = new Account();
         account.setAcountId(msgs[1]);
         account.setAcountName(msgs[2]);
-        int flag = accountService.setAccount(account);
-        if (flag == 1) {
+        int isSuccess = accountService.setAccount(account);
+        if (isSuccess == 1) {
             SessionManager.sendMessage(session, "注册成功\r\n");
         } else {
             SessionManager.sendMessage(session, "注册失败\r\n");

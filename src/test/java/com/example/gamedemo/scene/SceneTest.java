@@ -1,6 +1,7 @@
 package com.example.gamedemo.scene;
 
 import com.example.gamedemo.server.common.utils.ExcelUtils;
+import com.example.gamedemo.server.game.scene.model.Map;
 import com.example.gamedemo.server.game.scene.model.Npc;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.junit.Test;
@@ -31,6 +32,13 @@ public class SceneTest {
     public void testNpcImportExcel() throws Exception {
         List<Npc> npcList = ExcelUtils.importExcel(Npc.class);
         System.out.println(npcList);
+
+    }
+
+    @Test
+    public void testMapImportExcel() throws Exception {
+        List<Map> mapList = ExcelUtils.importExcel(Map.class);
+        System.out.println(mapList);
 
     }
 

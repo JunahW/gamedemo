@@ -32,6 +32,17 @@ public class Scene implements Serializable {
     private String neighbors;
 
     /**
+     * 地图二维数组
+     */
+    @ExcelColumn(columnName = "mapId")
+    private String mapId;
+
+    /**
+     * 对应的地图
+     */
+    private Map map;
+
+    /**
      * 场景上的用户
      */
     private ConcurrentSet<Account> accountSet = new ConcurrentSet<>();
@@ -62,6 +73,14 @@ public class Scene implements Serializable {
         return npcSet;
     }
 
+    public String getMapId() {
+        return mapId;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
     public void setSceneId(String sceneId) {
         this.sceneId = sceneId;
     }
@@ -82,6 +101,14 @@ public class Scene implements Serializable {
         this.npcSet = npcSet;
     }
 
+    public void setMapId(String mapId) {
+        this.mapId = mapId;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public Scene() {
     }
 
@@ -100,6 +127,8 @@ public class Scene implements Serializable {
                 "sceneId='" + sceneId + '\'' +
                 ", sceneName='" + sceneName + '\'' +
                 ", neighbors='" + neighbors + '\'' +
+                ", mapId='" + mapId + '\'' +
+                ", map=" + map +
                 ", accountSet=" + accountSet +
                 ", npcSet=" + npcSet +
                 '}';
@@ -121,4 +150,5 @@ public class Scene implements Serializable {
     public int hashCode() {
         return Objects.hash(sceneId);
     }
+
 }
