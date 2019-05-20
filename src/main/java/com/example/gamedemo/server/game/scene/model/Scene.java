@@ -1,10 +1,13 @@
 package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.server.common.anno.ExcelColumn;
+import com.example.gamedemo.server.common.anno.Resource;
+import com.example.gamedemo.server.common.resource.ResourceInterface;
 import com.example.gamedemo.server.game.account.model.Account;
 import io.netty.util.internal.ConcurrentSet;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -12,7 +15,8 @@ import java.util.Objects;
  * @date: 2019/4/29
  * @description:
  */
-public class Scene implements Serializable {
+@Resource
+public class Scene implements Serializable, ResourceInterface {
     /**
      * 场景id
      */
@@ -31,16 +35,36 @@ public class Scene implements Serializable {
     @ExcelColumn(columnName = "neighbors")
     private String neighbors;
 
-    /**
-     * 地图二维数组
-     */
-    @ExcelColumn(columnName = "mapId")
-    private String mapId;
 
     /**
-     * 对应的地图
+     * 地图的宽
      */
-    private Map map;
+    @ExcelColumn(columnName = "width")
+    private int width;
+
+    /**
+     * 地图的高
+     */
+    @ExcelColumn(columnName = "height")
+    private int height;
+
+    /**
+     * 出生地坐标x
+     */
+    @ExcelColumn(columnName = "x")
+    private int x;
+
+    /**
+     * 出生地坐标y
+     */
+    @ExcelColumn(columnName = "y")
+    private int y;
+
+    /**
+     * 地图数组字符串
+     */
+    @ExcelColumn(columnName = "sceneMap")
+    private int[][] sceneMap;
 
     /**
      * 场景上的用户
@@ -73,12 +97,24 @@ public class Scene implements Serializable {
         return npcSet;
     }
 
-    public String getMapId() {
-        return mapId;
+    public int getWidth() {
+        return width;
     }
 
-    public Map getMap() {
-        return map;
+    public int getHeight() {
+        return height;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int[][] getSceneMap() {
+        return sceneMap;
     }
 
     public void setSceneId(String sceneId) {
@@ -101,12 +137,24 @@ public class Scene implements Serializable {
         this.npcSet = npcSet;
     }
 
-    public void setMapId(String mapId) {
-        this.mapId = mapId;
+    public void setWidth(int width) {
+        this.width = width;
     }
 
-    public void setMap(Map map) {
-        this.map = map;
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setSceneMap(int[][] sceneMap) {
+        this.sceneMap = sceneMap;
     }
 
     public Scene() {
@@ -127,8 +175,11 @@ public class Scene implements Serializable {
                 "sceneId='" + sceneId + '\'' +
                 ", sceneName='" + sceneName + '\'' +
                 ", neighbors='" + neighbors + '\'' +
-                ", mapId='" + mapId + '\'' +
-                ", map=" + map +
+                ", width=" + width +
+                ", height=" + height +
+                ", x=" + x +
+                ", y=" + y +
+                ", sceneMap=" + Arrays.toString(sceneMap) +
                 ", accountSet=" + accountSet +
                 ", npcSet=" + npcSet +
                 '}';
@@ -151,4 +202,8 @@ public class Scene implements Serializable {
         return Objects.hash(sceneId);
     }
 
+    @Override
+    public Object getId() {
+        return this.sceneId;
+    }
 }

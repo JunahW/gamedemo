@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.server.common.anno.ExcelColumn;
+import com.example.gamedemo.server.common.anno.Resource;
+import com.example.gamedemo.server.common.resource.ResourceInterface;
 
 import java.util.Arrays;
 
@@ -9,7 +11,8 @@ import java.util.Arrays;
  * @description 地形
  * @date 2019/5/10
  */
-public class Map {
+@Resource
+public class Map implements ResourceInterface {
     /**
      * 地图id
      */
@@ -27,6 +30,19 @@ public class Map {
      */
     @ExcelColumn(columnName = "height")
     private int height;
+
+    /**
+     * 出生地坐标x
+     */
+    @ExcelColumn(columnName = "x")
+    private int x;
+
+    /**
+     * 出生地坐标y
+     */
+    @ExcelColumn(columnName = "y")
+    private int y;
+
 
     /**
      * 地图数组字符串
@@ -49,6 +65,22 @@ public class Map {
 
     public int[][] getSceneMap() {
         return sceneMap;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     public void setMapId(String mapId) {
@@ -75,5 +107,10 @@ public class Map {
                 ", height=" + height +
                 ", sceneMap=" + Arrays.toString(sceneMap) +
                 '}';
+    }
+
+    @Override
+    public Object getId() {
+        return this.mapId;
     }
 }

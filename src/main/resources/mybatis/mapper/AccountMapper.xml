@@ -13,4 +13,7 @@
         update account set accountData = #{accountData} where accountId=#{accountId}
     </update>
 
+    <select id="selectAccountEntList" resultType="com.example.gamedemo.server.game.account.entity.AccountEnt">
+        select accountId,accountData from account
+    </select>
 </mapper>

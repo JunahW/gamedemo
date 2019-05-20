@@ -2,19 +2,20 @@ package com.example.gamedemo.server;
 
 import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
+import com.example.gamedemo.server.common.anno.Resource;
 import com.example.gamedemo.server.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.server.common.resource.ResourceInterface;
+import com.example.gamedemo.server.common.service.ResourceManager;
 import com.example.gamedemo.server.common.utils.ApplicationContextProvider;
+import com.example.gamedemo.server.common.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,5 +51,28 @@ public class SystemInitializer {
             }
         }
         logger.info("完成初始化指令和处理方案映射表");
+    }
+
+    /**
+     * 初始化静态资源
+     */
+    public static void initResource() {
+        logger.info("开始初始化静态资源");
+        ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(Resource.class);
+        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Class<?> aClass = entry.getValue().getClass();
+            List<?> list = ExcelUtils.importExcel((entry.getValue().getClass()));
+            for (Object object : list) {
+                ResourceInterface resourceItem = (ResourceInterface) object;
+                ResourceManager.putResourceItem(aClass, resourceItem.getId(), object);
+            }
+        }
+
+        System.out.println(ResourceManager.resourceMap);
+        logger.info("完成初始化静态资源");
+
+
     }
 }

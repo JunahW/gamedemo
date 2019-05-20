@@ -1,16 +1,19 @@
 package com.example.gamedemo.server.common.anno;
 
+import org.springframework.stereotype.Component;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author: wengj
- * @date: 2019/5/20
- * @description: 标明处理的类
+ * @author wengj
+ * @description 加载静态资源注解
+ * @date 2019/5/20
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface HandlerClass {
+@Component
+public @interface Resource {
 }

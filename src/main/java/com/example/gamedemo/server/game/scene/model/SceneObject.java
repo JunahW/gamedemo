@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.server.common.anno.ExcelColumn;
+import com.example.gamedemo.server.common.resource.ResourceInterface;
 
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  * @description 场景实体的父类
  * @date 2019/5/5
  */
-public class SceneObject {
+public class SceneObject implements ResourceInterface {
 
     /**
      * 实体id
@@ -100,5 +101,10 @@ public class SceneObject {
         this.objectId = objectId;
         this.objectName = objectName;
         this.status = status;
+    }
+
+    @Override
+    public Object getId() {
+        return this.objectId;
     }
 }

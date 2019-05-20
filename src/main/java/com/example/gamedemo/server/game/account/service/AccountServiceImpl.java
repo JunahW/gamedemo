@@ -1,13 +1,19 @@
 package com.example.gamedemo.server.game.account.service;
 
 import com.alibaba.fastjson.JSON;
+import com.example.gamedemo.server.common.constant.SystemConstant;
+import com.example.gamedemo.server.common.service.ResourceManager;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author: wengj
@@ -27,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountById(String accountId) {
         logger.info("客户端查询accountId：{}", accountId);
-        return AccountManager.getAccountById(accountId);
+        return AccountManager.getLoginAccountById(accountId);
     }
 
     @Override
@@ -37,7 +43,7 @@ public class AccountServiceImpl implements AccountService {
             logger.info("该用户已存在");
             return 0;
         }
-        logger.info("新增用户：{}", account);
+        logger.info("新增用户：{}", account.getAcountName());
         AccountEnt accountEnt = new AccountEnt();
         accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));
@@ -53,16 +59,27 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account login(String accountId) {
-        AccountEnt accountEnt = accountMapper.selectAccountById(accountId);
-        Account account = null;
-        if (accountEnt != null) {
-            account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
-            //将登陆用户放入容器
-            AccountManager.setLoginAccount(account);
+        //先从缓存中获取
+        Account account = AccountManager.getAccountById(accountId);
+        AccountEnt accountEnt = null;
+        if (account != null) {
             logger.info("{}登陆成功", account);
+            if (account.getScene() == null) {
+                //设置默认场景
+                account.setScene(ResourceManager.getResourceItemById(Scene.class, SystemConstant.DEFAULT_SCENE));
+            }
         } else {
-            logger.info("{}登陆失败", accountId);
+            accountEnt = accountMapper.selectAccountById(accountId);
+            if (accountEnt != null) {
+                account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
+                //将登陆用户放入容器
+                AccountManager.setLoginAccount(account);
+                logger.info("{}登陆成功", account);
+            } else {
+                logger.info("{}登陆失败", accountId);
+            }
         }
+
         return account;
     }
 
@@ -73,5 +90,43 @@ public class AccountServiceImpl implements AccountService {
         accountEnt.setAccountId(account.getAcountId());
         accountEnt.setAccountData(JSON.toJSONString(account));
         accountMapper.updateAccount(accountEnt);
+    }
+
+    @Override
+    public List<Account> getAccountList() {
+        List<Account> accountList = new ArrayList<>();
+        List<AccountEnt> accountEntList = accountMapper.selectAccountEntList();
+        for (AccountEnt accountEnt : accountEntList) {
+            if (accountEnt != null) {
+                Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
+                accountList.add(account);
+            }
+        }
+        return accountList;
+    }
+
+    @Override
+    public boolean move2Coordinate(Account account, int x, int y) {
+        Scene scene = account.getScene();
+        int[][] sceneMap = scene.getSceneMap();
+        if (scene.getWidth() - 1 < x || scene.getHeight() - 1 < y) {
+            logger.info("请求参数不合法");
+            return false;
+        }
+        //修改玩家当前位置
+        if (sceneMap[x][y] == 0) {
+            logger.info("该位置有障碍物");
+            return false;
+        }
+
+        /**
+         * 移动位置
+         */
+        int currentx = account.getX();
+        int currenty = account.getY();
+        account.setX(x);
+        account.setY(y);
+        logger.info("({},{})从移动到({},{})", currentx, currenty, x, y);
+        return true;
     }
 }

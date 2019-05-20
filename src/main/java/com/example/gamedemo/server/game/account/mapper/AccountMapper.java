@@ -3,6 +3,8 @@ package com.example.gamedemo.server.game.account.mapper;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface AccountMapper {
     AccountEnt selectAccountById(String accountId);
@@ -10,4 +12,6 @@ public interface AccountMapper {
     int addAcount(AccountEnt accountEnt);
 
     int updateAccount(AccountEnt accountEnt);
+
+    List<AccountEnt> selectAccountEntList();
 }

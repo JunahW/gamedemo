@@ -29,4 +29,12 @@ public class AccountTest {
         //account.setScene(scene);
 
     }
+
+    @Test
+    public void testArray() {
+
+
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.scene.controller;
 
 import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
+import com.example.gamedemo.server.common.constant.SystemConstant;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
 import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
@@ -33,7 +34,7 @@ public class SceneController {
     @HandlerMethod(cmd = "list")
     public void getSceneList(TSession session, String msg) {
         boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
-        if (flag == false) {
+        if (!flag) {
             return;
         }
         List<Scene> sceneList = sceneService.getSceneList();
@@ -52,10 +53,10 @@ public class SceneController {
     @HandlerMethod(cmd = "goto")
     public void gotoScene(TSession session, String msg) {
         boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
-        if (flag == false) {
+        if (!flag) {
             return;
         }
-        String[] msgs = msg.split(" ");
+        String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
         //获取当前的账户信息
         Account account = session.getAccount();
         Scene scene = sceneService.getSceneById(msgs[1]);
@@ -74,11 +75,11 @@ public class SceneController {
     @HandlerMethod(cmd = "move")
     public void move2Scene(TSession session, String msg) {
         boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
-        if (flag == false) {
+        if (!flag) {
             return;
         }
         String returnMsg = null;
-        String[] msgs = msg.split(" ");
+        String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
         //获取当前的账户信息
         Account account = session.getAccount();
         Scene scene = sceneService.getSceneById(msgs[1]);
@@ -105,10 +106,10 @@ public class SceneController {
     @HandlerMethod(cmd = "aoi")
     public void getSceneObject(TSession session, String msg) {
         boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
-        if (flag == false) {
+        if (!flag) {
             return;
         }
-        String[] msgs = msg.split(" ");
+        String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
         //获取当前的账户信息
         Account account = session.getAccount();
         Scene scene = sceneService.getSceneById(account.getScene().getSceneId());

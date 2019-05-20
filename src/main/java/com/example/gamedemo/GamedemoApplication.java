@@ -17,6 +17,7 @@ public class GamedemoApplication {
         SpringApplication.run(GamedemoApplication.class, args);
         //初始化
         SystemInitializer.initControllerMap();
+        SystemInitializer.initResource();
         new MyServer().start(args);
     }
 

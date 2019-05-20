@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.scene.service;
 
+import com.example.gamedemo.server.common.service.ResourceManager;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;
@@ -20,8 +21,8 @@ public class SceneServiceImpl implements SceneService {
     @Override
     public List<Scene> getSceneList() {
         LinkedList<Scene> list = new LinkedList<Scene>();
-        Set<Map.Entry<String, Scene>> entries = SceneManager.sceneId2SceneMap.entrySet();
-        Iterator<Map.Entry<String, Scene>> iterator = entries.iterator();
+        Set<Map.Entry<Object, Scene>> entries = ResourceManager.getResourceMap(Scene.class).entrySet();
+        Iterator<Map.Entry<Object, Scene>> iterator = entries.iterator();
         while (iterator.hasNext()) {
             list.add(iterator.next().getValue());
         }
@@ -31,13 +32,14 @@ public class SceneServiceImpl implements SceneService {
     @Override
     public void gotoScene(Account account, Scene scene) {
         account.setScene(scene);
+
         logger.info("{}进入{}", account.toString(), scene.getSceneName());
         scene.getAccountSet().add(account);
     }
 
     @Override
     public Scene getSceneById(String sceneId) {
-        return SceneManager.sceneId2SceneMap.get(sceneId);
+        return ResourceManager.getResourceItemById(Scene.class, sceneId);
     }
 
     @Override
@@ -47,7 +49,7 @@ public class SceneServiceImpl implements SceneService {
             return 0;
         }
         //当前的场景
-        Scene currentScene = SceneManager.getSceneById(account.getScene().getSceneId());
+        Scene currentScene = ResourceManager.getResourceItemById(Scene.class, account.getScene().getSceneId());
 
         String[] neighbors = currentScene.getNeighbors().split(",");
         //判断场景是否相邻
@@ -64,9 +66,11 @@ public class SceneServiceImpl implements SceneService {
         }
 
         //退出当前场景
-        SceneManager.getSceneById(currentScene.getSceneId()).getAccountSet().remove(account);
+        ResourceManager.getResourceItemById(Scene.class, currentScene.getSceneId()).getAccountSet().remove(account);
         //进入新的场景
         account.setScene(scene);
+        account.setX(scene.getX());
+        account.setY(scene.getY());
         scene.getAccountSet().add(account);
         logger.info("{}进入{}", account.getAcountName(), scene.getSceneName());
         return 1;

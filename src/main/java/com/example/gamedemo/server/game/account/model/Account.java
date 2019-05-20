@@ -13,7 +13,17 @@ public class Account implements Serializable {
     private String acountId;
     private String acountName;
 
-    private Scene scene = new Scene("s2001", "区庄");
+    /**
+     * x轴位置
+     */
+    private int x;
+
+    /**
+     * y轴位置
+     */
+    private int y;
+
+    private Scene scene;
 
     public String getAcountId() {
         return acountId;
@@ -25,6 +35,14 @@ public class Account implements Serializable {
 
     public Scene getScene() {
         return scene;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public void setAcountId(String acountId) {
@@ -39,12 +57,22 @@ public class Account implements Serializable {
         this.scene = scene;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "Account{" +
                 "acountId='" + acountId + '\'' +
                 ", acountName='" + acountName + '\'' +
-                ", scene=" + scene.getSceneName() +
+                ", x=" + x +
+                ", y=" + y +
+                // ", scene=" + scene.getSceneName() +
                 '}';
     }
 }

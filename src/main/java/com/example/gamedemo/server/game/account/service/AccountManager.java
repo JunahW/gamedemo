@@ -1,8 +1,10 @@
 package com.example.gamedemo.server.game.account.service;
 
 import com.example.gamedemo.server.game.account.model.Account;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,6 +16,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class AccountManager {
 
+    @Autowired
+    private AccountService accountService;
+
     /**
      * 所有账户
      */
@@ -24,14 +29,23 @@ public class AccountManager {
      */
     private static ConcurrentHashMap<String, Account> loginAccountMap = new ConcurrentHashMap<String, Account>();
 
-
     /**
-     * 通过ID获取账户信息
+     * 通过id获取账户信息
      *
      * @param accountId
      * @return
      */
     public static Account getAccountById(String accountId) {
+        return accountId2AccountMap.get(accountId);
+    }
+
+    /**
+     * 通过ID获取已登录账户信息
+     *
+     * @param accountId
+     * @return
+     */
+    public static Account getLoginAccountById(String accountId) {
         return loginAccountMap.get(accountId);
     }
 
@@ -77,5 +91,16 @@ public class AccountManager {
         }
 
         return list;
+    }
+
+    /**
+     * 将用户信息加载到内存
+     */
+    @PostConstruct
+    public void initAccountMap() {
+        List<Account> accountList = accountService.getAccountList();
+        for (Account account : accountList) {
+            AccountManager.setAccount(account);
+        }
     }
 }

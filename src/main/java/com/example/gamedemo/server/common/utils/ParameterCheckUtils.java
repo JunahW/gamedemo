@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.common.utils;
 
+import com.example.gamedemo.server.common.constant.SystemConstant;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
 
@@ -19,7 +20,7 @@ public class ParameterCheckUtils {
      */
     public static boolean checkParams(TSession session, String msg, int paramLength) {
         boolean flag = true;
-        if (null == msg || msg.length() < paramLength) {
+        if (null == msg || msg.split(SystemConstant.SPLIT_TOKEN).length != paramLength) {
             flag = false;
             SessionManager.sendMessage(session, "请求参数有误\r\n");
         }
