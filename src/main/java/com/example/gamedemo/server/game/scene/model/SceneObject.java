@@ -31,6 +31,18 @@ public class SceneObject implements ResourceInterface {
     private int status;
 
     /**
+     * 所在的位置x值
+     */
+    @ExcelColumn(columnName = "x")
+    private int x;
+
+    /**
+     * 所在的位置y值
+     */
+    @ExcelColumn(columnName = "y")
+    private int y;
+
+    /**
      * 场景id
      */
     @ExcelColumn(columnName = "sceneId")
@@ -52,6 +64,14 @@ public class SceneObject implements ResourceInterface {
         return sceneId;
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
     public void setObjectId(String objectId) {
         this.objectId = objectId;
     }
@@ -68,12 +88,23 @@ public class SceneObject implements ResourceInterface {
         this.sceneId = sceneId;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public String toString() {
         return "SceneObject{" +
                 "objectId='" + objectId + '\'' +
                 ", objectName='" + objectName + '\'' +
                 ", status=" + status +
+                ", x=" + x +
+                ", y=" + y +
+                ", sceneId='" + sceneId + '\'' +
                 '}';
     }
 

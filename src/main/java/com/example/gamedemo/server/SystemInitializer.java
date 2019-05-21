@@ -69,8 +69,6 @@ public class SystemInitializer {
                 ResourceManager.putResourceItem(aClass, resourceItem.getId(), object);
             }
         }
-
-        System.out.println(ResourceManager.resourceMap);
         logger.info("完成初始化静态资源");
 
 

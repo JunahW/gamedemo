@@ -66,6 +66,19 @@ public class Scene implements Serializable, ResourceInterface {
     @ExcelColumn(columnName = "sceneMap")
     private int[][] sceneMap;
 
+
+    /**
+     * NPC字符串集合，“,”隔开
+     */
+    @ExcelColumn(columnName = "npcs")
+    private String npcs;
+
+    /**
+     * 怪物字符串集合，“,”隔开
+     */
+    @ExcelColumn(columnName = "monsters")
+    private String monsters;
+
     /**
      * 场景上的用户
      */
@@ -113,6 +126,14 @@ public class Scene implements Serializable, ResourceInterface {
         return y;
     }
 
+    public String getNpcs() {
+        return npcs;
+    }
+
+    public String getMonsters() {
+        return monsters;
+    }
+
     public int[][] getSceneMap() {
         return sceneMap;
     }
@@ -157,6 +178,14 @@ public class Scene implements Serializable, ResourceInterface {
         this.sceneMap = sceneMap;
     }
 
+    public void setNpcs(String npcs) {
+        this.npcs = npcs;
+    }
+
+    public void setMonsters(String monsters) {
+        this.monsters = monsters;
+    }
+
     public Scene() {
     }
 
@@ -180,6 +209,8 @@ public class Scene implements Serializable, ResourceInterface {
                 ", x=" + x +
                 ", y=" + y +
                 ", sceneMap=" + Arrays.toString(sceneMap) +
+                ", npcs='" + npcs + '\'' +
+                ", monsters='" + monsters + '\'' +
                 ", accountSet=" + accountSet +
                 ", npcSet=" + npcSet +
                 '}';

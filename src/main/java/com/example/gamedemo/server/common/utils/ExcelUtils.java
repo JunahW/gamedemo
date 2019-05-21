@@ -3,6 +3,8 @@ package com.example.gamedemo.server.common.utils;
 import com.example.gamedemo.server.common.anno.ExcelColumn;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.ss.usermodel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 
 import java.io.*;
@@ -19,6 +21,7 @@ import java.util.Map;
  * @description: 读取Excel数据工具类
  */
 public class ExcelUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ExcelUtils.class);
 
     /**
      * 读取Excel数据
@@ -105,6 +108,7 @@ public class ExcelUtils {
             file = ResourceUtils.getFile(stringBuilder.toString());
             fileInputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
+            logger.error("{}该文件不存在", stringBuilder.toString());
             e.printStackTrace();
         }
         return fileInputStream;
