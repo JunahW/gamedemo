@@ -1,5 +1,8 @@
 package com.example.gamedemo.server.game.account.service;
 
+import com.example.gamedemo.server.common.ramcache.anno.Inject;
+import com.example.gamedemo.server.common.ramcache.service.EntityCacheService;
+import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +21,10 @@ public class AccountManager {
 
     @Autowired
     private AccountService accountService;
+
+
+    @Inject
+    private EntityCacheService<String, AccountEnt> entEntityCacheService;
 
     /**
      * 所有账户

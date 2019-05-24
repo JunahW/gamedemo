@@ -7,5 +7,10 @@ package com.example.gamedemo.server.common.resource;
  */
 public interface ResourceInterface {
 
+    /**
+     * 获取静态资源的主键
+     *
+     * @return
+     */
     Object getId();
 }

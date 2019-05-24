@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.common.service;
+package com.example.gamedemo.server.common.resource;
 
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;

@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game.base.executor;
+package com.example.gamedemo.server.common.executer;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;

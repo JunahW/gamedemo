@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.account.model;
 
+import com.example.gamedemo.server.game.bag.model.Bag;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;
@@ -23,7 +24,15 @@ public class Account implements Serializable {
      */
     private int y;
 
+    /**
+     * 场景
+     */
     private Scene scene;
+
+    /**
+     * 背包
+     */
+    private Bag bag = new Bag();
 
     public String getAcountId() {
         return acountId;
@@ -45,6 +54,10 @@ public class Account implements Serializable {
         return y;
     }
 
+    public Bag getBag() {
+        return bag;
+    }
+
     public void setAcountId(String acountId) {
         this.acountId = acountId;
     }
@@ -63,6 +76,10 @@ public class Account implements Serializable {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public void setBag(Bag bag) {
+        this.bag = bag;
     }
 
     @Override

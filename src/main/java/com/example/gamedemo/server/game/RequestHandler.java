@@ -27,11 +27,11 @@ public class RequestHandler extends SimpleChannelInboundHandler<String> {
         InvokeMethod invokeMethod = ControllerManager.get(msg.split(" ")[0]);
         if (invokeMethod != null) {
             TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
+            //TODO 构建消息对象
             invokeMethod.invoke(session, msg);
         } else {
             ctx.channel().writeAndFlush("指令有误\r\n");
         }
-        //ctx.channel().writeAndFlush("server return msg:" + returnMsg + "\r\n");
     }
 
 

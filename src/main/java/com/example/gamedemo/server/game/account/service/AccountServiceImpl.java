@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.account.service;
 
 import com.alibaba.fastjson.JSON;
 import com.example.gamedemo.server.common.constant.SystemConstant;
-import com.example.gamedemo.server.common.service.ResourceManager;
+import com.example.gamedemo.server.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
@@ -33,7 +33,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account getAccountById(String accountId) {
         logger.info("客户端查询accountId：{}", accountId);
-        return AccountManager.getLoginAccountById(accountId);
+        return AccountManager.getAccountById(accountId);
     }
 
     @Override

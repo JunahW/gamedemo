@@ -6,7 +6,7 @@ import com.example.gamedemo.server.common.anno.Resource;
 import com.example.gamedemo.server.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.server.common.resource.ResourceInterface;
-import com.example.gamedemo.server.common.service.ResourceManager;
+import com.example.gamedemo.server.common.resource.ResourceManager;
 import com.example.gamedemo.server.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.common.utils.ExcelUtils;
 import org.slf4j.Logger;
