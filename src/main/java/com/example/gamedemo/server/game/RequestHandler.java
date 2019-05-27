@@ -1,11 +1,11 @@
 package com.example.gamedemo.server.game;
 
-import com.example.gamedemo.server.common.constant.SessionAttributeKey;
-import com.example.gamedemo.server.common.dispatcher.ControllerManager;
-import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
-import com.example.gamedemo.server.common.session.TSession;
-import com.example.gamedemo.server.common.utils.AttributeUtils;
-import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
+import com.example.gamedemo.common.constant.SessionAttributeKey;
+import com.example.gamedemo.common.dispatcher.ControllerManager;
+import com.example.gamedemo.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.common.session.TSession;
+import com.example.gamedemo.common.utils.AttributeUtils;
+import com.example.gamedemo.common.utils.ParameterCheckUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;

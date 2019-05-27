@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game.account.service;
 
-import com.example.gamedemo.server.common.ramcache.anno.Inject;
-import com.example.gamedemo.server.common.ramcache.service.EntityCacheService;
+import com.example.gamedemo.common.ramcache.anno.Inject;
+import com.example.gamedemo.common.ramcache.service.EntityCacheService;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
 package com.example.gamedemo.server.game.account.controller;
 
 
-import com.example.gamedemo.server.common.anno.HandlerClass;
-import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.executer.WorkThreadPool;
-import com.example.gamedemo.server.common.session.SessionManager;
-import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.executer.WorkThreadPool;
+import com.example.gamedemo.common.session.SessionManager;
+import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.packet.*;
 import com.example.gamedemo.server.game.account.service.AccountService;
@@ -116,7 +116,14 @@ public class AccountController {
     @HandlerMethod(cmd = "where")
     public void getWhere(TSession session, CM_Location req) {
         Account account = session.getAccount();
-        SessionManager.sendMessage(session, account.getScene().getSceneName() + "\r\n");
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(account.getScene().getSceneName())
+                .append("坐标(")
+                .append(account.getX())
+                .append(",")
+                .append(account.getY())
+                .append(")\r\n");
+        SessionManager.sendMessage(session, stringBuilder.toString());
     }
 
     /**

@@ -1,12 +1,13 @@
 package com.example.gamedemo.db;
 
+import com.example.gamedemo.common.ramcache.orm.Accessor;
+import com.example.gamedemo.server.game.account.entity.Player;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import javax.annotation.Resource;
 
 /**
  * @author wengj
@@ -18,11 +19,25 @@ import javax.annotation.Resource;
 public class TestDb {
 
 
-    @Resource
+    @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private Accessor accessor;
+
     @Test
     public void tsetDb() {
         System.out.println("==========");
         System.out.println(sessionFactory);
+    }
+
+
+    /**
+     * 测试持久层
+     */
+    @Test
+    public void testAccessor() {
+
+        accessor.save(Player.class, new Player());
     }
 }

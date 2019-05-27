@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.role.service;
 
-import com.example.gamedemo.server.common.executer.WorkThreadPool;
+import com.example.gamedemo.common.executer.WorkThreadPool;
 import com.example.gamedemo.server.game.role.model.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

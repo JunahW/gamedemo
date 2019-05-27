@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.scene.service;
 
-import com.example.gamedemo.server.common.resource.ResourceManager;
+import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;

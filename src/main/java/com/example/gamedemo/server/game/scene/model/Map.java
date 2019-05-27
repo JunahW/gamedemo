@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.scene.model;
 
-import com.example.gamedemo.server.common.anno.ExcelColumn;
-import com.example.gamedemo.server.common.anno.Resource;
-import com.example.gamedemo.server.common.resource.ResourceInterface;
+import com.example.gamedemo.common.anno.ExcelColumn;
+import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.resource.ResourceInterface;
 
 import java.util.Arrays;
 

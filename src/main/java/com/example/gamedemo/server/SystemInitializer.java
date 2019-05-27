@@ -1,14 +1,14 @@
 package com.example.gamedemo.server;
 
-import com.example.gamedemo.server.common.anno.HandlerClass;
-import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.anno.Resource;
-import com.example.gamedemo.server.common.dispatcher.ControllerManager;
-import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
-import com.example.gamedemo.server.common.resource.ResourceInterface;
-import com.example.gamedemo.server.common.resource.ResourceManager;
-import com.example.gamedemo.server.common.utils.ApplicationContextProvider;
-import com.example.gamedemo.server.common.utils.ExcelUtils;
+import com.example.gamedemo.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.dispatcher.ControllerManager;
+import com.example.gamedemo.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.common.resource.ResourceManager;
+import com.example.gamedemo.common.utils.ApplicationContextProvider;
+import com.example.gamedemo.common.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

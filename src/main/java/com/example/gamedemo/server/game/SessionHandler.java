@@ -1,9 +1,6 @@
 package com.example.gamedemo.server.game;
 
-import com.example.gamedemo.server.common.session.SessionManager;
-import com.example.gamedemo.server.common.session.TSession;
-import com.example.gamedemo.server.game.account.model.Account;
-import io.netty.channel.Channel;
+import com.example.gamedemo.common.session.SessionManager;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;

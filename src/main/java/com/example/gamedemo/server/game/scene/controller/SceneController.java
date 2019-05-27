@@ -1,9 +1,9 @@
 package com.example.gamedemo.server.game.scene.controller;
 
-import com.example.gamedemo.server.common.anno.HandlerClass;
-import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.session.SessionManager;
-import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.session.SessionManager;
+import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.packet.CM_AoiScene;
@@ -37,7 +37,7 @@ public class SceneController {
     public void getSceneList(TSession session, CM_ListScene req) {
         List<Scene> sceneList = sceneService.getSceneList();
         for (Scene scene : sceneList) {
-            SessionManager.sendMessage(session, scene + "\r\n");
+            SessionManager.sendMessage(session, scene.getSceneName() + scene.getSceneId() + "\r\n");
         }
 
     }

@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.role.controller;
 
-import com.example.gamedemo.server.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerClass;
 import org.springframework.stereotype.Component;
 
 /**

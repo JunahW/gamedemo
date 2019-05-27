@@ -1,6 +1,6 @@
 package com.example.gamedemo.scene;
 
-import com.example.gamedemo.server.common.utils.ExcelUtils;
+import com.example.gamedemo.common.utils.ExcelUtils;
 import com.example.gamedemo.server.game.scene.model.Map;
 import com.example.gamedemo.server.game.scene.model.Npc;
 import com.example.gamedemo.server.game.scene.model.Scene;

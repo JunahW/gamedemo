@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.account.service;
 
 import com.alibaba.fastjson.JSON;
-import com.example.gamedemo.server.common.constant.SystemConstant;
-import com.example.gamedemo.server.common.resource.ResourceManager;
+import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;

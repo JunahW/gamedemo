@@ -1,11 +1,11 @@
 package com.example.gamedemo;
 
 import com.alibaba.fastjson.JSON;
-import com.example.gamedemo.server.common.anno.HandlerClass;
-import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.dispatcher.ControllerManager;
-import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
-import com.example.gamedemo.server.common.utils.ApplicationContextProvider;
+import com.example.gamedemo.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.dispatcher.ControllerManager;
+import com.example.gamedemo.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;

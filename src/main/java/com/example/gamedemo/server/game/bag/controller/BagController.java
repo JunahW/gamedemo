@@ -1,9 +1,9 @@
 package com.example.gamedemo.server.game.bag.controller;
 
-import com.example.gamedemo.server.common.anno.HandlerClass;
-import com.example.gamedemo.server.common.anno.HandlerMethod;
-import com.example.gamedemo.server.common.session.SessionManager;
-import com.example.gamedemo.server.common.session.TSession;
+import com.example.gamedemo.common.anno.HandlerClass;
+import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.session.SessionManager;
+import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.springframework.stereotype.Component;
 
