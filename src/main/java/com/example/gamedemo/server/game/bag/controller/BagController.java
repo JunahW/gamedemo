@@ -4,7 +4,6 @@ import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.session.SessionManager;
 import com.example.gamedemo.server.common.session.TSession;
-import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.springframework.stereotype.Component;
 
@@ -26,10 +25,7 @@ public class BagController {
     @HandlerMethod(cmd = "addItem")
     public void addItem(TSession session, String msg) {
         Account account = session.getAccount();
-        boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
-        if (!flag) {
-            return;
-        }
+
 
         System.out.println("添加道具");
     }
@@ -42,10 +38,7 @@ public class BagController {
      * @param msg
      */
     public void userItem(TSession session, String msg) {
-        boolean flag = ParameterCheckUtils.checkParams(session, msg, 2);
-        if (!flag) {
-            return;
-        }
+
         Account account = session.getAccount();
         System.out.println("使用道具");
     }
@@ -58,10 +51,7 @@ public class BagController {
      */
     @HandlerMethod(cmd = "showBag")
     public void showBag(TSession session, String msg) {
-        boolean flag = ParameterCheckUtils.checkParams(session, msg, 1);
-        if (!flag) {
-            return;
-        }
+
         Account account = session.getAccount();
         SessionManager.sendMessage(session, account.getBag() + "\r\n");
     }

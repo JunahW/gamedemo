@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,9 @@ public class SystemInitializer {
                     String cmd = annotation.cmd();
                     InvokeMethod invokeMethod = new InvokeMethod(entry.getValue(), method);
                     ControllerManager.add(cmd, invokeMethod);
+                    //初始化指令和消息映射关系
+                    Parameter[] parameters = method.getParameters();
+                    ControllerManager.addPacket(cmd, parameters[1].getType());
                 }
             }
         }

@@ -22,6 +22,11 @@ public class ControllerManager {
     private final static Map<String, InvokeMethod> CONTROLLER_MAP = new ConcurrentHashMap<>();
 
     /**
+     * 请求和消息之间的映射
+     */
+    private final static Map<String, Class> CMD_PACKER_MAP = new ConcurrentHashMap<>();
+
+    /**
      * @param cmd
      * @param invokeMethod
      */
@@ -44,4 +49,32 @@ public class ControllerManager {
         // 通过int的msgId找到枚举的MsgId
         return CONTROLLER_MAP.get(cmd);
     }
+
+
+    /**
+     * 新增指令消息关系
+     *
+     * @param cmd
+     * @param clazz
+     */
+    public static void addPacket(String cmd, Class clazz) {
+        if (CMD_PACKER_MAP.containsKey(cmd)) {
+            logger.error("请求指令{}重复", cmd);
+            throw new RuntimeException();
+        } else {
+            CMD_PACKER_MAP.put(cmd, clazz);
+        }
+    }
+
+    /**
+     * 获取指令的对应的消息
+     *
+     * @param cmd
+     * @return
+     */
+    public static Class getClassByCmd(String cmd) {
+        // 通过int的msgId找到枚举的MsgId
+        return CMD_PACKER_MAP.get(cmd);
+    }
+
 }

@@ -5,9 +5,11 @@ import com.example.gamedemo.server.common.anno.HandlerClass;
 import com.example.gamedemo.server.common.anno.HandlerMethod;
 import com.example.gamedemo.server.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.server.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.mapper.AccountMapper;
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.account.packet.CM_CreateAccount;
 import com.example.gamedemo.server.game.role.service.RoleService;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,7 +20,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -120,6 +124,38 @@ public class GamedemoApplicationTests {
                 System.out.println(method.getName());
             }
 
+        }
+    }
+
+    @Test
+    public void testHandlerAnno() {
+        ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(HandlerClass.class);
+        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Class<?> aClass = entry.getValue().getClass();
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            for (Method method : declaredMethods) {
+                if (method.isAnnotationPresent(HandlerMethod.class)) {
+
+                    HandlerMethod annotation = method.getAnnotation(HandlerMethod.class);
+                    String cmd = annotation.cmd();
+                    Parameter[] parameters = method.getParameters();
+                    ControllerManager.addPacket(cmd, parameters[1].getType());
+                    System.out.println(ControllerManager.getClassByCmd(cmd));
+
+                }
+            }
+        }
+        System.out.println(ControllerManager.get("test"));
+    }
+
+    @Test
+    public void testReflectPropertyOrder() {
+        Class<CM_CreateAccount> accountClass = CM_CreateAccount.class;
+        Field[] declaredFields = accountClass.getDeclaredFields();
+        for (Field field : declaredFields) {
+            System.out.println(field.getName());
         }
     }
 

@@ -5,6 +5,7 @@ import com.example.gamedemo.server.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.server.common.session.TSession;
 import com.example.gamedemo.server.common.utils.AttributeUtils;
+import com.example.gamedemo.server.common.utils.ParameterCheckUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
@@ -25,10 +26,14 @@ public class RequestHandler extends SimpleChannelInboundHandler<String> {
         //执行请求分发
         //根据指令获取当前的指令多对应的controller
         InvokeMethod invokeMethod = ControllerManager.get(msg.split(" ")[0]);
+        Class clazz = ControllerManager.getClassByCmd(msg.split(" ")[0]);
         if (invokeMethod != null) {
             TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
-            //TODO 构建消息对象
-            invokeMethod.invoke(session, msg);
+            boolean flag = ParameterCheckUtils.checkParams(session, msg, clazz);
+            if (flag) {
+                invokeMethod.invoke(session, msg);
+            }
+
         } else {
             ctx.channel().writeAndFlush("指令有误\r\n");
         }
