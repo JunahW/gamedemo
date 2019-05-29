@@ -1,12 +1,16 @@
 package com.example.gamedemo.common.ramcache.service;
 
 
+import com.example.gamedemo.common.ramcache.Entity;
+
+import java.io.Serializable;
+
 /**
  * @author: wengj
  * @date: 2019/5/27
  * @description:
  */
-public interface EntityCacheService<PK, V> {
+public interface EntityCacheService<PK extends Comparable<PK> & Serializable, V extends Entity<PK>> {
     /**
      * 通过id加载实体
      *
@@ -23,4 +27,12 @@ public interface EntityCacheService<PK, V> {
      * @param entity
      */
     void writeBack(PK id, V entity);
+
+    /**
+     * 加载或创建
+     *
+     * @param id
+     * @return
+     */
+    V loadOrCreate(PK id, EntityBuilder<PK, V> builder);
 }

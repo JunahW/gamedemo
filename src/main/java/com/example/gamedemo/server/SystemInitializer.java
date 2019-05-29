@@ -12,6 +12,7 @@ import com.example.gamedemo.common.utils.ExcelUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -26,10 +27,14 @@ import java.util.Set;
  * @date 2019/5/7
  */
 @Component
-public class SystemInitializer {
+public class SystemInitializer implements Ordered {
 
     private static Logger logger = LoggerFactory.getLogger(SystemInitializer.class);
 
+    @Override
+    public int getOrder() {
+        return 1;
+    }
 
     /**
      * 初始化指令和处理方法映射表

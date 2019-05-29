@@ -58,6 +58,7 @@ public class QueueConsumer implements Runnable {
                         accessor.remove(clazz, element.getEntity().getId());
                         break;
                     case UPDATE:
+                        System.out.println(accessor);
                         accessor.saveOrUpdate(clazz, element.getEntity());
                         break;
                     default:

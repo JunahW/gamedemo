@@ -1,9 +1,9 @@
 package com.example.gamedemo.server.game.role.service;
 
 import com.example.gamedemo.common.ramcache.service.EntityCacheService;
-import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
 import com.example.gamedemo.server.game.role.entity.RoleEnt;
 import com.example.gamedemo.server.game.role.model.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,7 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class RoleManager {
 
 
-    private EntityCacheService<String, RoleEnt> entEntityCacheService = new EntityCacheServiceImpl<>(RoleEnt.class);
+    @Autowired
+    private EntityCacheService<String, RoleEnt> entEntityCacheService;
 
     /**
      * 角色map

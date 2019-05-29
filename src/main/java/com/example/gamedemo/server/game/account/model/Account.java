@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.account.model;
 
-import com.example.gamedemo.server.game.bag.model.Bag;
+import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
+import com.example.gamedemo.server.game.bag.model.ItemStorage;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;
@@ -32,7 +34,7 @@ public class Account implements Serializable {
     /**
      * 背包
      */
-    private Bag bag = new Bag();
+    private ItemStorage itemStorage = new ItemStorage();
 
     public String getAcountId() {
         return acountId;
@@ -54,8 +56,8 @@ public class Account implements Serializable {
         return y;
     }
 
-    public Bag getBag() {
-        return bag;
+    public ItemStorage getItemStorage() {
+        return itemStorage;
     }
 
     public void setAcountId(String acountId) {
@@ -78,8 +80,13 @@ public class Account implements Serializable {
         this.y = y;
     }
 
-    public void setBag(Bag bag) {
-        this.bag = bag;
+    public void setItemStorage(ItemStorage itemStorage) {
+        this.itemStorage = itemStorage;
+    }
+
+    public ItemStorage getPack() {
+        ItemStorageEnt pack = SpringContext.getItemService().getItemStorageEntByAccountId(acountId);
+        return pack.getItemStorage();
     }
 
     @Override

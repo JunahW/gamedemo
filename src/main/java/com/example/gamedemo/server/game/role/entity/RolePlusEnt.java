@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @javax.persistence.Entity
 @Table
-public class RoleEnt implements Entity<String> {
+public class RolePlusEnt implements Entity<String> {
 
     @Id
     private String roleId;

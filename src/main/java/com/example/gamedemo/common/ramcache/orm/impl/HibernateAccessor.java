@@ -2,6 +2,7 @@ package com.example.gamedemo.common.ramcache.orm.impl;
 
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,8 @@ import java.io.Serializable;
 @Component
 @Transactional(rollbackFor = Exception.class)
 public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Resource(name = "sessionFactory")
     public void setSuperSessionFactory(SessionFactory sessionFactory) {

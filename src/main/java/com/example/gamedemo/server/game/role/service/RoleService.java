@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.role.service;
 
-import com.example.gamedemo.server.game.role.model.Role;
+import com.example.gamedemo.server.game.role.entity.RoleEnt;
 
 /**
  * @author wengj
@@ -11,9 +11,9 @@ public interface RoleService {
 
     /**
      * 保存角色数据
-     * @param role
+     * @param roleEnt
      */
-    void saveRole(Role role);
+    void saveRole(RoleEnt roleEnt);
 
 
 }

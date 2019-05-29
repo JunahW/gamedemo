@@ -16,4 +16,10 @@ public interface SystemConstant {
      * 默认起始之地
      */
     String DEFAULT_SCENE = "s2001";
+
+
+    /**
+     * 缓存没有命中标识
+     */
+    String CACHE_NO_HIT = "cacheNoHit";
 }

@@ -14,4 +14,25 @@ public interface Entity<PK extends Serializable & Comparable<PK>> {
      * @return
      */
     PK getId();
+
+    /**
+     * 设置缓存未命中时的id为null，guava的cache不允许返回null
+     */
+    void setNullId();
+
+    /**
+     * 序列化
+     *
+     * @return
+     */
+    boolean doSerialize();
+
+    /**
+     * 反序列化
+     *
+     * @return
+     */
+    boolean doDeSerialize();
+
+
 }

@@ -1,0 +1,40 @@
+package com.example.gamedemo.server.game;
+
+import com.example.gamedemo.server.game.bag.service.ItemService;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+
+/**
+ * @author wengj
+ * @description
+ * @date 2019/5/29
+ */
+@Component
+public class SpringContext implements ApplicationContextAware {
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    private static SpringContext instance;
+
+    @PostConstruct
+    public void init() {
+        instance = this;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext ac) throws BeansException {
+        applicationContext = ac;
+    }
+
+    @Autowired
+    private ItemService itemService;
+
+    public static ItemService getItemService() {
+        return instance.itemService;
+    }
+}
