@@ -3,6 +3,8 @@ package com.example.gamedemo.server.game.account.model;
 import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;
@@ -84,9 +86,24 @@ public class Account implements Serializable {
         this.itemStorage = itemStorage;
     }
 
+    /**
+     * 获取背包
+     *
+     * @return
+     */
     public ItemStorage getPack() {
         ItemStorageEnt pack = SpringContext.getItemService().getItemStorageEntByAccountId(acountId);
         return pack.getItemStorage();
+    }
+
+    /**
+     * 获取装备栏
+     *
+     * @return
+     */
+    public EquipStorage getEquipBar() {
+        EquipStorageEnt equipStorageEnt = SpringContext.getEquipmentService().getEquipStorageEnt(acountId);
+        return equipStorageEnt.getEquipStorage();
     }
 
     @Override

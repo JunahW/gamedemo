@@ -21,7 +21,7 @@ public class ItemStorageEnt implements Entity<String> {
     @Id
     private String accountId;
 
-    @Column
+    @Column(length = 3000)
     private String BagData;
 
     @Transient
@@ -46,7 +46,7 @@ public class ItemStorageEnt implements Entity<String> {
     @Override
     public boolean doDeSerialize() {
         this.itemStorage = JsonUtils.deSerializeEntity(this.getBagData(), ItemStorage.class);
-        return false;
+        return true;
     }
 
     public String getAccountId() {
@@ -58,6 +58,7 @@ public class ItemStorageEnt implements Entity<String> {
     }
 
     public ItemStorage getItemStorage() {
+        doDeSerialize();
         return itemStorage;
     }
 

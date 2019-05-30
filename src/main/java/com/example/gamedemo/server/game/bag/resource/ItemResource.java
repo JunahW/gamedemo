@@ -35,6 +35,12 @@ public class ItemResource implements ResourceInterface {
     @ExcelColumn(columnName = "overLimit")
     private int overLimit;
 
+    /**
+     *
+     */
+    @ExcelColumn(columnName = "position")
+    private int position;
+
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
@@ -53,6 +59,14 @@ public class ItemResource implements ResourceInterface {
 
     public String getItemId() {
         return itemId;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 
     public void setName(String name) {

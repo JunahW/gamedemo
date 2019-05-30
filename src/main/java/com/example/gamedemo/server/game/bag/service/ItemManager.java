@@ -56,6 +56,12 @@ public class ItemManager {
         return itemResource.get(itemId);
     }
 
+    /**
+     * 获取背包
+     *
+     * @param accountId
+     * @return
+     */
     public ItemStorageEnt getItemStorageEnt(String accountId) {
         ItemStorageEnt storageEnt = entityCacheService.loadOrCreate(accountId, new EntityBuilder<String, ItemStorageEnt>() {
             @Override

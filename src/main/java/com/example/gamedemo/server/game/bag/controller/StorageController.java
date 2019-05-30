@@ -101,6 +101,12 @@ public class StorageController {
 
     }
 
+    /**
+     * 检查背包是否已满
+     *
+     * @param session
+     * @param req
+     */
     @HandlerMethod(cmd = "checkBag")
     public void checkBag(TSession session, CM_CheckStorage req) {
         Account account = session.getAccount();

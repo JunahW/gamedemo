@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game;
 
 import com.example.gamedemo.server.game.bag.service.ItemService;
+import com.example.gamedemo.server.game.equip.service.EquipmentService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,7 +35,14 @@ public class SpringContext implements ApplicationContextAware {
     @Autowired
     private ItemService itemService;
 
+    @Autowired
+    private EquipmentService equipmentService;
+
     public static ItemService getItemService() {
         return instance.itemService;
+    }
+
+    public static EquipmentService getEquipmentService() {
+        return instance.equipmentService;
     }
 }
