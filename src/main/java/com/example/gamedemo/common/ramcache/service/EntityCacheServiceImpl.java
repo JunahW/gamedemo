@@ -3,7 +3,6 @@ package com.example.gamedemo.common.ramcache.service;
 import com.example.gamedemo.common.ramcache.EmptyEntity;
 import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
-import com.example.gamedemo.common.ramcache.persist.Element;
 import com.example.gamedemo.common.ramcache.persist.QueueConsumer;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.LoadingCache;
@@ -103,8 +102,10 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
 
     @Override
     public void writeBack(PK id, V entity) {
-        //更细操作异步写回
-        consumer.put(Element.updateof(entity));
+        //更细操作异步写回 先不考虑
+        //consumer.put(Element.updateof(entity));
+
+        accessor.saveOrUpdate(clazz, entity);
     }
 
     @Override

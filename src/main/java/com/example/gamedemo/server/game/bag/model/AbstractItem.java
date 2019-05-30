@@ -4,11 +4,10 @@ import com.example.gamedemo.server.game.base.gameobject.GameObject;
 
 /**
  * @author wengj
- * @description
- * @date 2019/5/21
+ * @description：
+ * @date 2019/5/30
  */
-public class StorageItem extends GameObject {
-
+public class AbstractItem extends GameObject {
     /**
      * 道具的资源id
      */
@@ -64,12 +63,12 @@ public class StorageItem extends GameObject {
 
     @Override
     public String toString() {
-        return "StorageItem{" +
+        return "AbstractItem{" +
                 "itemResourceId='" + itemResourceId + '\'' +
                 ", itemName='" + itemName + '\'' +
                 ", quanlity=" + quanlity +
                 ", itemType=" + itemType +
-                ",id=" + super.getObjectId() +
+                ", id=" + super.getObjectId() +
                 '}';
     }
 }

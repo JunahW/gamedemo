@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.bag.constant;
 
-import com.example.gamedemo.server.game.bag.model.StorageItem;
+import com.example.gamedemo.server.game.bag.model.*;
 
 /**
  * @author: wengj
@@ -12,13 +12,13 @@ public enum ItemType {
     /**
      * 背包物品
      */
-    CommonItem(0, StorageItem.class),
+    Common(0, CommonItem.class),
 
-    OneItem(1, StorageItem.class),
+    Equip(1, EquipItem.class),
 
-    TwoItem(2, StorageItem.class),
+    Gemstone(2, GemstoneItem.class),
 
-    ThreeItem(3, StorageItem.class),
+    Medicine(3, MedicineItem.class),
     ;
 
     ItemType(int id, Class bagItemClazz) {
@@ -34,13 +34,13 @@ public enum ItemType {
     /**
      * 道具实例的class
      */
-    private Class<? extends StorageItem> itemClazz;
+    private Class<? extends AbstractItem> itemClazz;
 
     public int getId() {
         return id;
     }
 
-    public Class<? extends StorageItem> getItemClazz() {
+    public Class<? extends AbstractItem> getItemClazz() {
         return itemClazz;
     }
 
@@ -48,7 +48,7 @@ public enum ItemType {
         this.id = id;
     }
 
-    public void setItemClazz(Class<? extends StorageItem> itemClazz) {
+    public void setItemClazz(Class<? extends AbstractItem> itemClazz) {
         this.itemClazz = itemClazz;
     }
 
@@ -57,14 +57,14 @@ public enum ItemType {
      *
      * @return
      */
-    public static StorageItem create(int id) {
+    public static AbstractItem create(int id) {
 
         ItemType[] values = values();
-        StorageItem storageItem = null;
+        AbstractItem abstractItem = null;
         for (ItemType itemType : values) {
             if (itemType.getId() == id) {
                 try {
-                    storageItem = itemType.getItemClazz().newInstance();
+                    abstractItem = itemType.getItemClazz().newInstance();
                     break;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -72,6 +72,6 @@ public enum ItemType {
                 }
             }
         }
-        return storageItem;
+        return abstractItem;
     }
 }

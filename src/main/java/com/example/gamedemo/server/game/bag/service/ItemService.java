@@ -2,7 +2,8 @@ package com.example.gamedemo.server.game.bag.service;
 
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
-import com.example.gamedemo.server.game.bag.model.StorageItem;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.model.CommonItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 
 /**
@@ -28,7 +29,7 @@ public interface ItemService {
      * @param quanlity
      * @return
      */
-    int useItem(Account account, long guid, int quanlity);
+    boolean useItem(Account account, long guid, int quanlity);
 
     /**
      * 查看查询某个物品数量
@@ -53,7 +54,7 @@ public interface ItemService {
      * @param itemResourceId
      * @return
      */
-    StorageItem createItem(String itemResourceId);
+    AbstractItem createItem(String itemResourceId);
 
     /**
      * 减少道具
@@ -63,7 +64,7 @@ public interface ItemService {
      * @param quanlity
      * @return
      */
-    boolean reduceItem(Account account, StorageItem item, int quanlity);
+    boolean reduceItem(Account account, CommonItem item, int quanlity);
 
     /**
      * 获取背包

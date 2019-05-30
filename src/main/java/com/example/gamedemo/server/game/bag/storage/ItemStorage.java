@@ -1,6 +1,7 @@
-package com.example.gamedemo.server.game.bag.model;
+package com.example.gamedemo.server.game.bag.storage;
 
 import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class ItemStorage {
     /**
      * 背包物品
      */
-    private StorageItem[] storageItems = new StorageItem[50];
+    private AbstractItem[] abstractItems = new AbstractItem[50];
 
     /**
      * 已有数量
@@ -32,8 +33,8 @@ public class ItemStorage {
         return size;
     }
 
-    public StorageItem[] getStorageItems() {
-        return storageItems;
+    public void setAbstractItems(AbstractItem[] abstractItems) {
+        this.abstractItems = abstractItems;
     }
 
     public int getNum() {
@@ -44,8 +45,8 @@ public class ItemStorage {
         this.size = size;
     }
 
-    public void setStorageItems(StorageItem[] storageItems) {
-        this.storageItems = storageItems;
+    public AbstractItem[] getAbstractItems() {
+        return abstractItems;
     }
 
     public void setNum(int num) {
@@ -58,11 +59,11 @@ public class ItemStorage {
      * @param guid
      * @return
      */
-    public StorageItem getStorageItemByObjectId(long guid) {
-        for (int i = 0; i < storageItems.length; i++) {
-            if (storageItems[i] != null) {
-                if (storageItems[i].getObjectId() == guid) {
-                    return storageItems[i];
+    public AbstractItem getStorageItemByObjectId(long guid) {
+        for (int i = 0; i < abstractItems.length; i++) {
+            if (abstractItems[i] != null) {
+                if (abstractItems[i].getObjectId() == guid) {
+                    return abstractItems[i];
                 }
             }
 
@@ -78,14 +79,14 @@ public class ItemStorage {
      */
     public boolean reduceStorageItemByObjectId(long guid, int quanlity) {
         boolean isReduce = false;
-        for (int i = 0; i < storageItems.length; i++) {
-            if (storageItems[i] != null) {
-                if (storageItems[i].getQuanlity() >= quanlity) {
-                    int size = storageItems[i].getQuanlity() - quanlity;
+        for (int i = 0; i < abstractItems.length; i++) {
+            if (abstractItems[i] != null) {
+                if (abstractItems[i].getQuanlity() >= quanlity) {
+                    int size = abstractItems[i].getQuanlity() - quanlity;
                     if (size > 0) {
-                        storageItems[i].setQuanlity(size);
+                        abstractItems[i].setQuanlity(size);
                     } else {
-                        storageItems[i] = null;
+                        abstractItems[i] = null;
                     }
                     isReduce = true;
                     break;
@@ -101,19 +102,19 @@ public class ItemStorage {
      * @param item
      * @return
      */
-    public boolean addStorageItem(StorageItem item) {
+    public boolean addStorageItem(AbstractItem item) {
         String itemResourceId = item.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         //是否加入背包
         boolean isAdd = false;
         //道具可堆叠
         if (itemResource.getOverLimit() > 1) {
-            for (StorageItem storageItem : storageItems) {
-                if (storageItem != null) {
+            for (AbstractItem abstractItem : abstractItems) {
+                if (abstractItem != null) {
                     //可堆叠
                     //已经存在
-                    if (item.getItemResourceId() == storageItem.getItemResourceId()) {
-                        storageItem.setQuanlity(storageItem.getQuanlity() + 1);
+                    if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
+                        abstractItem.setQuanlity(abstractItem.getQuanlity() + 1);
                         isAdd = true;
                         break;
                     }
@@ -122,9 +123,9 @@ public class ItemStorage {
         }
         //不可堆叠 或者背包不存在
         if (!isAdd) {
-            for (int i = 0; i < storageItems.length; i++) {
-                if (storageItems[i] == null) {
-                    storageItems[i] = item;
+            for (int i = 0; i < abstractItems.length; i++) {
+                if (abstractItems[i] == null) {
+                    abstractItems[i] = item;
                     isAdd = true;
                     break;
                 }
@@ -138,7 +139,7 @@ public class ItemStorage {
     public String toString() {
         return "ItemStorage{" +
                 "size=" + size +
-                ", storageItems=" + Arrays.toString(storageItems) +
+                ", abstractItems=" + Arrays.toString(abstractItems) +
                 ", num=" + num +
                 '}';
     }

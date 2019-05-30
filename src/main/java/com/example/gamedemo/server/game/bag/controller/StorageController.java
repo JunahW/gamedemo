@@ -31,8 +31,14 @@ public class StorageController {
     @HandlerMethod(cmd = "addItem")
     public void addItem(TSession session, CM_AddItem req) {
         Account account = session.getAccount();
-        itemService.addItem(account, req.getItemResourceId());
-        System.out.println("添加道具");
+        boolean addItem = itemService.addItem(account, req.getItemResourceId());
+        String returnMsg = null;
+        if (addItem) {
+            returnMsg = "添加成功";
+        } else {
+            returnMsg = "添加失败";
+        }
+        SessionManager.sendMessage(session, returnMsg + "\r\n");
     }
 
 
@@ -46,8 +52,14 @@ public class StorageController {
     public void userItem(TSession session, CM_UseItem req) {
 
         Account account = session.getAccount();
-        itemService.useItem(account, req.getGuid(), 1);
-        System.out.println("使用道具");
+        boolean useItem = itemService.useItem(account, req.getGuid(), 1);
+        String returnMsg = null;
+        if (useItem) {
+            returnMsg = "使用成功";
+        } else {
+            returnMsg = "使用失败";
+        }
+        SessionManager.sendMessage(session, returnMsg + "\r\n");
     }
 
     /**
@@ -58,9 +70,7 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "showBag")
     public void showBag(TSession session, CM_ShowStorage req) {
-
         Account account = session.getAccount();
-
         SessionManager.sendMessage(session, "背包数据" + account.getPack() + "\r\n");
     }
 
@@ -73,9 +83,7 @@ public class StorageController {
     @HandlerMethod(cmd = "getItemNum")
     public void getItemNum(TSession session, CM_GetItemNum req) {
         Account account = session.getAccount();
-
         int itemNum = itemService.getItemNum(account, req.getGuid());
-
         SessionManager.sendMessage(session, "数量还有：" + itemNum + "\r\n");
 
     }
@@ -90,13 +98,13 @@ public class StorageController {
     public void removeItem(TSession session, CM_RemoveItem req) {
         Account account = session.getAccount();
 
+
     }
 
     @HandlerMethod(cmd = "checkBag")
     public void checkBag(TSession session, CM_CheckStorage req) {
         Account account = session.getAccount();
         int bagNum = itemService.checkBag(account);
-
         SessionManager.sendMessage(session, "把背包还剩容量：" + bagNum + "\r\n");
 
     }

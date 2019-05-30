@@ -6,8 +6,8 @@ import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
-import com.example.gamedemo.server.game.bag.model.ItemStorage;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,10 +66,22 @@ public class ItemManager {
 
                 itemStorageEnt.setItemStorage(pack);
                 itemStorageEnt.setAccountId(accountId);
+                itemStorageEnt.doSerialize();
                 return itemStorageEnt;
             }
         });
         return storageEnt;
 
+    }
+
+
+    /**
+     * 保存背包信息
+     *
+     * @param itemStorageEnt
+     */
+    public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
+        boolean serialize = itemStorageEnt.doSerialize();
+        entityCacheService.writeBack(itemStorageEnt.getId(), itemStorageEnt);
     }
 }

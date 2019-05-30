@@ -4,9 +4,10 @@ import com.example.gamedemo.common.utils.UniqueIdUtils;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.bag.constant.ItemType;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
-import com.example.gamedemo.server.game.bag.model.ItemStorage;
-import com.example.gamedemo.server.game.bag.model.StorageItem;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.model.CommonItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,36 +29,48 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public boolean addItem(Account account, String itemId) {
         ItemStorage pack = account.getPack();
-        StorageItem storageItem = createItem(itemId);
-        boolean isAdd = pack.addStorageItem(storageItem);
+        AbstractItem abstractItem = createItem(itemId);
+        if (abstractItem == null) {
+            return false;
+        }
+        boolean isAdd = pack.addStorageItem(abstractItem);
+        if (isAdd) {
+            //保存入库
+            ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
+            itemManager.saveItemStorageEnt(itemStorageEnt);
+        }
         return isAdd;
     }
 
     @Override
-    public int useItem(Account account, long guid, int quanlity) {
+    public boolean useItem(Account account, long guid, int quanlity) {
         ItemStorage pack = account.getPack();
-        StorageItem storageItem = pack.getStorageItemByObjectId(guid);
-        if (storageItem == null) {
+        AbstractItem commonItem = pack.getStorageItemByObjectId(guid);
+        if (commonItem == null) {
             logger.info("道具不存在");
-            return 0;
+            return false;
         }
-        if (storageItem.getQuanlity() < quanlity) {
+        if (commonItem.getQuanlity() < quanlity) {
             logger.info("道具数量不足");
-            return 0;
+            return false;
         }
         //减少道具
         pack.reduceStorageItemByObjectId(guid, quanlity);
+        logger.info("[{}]玩家使用了道具[{}]", account.getAcountName(), commonItem.getItemName());
+
+        //保存入库
+        ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
+        itemManager.saveItemStorageEnt(itemStorageEnt);
 
         //产生效果
 
-
-        return 1;
+        return true;
     }
 
     @Override
     public int getItemNum(Account account, long guid) {
         ItemStorage pack = account.getPack();
-        StorageItem item = pack.getStorageItemByObjectId(guid);
+        AbstractItem item = pack.getStorageItemByObjectId(guid);
         if (item == null) {
             logger.info("[{}]背包不存在该物品[{}]", account.getAcountName(), guid);
             return -1;
@@ -68,9 +81,9 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public int checkBag(Account account) {
         ItemStorage pack = account.getPack();
-        StorageItem[] storageItems = pack.getStorageItems();
+        AbstractItem[] commonItems = pack.getAbstractItems();
         int size = 0;
-        for (StorageItem item : storageItems) {
+        for (AbstractItem item : commonItems) {
             if (item == null) {
                 size++;
             }
@@ -79,10 +92,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public StorageItem createItem(String itemResourceId) {
+    public AbstractItem createItem(String itemResourceId) {
         ItemResource itemResource = itemManager.getResourceById(itemResourceId);
-        StorageItem storageItem = doCreateItem(itemResource, 1);
-        return storageItem;
+        if (itemResource == null) {
+            logger.warn("参数有误[{}]该道具不存在", itemResourceId);
+            return null;
+        }
+        AbstractItem abstractItem = doCreateItem(itemResource, 1);
+        return abstractItem;
     }
 
     /**
@@ -92,24 +109,28 @@ public class ItemServiceImpl implements ItemService {
      * @param num
      * @return
      */
-    private StorageItem doCreateItem(ItemResource itemResource, int num) {
+    private AbstractItem doCreateItem(ItemResource itemResource, int num) {
         int itemType = itemResource.getItemType();
-        StorageItem storageItem = ItemType.create(itemType);
+        AbstractItem abstractItem = ItemType.create(itemType);
         //唯一id
-        storageItem.setObjectId(UniqueIdUtils.nextId());
-        storageItem.setItemResourceId(itemResource.getItemId());
-        storageItem.setQuanlity(num);
-        return storageItem;
+        abstractItem.setObjectId(UniqueIdUtils.nextId());
+        abstractItem.setItemName(itemResource.getName());
+        abstractItem.setItemResourceId(itemResource.getItemId());
+        abstractItem.setQuanlity(num);
+        return abstractItem;
     }
 
     @Override
-    public boolean reduceItem(Account account, StorageItem item, int quanlity) {
+    public boolean reduceItem(Account account, CommonItem item, int quanlity) {
         if (item.getQuanlity() < quanlity) {
             logger.info("道具数量不足");
             return false;
         }
         ItemStorage pack = account.getPack();
         boolean isReduce = pack.reduceStorageItemByObjectId(item.getObjectId(), quanlity);
+        //保存入库
+        ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
+        itemManager.saveItemStorageEnt(itemStorageEnt);
         return isReduce;
     }
 

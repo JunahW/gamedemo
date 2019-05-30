@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.bag.entity;
 
 import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.utils.JsonUtils;
-import com.example.gamedemo.server.game.bag.model.ItemStorage;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 
 import javax.persistence.Column;
 import javax.persistence.Id;

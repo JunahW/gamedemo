@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.account.model;
 
 import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
-import com.example.gamedemo.server.game.bag.model.ItemStorage;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.io.Serializable;
