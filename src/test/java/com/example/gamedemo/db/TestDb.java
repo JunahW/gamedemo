@@ -1,7 +1,6 @@
 package com.example.gamedemo.db;
 
 import com.example.gamedemo.common.ramcache.orm.Accessor;
-import com.example.gamedemo.server.game.account.entity.Player;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +37,5 @@ public class TestDb {
     @Test
     public void testAccessor() {
 
-        accessor.save(Player.class, new Player());
     }
 }

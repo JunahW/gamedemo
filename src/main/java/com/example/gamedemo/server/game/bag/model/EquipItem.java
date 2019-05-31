@@ -6,13 +6,13 @@ package com.example.gamedemo.server.game.bag.model;
  * @date 2019/5/30
  */
 public class EquipItem extends AbstractItem {
-    private int type;
+    private int testType;
 
-    public int getType() {
-        return type;
+    public int getTestType() {
+        return testType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTestType(int testType) {
+        this.testType = testType;
     }
 }

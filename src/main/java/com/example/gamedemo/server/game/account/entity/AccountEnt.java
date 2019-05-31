@@ -1,49 +1,84 @@
 package com.example.gamedemo.server.game.account.entity;
 
 import com.example.gamedemo.common.ramcache.Entity;
+import com.example.gamedemo.server.game.account.model.Account;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
- * @author: wengj
- * @date: 2019/4/29
- * @description:
+ * @author wengj
+ * @description:账户信息
+ * @date 2019/5/31
  */
+@javax.persistence.Entity
+@Table
 public class AccountEnt implements Entity<String> {
+    /**
+     * 账户id
+     */
+    @Id
     private String accountId;
-    private String accountData;
+
+    /**
+     * 账户名称
+     */
+    @Column
+    private String accountName;
+
+    @Transient
+    private Account account;
+
+
+    @Override
+    public String getId() {
+        return accountId;
+    }
+
+    @Override
+    public void setNullId() {
+        accountId = null;
+    }
+
+    @Override
+    public boolean doSerialize() {
+        this.setAccountId(account.getAccountId());
+        this.setAccountName(account.getAccountName());
+        return true;
+    }
+
+    @Override
+    public boolean doDeSerialize() {
+        Account account = new Account();
+        account.setAccountId(accountId);
+        account.setAccountName(accountName);
+        this.setAccount(account);
+        return true;
+    }
 
     public String getAccountId() {
         return accountId;
     }
 
-    public String getAccountData() {
-        return accountData;
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
-    public void setAccountData(String accountData) {
-        this.accountData = accountData;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
-    @Override
-    public String getId() {
-        return null;
-    }
-
-    @Override
-    public void setNullId() {
-
-    }
-
-    @Override
-    public boolean doSerialize() {
-        return false;
-    }
-
-    @Override
-    public boolean doDeSerialize() {
-        return false;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

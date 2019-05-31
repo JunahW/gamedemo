@@ -28,7 +28,6 @@ public class ItemManager {
     private ConcurrentMap<String, ItemResource> itemResource = ResourceManager.getResourceMap(ItemResource.class);
 
     static {
-        SystemInitializer.initControllerMap();
         SystemInitializer.initResource();
     }
 

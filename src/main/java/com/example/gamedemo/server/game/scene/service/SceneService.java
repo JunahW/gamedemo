@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.scene.service;
 
-import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.util.List;
@@ -21,10 +21,10 @@ public interface SceneService {
     /**
      * 进入场景
      *
-     * @param account
+     * @param player
      * @param scene
      */
-    void gotoScene(Account account, Scene scene);
+    void gotoScene(Player player, Scene scene);
 
     /**
      * 通过ID获取场景
@@ -37,9 +37,9 @@ public interface SceneService {
     /**
      * 去其他的相邻场景
      *
-     * @param account
+     * @param player
      * @param scene
      * @return
      */
-    int move2Scene(Account account, Scene scene);
+    int move2Scene(Player player, Scene scene);
 }

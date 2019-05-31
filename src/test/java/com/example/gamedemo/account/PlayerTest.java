@@ -1,6 +1,6 @@
 package com.example.gamedemo.account;
 
-import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,17 +16,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AccountTest {
+public class PlayerTest {
 
     @Test
     public void testAccountSerializable() throws Exception {
-        Account account = new Account();
-        account.setAcountId("t101");
-        account.setAcountName("t噬魂");
+        Player player = new Player();
+        player.setPlayerId("t101");
+        player.setPlayerName("t噬魂");
         Scene scene = new Scene();
         scene.setSceneId("s101");
         scene.setSceneName("s村庄");
-        //account.setScene(scene);
+        //player.setScene(scene);
 
     }
 

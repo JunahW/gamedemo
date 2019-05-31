@@ -1,10 +1,10 @@
 package com.example.gamedemo.server.game.bag.service;
 
-import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.CommonItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.example.gamedemo.server.game.player.model.Player;
 
 /**
  * @author: wengj
@@ -15,38 +15,38 @@ public interface ItemService {
     /**
      * 添加背包道具
      *
-     * @param account
+     * @param player
      * @param itemId
      * @return
      */
-    boolean addItem(Account account, String itemId);
+    boolean addItem(Player player, String itemId);
 
     /**
      * 使用背包道具
      *
-     * @param account
+     * @param player
      * @param guid
      * @param quanlity
      * @return
      */
-    boolean useItem(Account account, long guid, int quanlity);
+    boolean useItem(Player player, long guid, int quanlity);
 
     /**
      * 查看查询某个物品数量
      *
-     * @param account
+     * @param player
      * @param guid
      * @return
      */
-    int getItemNum(Account account, long guid);
+    int getItemNum(Player player, long guid);
 
     /**
      * 查看背包是否已满
      *
-     * @param account
+     * @param player
      * @return
      */
-    int checkBag(Account account);
+    int checkBag(Player player);
 
     /**
      * 创建道具
@@ -59,12 +59,12 @@ public interface ItemService {
     /**
      * 减少道具
      *
-     * @param account
+     * @param player
      * @param item
      * @param quanlity
      * @return
      */
-    boolean reduceItem(Account account, CommonItem item, int quanlity);
+    boolean reduceItem(Player player, CommonItem item, int quanlity);
 
     /**
      * 获取背包
@@ -82,4 +82,10 @@ public interface ItemService {
      */
     ItemResource getItemResourceByItemResourceId(String itemResourceId);
 
+    /**
+     * 保存背包信息
+     *
+     * @param player
+     */
+    void saveItemStorageEnt(Player player);
 }

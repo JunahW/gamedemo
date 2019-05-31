@@ -9,9 +9,9 @@ public class CM_UnEquipItem {
     /**
      * 物品id
      */
-    private long guid;
+    private int position;
 
-    public long getGuid() {
-        return guid;
+    public int getPosition() {
+        return position;
     }
 }

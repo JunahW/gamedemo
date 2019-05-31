@@ -3,7 +3,7 @@ package com.example.gamedemo.server.game.scene.model;
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
-import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import io.netty.util.internal.ConcurrentSet;
 
 import java.io.Serializable;
@@ -82,7 +82,7 @@ public class Scene implements Serializable, ResourceInterface {
     /**
      * 场景上的用户
      */
-    private ConcurrentSet<Account> accountSet = new ConcurrentSet<>();
+    private ConcurrentSet<Player> playerSet = new ConcurrentSet<>();
 
     /**
      * 场景上的npc
@@ -102,8 +102,8 @@ public class Scene implements Serializable, ResourceInterface {
         return neighbors;
     }
 
-    public ConcurrentSet<Account> getAccountSet() {
-        return accountSet;
+    public ConcurrentSet<Player> getPlayerSet() {
+        return playerSet;
     }
 
     public ConcurrentSet<Npc> getNpcSet() {
@@ -150,8 +150,8 @@ public class Scene implements Serializable, ResourceInterface {
         this.neighbors = neighbors;
     }
 
-    public void setAccountSet(ConcurrentSet<Account> accountSet) {
-        this.accountSet = accountSet;
+    public void setPlayerSet(ConcurrentSet<Player> playerSet) {
+        this.playerSet = playerSet;
     }
 
     public void setNpcSet(ConcurrentSet<Npc> npcSet) {
@@ -211,7 +211,7 @@ public class Scene implements Serializable, ResourceInterface {
                 ", sceneMap=" + Arrays.toString(sceneMap) +
                 ", npcs='" + npcs + '\'' +
                 ", monsters='" + monsters + '\'' +
-                ", accountSet=" + accountSet +
+                ", accountSet=" + playerSet +
                 ", npcSet=" + npcSet +
                 '}';
     }

@@ -4,13 +4,14 @@ import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
-import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.bag.model.EquipItem;
+import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.packet.CM_EquipItem;
 import com.example.gamedemo.server.game.equip.packet.CM_GetEquipMsg;
+import com.example.gamedemo.server.game.equip.packet.CM_ShowEquipmentBar;
 import com.example.gamedemo.server.game.equip.packet.CM_UnEquipItem;
-import com.example.gamedemo.server.game.equip.service.EquipmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,10 +22,6 @@ import org.springframework.stereotype.Component;
 @Component
 @HandlerClass
 public class EquipmentController {
-    @Autowired
-    private EquipmentService equipmentService;
-
-
     /**
      * 穿上装备
      *
@@ -33,8 +30,8 @@ public class EquipmentController {
      */
     @HandlerMethod(cmd = "equip")
     public void equip(TSession session, CM_EquipItem req) {
-        Account account = session.getAccount();
-        equipmentService.equip(account, req.getGuid());
+        Player player = session.getPlayer();
+        SpringContext.getEquipmentService().equip(player, req.getGuid());
         System.out.println("装备道具");
     }
 
@@ -46,9 +43,9 @@ public class EquipmentController {
      */
     @HandlerMethod(cmd = "unEquip")
     public void unEquip(TSession session, CM_UnEquipItem req) {
-        Account account = session.getAccount();
+        Player player = session.getPlayer();
 
-        boolean flag = equipmentService.unEquip(account, req.getGuid());
+        boolean flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
         System.out.println("脱下装备");
         SessionManager.sendMessage(session, "脱下装备" + "\r\n");
     }
@@ -61,10 +58,24 @@ public class EquipmentController {
      */
     @HandlerMethod(cmd = "getEquip")
     public void getEquipmentMsg(TSession session, CM_GetEquipMsg req) {
-        Account account = session.getAccount();
-        EquipItem equipItem = equipmentService.getEquipItemByGuid(account, req.getGuid());
+        Player player = session.getPlayer();
+        AbstractItem equipItem = SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
         SessionManager.sendMessage(session, "装备信息：" + equipItem + "\r\n");
         System.out.println("装备信息");
+
+    }
+
+    /**
+     * 展示装备栏
+     *
+     * @param session
+     * @param req
+     */
+    @HandlerMethod(cmd = "showBar")
+    public void showEquipment(TSession session, CM_ShowEquipmentBar req) {
+        Player player = session.getPlayer();
+        EquipStorage equipBar = player.getEquipBar();
+        SessionManager.sendMessage(session, "装备栏：" + equipBar + "\r\n");
 
     }
 }

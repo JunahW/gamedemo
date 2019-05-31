@@ -1,6 +1,10 @@
 package com.example.gamedemo.common.utils;
 
-import com.alibaba.fastjson.JSON;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 
 /**
  * @author wengj
@@ -9,6 +13,7 @@ import com.alibaba.fastjson.JSON;
  */
 public class JsonUtils {
 
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     /**
      * 序列化对象
@@ -17,7 +22,13 @@ public class JsonUtils {
      * @return
      */
     public static String serializeEntity(Object object) {
-        return JSON.toJSONString(object);
+        String value = null;
+        try {
+            value = mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return value;
     }
 
     /**
@@ -29,6 +40,12 @@ public class JsonUtils {
      * @return
      */
     public static <T> T deSerializeEntity(String jsonString, Class<T> clazz) {
-        return JSON.parseObject(jsonString, clazz);
+        T readValue = null;
+        try {
+            readValue = mapper.readValue(jsonString, clazz);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readValue;
     }
 }

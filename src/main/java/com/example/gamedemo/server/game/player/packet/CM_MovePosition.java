@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game.account.packet;
+package com.example.gamedemo.server.game.player.packet;
 
 /**
  * @author wengj

@@ -4,9 +4,9 @@ import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
-import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.bag.packet.*;
 import com.example.gamedemo.server.game.bag.service.ItemService;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,8 +30,8 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "addItem")
     public void addItem(TSession session, CM_AddItem req) {
-        Account account = session.getAccount();
-        boolean addItem = itemService.addItem(account, req.getItemResourceId());
+        Player player = session.getPlayer();
+        boolean addItem = itemService.addItem(player, req.getItemResourceId());
         String returnMsg = null;
         if (addItem) {
             returnMsg = "添加成功";
@@ -51,8 +51,8 @@ public class StorageController {
     @HandlerMethod(cmd = "useItem")
     public void userItem(TSession session, CM_UseItem req) {
 
-        Account account = session.getAccount();
-        boolean useItem = itemService.useItem(account, req.getGuid(), 1);
+        Player player = session.getPlayer();
+        boolean useItem = itemService.useItem(player, req.getGuid(), 1);
         String returnMsg = null;
         if (useItem) {
             returnMsg = "使用成功";
@@ -70,8 +70,8 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "showBag")
     public void showBag(TSession session, CM_ShowStorage req) {
-        Account account = session.getAccount();
-        SessionManager.sendMessage(session, "背包数据" + account.getPack() + "\r\n");
+        Player player = session.getPlayer();
+        SessionManager.sendMessage(session, "背包数据" + player.getPack() + "\r\n");
     }
 
     /**
@@ -82,8 +82,8 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "getItemNum")
     public void getItemNum(TSession session, CM_GetItemNum req) {
-        Account account = session.getAccount();
-        int itemNum = itemService.getItemNum(account, req.getGuid());
+        Player player = session.getPlayer();
+        int itemNum = itemService.getItemNum(player, req.getGuid());
         SessionManager.sendMessage(session, "数量还有：" + itemNum + "\r\n");
 
     }
@@ -96,7 +96,7 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "removeItem")
     public void removeItem(TSession session, CM_RemoveItem req) {
-        Account account = session.getAccount();
+        Player player = session.getPlayer();
 
 
     }
@@ -109,8 +109,8 @@ public class StorageController {
      */
     @HandlerMethod(cmd = "checkBag")
     public void checkBag(TSession session, CM_CheckStorage req) {
-        Account account = session.getAccount();
-        int bagNum = itemService.checkBag(account);
+        Player player = session.getPlayer();
+        int bagNum = itemService.checkBag(player);
         SessionManager.sendMessage(session, "把背包还剩容量：" + bagNum + "\r\n");
 
     }

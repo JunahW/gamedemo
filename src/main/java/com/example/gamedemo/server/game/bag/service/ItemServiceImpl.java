@@ -1,13 +1,13 @@
 package com.example.gamedemo.server.game.bag.service;
 
 import com.example.gamedemo.common.utils.UniqueIdUtils;
-import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.bag.constant.ItemType;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.CommonItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemManager itemManager;
 
+
     @Override
-    public boolean addItem(Account account, String itemId) {
-        ItemStorage pack = account.getPack();
+    public boolean addItem(Player player, String itemId) {
+        ItemStorage pack = player.getPack();
         AbstractItem abstractItem = createItem(itemId);
         if (abstractItem == null) {
             return false;
@@ -36,15 +37,14 @@ public class ItemServiceImpl implements ItemService {
         boolean isAdd = pack.addStorageItem(abstractItem);
         if (isAdd) {
             //保存入库
-            ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
-            itemManager.saveItemStorageEnt(itemStorageEnt);
+            saveItemStorageEnt(player);
         }
         return isAdd;
     }
 
     @Override
-    public boolean useItem(Account account, long guid, int quanlity) {
-        ItemStorage pack = account.getPack();
+    public boolean useItem(Player player, long guid, int quanlity) {
+        ItemStorage pack = player.getPack();
         AbstractItem commonItem = pack.getStorageItemByObjectId(guid);
         if (commonItem == null) {
             logger.info("道具不存在");
@@ -56,11 +56,10 @@ public class ItemServiceImpl implements ItemService {
         }
         //减少道具
         pack.reduceStorageItemByObjectId(guid, quanlity);
-        logger.info("[{}]玩家使用了道具[{}]", account.getAcountName(), commonItem.getItemName());
+        logger.info("[{}]玩家使用了道具[{}]", player.getPlayerName(), commonItem.getItemName());
 
         //保存入库
-        ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
-        itemManager.saveItemStorageEnt(itemStorageEnt);
+        saveItemStorageEnt(player);
 
         //产生效果
 
@@ -68,19 +67,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public int getItemNum(Account account, long guid) {
-        ItemStorage pack = account.getPack();
+    public int getItemNum(Player player, long guid) {
+        ItemStorage pack = player.getPack();
         AbstractItem item = pack.getStorageItemByObjectId(guid);
         if (item == null) {
-            logger.info("[{}]背包不存在该物品[{}]", account.getAcountName(), guid);
+            logger.info("[{}]背包不存在该物品[{}]", player.getPlayerName(), guid);
             return -1;
         }
         return item.getQuanlity();
     }
 
     @Override
-    public int checkBag(Account account) {
-        ItemStorage pack = account.getPack();
+    public int checkBag(Player player) {
+        ItemStorage pack = player.getPack();
         AbstractItem[] commonItems = pack.getAbstractItems();
         int size = 0;
         for (AbstractItem item : commonItems) {
@@ -121,16 +120,15 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public boolean reduceItem(Account account, CommonItem item, int quanlity) {
+    public boolean reduceItem(Player player, CommonItem item, int quanlity) {
         if (item.getQuanlity() < quanlity) {
             logger.info("道具数量不足");
             return false;
         }
-        ItemStorage pack = account.getPack();
+        ItemStorage pack = player.getPack();
         boolean isReduce = pack.reduceStorageItemByObjectId(item.getObjectId(), quanlity);
         //保存入库
-        ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(account.getAcountId());
-        itemManager.saveItemStorageEnt(itemStorageEnt);
+        saveItemStorageEnt(player);
         return isReduce;
     }
 
@@ -142,5 +140,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemResource getItemResourceByItemResourceId(String itemResourceId) {
         return itemManager.getResourceById(itemResourceId);
+    }
+
+    @Override
+    public void saveItemStorageEnt(Player player) {
+        ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(player.getAccountId());
+        itemManager.saveItemStorageEnt(itemStorageEnt);
     }
 }

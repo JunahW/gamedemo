@@ -1,12 +1,18 @@
 package com.example.gamedemo.server.game.bag.model;
 
 import com.example.gamedemo.server.game.base.gameobject.GameObject;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 /**
  * @author wengj
  * @description：
  * @date 2019/5/30
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = true)
+/*@JsonSubTypes({@JsonSubTypes.Type(value = CommonItem.class, name = "CommonItem")
+        , @JsonSubTypes.Type(value = EquipItem.class, name = "EquipItem")
+        , @JsonSubTypes.Type(value = GemstoneItem.class, name = "GemstoneItem")
+        , @JsonSubTypes.Type(value = MedicineItem.class, name = "MedicineItem")})*/
 public class AbstractItem extends GameObject {
     /**
      * 道具的资源id
@@ -44,6 +50,7 @@ public class AbstractItem extends GameObject {
     public int getItemType() {
         return itemType;
     }
+
 
     public void setItemResourceId(String itemResourceId) {
         this.itemResourceId = itemResourceId;

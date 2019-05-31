@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.gamedemo.server.game.player.mapper.PlayerMapper">
+    <select id="selectAccountById" parameterType="string"
+            resultType="com.example.gamedemo.server.game.player.entity.PlayerEnt">
+        select accountId,accountData from player where accountId=#{accountId}
+    </select>
+    <insert id="addAcount" parameterType="com.example.gamedemo.server.game.player.entity.PlayerEnt">
+        insert into player(accountId,accountData) values (#{accountId},#{accountData})
+    </insert>
+
+    <update id="updateAccount" parameterType="com.example.gamedemo.server.game.player.entity.PlayerEnt">
+        update player set accountData = #{accountData} where accountId=#{accountId}
+    </update>
+
+    <select id="selectAccountEntList" resultType="com.example.gamedemo.server.game.player.entity.PlayerEnt">
+        select accountId,accountData from player
+    </select>
+</mapper>

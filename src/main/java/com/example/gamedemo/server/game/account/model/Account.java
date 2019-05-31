@@ -1,119 +1,48 @@
 package com.example.gamedemo.server.game.account.model;
 
-import com.example.gamedemo.server.game.SpringContext;
-import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
-import com.example.gamedemo.server.game.bag.storage.ItemStorage;
-import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
-import com.example.gamedemo.server.game.equip.storage.EquipStorage;
-import com.example.gamedemo.server.game.scene.model.Scene;
-
-import java.io.Serializable;
+import com.example.gamedemo.server.game.account.entity.AccountEnt;
 
 /**
- * @author: wengj
- * @date: 2019/4/25
- * @description: 用户账号
+ * @author wengj
+ * @description:账户信息
+ * @date 2019/5/31
  */
-public class Account implements Serializable {
-    private String acountId;
-    private String acountName;
-
+public class Account {
     /**
-     * x轴位置
+     * 账户id
      */
-    private int x;
+    private String accountId;
 
     /**
-     * y轴位置
+     * 账户名称
      */
-    private int y;
+    private String accountName;
 
-    /**
-     * 场景
-     */
-    private Scene scene;
-
-    /**
-     * 背包
-     */
-    private ItemStorage itemStorage = new ItemStorage();
-
-    public String getAcountId() {
-        return acountId;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public String getAcountName() {
-        return acountName;
+    public String getAccountName() {
+        return accountName;
     }
 
-    public Scene getScene() {
-        return scene;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public ItemStorage getItemStorage() {
-        return itemStorage;
-    }
-
-    public void setAcountId(String acountId) {
-        this.acountId = acountId;
-    }
-
-    public void setAcountName(String acountName) {
-        this.acountName = acountName;
-    }
-
-    public void setScene(Scene scene) {
-        this.scene = scene;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public void setItemStorage(ItemStorage itemStorage) {
-        this.itemStorage = itemStorage;
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
     /**
-     * 获取背包
+     * 获取账户的数据库对象
      *
      * @return
      */
-    public ItemStorage getPack() {
-        ItemStorageEnt pack = SpringContext.getItemService().getItemStorageEntByAccountId(acountId);
-        return pack.getItemStorage();
-    }
-
-    /**
-     * 获取装备栏
-     *
-     * @return
-     */
-    public EquipStorage getEquipBar() {
-        EquipStorageEnt equipStorageEnt = SpringContext.getEquipmentService().getEquipStorageEnt(acountId);
-        return equipStorageEnt.getEquipStorage();
-    }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "acountId='" + acountId + '\'' +
-                ", acountName='" + acountName + '\'' +
-                ", x=" + x +
-                ", y=" + y +
-                // ", scene=" + scene.getSceneName() +
-                '}';
+    public AccountEnt getAccountEnt() {
+        AccountEnt accountEnt = new AccountEnt();
+        accountEnt.setAccountId(accountId);
+        accountEnt.setAccountName(accountName);
+        return accountEnt;
     }
 }

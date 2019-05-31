@@ -3,6 +3,7 @@ package com.example.gamedemo.common.session;
 import com.example.gamedemo.common.constant.SessionAttributeKey;
 import com.example.gamedemo.common.utils.AttributeUtils;
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,11 +60,22 @@ public class SessionManager {
      * 注册sesson
      *
      * @param session session
+     * @param player  玩家
+     */
+    public static void registerPlayer(TSession session, Player player) {
+        session.registerPlayer(player);
+        accountIdSessionMap.put(player.getPlayerId(), session);
+    }
+
+    /**
+     * 注册sesson
+     *
+     * @param session session
      * @param account 用户
      */
-    public static void register(TSession session, Account account) {
+    public static void registerAccount(TSession session, Account account) {
+        ;
         session.registerAccount(account);
-        accountIdSessionMap.put(account.getAcountId(), session);
     }
 
     /**
@@ -99,10 +111,10 @@ public class SessionManager {
         if (session != null) {
             AttributeUtils.set(session.getChannel(), SessionAttributeKey.SESSION, null);
 
-            Account account = session.getAccount();
-            if (account != null) {
-                boolean remove = accountIdSessionMap.remove(account.getAcountId(), session);
-                logger.info("Session unregister, accountId={}, remove={}", account.getAcountId(), remove);
+            Player player = session.getPlayer();
+            if (player != null) {
+                boolean remove = accountIdSessionMap.remove(player.getPlayerId(), session);
+                logger.info("Session unregister, accountId={}, remove={}", player.getPlayerId(), remove);
             }
         }
     }
@@ -143,8 +155,8 @@ public class SessionManager {
      * @param channel
      * @return
      */
-    public static Account getAccountByChannel(Channel channel) {
-        return AttributeUtils.get(channel, SessionAttributeKey.SESSION).getAccount();
+    public static Player getAccountByChannel(Channel channel) {
+        return AttributeUtils.get(channel, SessionAttributeKey.SESSION).getPlayer();
     }
 
     /**

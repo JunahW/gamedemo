@@ -1,6 +1,7 @@
 package com.example.gamedemo.common.session;
 
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class TSession {
      * 用户信息可能为空。
      * 只有在register(登录)之后，里面才会赋值
      */
+    private Player player;
+
     private Account account;
     /**
      * 创建时间
@@ -32,6 +35,19 @@ public class TSession {
     TSession(Channel channel) {
         this.channel = channel;
         this.createTime = System.currentTimeMillis();
+    }
+
+    /**
+     * 往session里面写入player，一般是在选择角色
+     *
+     * @param player 玩家信息
+     */
+    void registerPlayer(Player player) {
+        /**
+         * 将accounid放入player
+         */
+        player.setAccountId(account.getAccountId());
+        this.player = player;
     }
 
     /**
@@ -60,15 +76,23 @@ public class TSession {
 
     }
 
-    public Account getAccount() {
-        return account;
+    public Player getPlayer() {
+        return player;
     }
 
     public Channel getChannel() {
         return channel;
     }
 
+    public Account getAccount() {
+        return account;
+    }
+
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

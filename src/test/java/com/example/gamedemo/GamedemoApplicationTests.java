@@ -1,16 +1,15 @@
 package com.example.gamedemo;
 
-import com.alibaba.fastjson.JSON;
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.common.utils.ApplicationContextProvider;
-import com.example.gamedemo.server.game.account.entity.AccountEnt;
-import com.example.gamedemo.server.game.account.mapper.AccountMapper;
-import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.account.packet.CM_CreateAccount;
-import com.example.gamedemo.server.game.role.service.RoleService;
+import com.example.gamedemo.server.game.account.service.AccountService;
+import com.example.gamedemo.server.game.player.entity.PlayerEnt;
+import com.example.gamedemo.server.game.player.mapper.PlayerMapper;
+import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.apache.ibatis.annotations.Mapper;
 import org.junit.Test;
@@ -31,10 +30,10 @@ import java.util.Set;
 @SpringBootTest
 public class GamedemoApplicationTests {
     @Autowired
-    private AccountMapper accountMapper;
+    private PlayerMapper playerMapper;
 
     @Autowired
-    private RoleService roleService;
+    private AccountService accountService;
 
     @Autowired
     ApplicationContext applicationContext;
@@ -45,29 +44,22 @@ public class GamedemoApplicationTests {
 
     @Test
     public void testWriteObject() {
-        AccountEnt accountEnt = new AccountEnt();
-        accountEnt.setAccountId("a1007");
-        Account account = new Account();
-        account.setAcountId("a1007");
-        account.setAcountName("test07");
-        String accountData = JSON.toJSONString(account);
-        accountEnt.setAccountData(accountData);
-        accountMapper.addAcount(accountEnt);
+        PlayerEnt playerEnt = new PlayerEnt();
+        playerEnt.setAccountId("a1007");
+        Player player = new Player();
+        player.setPlayerId("a1007");
+        player.setPlayerName("test07");
+
+        playerMapper.addAcount(playerEnt);
 
     }
 
     @Test
     public void readObject() {
-        AccountEnt accountEnt = accountMapper.selectAccountById("a1007");
-        Account account = JSON.parseObject(accountEnt.getAccountData(), Account.class);
-        System.out.println(account);
+        PlayerEnt playerEnt = playerMapper.selectAccountById("a1007");
+
     }
 
-    @Test
-    public void testSingle() throws Exception {
-        roleService.saveRole(null);
-        Thread.sleep(6000);
-    }
 
     @Test
     public void testClass() {
@@ -95,13 +87,13 @@ public class GamedemoApplicationTests {
 
     @Test
     public void testObjectSize() {
-        LinkedList<Account> accounts = new LinkedList<>();
+        LinkedList<Player> players = new LinkedList<>();
         for (int i = 0; i < 1000; i++) {
-            Account account = new Account();
-            account.setAcountId("54654546");
-            account.setAcountName("5465465的店了解到");
-            account.setScene(new Scene("555"));
-            accounts.add(account);
+            Player player = new Player();
+            player.setPlayerId("54654546");
+            player.setPlayerName("5465465的店了解到");
+            player.setScene(new Scene("555"));
+            players.add(player);
         }
         System.out.println();
     }
@@ -152,7 +144,7 @@ public class GamedemoApplicationTests {
 
     @Test
     public void testReflectPropertyOrder() {
-        Class<CM_CreateAccount> accountClass = CM_CreateAccount.class;
+        Class<CM_CreatePlayer> accountClass = CM_CreatePlayer.class;
         Field[] declaredFields = accountClass.getDeclaredFields();
         for (Field field : declaredFields) {
             System.out.println(field.getName());

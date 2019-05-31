@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.Ordered;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -26,7 +25,6 @@ import java.util.Set;
  * @description 系统初始化
  * @date 2019/5/7
  */
-@Component
 public class SystemInitializer implements Ordered {
 
     private static Logger logger = LoggerFactory.getLogger(SystemInitializer.class);

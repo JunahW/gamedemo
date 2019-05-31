@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.equip.service;
 
-import com.example.gamedemo.server.game.account.model.Account;
-import com.example.gamedemo.server.game.bag.model.EquipItem;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.player.model.Player;
 
 /**
  * @author: wengj
@@ -18,36 +18,45 @@ public interface EquipmentService {
     /**
      * 穿装备
      *
-     * @param account
+     * @param player
      * @param equipId
      * @return
      */
-    boolean equip(Account account, long equipId);
+    boolean equip(Player player, long equipId);
 
     /**
      * 脱下装备
      *
-     * @param account
-     * @param equipId
+     * @param player
+     * @param position
      * @return
      */
-    boolean unEquip(Account account, long equipId);
+    boolean unEquip(Player player, int position);
 
     /**
      * 获取装备信息
      *
-     * @param account
+     * @param player
      * @param guid
      * @return
      */
-    EquipItem getEquipItemByGuid(Account account, long guid);
+    AbstractItem getEquipItemByGuid(Player player, long guid);
+
+    /**
+     * 获取部位的装备信息
+     *
+     * @param player
+     * @param position
+     * @return
+     */
+    AbstractItem getEquipItemByPosition(Player player, int position);
 
     /**
      * 保存装备栏的数据
      *
-     * @param account
+     * @param player
      */
-    void saveEquipmentStorageEnt(Account account);
+    void saveEquipmentStorageEnt(Player player);
 
     /**
      * 获取装备栏
