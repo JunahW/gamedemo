@@ -9,10 +9,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @date 2019/5/30
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = false)
-/*@JsonSubTypes({@JsonSubTypes.Type(value = CommonItem.class, name = "CommonItem")
-        , @JsonSubTypes.Type(value = EquipItem.class, name = "EquipItem")
-        , @JsonSubTypes.Type(value = GemstoneItem.class, name = "GemstoneItem")
-        , @JsonSubTypes.Type(value = MedicineItem.class, name = "MedicineItem")})*/
 public class AbstractItem extends GameObject {
     /**
      * 道具的资源id
@@ -27,7 +23,7 @@ public class AbstractItem extends GameObject {
     /**
      * 道具数量
      */
-    private int quanlity;
+    private int quantity;
 
     /**
      * 道具类型
@@ -43,8 +39,8 @@ public class AbstractItem extends GameObject {
         return itemName;
     }
 
-    public int getQuanlity() {
-        return quanlity;
+    public int getQuantity() {
+        return quantity;
     }
 
     public int getItemType() {
@@ -60,8 +56,8 @@ public class AbstractItem extends GameObject {
         this.itemName = itemName;
     }
 
-    public void setQuanlity(int quanlity) {
-        this.quanlity = quanlity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setItemType(int itemType) {
@@ -73,7 +69,7 @@ public class AbstractItem extends GameObject {
         return "AbstractItem{" +
                 "itemResourceId='" + itemResourceId + '\'' +
                 ", itemName='" + itemName + '\'' +
-                ", quanlity=" + quanlity +
+                ", quantity=" + quantity +
                 ", itemType=" + itemType +
                 ", id=" + super.getObjectId() +
                 '}';

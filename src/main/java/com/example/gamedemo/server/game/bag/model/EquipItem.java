@@ -6,13 +6,29 @@ package com.example.gamedemo.server.game.bag.model;
  * @date 2019/5/30
  */
 public class EquipItem extends AbstractItem {
-    private int testType;
+    /**
+     * 玩家类型（职业）
+     */
+    private String[] playerTypes;
 
-    public int getTestType() {
-        return testType;
+    /**
+     * 装备位置
+     */
+    private int position;
+
+    public String[] getPlayerTypes() {
+        return playerTypes;
     }
 
-    public void setTestType(int testType) {
-        this.testType = testType;
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPlayerTypes(String[] playerTypes) {
+        this.playerTypes = playerTypes;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
     }
 }

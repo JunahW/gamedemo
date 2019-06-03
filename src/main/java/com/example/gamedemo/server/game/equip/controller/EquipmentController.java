@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.equip.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.SpringContext;
@@ -31,8 +32,18 @@ public class EquipmentController {
     @HandlerMethod(cmd = "equip")
     public void equip(TSession session, CM_EquipItem req) {
         Player player = session.getPlayer();
-        SpringContext.getEquipmentService().equip(player, req.getGuid());
-        System.out.println("装备道具");
+        boolean equip = false;
+        try {
+            equip = SpringContext.getEquipmentService().equip(player, req.getGuid());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "装备失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
+        if (equip) {
+            SessionManager.sendMessage(session, "穿上装备成功" + "\r\n");
+        } else {
+            SessionManager.sendMessage(session, "穿上装备失败" + "\r\n");
+        }
+
     }
 
     /**
@@ -44,10 +55,18 @@ public class EquipmentController {
     @HandlerMethod(cmd = "unEquip")
     public void unEquip(TSession session, CM_UnEquipItem req) {
         Player player = session.getPlayer();
+        boolean flag = false;
+        try {
+            flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "脱下装备失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
+        if (flag) {
+            SessionManager.sendMessage(session, "脱下装备" + "\r\n");
+        } else {
+            SessionManager.sendMessage(session, "脱下装备失败" + "\r\n");
+        }
 
-        boolean flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
-        System.out.println("脱下装备");
-        SessionManager.sendMessage(session, "脱下装备" + "\r\n");
     }
 
     /**
@@ -61,8 +80,6 @@ public class EquipmentController {
         Player player = session.getPlayer();
         AbstractItem equipItem = SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
         SessionManager.sendMessage(session, "装备信息：" + equipItem + "\r\n");
-        System.out.println("装备信息");
-
     }
 
     /**

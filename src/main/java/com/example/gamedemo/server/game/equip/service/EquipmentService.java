@@ -61,10 +61,10 @@ public interface EquipmentService {
     /**
      * 获取装备栏
      *
-     * @param accountId
+     * @param playerId
      * @return
      */
-    EquipStorageEnt getEquipStorageEnt(String accountId);
+    EquipStorageEnt getEquipStorageEnt(String playerId);
 
 
 }

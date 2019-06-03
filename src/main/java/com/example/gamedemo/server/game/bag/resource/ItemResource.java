@@ -36,7 +36,15 @@ public class ItemResource implements ResourceInterface {
     private int overLimit;
 
     /**
-     *
+     * 玩家类型（职业）用字符串表示数据","隔开
+     */
+    @ExcelColumn(columnName = "playerType")
+    private String playerType;
+
+    private String[] playerTypes;
+
+    /**
+     * 装备的位置
      */
     @ExcelColumn(columnName = "position")
     private int position;
@@ -61,6 +69,22 @@ public class ItemResource implements ResourceInterface {
         return itemId;
     }
 
+    public String getPlayerType() {
+        return playerType;
+    }
+
+    public String[] getPlayerTypes() {
+        if (playerTypes == null) {
+            String[] playerStrings = this.getPlayerType().split(",");
+            this.playerTypes = playerStrings;
+        }
+        return playerTypes;
+    }
+
+    public void setPlayerTypes(String[] playerTypes) {
+        this.playerTypes = playerTypes;
+    }
+
     public int getPosition() {
         return position;
     }
@@ -75,6 +99,10 @@ public class ItemResource implements ResourceInterface {
 
     public void setItemType(int itemType) {
         this.itemType = itemType;
+    }
+
+    public void setPlayerType(String playerType) {
+        this.playerType = playerType;
     }
 
     public void setOverLimit(int overLimit) {

@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.equip.storage;
 
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 
 import java.util.Arrays;
@@ -49,10 +50,10 @@ public class EquipStorage {
      * 穿装备
      *
      * @param equipItem
-     * @param position
      * @return 返回卸下的装备
      */
-    public AbstractItem equip(AbstractItem equipItem, int position) {
+    public AbstractItem equip(EquipItem equipItem) {
+        int position = equipItem.getPosition();
         AbstractItem unEquipItem = equipItems[position];
         equipItems[position] = equipItem;
         return unEquipItem;

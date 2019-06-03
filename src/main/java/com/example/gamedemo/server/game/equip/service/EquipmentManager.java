@@ -32,7 +32,7 @@ public class EquipmentManager {
     /**
      * 获取装备栏
      *
-     * @param accountId
+     * @param playerId
      * @return
      */
     public EquipStorageEnt getEquipStorageEnt(String playerId) {
@@ -43,7 +43,7 @@ public class EquipmentManager {
                 EquipStorage bar = new EquipStorage();
 
                 equipStorageEnt.setEquipStorage(bar);
-                equipStorageEnt.setAccountId(playerId);
+                equipStorageEnt.setPlayerId(playerId);
                 equipStorageEnt.doSerialize();
                 return equipStorageEnt;
             }

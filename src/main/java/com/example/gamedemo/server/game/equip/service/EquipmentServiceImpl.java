@@ -1,7 +1,10 @@
 package com.example.gamedemo.server.game.equip.service;
 
+import com.example.gamedemo.common.constant.I18nId;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
@@ -29,20 +32,31 @@ public class EquipmentServiceImpl implements EquipmentService {
         AbstractItem item = player.getPack().getStorageItemByObjectId(equipId);
         if (item == null) {
             logger.warn("该装备[{}]不存在", equipId);
-            return false;
+            RequestException.throwException(I18nId.EQUIPMENT_NO_EXIST);
         }
+
         String itemResourceId = item.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
+        /**
+         * 如果非装备类型，直接返回
+         */
+        if (!(item instanceof EquipItem)) {
+            logger.info("[{}]该道具不是装备类型", itemResource.getName());
+            RequestException.throwException(I18nId.ITEM_NO_EQUIPMENT);
+        }
 
-        //TODO 判断是否可装备
+        EquipItem equipItem = (EquipItem) item;
+        equipItem.setPosition(itemResource.getPosition());
+        equipItem.setPlayerTypes(itemResource.getPlayerTypes());
+
+        //判断是否可装备
+        if (!verifyJob(player, equipItem)) {
+            logger.info("玩家职业和道具类型不匹配");
+            RequestException.throwException(I18nId.PLAYER_TYPE_NO_MATCH_EQUIPMENT);
+        }
 
         //装备物品
-        int position = itemResource.getPosition();
-        if (!isLegal(position)) {
-            logger.info("[{}]该道具不是装备类型", itemResource.getName());
-            return false;
-        }
-        player.getEquipBar().equip(item, position);
+        player.getEquipBar().equip(equipItem);
         //保存
         saveEquipmentStorageEnt(player);
 
@@ -58,9 +72,14 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public boolean unEquip(Player player, int position) {
         AbstractItem equipItem = player.getEquipBar().unEquip(position);
+        //检查参数是否合法
+        if (!isLegal(position)) {
+            logger.info("请求从参数有误position[{}]", position);
+            RequestException.throwException(I18nId.POSITION_NO_DEFINE);
+        }
         if (equipItem == null) {
             logger.info("该部位不存在物件", EquipmentType.getEquipmentTypeId(position));
-            return false;
+            RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
         }
         logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getObjectId());
         return true;
@@ -100,5 +119,26 @@ public class EquipmentServiceImpl implements EquipmentService {
             return false;
         }
         return true;
+    }
+
+
+    /**
+     * 检查装备和玩家职业是否匹配
+     *
+     * @param player
+     * @param equipItem
+     * @return
+     */
+    private boolean verifyJob(Player player, EquipItem equipItem) {
+        /**
+         * 判断玩家类型和装备类型是否匹配
+         */
+        String[] playerTypes = equipItem.getPlayerTypes();
+        for (String playerType : playerTypes) {
+            if (playerType.equals(player.getPlayerType())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -23,7 +23,7 @@ public class EquipStorageEnt implements Entity<String> {
      * 主键
      */
     @Id
-    private String accountId;
+    private String playerId;
 
     /**
      * 装备栏数据
@@ -37,12 +37,12 @@ public class EquipStorageEnt implements Entity<String> {
 
     @Override
     public String getId() {
-        return this.accountId;
+        return this.playerId;
     }
 
     @Override
     public void setNullId() {
-        this.accountId = null;
+        this.playerId = null;
     }
 
     @Override
@@ -57,8 +57,8 @@ public class EquipStorageEnt implements Entity<String> {
         return true;
     }
 
-    public String getAccountId() {
-        return accountId;
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
     }
 
     public String getEquipStorageData() {
@@ -69,8 +69,8 @@ public class EquipStorageEnt implements Entity<String> {
         return equipStorage;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
+    public String getPlayerId() {
+        return playerId;
     }
 
     public void setEquipStorageData(String equipStorageData) {

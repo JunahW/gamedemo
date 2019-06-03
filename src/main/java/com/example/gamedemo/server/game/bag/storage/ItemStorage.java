@@ -81,10 +81,10 @@ public class ItemStorage {
         boolean isReduce = false;
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
-                if (abstractItems[i].getQuanlity() >= quanlity) {
-                    int size = abstractItems[i].getQuanlity() - quanlity;
+                if (abstractItems[i].getQuantity() >= quanlity) {
+                    int size = abstractItems[i].getQuantity() - quanlity;
                     if (size > 0) {
-                        abstractItems[i].setQuanlity(size);
+                        abstractItems[i].setQuantity(size);
                     } else {
                         abstractItems[i] = null;
                     }
@@ -114,7 +114,7 @@ public class ItemStorage {
                     //可堆叠
                     //已经存在
                     if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
-                        abstractItem.setQuanlity(abstractItem.getQuanlity() + 1);
+                        abstractItem.setQuantity(abstractItem.getQuantity() + 1);
                         isAdd = true;
                         break;
                     }

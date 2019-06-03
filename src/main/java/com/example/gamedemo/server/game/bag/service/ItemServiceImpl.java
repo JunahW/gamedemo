@@ -50,7 +50,7 @@ public class ItemServiceImpl implements ItemService {
             logger.info("道具不存在");
             return false;
         }
-        if (commonItem.getQuanlity() < quanlity) {
+        if (commonItem.getQuantity() < quanlity) {
             logger.info("道具数量不足");
             return false;
         }
@@ -74,7 +74,7 @@ public class ItemServiceImpl implements ItemService {
             logger.info("[{}]背包不存在该物品[{}]", player.getPlayerName(), guid);
             return -1;
         }
-        return item.getQuanlity();
+        return item.getQuantity();
     }
 
     @Override
@@ -115,13 +115,13 @@ public class ItemServiceImpl implements ItemService {
         abstractItem.setObjectId(UniqueIdUtils.nextId());
         abstractItem.setItemName(itemResource.getName());
         abstractItem.setItemResourceId(itemResource.getItemId());
-        abstractItem.setQuanlity(num);
+        abstractItem.setQuantity(num);
         return abstractItem;
     }
 
     @Override
     public boolean reduceItem(Player player, CommonItem item, int quanlity) {
-        if (item.getQuanlity() < quanlity) {
+        if (item.getQuantity() < quanlity) {
             logger.info("道具数量不足");
             return false;
         }
