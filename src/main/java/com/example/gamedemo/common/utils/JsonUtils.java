@@ -2,9 +2,11 @@ package com.example.gamedemo.common.utils;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author wengj
@@ -47,5 +49,22 @@ public class JsonUtils {
             e.printStackTrace();
         }
         return readValue;
+    }
+
+    /**
+     * 将json字符串装换为list集合
+     *
+     * @param jsonString
+     * @param typeReference
+     * @return
+     */
+    public static <T> List<T> getListByString(String jsonString, TypeReference<List<T>> typeReference) {
+        List<T> list = null;
+        try {
+            list = mapper.readValue(jsonString, typeReference);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 }
