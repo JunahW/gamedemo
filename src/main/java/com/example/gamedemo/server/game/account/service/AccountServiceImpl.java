@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.account.service;
 
+import com.example.gamedemo.common.constant.I18nId;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.model.Account;
@@ -22,20 +24,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean createAccount(Account account) {
-        try {
-            //判断用户是否存在
-            String accountId = account.getAccountId();
-            AccountEnt load = accessor.load(AccountEnt.class, accountId);
-            if (load != null) {
-                logger.info("[{}]该账户已存在", load.getAccountName());
-                return false;
-            }
-            AccountEnt accountEnt = account.getAccountEnt();
-            accessor.save(AccountEnt.class, accountEnt);
-            logger.info("[{}]创建成功", accountEnt.getAccountName());
-        } catch (Exception e) {
-
+        //判断用户是否存在
+        String accountId = account.getAccountId();
+        AccountEnt load = accessor.load(AccountEnt.class, accountId);
+        if (load != null) {
+            logger.info("[{}]该账户已存在", load.getAccountName());
+            RequestException.throwException(I18nId.ACCOUNT_EXIST);
         }
+        AccountEnt accountEnt = account.getAccountEnt();
+        accessor.save(AccountEnt.class, accountEnt);
+        logger.info("[{}]创建成功", accountEnt.getAccountName());
         return true;
     }
 
@@ -48,6 +46,7 @@ public class AccountServiceImpl implements AccountService {
             return account;
         } else {
             logger.info("账户不存在");
+            RequestException.throwException(I18nId.ACCOUNT_NO_EXIST);
         }
         return null;
     }

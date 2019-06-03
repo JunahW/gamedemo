@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.bag.service;
 
+import com.example.gamedemo.common.constant.I18nId;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.utils.UniqueIdUtils;
 import com.example.gamedemo.server.game.bag.constant.ItemType;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
@@ -43,19 +45,20 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public boolean useItem(Player player, long guid, int quanlity) {
+    public boolean useItem(Player player, long guid, int quantity) {
         ItemStorage pack = player.getPack();
         AbstractItem commonItem = pack.getStorageItemByObjectId(guid);
         if (commonItem == null) {
-            logger.info("道具不存在");
-            return false;
+            logger.info("背包不存在道具[{}]", guid);
+            RequestException.throwException(I18nId.BAG_NO_EXIST_ITEM);
         }
-        if (commonItem.getQuantity() < quanlity) {
+        if (commonItem.getQuantity() < quantity) {
             logger.info("道具数量不足");
-            return false;
+            RequestException.throwException(I18nId.ITEM_QUANTITY_NO_ENOUGH);
+
         }
         //减少道具
-        pack.reduceStorageItemByObjectId(guid, quanlity);
+        pack.reduceStorageItemByObjectId(guid, quantity);
         logger.info("[{}]玩家使用了道具[{}]", player.getPlayerName(), commonItem.getItemName());
 
         //保存入库
@@ -71,8 +74,8 @@ public class ItemServiceImpl implements ItemService {
         ItemStorage pack = player.getPack();
         AbstractItem item = pack.getStorageItemByObjectId(guid);
         if (item == null) {
+            RequestException.throwException(I18nId.BAG_NO_EXIST_ITEM);
             logger.info("[{}]背包不存在该物品[{}]", player.getPlayerName(), guid);
-            return -1;
         }
         return item.getQuantity();
     }
@@ -95,7 +98,7 @@ public class ItemServiceImpl implements ItemService {
         ItemResource itemResource = itemManager.getResourceById(itemResourceId);
         if (itemResource == null) {
             logger.warn("参数有误[{}]该道具不存在", itemResourceId);
-            return null;
+            RequestException.throwException(I18nId.ITEM_NO_EXIST);
         }
         AbstractItem abstractItem = doCreateItem(itemResource, 1);
         return abstractItem;

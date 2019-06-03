@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.player.service;
 
+import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
@@ -50,8 +52,8 @@ public class PlayerServiceImpl implements PlayerService {
     public int createPlayer(Player player) {
         PlayerEnt load = accessor.load(PlayerEnt.class, player.getPlayerId());
         if (null != load) {
-            logger.info("玩家已存在");
-            return 0;
+            logger.info("[{}]玩家已存在", player.getPlayerId());
+            RequestException.throwException(I18nId.PLAYER_NO_EXIST);
         }
         player.setPlayerName(playerManager.getPlayerResourceById(player.getPlayerType()).getPlayerName());
         PlayerEnt playerEnt = new PlayerEnt();
@@ -85,7 +87,8 @@ public class PlayerServiceImpl implements PlayerService {
             }
             return player;
         } else {
-            logger.warn("{}选择角色失败", playerId);
+            logger.warn("{}该玩家还未创建", playerId);
+            RequestException.throwException(I18nId.PLAYER_NO_EXIST);
         }
         return null;
     }
@@ -102,18 +105,7 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public List<Player> getAccountList() {
         List<Player> playerList = new ArrayList<>();
-       /* List<PlayerEnt> playerEntList = playerMapper.selectAccountEntList();
-        for (PlayerEnt playerEnt : playerEntList) {
-            if (playerEnt != null) {
-                Player player = null;
-                try {
-                    player = mapper.readValue(playerEnt.getAccountData(), Player.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                playerList.add(player);
-            }
-        }*/
+
         return playerList;
     }
 

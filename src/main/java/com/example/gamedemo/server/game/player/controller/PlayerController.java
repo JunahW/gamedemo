@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.player.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.SpringContext;
@@ -53,7 +54,12 @@ public class PlayerController {
         player.setPlayerId(req.getPlayerId());
         player.setPlayerType(req.getPlayerType());
         player.setAccountId(account.getAccountId());
-        int isSuccess = SpringContext.getPlayerService().createPlayer(player);
+        int isSuccess = 0;
+        try {
+            isSuccess = SpringContext.getPlayerService().createPlayer(player);
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "创建玩家失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
         if (isSuccess == 1) {
             SessionManager.sendMessage(session, "创建角色成功\r\n");
         } else {
@@ -71,7 +77,12 @@ public class PlayerController {
     @HandlerMethod(cmd = "selectPlayer")
     public void selectPlayer(TSession session, CM_LoginAccount req) {
 
-        Player player = SpringContext.getPlayerService().selectPlayer(req.getPlayerId());
+        Player player = null;
+        try {
+            player = SpringContext.getPlayerService().selectPlayer(req.getPlayerId());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "选择玩家失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
         String returnMsg = null;
         if (player == null) {
             returnMsg = "玩家不存在\r\n";
@@ -80,7 +91,7 @@ public class PlayerController {
              * 注册玩家
              */
             SessionManager.registerPlayer(session, player);
-            returnMsg = "loginSuccess " + req.getPlayerId() + "\r\n";
+            returnMsg = "选择玩家： " + req.getPlayerId() + "\r\n";
         }
         SessionManager.sendMessage(session, returnMsg);
     }

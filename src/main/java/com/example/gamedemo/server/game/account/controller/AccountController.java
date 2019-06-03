@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.account.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.SpringContext;
@@ -31,7 +32,12 @@ public class AccountController {
         Account account = new Account();
         account.setAccountId(req.getAccountId());
         account.setAccountName(req.getAccountName());
-        boolean flag = SpringContext.getAccountService().createAccount(account);
+        boolean flag = false;
+        try {
+            flag = SpringContext.getAccountService().createAccount(account);
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "创建账户失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
 
         if (flag) {
             SessionManager.sendMessage(session, "创建成功\r\n");
@@ -48,7 +54,12 @@ public class AccountController {
      */
     @HandlerMethod(cmd = "loginAccount")
     public void loginAccount(TSession session, CM_LoginAccount req) {
-        Account account = SpringContext.getAccountService().loginAccount(req.getAccountId());
+        Account account = null;
+        try {
+            account = SpringContext.getAccountService().loginAccount(req.getAccountId());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "登陆账户失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
         if (account == null) {
             SessionManager.sendMessage(session, "登录失败\r\n");
         } else {
