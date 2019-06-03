@@ -85,8 +85,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipStorageEnt getEquipStorageEnt(String accountId) {
-        return equipmentManager.getEquipStorageEnt(accountId);
+    public EquipStorageEnt getEquipStorageEnt(String playerId) {
+        return equipmentManager.getEquipStorageEnt(playerId);
     }
 
     /**

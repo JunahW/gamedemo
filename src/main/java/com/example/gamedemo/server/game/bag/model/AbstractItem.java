@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @description：
  * @date 2019/5/30
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = false)
 /*@JsonSubTypes({@JsonSubTypes.Type(value = CommonItem.class, name = "CommonItem")
         , @JsonSubTypes.Type(value = EquipItem.class, name = "EquipItem")
         , @JsonSubTypes.Type(value = GemstoneItem.class, name = "GemstoneItem")

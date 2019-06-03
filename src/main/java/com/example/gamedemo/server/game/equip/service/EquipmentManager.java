@@ -35,15 +35,15 @@ public class EquipmentManager {
      * @param accountId
      * @return
      */
-    public EquipStorageEnt getEquipStorageEnt(String accountId) {
-        EquipStorageEnt equipStorageEnt = entityCacheService.loadOrCreate(accountId, new EntityBuilder<String, EquipStorageEnt>() {
+    public EquipStorageEnt getEquipStorageEnt(String playerId) {
+        EquipStorageEnt equipStorageEnt = entityCacheService.loadOrCreate(playerId, new EntityBuilder<String, EquipStorageEnt>() {
             @Override
             public EquipStorageEnt newInstance(String id) {
                 EquipStorageEnt equipStorageEnt = new EquipStorageEnt();
                 EquipStorage bar = new EquipStorage();
 
                 equipStorageEnt.setEquipStorage(bar);
-                equipStorageEnt.setAccountId(accountId);
+                equipStorageEnt.setAccountId(playerId);
                 equipStorageEnt.doSerialize();
                 return equipStorageEnt;
             }

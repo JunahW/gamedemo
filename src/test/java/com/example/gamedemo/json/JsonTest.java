@@ -17,6 +17,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class JsonTest {
 
+    /**
+     * 测试json支持java的多态
+     */
     @Test
     public void testJson() {
         MedicineItem medicineItem = new MedicineItem();
