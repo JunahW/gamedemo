@@ -113,4 +113,9 @@ public class Map implements ResourceInterface {
     public Object getId() {
         return this.mapId;
     }
+
+    @Override
+    public void postInit() {
+
+    }
 }

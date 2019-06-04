@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
     public Account loginAccount(String accountId) {
         AccountEnt accountEnt = accessor.load(AccountEnt.class, accountId);
         if (accountEnt != null) {
-            accountEnt.doDeSerialize();
+            accountEnt.deSerialize();
             Account account = accountEnt.getAccount();
             return account;
         } else {

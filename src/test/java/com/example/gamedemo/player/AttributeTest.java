@@ -2,7 +2,7 @@ package com.example.gamedemo.player;
 
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.SystemInitializer;
-import com.example.gamedemo.server.game.player.resource.AttributeResource;
+import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +22,7 @@ public class AttributeTest {
     @Test
     public void testAttributeResource() {
         SystemInitializer.initResource();
-        ConcurrentMap<Object, AttributeResource> resourceMap = ResourceManager.getResourceMap(AttributeResource.class);
+        ConcurrentMap<Object, BaseAttributeResource> resourceMap = ResourceManager.getResourceMap(BaseAttributeResource.class);
         System.out.println(resourceMap);
     }
 

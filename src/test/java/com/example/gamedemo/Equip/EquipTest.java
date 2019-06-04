@@ -1,5 +1,7 @@
 package com.example.gamedemo.Equip;
 
+import com.example.gamedemo.common.resource.ResourceManager;
+import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.CommonItem;
@@ -7,11 +9,14 @@ import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.model.GemstoneItem;
 import com.example.gamedemo.server.game.bag.service.ItemManager;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -45,6 +50,13 @@ public class EquipTest {
         abstractItems[1] = new CommonItem();
         abstractItems[2] = new GemstoneItem();
         System.out.println(abstractItems);
+    }
+
+    @Test
+    public void testEquipmentJson() {
+        SystemInitializer.initResource();
+        ConcurrentMap<Object, EquipAttrResource> resourceMap = ResourceManager.getResourceMap(EquipAttrResource.class);
+        System.out.println(resourceMap);
     }
 
 }

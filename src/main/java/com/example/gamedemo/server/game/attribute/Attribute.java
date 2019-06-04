@@ -13,7 +13,7 @@ public class Attribute {
     private String type;
 
     /**
-     * 属性值
+     * 属性值 TODO 用long
      */
     private double value;
 
@@ -32,4 +32,15 @@ public class Attribute {
     public void setValue(double value) {
         this.value = value;
     }
+
+
+    public Attribute() {
+    }
+
+    public Attribute(String type, double value) {
+        this.type = type;
+        this.value = value;
+    }
+
+
 }

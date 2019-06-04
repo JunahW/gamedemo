@@ -138,4 +138,9 @@ public class SceneObject implements ResourceInterface {
     public Object getId() {
         return this.objectId;
     }
+
+    @Override
+    public void postInit() {
+
+    }
 }

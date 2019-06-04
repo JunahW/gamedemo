@@ -37,4 +37,9 @@ public class PlayerResource implements ResourceInterface {
     public Object getId() {
         return playerId;
     }
+
+    @Override
+    public void postInit() {
+
+    }
 }

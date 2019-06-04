@@ -113,4 +113,10 @@ public class ItemResource implements ResourceInterface {
     public Object getId() {
         return this.itemId;
     }
+
+    @Override
+    public void postInit() {
+
+    }
+
 }

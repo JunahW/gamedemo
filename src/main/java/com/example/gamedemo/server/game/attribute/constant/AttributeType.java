@@ -5,7 +5,7 @@ package com.example.gamedemo.server.game.attribute.constant;
  * @date: 2019/6/3
  * @description:属性类型
  */
-public enum AttrbuteType {
+public enum AttributeType {
     /**
      * 生命值
      */
@@ -47,7 +47,7 @@ public enum AttrbuteType {
     private String description;
 
 
-    AttrbuteType(int attrId, String description) {
+    AttributeType(int attrId, String description) {
         this.attrId = attrId;
         this.description = description;
     }

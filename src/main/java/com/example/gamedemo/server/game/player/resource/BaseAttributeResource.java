@@ -135,6 +135,11 @@ public class BaseAttributeResource implements ResourceInterface {
      * @return
      */
     public List<Attribute> getPlayerBaseAttribute() {
+        return this.attributes;
+    }
+
+    @Override
+    public void postInit() {
         if (this.attributes == null) {
             ArrayList<Attribute> attributes = new ArrayList<>();
             attributes.add(new Attribute("hp", this.hp));
@@ -145,6 +150,5 @@ public class BaseAttributeResource implements ResourceInterface {
             attributes.add(new Attribute("defenseUpper", this.defenseUpper));
             this.attributes = attributes;
         }
-        return attributes;
     }
 }

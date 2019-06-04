@@ -54,10 +54,6 @@ public class EquipAttrResource implements ResourceInterface {
      * @return
      */
     public List<Attribute> getAttributes() {
-        if (attributes == null) {
-            attributes = JsonUtils.getListByString(this.basicAttributeString, new TypeReference<List<Attribute>>() {
-            });
-        }
         return attributes;
     }
 
@@ -71,5 +67,13 @@ public class EquipAttrResource implements ResourceInterface {
 
     public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
+    }
+
+    @Override
+    public void postInit() {
+        if (attributes == null) {
+            attributes = JsonUtils.getListByString(this.basicAttributeString, new TypeReference<List<Attribute>>() {
+            });
+        }
     }
 }

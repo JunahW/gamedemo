@@ -237,4 +237,9 @@ public class Scene implements Serializable, ResourceInterface {
     public Object getId() {
         return this.sceneId;
     }
+
+    @Override
+    public void postInit() {
+
+    }
 }

@@ -39,4 +39,13 @@ public class JsonTest {
         ItemStorage itemStorage1 = JsonUtils.deSerializeEntity(s, ItemStorage.class);
 
     }
+
+
+    @Test
+    public void testJsonNullValue() {
+        Object o = JsonUtils.deSerializeEntity("", Object.class);
+        System.out.println(o);
+
+    }
+
 }

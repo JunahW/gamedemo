@@ -73,6 +73,8 @@ public class SystemInitializer implements Ordered {
             List<?> list = ExcelUtils.importExcel((entry.getValue().getClass()));
             for (Object object : list) {
                 ResourceInterface resourceItem = (ResourceInterface) object;
+                //加载完成进行处理，如字符串装换成特殊格式的数据
+                resourceItem.postInit();
                 ResourceManager.putResourceItem(aClass, resourceItem.getId(), object);
             }
         }

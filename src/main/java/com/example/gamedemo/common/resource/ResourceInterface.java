@@ -13,4 +13,9 @@ public interface ResourceInterface {
      * @return
      */
     Object getId();
+
+    /**
+     * 加载完处理数据
+     */
+    void postInit();
 }

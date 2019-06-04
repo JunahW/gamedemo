@@ -43,14 +43,14 @@ public class AccountEnt implements Entity<String> {
     }
 
     @Override
-    public boolean doSerialize() {
+    public boolean serialize() {
         this.setAccountId(account.getAccountId());
         this.setAccountName(account.getAccountName());
         return true;
     }
 
     @Override
-    public boolean doDeSerialize() {
+    public boolean deSerialize() {
         Account account = new Account();
         account.setAccountId(accountId);
         account.setAccountName(accountName);
