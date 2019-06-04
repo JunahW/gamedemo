@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @date 2019/5/30
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = false)
-public class AbstractItem extends GameObject {
+public class AbstractItem extends GameObject implements Cloneable {
     /**
      * 道具的资源id
      */
@@ -24,7 +24,6 @@ public class AbstractItem extends GameObject {
      * 道具数量
      */
     private int quantity;
-
 
 
     public String getItemResourceId() {
@@ -61,5 +60,10 @@ public class AbstractItem extends GameObject {
                 ", quantity=" + quantity +
                 ", id=" + super.getObjectId() +
                 '}';
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

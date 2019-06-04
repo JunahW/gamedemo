@@ -21,7 +21,7 @@ public class ItemStorageEnt implements Entity<String> {
     @Id
     private String accountId;
 
-    @Column(length = 3000)
+    @Column(length = 10000)
     private String bagData;
 
     @Transient

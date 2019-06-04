@@ -119,9 +119,13 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
             entity = cache.get(id);
             if (entity instanceof EmptyEntity) {
                 entity = accessor.load(clazz, id);
+                if (null != entity) {
+                    entity.deSerialize();
+                }
+
                 if (null == entity) {
                     entity = builder.newInstance(id);
-                    //反序列化
+                    //序列化
                     entity.serialize();
                     id = accessor.save(clazz, entity);
                 }

@@ -6,4 +6,9 @@ package com.example.gamedemo.server.game.bag.model;
  * @date 2019/5/30
  */
 public class EquipItem extends AbstractItem {
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

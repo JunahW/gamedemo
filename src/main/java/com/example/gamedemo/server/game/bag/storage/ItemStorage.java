@@ -24,7 +24,6 @@ public class ItemStorage {
     private AbstractItem[] abstractItems = new AbstractItem[50];
 
 
-
     public Integer getSize() {
         return size;
     }
@@ -135,40 +134,60 @@ public class ItemStorage {
     public boolean addStorageItem(AbstractItem item) {
         String itemResourceId = item.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
-        //是否加入背包
-        boolean isAdd = false;
-        //道具可堆叠
-        if (itemResource.getOverLimit() > 1) {
+        boolean exist = isExist(item);
+        //物品存在
+        if (exist) {
             for (AbstractItem abstractItem : abstractItems) {
                 if (abstractItem != null) {
                     //可堆叠
                     //已经存在
-                    if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
+                    if (item.getItemResourceId().equals(abstractItem.getItemResourceId())) {
                         //判断是否超过堆叠上限
-                        if (item.getQuantity() >= itemResource.getOverLimit()) {
-                            //TODO
-                            isAdd = false;
+                        if (abstractItem.getQuantity() + item.getQuantity() <= itemResource.getOverLimit()) {
+                            abstractItem.setQuantity(abstractItem.getQuantity() + item.getQuantity());
+                            item.setQuantity(0);
                             break;
+                        } else {
+                            int add = itemResource.getOverLimit() - abstractItem.getQuantity();
+                            int rest = item.getQuantity() - add;
+
+                            abstractItem.setQuantity(abstractItem.getQuantity() + add);
+                            item.setQuantity(rest);
                         }
-                        abstractItem.setQuantity(abstractItem.getQuantity() + 1);
-                        isAdd = true;
-                        break;
+
                     }
                 }
             }
         }
-        //不可堆叠 或者背包不存在
-        if (!isAdd) {
+        //不可堆叠 堆叠达到上限 或者道具不存在
+        if (!exist || item.getQuantity() > 0) {
             for (int i = 0; i < abstractItems.length; i++) {
                 if (abstractItems[i] == null) {
-                    abstractItems[i] = item;
-                    isAdd = true;
-                    break;
+                    if (itemResource.getOverLimit() >= item.getQuantity()) {
+                        abstractItems[i] = item;
+                        break;
+                    } else {
+                        //超过上限
+                        AbstractItem cloneItem = null;
+                        try {
+                            cloneItem = (AbstractItem) item.clone();
+                        } catch (CloneNotSupportedException e) {
+                            e.printStackTrace();
+                        }
+
+                        int rest = item.getQuantity() - itemResource.getOverLimit();
+                        cloneItem.setQuantity(itemResource.getOverLimit());
+                        abstractItems[i] = cloneItem;
+                        item.setQuantity(rest);
+                    }
+                }
+                if (i == abstractItems.length - 1 && item.getQuantity() > 0) {
+                    //格子已满
+                    return false;
                 }
             }
         }
-        return isAdd;
-
+        return true;
     }
 
     @Override
@@ -177,5 +196,22 @@ public class ItemStorage {
                 "size=" + size +
                 ", abstractItems=" + Arrays.toString(abstractItems) +
                 '}';
+    }
+
+    /**
+     * 判断物品是否存在于背包
+     *
+     * @param item
+     * @return
+     */
+    private boolean isExist(AbstractItem item) {
+        for (AbstractItem abstractItem : abstractItems) {
+            if (abstractItem != null) {
+                if (abstractItem.getItemResourceId().equals(item.getItemResourceId())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
