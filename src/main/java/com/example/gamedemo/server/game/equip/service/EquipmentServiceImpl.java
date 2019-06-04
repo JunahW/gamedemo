@@ -46,8 +46,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
 
         EquipItem equipItem = (EquipItem) item;
-        equipItem.setPosition(itemResource.getPosition());
-        equipItem.setPlayerTypes(itemResource.getPlayerTypes());
+
 
         //判断是否可装备
         if (!verifyJob(player, equipItem)) {
@@ -55,13 +54,15 @@ public class EquipmentServiceImpl implements EquipmentService {
             RequestException.throwException(I18nId.PLAYER_TYPE_NO_MATCH_EQUIPMENT);
         }
 
+        //减少背包道具
+        player.getPack().reduceStorageItemByObjectId(equipId, 1);
+
         //装备物品
         player.getEquipBar().equip(equipItem);
         //保存
         saveEquipmentStorageEnt(player);
 
-        //减少背包道具
-        player.getPack().reduceStorageItemByObjectId(equipId, 1);
+
         //保存背包
         SpringContext.getItemService().saveItemStorageEnt(player);
         logger.info("已穿上[{}]装备", itemResource.getName());
@@ -133,7 +134,8 @@ public class EquipmentServiceImpl implements EquipmentService {
         /**
          * 判断玩家类型和装备类型是否匹配
          */
-        String[] playerTypes = equipItem.getPlayerTypes();
+        ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId());
+        String[] playerTypes = itemResource.getPlayerType().split(",");
         for (String playerType : playerTypes) {
             if (playerType.equals(player.getPlayerType())) {
                 return true;

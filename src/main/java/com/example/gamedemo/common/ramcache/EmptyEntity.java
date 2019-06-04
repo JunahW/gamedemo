@@ -19,12 +19,12 @@ public class EmptyEntity<PK extends Serializable & Comparable<PK>> implements En
     }
 
     @Override
-    public boolean doSerialize() {
+    public boolean serialize() {
         return false;
     }
 
     @Override
-    public boolean doDeSerialize() {
+    public boolean deSerialize() {
         return false;
     }
 }

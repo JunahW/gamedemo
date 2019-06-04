@@ -60,7 +60,7 @@ public class PlayerServiceImpl implements PlayerService {
         PlayerEnt playerEnt = new PlayerEnt();
         playerEnt.setPlayer(player);
         //TODO scene 为null是否可以装换为json？？
-        playerEnt.doSerialize();
+        playerEnt.serialize();
         logger.info("新增用户：{}", player.getPlayerName());
 
         String save = accessor.save(PlayerEnt.class, playerEnt);
@@ -79,7 +79,7 @@ public class PlayerServiceImpl implements PlayerService {
     public Player selectPlayer(String playerId) {
         PlayerEnt playerEnt = accessor.load(PlayerEnt.class, playerId);
         if (playerEnt != null) {
-            playerEnt.doDeSerialize();
+            playerEnt.deSerialize();
             Player player = playerEnt.getPlayer();
             logger.info("{}选择角色成功", playerEnt.getPlayerName());
             if (player.getScene() == null) {
@@ -99,7 +99,7 @@ public class PlayerServiceImpl implements PlayerService {
         logger.info("异步保存数据");
         PlayerEnt playerEnt = new PlayerEnt();
         playerEnt.setPlayer(player);
-        playerEnt.doSerialize();
+        playerEnt.serialize();
         accessor.saveOrUpdate(PlayerEnt.class, playerEnt);
     }
 

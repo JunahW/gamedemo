@@ -25,14 +25,14 @@ public interface Entity<PK extends Serializable & Comparable<PK>> {
      *
      * @return
      */
-    boolean doSerialize();
+    boolean serialize();
 
     /**
      * 反序列化
      *
      * @return
      */
-    boolean doDeSerialize();
+    boolean deSerialize();
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.equip.storage;
 
+import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
@@ -15,19 +16,11 @@ import java.util.Arrays;
 public class EquipStorage {
 
     /**
-     * 容量
-     */
-    private final Integer size = EquipmentType.values().length;
-
-    /**
      * 物品
      */
-    private AbstractItem[] equipItems = new AbstractItem[size];
+    private AbstractItem[] equipItems = new AbstractItem[EquipmentType.values().length];
 
 
-    public Integer getSize() {
-        return size;
-    }
 
     public AbstractItem[] getEquipItems() {
         return equipItems;
@@ -40,7 +33,6 @@ public class EquipStorage {
     @Override
     public String toString() {
         return "EquipStorage{" +
-                "size=" + size +
                 ", equipItems=" + Arrays.toString(equipItems) +
                 '}';
     }
@@ -53,7 +45,7 @@ public class EquipStorage {
      * @return 返回卸下的装备
      */
     public AbstractItem equip(EquipItem equipItem) {
-        int position = equipItem.getPosition();
+        int position = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId()).getPosition();
         AbstractItem unEquipItem = equipItems[position];
         equipItems[position] = equipItem;
         return unEquipItem;
@@ -92,7 +84,7 @@ public class EquipStorage {
      * @return
      */
     public AbstractItem getEquipmentByPosition(int position) {
-        if (position >= size) {
+        if (position >= EquipmentType.values().length) {
             return null;
         }
         return equipItems[position];

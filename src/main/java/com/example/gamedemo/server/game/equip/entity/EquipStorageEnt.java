@@ -46,13 +46,13 @@ public class EquipStorageEnt implements Entity<String> {
     }
 
     @Override
-    public boolean doSerialize() {
+    public boolean serialize() {
         this.setEquipStorageData(JsonUtils.serializeEntity(this.getEquipStorage()));
         return true;
     }
 
     @Override
-    public boolean doDeSerialize() {
+    public boolean deSerialize() {
         this.setEquipStorage(JsonUtils.deSerializeEntity(this.getEquipStorageData(), EquipStorage.class));
         return true;
     }

@@ -22,7 +22,7 @@ public class ItemStorageEnt implements Entity<String> {
     private String accountId;
 
     @Column(length = 3000)
-    private String BagData;
+    private String bagData;
 
     @Transient
     private ItemStorage itemStorage;
@@ -38,13 +38,13 @@ public class ItemStorageEnt implements Entity<String> {
     }
 
     @Override
-    public boolean doSerialize() {
+    public boolean serialize() {
         this.setBagData(JsonUtils.serializeEntity(itemStorage));
         return true;
     }
 
     @Override
-    public boolean doDeSerialize() {
+    public boolean deSerialize() {
         this.itemStorage = JsonUtils.deSerializeEntity(this.getBagData(), ItemStorage.class);
         return true;
     }
@@ -54,11 +54,11 @@ public class ItemStorageEnt implements Entity<String> {
     }
 
     public String getBagData() {
-        return BagData;
+        return bagData;
     }
 
     public ItemStorage getItemStorage() {
-        doDeSerialize();
+        //FIXME deSerialize();
         return itemStorage;
     }
 
@@ -67,7 +67,7 @@ public class ItemStorageEnt implements Entity<String> {
     }
 
     public void setBagData(String bagData) {
-        BagData = bagData;
+        this.bagData = bagData;
     }
 
     public void setItemStorage(ItemStorage itemStorage) {

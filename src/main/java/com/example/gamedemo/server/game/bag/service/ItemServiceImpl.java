@@ -69,6 +69,19 @@ public class ItemServiceImpl implements ItemService {
         return true;
     }
 
+
+    @Override
+    public boolean useItem(Player player, String itemResourceId, int quantity) {
+        ItemStorage pack = player.getPack();
+
+        boolean isUse = pack.reduceStorageItemByItemResourceId(itemResourceId, quantity);
+        //保存入库
+        saveItemStorageEnt(player);
+
+
+        return isUse;
+    }
+
     @Override
     public int getItemNum(Player player, long guid) {
         ItemStorage pack = player.getPack();

@@ -23,10 +23,6 @@ public class ItemStorage {
      */
     private AbstractItem[] abstractItems = new AbstractItem[50];
 
-    /**
-     * 已有数量
-     */
-    private int num;
 
 
     public Integer getSize() {
@@ -37,9 +33,6 @@ public class ItemStorage {
         this.abstractItems = abstractItems;
     }
 
-    public int getNum() {
-        return num;
-    }
 
     public void setSize(Integer size) {
         this.size = size;
@@ -49,9 +42,6 @@ public class ItemStorage {
         return abstractItems;
     }
 
-    public void setNum(int num) {
-        this.num = num;
-    }
 
     /**
      * 通过guid获取道具
@@ -97,6 +87,46 @@ public class ItemStorage {
     }
 
     /**
+     * 通过itemResourceId减少道具数量
+     *
+     * @param itemResourceId
+     * @param quantity
+     */
+    public boolean reduceStorageItemByItemResourceId(String itemResourceId, int quantity) {
+        //检查数量是否够消耗
+        int storageQuantity = 0;
+        for (int i = 0; i < abstractItems.length; i++) {
+            if (abstractItems[i] != null) {
+                if (abstractItems[i].getItemResourceId().equals(itemResourceId)) {
+                    storageQuantity += abstractItems[i].getQuantity();
+                    if (storageQuantity >= quantity) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (storageQuantity < quantity) {
+            return false;
+        }
+        //消耗道具
+        for (int i = 0; i < abstractItems.length; i++) {
+            if (abstractItems[i] != null) {
+                if (abstractItems[i].getItemResourceId().equals(itemResourceId)) {
+                    quantity -= abstractItems[i].getQuantity();
+                    if (quantity < 0) {
+                        abstractItems[i].setQuantity(-quantity);
+                        break;
+                    } else {
+                        abstractItems[i] = null;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * 添加道具
      *
      * @param item
@@ -114,6 +144,12 @@ public class ItemStorage {
                     //可堆叠
                     //已经存在
                     if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
+                        //判断是否超过堆叠上限
+                        if (item.getQuantity() >= itemResource.getOverLimit()) {
+                            //TODO
+                            isAdd = false;
+                            break;
+                        }
                         abstractItem.setQuantity(abstractItem.getQuantity() + 1);
                         isAdd = true;
                         break;
@@ -140,7 +176,6 @@ public class ItemStorage {
         return "ItemStorage{" +
                 "size=" + size +
                 ", abstractItems=" + Arrays.toString(abstractItems) +
-                ", num=" + num +
                 '}';
     }
 }

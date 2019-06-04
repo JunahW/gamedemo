@@ -74,6 +74,31 @@ public class StorageController {
     }
 
     /**
+     * 使用道具
+     *
+     * @param session
+     * @param req
+     */
+    @HandlerMethod(cmd = "useItemResourceId")
+    public void userItemByResourId(TSession session, CM_UseItemByResourceId req) {
+
+        Player player = session.getPlayer();
+        boolean useItem = false;
+        try {
+            useItem = itemService.useItem(player, req.getResourceId(), req.getQuantity());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "使用道具失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
+        String returnMsg = null;
+        if (useItem) {
+            returnMsg = "使用成功";
+        } else {
+            returnMsg = "使用失败";
+        }
+        SessionManager.sendMessage(session, returnMsg + "\r\n");
+    }
+
+    /**
      * 展示背包
      *
      * @param session

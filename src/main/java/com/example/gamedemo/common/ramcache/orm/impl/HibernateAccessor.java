@@ -1,5 +1,6 @@
 package com.example.gamedemo.common.ramcache.orm.impl;
 
+import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +29,17 @@ public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
 
 
     @Override
-    public <PK extends Serializable, T> T load(Class<T> clazz, PK id) {
+    public <PK extends Serializable, T extends Entity> T load(Class<T> clazz, PK id) {
         return getHibernateTemplate().get(clazz, id);
     }
 
     @Override
-    public <PK extends Serializable, T> PK save(Class<T> clazz, T entity) {
+    public <PK extends Serializable, T extends Entity> PK save(Class<T> clazz, T entity) {
         return (PK) getHibernateTemplate().save(entity);
     }
 
     @Override
-    public <PK extends Serializable, T> void remove(Class<T> clazz, PK id) {
+    public <PK extends Serializable, T extends Entity> void remove(Class<T> clazz, PK id) {
         T entity = load(clazz, id);
         if (null == entity) {
             return;
@@ -47,7 +48,7 @@ public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
     }
 
     @Override
-    public <PK extends Serializable, T> void saveOrUpdate(Class<T> clazz, T entity) {
+    public <PK extends Serializable, T extends Entity> void saveOrUpdate(Class<T> clazz, T entity) {
         getHibernateTemplate().saveOrUpdate(entity);
     }
 }

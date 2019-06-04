@@ -92,6 +92,8 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
             entity = cache.get(id);
             if (entity == null) {
                 entity = accessor.load(clazz, id);
+                //反序列化
+                entity.deSerialize();
                 cache.put(id, entity);
             }
         } catch (ExecutionException e) {
@@ -105,6 +107,8 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
         //更细操作异步写回 先不考虑
         //consumer.put(Element.updateof(entity));
 
+        //序列化
+        entity.serialize();
         accessor.saveOrUpdate(clazz, entity);
     }
 
@@ -117,6 +121,8 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
                 entity = accessor.load(clazz, id);
                 if (null == entity) {
                     entity = builder.newInstance(id);
+                    //反序列化
+                    entity.serialize();
                     id = accessor.save(clazz, entity);
                 }
                 cache.put(id, entity);

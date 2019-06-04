@@ -131,7 +131,7 @@ public class PlayerEnt implements Entity<String> {
     }
 
     @Override
-    public boolean doSerialize() {
+    public boolean serialize() {
         String sceneString = JsonUtils.serializeEntity(player.getScene());
         this.setSceneData(sceneString);
         this.setPlayerId(player.getPlayerId());
@@ -142,7 +142,7 @@ public class PlayerEnt implements Entity<String> {
     }
 
     @Override
-    public boolean doDeSerialize() {
+    public boolean deSerialize() {
         Scene scene = JsonUtils.deSerializeEntity(getSceneData(), Scene.class);
         Player player = new Player();
         player.setScene(scene);
@@ -153,6 +153,8 @@ public class PlayerEnt implements Entity<String> {
         //获取玩家的基础属性
         BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(this.playerType);
         player.getPlayerAttributeContainer().getModelAttributeListMap().put(AttributeModelType.BASE, baseAttribute.getPlayerBaseAttribute());
+
+
         this.setPlayer(player);
         return true;
     }

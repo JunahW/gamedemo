@@ -44,7 +44,7 @@ public class EquipmentManager {
 
                 equipStorageEnt.setEquipStorage(bar);
                 equipStorageEnt.setPlayerId(playerId);
-                equipStorageEnt.doSerialize();
+                //FIXME 去除 equipStorageEnt.serialize();
                 return equipStorageEnt;
             }
         });
@@ -58,7 +58,7 @@ public class EquipmentManager {
      * @param equipStorageEnt
      */
     public void saveEquipStorageEnt(EquipStorageEnt equipStorageEnt) {
-        boolean serialize = equipStorageEnt.doSerialize();
+        //FIXME equipStorageEnt.serialize();
         entityCacheService.writeBack(equipStorageEnt.getId(), equipStorageEnt);
     }
 }

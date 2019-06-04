@@ -25,10 +25,6 @@ public class AbstractItem extends GameObject {
      */
     private int quantity;
 
-    /**
-     * 道具类型
-     */
-    private int itemType;
 
 
     public String getItemResourceId() {
@@ -41,10 +37,6 @@ public class AbstractItem extends GameObject {
 
     public int getQuantity() {
         return quantity;
-    }
-
-    public int getItemType() {
-        return itemType;
     }
 
 
@@ -60,9 +52,6 @@ public class AbstractItem extends GameObject {
         this.quantity = quantity;
     }
 
-    public void setItemType(int itemType) {
-        this.itemType = itemType;
-    }
 
     @Override
     public String toString() {
@@ -70,7 +59,6 @@ public class AbstractItem extends GameObject {
                 "itemResourceId='" + itemResourceId + '\'' +
                 ", itemName='" + itemName + '\'' +
                 ", quantity=" + quantity +
-                ", itemType=" + itemType +
                 ", id=" + super.getObjectId() +
                 '}';
     }

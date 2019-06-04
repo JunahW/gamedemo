@@ -71,7 +71,7 @@ public class ItemManager {
 
                 itemStorageEnt.setItemStorage(pack);
                 itemStorageEnt.setAccountId(accountId);
-                itemStorageEnt.doSerialize();
+                //FIXME 去除 itemStorageEnt.serialize();
                 return itemStorageEnt;
             }
         });
@@ -86,7 +86,7 @@ public class ItemManager {
      * @param itemStorageEnt
      */
     public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
-        boolean serialize = itemStorageEnt.doSerialize();
+        //FIXME 去除 itemStorageEnt.serialize();
         entityCacheService.writeBack(itemStorageEnt.getId(), itemStorageEnt);
     }
 }

@@ -26,10 +26,20 @@ public interface ItemService {
      *
      * @param player
      * @param guid
-     * @param quanlity
+     * @param quantity
      * @return
      */
-    boolean useItem(Player player, long guid, int quanlity);
+    boolean useItem(Player player, long guid, int quantity);
+
+    /**
+     * 使用道具
+     *
+     * @param player
+     * @param itemResourceId
+     * @param quantity
+     * @return
+     */
+    boolean useItem(Player player, String itemResourceId, int quantity);
 
     /**
      * 查看查询某个物品数量
