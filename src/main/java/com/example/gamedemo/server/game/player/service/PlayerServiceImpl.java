@@ -6,7 +6,6 @@ import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
-import com.example.gamedemo.server.game.player.mapper.PlayerMapper;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -27,8 +26,6 @@ import java.util.List;
 @Service(value = "accountService")
 public class PlayerServiceImpl implements PlayerService {
 
-    @Autowired
-    private PlayerMapper playerMapper;
 
     @Autowired
     private Accessor accessor;

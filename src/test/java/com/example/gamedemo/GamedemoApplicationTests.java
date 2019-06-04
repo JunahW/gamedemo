@@ -6,8 +6,6 @@ import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.service.AccountService;
-import com.example.gamedemo.server.game.player.entity.PlayerEnt;
-import com.example.gamedemo.server.game.player.mapper.PlayerMapper;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -29,8 +27,6 @@ import java.util.Set;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class GamedemoApplicationTests {
-    @Autowired
-    private PlayerMapper playerMapper;
 
     @Autowired
     private AccountService accountService;
@@ -40,24 +36,6 @@ public class GamedemoApplicationTests {
 
     @Test
     public void contextLoads() {
-    }
-
-    @Test
-    public void testWriteObject() {
-        PlayerEnt playerEnt = new PlayerEnt();
-        playerEnt.setAccountId("a1007");
-        Player player = new Player();
-        player.setPlayerId("a1007");
-        player.setPlayerName("test07");
-
-        playerMapper.addAcount(playerEnt);
-
-    }
-
-    @Test
-    public void readObject() {
-        PlayerEnt playerEnt = playerMapper.selectAccountById("a1007");
-
     }
 
 
