@@ -8,6 +8,7 @@ import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.mapper.PlayerMapper;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -132,5 +133,10 @@ public class PlayerServiceImpl implements PlayerService {
         player.setY(y);
         logger.info("({},{})从移动到({},{})", currentx, currenty, x, y);
         return true;
+    }
+
+    @Override
+    public BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType) {
+        return playerManager.getAttributeResourceByPlayerType(playerType);
     }
 }

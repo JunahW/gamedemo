@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.player.service;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,9 @@ import java.util.concurrent.ConcurrentMap;
 public class PlayerManager {
 
     private ConcurrentMap<String, PlayerResource> playerResource = ResourceManager.getResourceMap(PlayerResource.class);
+
+    private ConcurrentMap<String, BaseAttributeResource> baseAttributeResource = ResourceManager.getResourceMap(BaseAttributeResource.class);
+
 
     static {
         SystemInitializer.initResource();
@@ -123,5 +127,16 @@ public class PlayerManager {
      */
     public PlayerResource getPlayerResourceById(String modeId) {
         return playerResource.get(modeId);
+    }
+
+
+    /**
+     * 获取玩家的基础属性
+     *
+     * @param playerType
+     * @return
+     */
+    public BaseAttributeResource getAttributeResourceByPlayerType(String playerType) {
+        return baseAttributeResource.get(playerType);
     }
 }

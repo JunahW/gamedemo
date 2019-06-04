@@ -3,6 +3,10 @@ package com.example.gamedemo.server.game.player.resource;
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.server.game.attribute.Attribute;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wengj
@@ -10,7 +14,7 @@ import com.example.gamedemo.common.resource.ResourceInterface;
  * @date 2019/6/3
  */
 @Resource
-public class AttributeResource implements ResourceInterface {
+public class BaseAttributeResource implements ResourceInterface {
 
     /**
      * 玩家类型（职业）
@@ -54,6 +58,8 @@ public class AttributeResource implements ResourceInterface {
     @ExcelColumn(columnName = "defenseUpper")
     private double defenseUpper;
 
+    private List<Attribute> attributes;
+
     public String getPlayerType() {
         return playerType;
     }
@@ -80,6 +86,10 @@ public class AttributeResource implements ResourceInterface {
 
     public double getDefenseUpper() {
         return defenseUpper;
+    }
+
+    public List<Attribute> getAttributes() {
+        return attributes;
     }
 
     public void setHp(double hp) {
@@ -110,8 +120,31 @@ public class AttributeResource implements ResourceInterface {
         this.defenseUpper = defenseUpper;
     }
 
+    public void setAttributes(List<Attribute> attributes) {
+        this.attributes = attributes;
+    }
+
     @Override
     public Object getId() {
         return this.playerType;
+    }
+
+    /**
+     * 获取基础属性列表
+     *
+     * @return
+     */
+    public List<Attribute> getPlayerBaseAttribute() {
+        if (this.attributes == null) {
+            ArrayList<Attribute> attributes = new ArrayList<>();
+            attributes.add(new Attribute("hp", this.hp));
+            attributes.add(new Attribute("mp", this.mp));
+            attributes.add(new Attribute("attack", this.attack));
+            attributes.add(new Attribute("defense", this.defense));
+            attributes.add(new Attribute("attackUpper", this.attackUpper));
+            attributes.add(new Attribute("defenseUpper", this.defenseUpper));
+            this.attributes = attributes;
+        }
+        return attributes;
     }
 }

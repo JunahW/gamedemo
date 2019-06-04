@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.player.model;
 
 import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
@@ -47,6 +48,11 @@ public class Player implements Serializable {
     private int y;
 
     /**
+     * 玩家属性容器
+     */
+    private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer();
+
+    /**
      * 场景
      */
     private Scene scene;
@@ -81,6 +87,10 @@ public class Player implements Serializable {
         return playerType;
     }
 
+    public PlayerAttributeContainer getPlayerAttributeContainer() {
+        return playerAttributeContainer;
+    }
+
     public void setPlayerId(String playerId) {
         this.playerId = playerId;
     }
@@ -107,6 +117,10 @@ public class Player implements Serializable {
 
     public void setPlayerType(String playerType) {
         this.playerType = playerType;
+    }
+
+    public void setPlayerAttributeContainer(PlayerAttributeContainer playerAttributeContainer) {
+        this.playerAttributeContainer = playerAttributeContainer;
     }
 
     /**

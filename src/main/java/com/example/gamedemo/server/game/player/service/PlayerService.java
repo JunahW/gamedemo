@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.player.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 
 import java.util.List;
 
@@ -58,6 +59,14 @@ public interface PlayerService {
      * @return
      */
     boolean move2Coordinate(Player player, int x, int y);
+
+    /**
+     * 玩家类型
+     *
+     * @param playerType
+     * @return
+     */
+    BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType);
 
 
 }
