@@ -3,12 +3,15 @@ package com.example.gamedemo.server.game.equip.service;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.common.ramcache.service.EntityBuilder;
 import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
+import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -18,8 +21,15 @@ import javax.annotation.PostConstruct;
 @Component
 public class EquipmentManager {
 
+    /**
+     * 静态资源
+     */
+    private ConcurrentMap<String, EquipAttrResource> equipAttrResource = ResourceManager.getResourceMap(EquipAttrResource.class);
+
+
     @Autowired
     private Accessor accessor;
+
 
     private EntityCacheServiceImpl<String, EquipStorageEnt> entityCacheService = new EntityCacheServiceImpl<>();
 
@@ -60,5 +70,15 @@ public class EquipmentManager {
     public void saveEquipStorageEnt(EquipStorageEnt equipStorageEnt) {
         //FIXME equipStorageEnt.serialize();
         entityCacheService.writeBack(equipStorageEnt.getId(), equipStorageEnt);
+    }
+
+    /**
+     * 通过id获取装备的属性资源
+     *
+     * @param resourceId
+     * @return
+     */
+    public EquipAttrResource getequipAttrResourceById(String resourceId) {
+        return equipAttrResource.get(resourceId);
     }
 }

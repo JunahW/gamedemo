@@ -106,7 +106,7 @@ public class PlayerController {
     public void getWhere(TSession session, CM_Location req) {
         Player player = session.getPlayer();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(player.getScene().getSceneName())
+        stringBuilder.append(player.getSceneResource().getSceneName())
                 .append("坐标(")
                 .append(player.getX())
                 .append(",")

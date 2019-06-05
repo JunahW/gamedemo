@@ -4,8 +4,11 @@ import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
+import com.example.gamedemo.server.game.equip.model.SlotAttribute;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -20,6 +23,10 @@ public class EquipStorage {
      */
     private AbstractItem[] equipItems = new AbstractItem[EquipmentType.values().length];
 
+    /**
+     * 卡槽属性
+     */
+    private Map<Integer, SlotAttribute> slotAttributeMap = new HashMap<>(EquipmentType.values().length);
 
 
     public AbstractItem[] getEquipItems() {
@@ -33,10 +40,10 @@ public class EquipStorage {
     @Override
     public String toString() {
         return "EquipStorage{" +
-                ", equipItems=" + Arrays.toString(equipItems) +
+                "equipItems=" + Arrays.toString(equipItems) +
+                ", slotAttributeMap=" + slotAttributeMap +
                 '}';
     }
-
 
     /**
      * 穿装备

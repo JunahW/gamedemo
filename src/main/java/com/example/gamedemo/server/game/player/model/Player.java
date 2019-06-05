@@ -6,7 +6,7 @@ import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
-import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -55,7 +55,7 @@ public class Player implements Serializable {
     /**
      * 场景
      */
-    private Scene scene;
+    private SceneResource sceneResource;
 
 
     public String getPlayerId() {
@@ -70,8 +70,8 @@ public class Player implements Serializable {
         return accountId;
     }
 
-    public Scene getScene() {
-        return scene;
+    public SceneResource getSceneResource() {
+        return sceneResource;
     }
 
     public int getX() {
@@ -103,8 +103,8 @@ public class Player implements Serializable {
         this.accountId = accountId;
     }
 
-    public void setScene(Scene scene) {
-        this.scene = scene;
+    public void setSceneResource(SceneResource sceneResource) {
+        this.sceneResource = sceneResource;
     }
 
     public void setX(int x) {

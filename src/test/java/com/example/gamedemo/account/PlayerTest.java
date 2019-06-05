@@ -1,7 +1,7 @@
 package com.example.gamedemo.account;
 
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +23,9 @@ public class PlayerTest {
         Player player = new Player();
         player.setPlayerId("t101");
         player.setPlayerName("t噬魂");
-        Scene scene = new Scene();
-        scene.setSceneId("s101");
-        scene.setSceneName("s村庄");
+        SceneResource sceneResource = new SceneResource();
+        sceneResource.setSceneId("s101");
+        sceneResource.setSceneName("s村庄");
         //player.setScene(scene);
 
     }

@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 
 import java.util.List;
 
@@ -16,15 +16,15 @@ public interface SceneService {
      *
      * @return
      */
-    List<Scene> getSceneList();
+    List<SceneResource> getSceneList();
 
     /**
      * 进入场景
      *
      * @param player
-     * @param scene
+     * @param sceneResource
      */
-    void gotoScene(Player player, Scene scene);
+    void gotoScene(Player player, SceneResource sceneResource);
 
     /**
      * 通过ID获取场景
@@ -32,14 +32,14 @@ public interface SceneService {
      * @param sceneId
      * @return
      */
-    Scene getSceneById(String sceneId);
+    SceneResource getSceneById(String sceneId);
 
     /**
      * 去其他的相邻场景
      *
      * @param player
-     * @param scene
+     * @param sceneResource
      * @return
      */
-    int move2Scene(Player player, Scene scene);
+    int move2Scene(Player player, SceneResource sceneResource);
 }

@@ -56,6 +56,8 @@ public class EquipTest {
     public void testEquipmentJson() {
         SystemInitializer.initResource();
         ConcurrentMap<Object, EquipAttrResource> resourceMap = ResourceManager.getResourceMap(EquipAttrResource.class);
+        ConcurrentMap<Object, EquipAttrResource> resourceMap1 = ResourceManager.getResourceMap(EquipAttrResource.class);
+
         System.out.println(resourceMap);
     }
 

@@ -8,6 +8,7 @@ import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
     private static final Logger logger = LoggerFactory.getLogger(EquipmentServiceImpl.class);
+
 
     @Autowired
     private EquipmentManager equipmentManager;
@@ -59,19 +61,24 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         //装备物品
         player.getEquipBar().equip(equipItem);
-        //保存
+
+        //更细属性容器
+        EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
+        EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
+        player.getPlayerAttributeContainer().putAndComputeAttributes(equipmentType, equipAttrResource.getAttributes());
+
+
+        //保存装备栏
         saveEquipmentStorageEnt(player);
-
-
         //保存背包
         SpringContext.getItemService().saveItemStorageEnt(player);
         logger.info("已穿上[{}]装备", itemResource.getName());
-
         return true;
     }
 
     @Override
     public boolean unEquip(Player player, int position) {
+
         AbstractItem equipItem = player.getEquipBar().unEquip(position);
         //检查参数是否合法
         if (!isLegal(position)) {
@@ -82,6 +89,13 @@ public class EquipmentServiceImpl implements EquipmentService {
             logger.info("该部位不存在物件", EquipmentType.getEquipmentTypeId(position));
             RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
         }
+
+        String itemResourceId = equipItem.getItemResourceId();
+        ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
+        //更细属性容器
+        EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
+        EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
+        player.getPlayerAttributeContainer().removeAndComputeAttributeSet(equipmentType);
         logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getObjectId());
         return true;
     }

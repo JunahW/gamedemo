@@ -1,30 +1,52 @@
 package com.example.gamedemo.server.game.equip.constant;
 
+import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
+
 /**
  * @author: wengj
  * @date: 2019/5/30
  * @description: 装备类型
  */
-public enum EquipmentType {
+public enum EquipmentType implements AttributeModelId {
     /**
      * 武器
      */
-    WEAPON(0),
+    WEAPON(0) {
+        @Override
+        public String getModelName() {
+            return "WEAPON";
+        }
+    },
 
     /**
      * 衣服
      */
-    CLOTH(1),
+    CLOTH(1) {
+        @Override
+        public String getModelName() {
+            return "CLOTH";
+        }
+    },
 
     /**
      * 头盔
      */
-    HAT(2),
+    HAT(2) {
+        @Override
+        public String getModelName() {
+            return "HAT";
+        }
+    },
 
     /**
      * 战靴
      */
-    SHOE(3);
+    SHOE(3) {
+        @Override
+        public String getModelName() {
+            return "SHOE";
+        }
+    };
 
     /**
      * 装备类型

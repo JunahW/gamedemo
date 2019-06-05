@@ -2,11 +2,7 @@ package com.example.gamedemo.server.game.player.entity;
 
 import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.utils.JsonUtils;
-import com.example.gamedemo.server.game.SpringContext;
-import com.example.gamedemo.server.game.attribute.constant.AttributeModelType;
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
-import com.example.gamedemo.server.game.scene.model.Scene;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -45,7 +41,7 @@ public class PlayerEnt implements Entity<String> {
     @Column
     private int y;
 
-    @Column(length = 2000)
+    @Column(length = 10000)
     private String sceneData;
 
     /**
@@ -132,7 +128,7 @@ public class PlayerEnt implements Entity<String> {
 
     @Override
     public boolean serialize() {
-        String sceneString = JsonUtils.serializeEntity(player.getScene());
+        String sceneString = JsonUtils.serializeEntity(player.getSceneResource());
         this.setSceneData(sceneString);
         this.setPlayerId(player.getPlayerId());
         this.setPlayerName(player.getPlayerName());
@@ -143,18 +139,14 @@ public class PlayerEnt implements Entity<String> {
 
     @Override
     public boolean deSerialize() {
-        Scene scene = JsonUtils.deSerializeEntity(getSceneData(), Scene.class);
+        //TODO 序列化有问题
+        //SceneResource sceneResource = JsonUtils.deSerializeEntity(getSceneData(), SceneResource.class);
         Player player = new Player();
-        player.setScene(scene);
+        //player.setSceneResource(sceneResource);
         player.setPlayerId(getPlayerId());
         player.setPlayerName(getPlayerName());
         player.setAccountId(getAccountId());
         player.setPlayerType(getPlayerType());
-        //获取玩家的基础属性
-        BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(this.playerType);
-        player.getPlayerAttributeContainer().getModelAttributeListMap().put(AttributeModelType.BASE, baseAttribute.getPlayerBaseAttribute());
-
-
         this.setPlayer(player);
         return true;
     }

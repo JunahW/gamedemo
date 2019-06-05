@@ -1,9 +1,10 @@
-package com.example.gamedemo.server.game.scene.model;
+package com.example.gamedemo.server.game.scene.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.util.internal.ConcurrentSet;
 
 import java.io.Serializable;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * @description:
  */
 @Resource
-public class Scene implements Serializable, ResourceInterface {
+public class SceneResource implements Serializable, ResourceInterface {
     /**
      * 场景id
      */
@@ -87,7 +88,7 @@ public class Scene implements Serializable, ResourceInterface {
     /**
      * 场景上的npc
      */
-    private ConcurrentSet<Npc> npcSet = new ConcurrentSet<>();
+    private ConcurrentSet<NpcResource> npcResourceSet = new ConcurrentSet<>();
 
 
     public String getSceneId() {
@@ -106,8 +107,8 @@ public class Scene implements Serializable, ResourceInterface {
         return playerSet;
     }
 
-    public ConcurrentSet<Npc> getNpcSet() {
-        return npcSet;
+    public ConcurrentSet<NpcResource> getNpcResourceSet() {
+        return npcResourceSet;
     }
 
     public int getWidth() {
@@ -154,8 +155,8 @@ public class Scene implements Serializable, ResourceInterface {
         this.playerSet = playerSet;
     }
 
-    public void setNpcSet(ConcurrentSet<Npc> npcSet) {
-        this.npcSet = npcSet;
+    public void setNpcResourceSet(ConcurrentSet<NpcResource> npcResourceSet) {
+        this.npcResourceSet = npcResourceSet;
     }
 
     public void setWidth(int width) {
@@ -186,14 +187,14 @@ public class Scene implements Serializable, ResourceInterface {
         this.monsters = monsters;
     }
 
-    public Scene() {
+    public SceneResource() {
     }
 
-    public Scene(String sceneId) {
+    public SceneResource(String sceneId) {
         this.sceneId = sceneId;
     }
 
-    public Scene(String sceneId, String sceneName) {
+    public SceneResource(String sceneId, String sceneName) {
         this.sceneId = sceneId;
         this.sceneName = sceneName;
     }
@@ -212,7 +213,7 @@ public class Scene implements Serializable, ResourceInterface {
                 ", npcs='" + npcs + '\'' +
                 ", monsters='" + monsters + '\'' +
                 ", accountSet=" + playerSet +
-                ", npcSet=" + npcSet +
+                ", npcSet=" + npcResourceSet +
                 '}';
     }
 
@@ -224,8 +225,8 @@ public class Scene implements Serializable, ResourceInterface {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Scene scene = (Scene) o;
-        return Objects.equals(sceneId, scene.sceneId);
+        SceneResource sceneResource = (SceneResource) o;
+        return Objects.equals(sceneId, sceneResource.sceneId);
     }
 
     @Override
@@ -233,6 +234,7 @@ public class Scene implements Serializable, ResourceInterface {
         return Objects.hash(sceneId);
     }
 
+    @JsonIgnore
     @Override
     public Object getId() {
         return this.sceneId;

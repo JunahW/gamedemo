@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.attribute;
 
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+
 /**
  * @author wengj
  * @description：属性
@@ -10,37 +12,34 @@ public class Attribute {
     /**
      * 属性类型
      */
-    private String type;
+    private AttributeTypeEnum type;
 
     /**
-     * 属性值 TODO 用long
+     * 属性值
      */
-    private double value;
+    private long value;
 
-    public String getType() {
+    public AttributeTypeEnum getType() {
         return type;
     }
 
-    public double getValue() {
+    public long getValue() {
         return value;
     }
 
-    public void setType(String type) {
+    public void setType(AttributeTypeEnum type) {
         this.type = type;
     }
 
-    public void setValue(double value) {
+    public void setValue(long value) {
         this.value = value;
     }
-
 
     public Attribute() {
     }
 
-    public Attribute(String type, double value) {
-        this.type = type;
+    public Attribute(String type, long value) {
+        this.type = AttributeTypeEnum.getAttributeTypeEnumByType(type);
         this.value = value;
     }
-
-
 }

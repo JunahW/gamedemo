@@ -8,7 +8,7 @@ import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
-import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import org.apache.ibatis.annotations.Mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,7 +41,7 @@ public class GamedemoApplicationTests {
 
     @Test
     public void testClass() {
-        Class<Scene> sceneClass = Scene.class;
+        Class<SceneResource> sceneClass = SceneResource.class;
         System.out.println(sceneClass.getSimpleName());
     }
 
@@ -70,7 +70,7 @@ public class GamedemoApplicationTests {
             Player player = new Player();
             player.setPlayerId("54654546");
             player.setPlayerName("5465465的店了解到");
-            player.setScene(new Scene("555"));
+            player.setSceneResource(new SceneResource("555"));
             players.add(player);
         }
         System.out.println();

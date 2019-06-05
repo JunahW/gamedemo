@@ -15,10 +15,10 @@ public interface PlayerService {
     /**
      * 通过id获取账户信息
      *
-     * @param accountId
+     * @param playerId
      * @return
      */
-    Player getAccountById(String accountId);
+    Player getPlayerById(String playerId);
 
     /**
      * 新增账户

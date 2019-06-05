@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
 
@@ -54,4 +55,20 @@ public class AttributeTest {
         System.out.println(attributes);
 
     }
+
+    @Test
+    public void testHashMapCleatFunction() {
+        String s0 = "000";
+        String s1 = "111";
+        String s2 = "222";
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put(s0, s0);
+        map.put(s1, s1);
+        map.put(s2, s2);
+        map.clear();
+        System.out.println(map);
+
+    }
+
 }

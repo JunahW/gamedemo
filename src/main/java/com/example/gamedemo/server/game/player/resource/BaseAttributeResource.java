@@ -26,37 +26,49 @@ public class BaseAttributeResource implements ResourceInterface {
      * 生命值
      */
     @ExcelColumn(columnName = "hp")
-    private double hp;
+    private long hp;
 
     /**
      * 魔法值
      */
     @ExcelColumn(columnName = "mp")
-    private double mp;
+    private long mp;
 
     /**
      * 攻击力
      */
     @ExcelColumn(columnName = "attack")
-    private double attack;
+    private long attack;
 
     /**
      * 防御力
      */
     @ExcelColumn(columnName = "defense")
-    private double defense;
+    private long defense;
 
     /**
-     * 伤害加成
+     * 攻击下限
+     */
+    @ExcelColumn(columnName = "attackLower")
+    private long attackLower;
+
+    /**
+     * 攻击上限
      */
     @ExcelColumn(columnName = "attackUpper")
-    private double attackUpper;
+    private long attackUpper;
 
     /**
-     * 受到伤害减少
+     * 防御上限
+     */
+    @ExcelColumn(columnName = "defenseLower")
+    private long defenseLower;
+
+    /**
+     * 防御上限
      */
     @ExcelColumn(columnName = "defenseUpper")
-    private double defenseUpper;
+    private long defenseUpper;
 
     private List<Attribute> attributes;
 
@@ -64,27 +76,27 @@ public class BaseAttributeResource implements ResourceInterface {
         return playerType;
     }
 
-    public double getHp() {
+    public long getHp() {
         return hp;
     }
 
-    public double getMp() {
+    public long getMp() {
         return mp;
     }
 
-    public double getAttack() {
+    public long getAttack() {
         return attack;
     }
 
-    public double getDefense() {
+    public long getDefense() {
         return defense;
     }
 
-    public double getAttackUpper() {
+    public long getAttackUpper() {
         return attackUpper;
     }
 
-    public double getDefenseUpper() {
+    public long getDefenseUpper() {
         return defenseUpper;
     }
 
@@ -92,36 +104,52 @@ public class BaseAttributeResource implements ResourceInterface {
         return attributes;
     }
 
-    public void setHp(double hp) {
-        this.hp = hp;
-    }
-
     public void setPlayerType(String playerType) {
         this.playerType = playerType;
     }
 
-    public void setMp(double mp) {
+    public void setHp(long hp) {
+        this.hp = hp;
+    }
+
+    public void setMp(long mp) {
         this.mp = mp;
     }
 
-    public void setAttack(double attack) {
+    public void setAttack(long attack) {
         this.attack = attack;
     }
 
-    public void setDefense(double defense) {
+    public void setDefense(long defense) {
         this.defense = defense;
     }
 
-    public void setAttackUpper(double attackUpper) {
+    public void setAttackUpper(long attackUpper) {
         this.attackUpper = attackUpper;
     }
 
-    public void setDefenseUpper(double defenseUpper) {
+    public long getAttackLower() {
+        return attackLower;
+    }
+
+    public long getDefenseLower() {
+        return defenseLower;
+    }
+
+    public void setDefenseUpper(long defenseUpper) {
         this.defenseUpper = defenseUpper;
     }
 
     public void setAttributes(List<Attribute> attributes) {
         this.attributes = attributes;
+    }
+
+    public void setAttackLower(long attackLower) {
+        this.attackLower = attackLower;
+    }
+
+    public void setDefenseLower(long defenseLower) {
+        this.defenseLower = defenseLower;
     }
 
     @Override
@@ -142,12 +170,14 @@ public class BaseAttributeResource implements ResourceInterface {
     public void postInit() {
         if (this.attributes == null) {
             ArrayList<Attribute> attributes = new ArrayList<>();
-            attributes.add(new Attribute("hp", this.hp));
-            attributes.add(new Attribute("mp", this.mp));
-            attributes.add(new Attribute("attack", this.attack));
-            attributes.add(new Attribute("defense", this.defense));
-            attributes.add(new Attribute("attackUpper", this.attackUpper));
-            attributes.add(new Attribute("defenseUpper", this.defenseUpper));
+            attributes.add(new Attribute("HP", this.hp));
+            attributes.add(new Attribute("MP", this.mp));
+            attributes.add(new Attribute("ATTACK", this.attack));
+            attributes.add(new Attribute("DEFENSE", this.defense));
+            attributes.add(new Attribute("ATTACK_LOWER", this.attackLower));
+            attributes.add(new Attribute("ATTACK_UPPER", this.attackUpper));
+            attributes.add(new Attribute("DEFENSE_LOWER", this.defenseLower));
+            attributes.add(new Attribute("DEFENSE_UPPER", this.defenseUpper));
             this.attributes = attributes;
         }
     }

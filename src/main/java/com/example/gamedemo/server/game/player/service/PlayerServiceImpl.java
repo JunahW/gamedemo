@@ -4,11 +4,12 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
-import com.example.gamedemo.common.resource.ResourceManager;
+import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
-import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,9 +42,9 @@ public class PlayerServiceImpl implements PlayerService {
 
 
     @Override
-    public Player getAccountById(String accountId) {
-        logger.info("客户端查询accountId：{}", accountId);
-        return PlayerManager.getAccountById(accountId);
+    public Player getPlayerById(String playerId) {
+        logger.info("客户端查询accountId：{}", playerId);
+        return accessor.load(PlayerEnt.class, playerId).getPlayer();
     }
 
     @Override
@@ -55,14 +56,15 @@ public class PlayerServiceImpl implements PlayerService {
         }
         player.setPlayerName(playerManager.getPlayerResourceById(player.getPlayerType()).getPlayerName());
         PlayerEnt playerEnt = new PlayerEnt();
+        //设置其实地址
+        player.setSceneResource(playerManager.getSceneResourceById(SystemConstant.DEFAULT_SCENE));
         playerEnt.setPlayer(player);
-        //TODO scene 为null是否可以装换为json？？
+
         playerEnt.serialize();
         logger.info("新增用户：{}", player.getPlayerName());
 
         String save = accessor.save(PlayerEnt.class, playerEnt);
         if (save != null) {
-            PlayerManager.setAccount(player);
             logger.info("新增用户成功");
             return 1;
         } else {
@@ -79,10 +81,10 @@ public class PlayerServiceImpl implements PlayerService {
             playerEnt.deSerialize();
             Player player = playerEnt.getPlayer();
             logger.info("{}选择角色成功", playerEnt.getPlayerName());
-            if (player.getScene() == null) {
-                //设置默认场景
-                player.setScene(ResourceManager.getResourceItemById(Scene.class, SystemConstant.DEFAULT_SCENE));
-            }
+            //获取玩家的基础属性
+            BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getPlayerType());
+            player.getPlayerAttributeContainer().putAndComputeAttributes(AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());
+
             return player;
         } else {
             logger.warn("{}该玩家还未创建", playerId);
@@ -109,9 +111,9 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public boolean move2Coordinate(Player player, int x, int y) {
-        Scene scene = player.getScene();
-        int[][] sceneMap = scene.getSceneMap();
-        if (scene.getWidth() - 1 < x || scene.getHeight() - 1 < y) {
+        SceneResource sceneResource = player.getSceneResource();
+        int[][] sceneMap = sceneResource.getSceneMap();
+        if (sceneResource.getWidth() - 1 < x || sceneResource.getHeight() - 1 < y) {
             logger.info("请求参数不合法");
             return false;
         }
@@ -134,6 +136,8 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType) {
+
+
         return playerManager.getAttributeResourceByPlayerType(playerType);
     }
 }
