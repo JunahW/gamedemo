@@ -63,7 +63,6 @@ public class EquipmentManager {
             public EquipStorageEnt newInstance(String id) {
                 EquipStorageEnt equipStorageEnt = new EquipStorageEnt();
                 EquipStorage bar = new EquipStorage();
-
                 equipStorageEnt.setEquipStorage(bar);
                 equipStorageEnt.setPlayerId(playerId);
                 //FIXME 去除 equipStorageEnt.serialize();

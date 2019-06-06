@@ -3,7 +3,6 @@ package com.example.gamedemo.server.game.player.service;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
 import com.example.gamedemo.common.resource.ResourceManager;
-import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
@@ -40,11 +39,6 @@ public class PlayerManager {
         entityCacheService.setClazz(PlayerEnt.class);
         entityCacheService.setAccessor(accessor);
     }
-
-    static {
-        SystemInitializer.initResource();
-    }
-
 
     /**
      * 获取玩家配置信息

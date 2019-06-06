@@ -1,7 +1,6 @@
 package com.example.gamedemo;
 
 import com.example.gamedemo.server.MyServer;
-import com.example.gamedemo.server.SystemInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -19,8 +18,8 @@ public class GamedemoApplication {
 
         SpringApplication.run(GamedemoApplication.class, args);
         //初始化
-        SystemInitializer.initResource();
-        SystemInitializer.initControllerMap();
+       /* SystemInitializer.initResource();
+        SystemInitializer.initControllerMap();*/
 
         new MyServer().start(args);
     }
