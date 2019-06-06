@@ -9,6 +9,7 @@ import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
+import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,13 +79,13 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public boolean unEquip(Player player, int position) {
-
-        AbstractItem equipItem = player.getEquipBar().unEquip(position);
         //检查参数是否合法
         if (!isLegal(position)) {
             logger.info("请求从参数有误position[{}]", position);
             RequestException.throwException(I18nId.POSITION_NO_DEFINE);
         }
+
+        AbstractItem equipItem = player.getEquipBar().unEquip(position);
         if (equipItem == null) {
             logger.info("该部位不存在物件", EquipmentType.getEquipmentTypeId(position));
             RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
@@ -155,6 +156,13 @@ public class EquipmentServiceImpl implements EquipmentService {
                 return true;
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean enhanceEquip(Player player, int position) {
+        EquipStorage equipBar = player.getEquipBar();
+
         return false;
     }
 }

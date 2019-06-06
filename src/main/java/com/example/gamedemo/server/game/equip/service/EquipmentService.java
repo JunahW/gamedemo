@@ -66,5 +66,14 @@ public interface EquipmentService {
      */
     EquipStorageEnt getEquipStorageEnt(String playerId);
 
+    /**
+     * 增强属性
+     *
+     * @param player
+     * @param position
+     * @return
+     */
+    boolean enhanceEquip(Player player, int position);
+
 
 }

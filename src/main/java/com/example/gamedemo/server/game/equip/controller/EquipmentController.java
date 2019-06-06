@@ -7,10 +7,7 @@ import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
-import com.example.gamedemo.server.game.equip.packet.CM_EquipItem;
-import com.example.gamedemo.server.game.equip.packet.CM_GetEquipMsg;
-import com.example.gamedemo.server.game.equip.packet.CM_ShowEquipmentBar;
-import com.example.gamedemo.server.game.equip.packet.CM_UnEquipItem;
+import com.example.gamedemo.server.game.equip.packet.*;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.springframework.stereotype.Component;
@@ -93,6 +90,18 @@ public class EquipmentController {
         Player player = session.getPlayer();
         EquipStorage equipBar = player.getEquipBar();
         SessionManager.sendMessage(session, "装备栏：" + equipBar + "\r\n");
+
+    }
+
+    /**
+     * 装备卡槽升级
+     *
+     * @param session
+     * @param req
+     */
+    @HandlerMethod(cmd = "equipEnhance")
+    public void equipEnhance(TSession session, CM_EquipEnhance req) {
+
 
     }
 }

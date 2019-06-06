@@ -10,6 +10,8 @@ import com.example.gamedemo.server.game.bag.model.GemstoneItem;
 import com.example.gamedemo.server.game.bag.service.ItemManager;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
+import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
+import com.example.gamedemo.server.game.equip.service.EquipmentManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class EquipTest {
 
     @Autowired
     private ItemManager itemManager;
+
+    @Autowired
+    private EquipmentManager equipmentManager;
 
     /**
      * 测试json是否支持多态
@@ -59,6 +64,20 @@ public class EquipTest {
         ConcurrentMap<Object, EquipAttrResource> resourceMap1 = ResourceManager.getResourceMap(EquipAttrResource.class);
 
         System.out.println(resourceMap);
+    }
+
+
+    @Test
+    public void testEquipEnhanceResource() {
+        SystemInitializer.initResource();
+        ConcurrentMap<Object, EquipEnhanceResource> resourceMap = ResourceManager.getResourceMap(EquipEnhanceResource.class);
+        System.out.println(resourceMap);
+    }
+
+
+    @Test
+    public void testEquipManager() {
+        System.out.println(equipmentManager);
     }
 
 }

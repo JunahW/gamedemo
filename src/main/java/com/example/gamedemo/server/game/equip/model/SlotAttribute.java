@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.equip.model;
 
+import com.example.gamedemo.server.game.bag.model.EquipItem;
+
 /**
  * @author wengj
  * @description:装备卡槽属性
@@ -11,11 +13,24 @@ public class SlotAttribute {
      */
     private int level;
 
+    /**
+     * 卡槽的装备
+     */
+    private EquipItem equipItem;
+
     public int getLevel() {
         return level;
     }
 
+    public EquipItem getEquipItem() {
+        return equipItem;
+    }
+
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public void setEquipItem(EquipItem equipItem) {
+        this.equipItem = equipItem;
     }
 }
