@@ -1,9 +1,12 @@
 package com.example.gamedemo.server.game.player.service;
 
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author: wengj
@@ -67,6 +70,15 @@ public interface PlayerService {
      * @return
      */
     BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType);
+
+    /**
+     * 获取玩家的属性集合
+     *
+     * @param player
+     * @param playerId
+     * @return
+     */
+    ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, String playerId);
 
 
 }

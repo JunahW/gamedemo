@@ -42,4 +42,12 @@ public class Attribute {
         this.type = AttributeTypeEnum.getAttributeTypeEnumByType(type);
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "Attribute{" +
+                "type=" + type +
+                ", value=" + value +
+                '}';
+    }
 }

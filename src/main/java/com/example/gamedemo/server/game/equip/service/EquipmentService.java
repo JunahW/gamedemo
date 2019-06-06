@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.equip.service;
 
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.player.model.Player;
 
 /**
@@ -75,5 +76,12 @@ public interface EquipmentService {
      */
     boolean enhanceEquip(Player player, int position);
 
+    /**
+     * 获取装备的增强属性
+     *
+     * @param id
+     * @return
+     */
+    EquipAttrResource getEquipAttrResourceById(String id);
 
 }

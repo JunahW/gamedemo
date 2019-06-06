@@ -8,9 +8,13 @@ import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.*;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -130,6 +134,24 @@ public class PlayerController {
         } else {
             SessionManager.sendMessage(session, "移动失败\r\n");
         }
+    }
+
+    /**
+     * 查看玩家属性
+     *
+     * @param session
+     * @param req
+     */
+    @HandlerMethod(cmd = "playerAttr")
+    public void getPlayerAttributeByPlayerId(TSession session, CM_PlayerAttr req) {
+        Player player = session.getPlayer();
+        ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = null;
+        try {
+            attributeMap = (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "查看玩家属性失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
+        SessionManager.sendMessage(session, "玩家属性：" + attributeMap + "\r\n");
     }
 
 }

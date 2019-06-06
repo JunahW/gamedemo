@@ -214,4 +214,26 @@ public class ItemStorage {
         }
         return false;
     }
+
+    /**
+     * 检查背包的道具数量是否满足
+     *
+     * @param itemResourceId
+     * @param quantity
+     * @return
+     */
+    public boolean checkPackItemQuantity(String itemResourceId, int quantity) {
+        int total = 0;
+        for (AbstractItem item : abstractItems) {
+            if (item != null) {
+                if (item.getItemResourceId().equals(itemResourceId)) {
+                    total = +item.getQuantity();
+                    if (total >= quantity) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

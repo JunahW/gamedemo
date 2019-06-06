@@ -45,18 +45,25 @@ public abstract class AbstractAttributeContainer<T> {
      * 计算属性值
      */
     public void compute() {
+        attributeMap.clear();
         for (Map.Entry<AttributeModelId, AttributeSet> entry : modelAttributeListMap.entrySet()) {
             AttributeSet attributeSet = entry.getValue();
 
             for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeSet.getAttributeMap().entrySet()) {
                 Attribute attribute = attributeEntry.getValue();
                 if (attributeMap.containsKey(attribute.getType())) {
-                    Attribute preAttribute = attributeMap.get(attribute.getType());
+                    long value = attributeMap.get(attribute.getType()).getValue();
+                    //新建有一个对象，不能修改list的内容
+                    Attribute newAttribute = new Attribute();
+                    newAttribute.setValue(value + attribute.getValue());
+                    newAttribute.setType(attribute.getType());
+
                     //计算属性
-                    preAttribute.setValue(preAttribute.getValue() + attribute.getValue());
+                    attributeMap.put(newAttribute.getType(), newAttribute);
                 } else {
                     attributeMap.put(attribute.getType(), attribute);
                 }
+
             }
         }
 
@@ -89,11 +96,10 @@ public abstract class AbstractAttributeContainer<T> {
             return;
         }
 
-        attributeSet.getAttributeMap().clear();
+        modelAttributeListMap.get(attributeModelId).getAttributeMap().clear();
 
-        ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = attributeSet.getAttributeMap();
         for (Attribute attribute : attributeList) {
-            attributeMap.put(attribute.getType(), attribute);
+            modelAttributeListMap.get(attributeModelId).getAttributeMap().put(attribute.getType(), attribute);
         }
     }
 

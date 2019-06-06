@@ -29,6 +29,12 @@ public class EquipStorage {
                 '}';
     }
 
+    public EquipStorage() {
+        for (int i = 0; i < EquipmentType.values().length; i++) {
+            slots[i] = new Slot();
+        }
+    }
+
     /**
      * 穿装备
      *
@@ -95,6 +101,13 @@ public class EquipStorage {
             return null;
         }
         return slots[position].getEquipItem();
+    }
+
+    public Slot getSlotByPosision(int position) {
+        if (0 > position || position >= EquipmentType.values().length) {
+            return null;
+        }
+        return slots[position];
     }
 
     public Slot[] getSlots() {

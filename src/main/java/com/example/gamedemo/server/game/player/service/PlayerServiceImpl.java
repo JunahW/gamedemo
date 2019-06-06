@@ -5,7 +5,16 @@ import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.bag.model.EquipItem;
+import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.example.gamedemo.server.game.equip.constant.EquipmentType;
+import com.example.gamedemo.server.game.equip.model.Slot;
+import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
+import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
@@ -18,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author: wengj
@@ -76,15 +86,15 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public Player selectPlayer(String playerId) {
-        PlayerEnt playerEnt = accessor.load(PlayerEnt.class, playerId);
+        PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
         if (playerEnt != null) {
             playerEnt.deSerialize();
             Player player = playerEnt.getPlayer();
             logger.info("{}选择角色成功", playerEnt.getPlayerName());
             //获取玩家的基础属性
-            BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getPlayerType());
+           /* BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getPlayerType());
             player.getPlayerAttributeContainer().putAndComputeAttributes(AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());
-
+*/
             return player;
         } else {
             logger.warn("{}该玩家还未创建", playerId);
@@ -136,8 +146,40 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType) {
-
-
         return playerManager.getAttributeResourceByPlayerType(playerType);
+    }
+
+    @Override
+    public ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, String playerId) {
+        PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
+        if (playerEnt == null) {
+            logger.info("[{}]该玩家不存在", playerId);
+            RequestException.throwException(I18nId.PLAYER_NO_EXIST);
+        }
+        Player checkedPlayer = playerEnt.getPlayer();
+        //玩家的积存属性
+        BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(checkedPlayer.getPlayerType());
+
+        //玩家容器
+        PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getPlayerAttributeContainer();
+        //玩家基本属性
+        playerAttributeContainer.putAttributeSet(AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());
+
+        //获取装备栏
+        EquipStorage equipBar = checkedPlayer.getEquipBar();
+        Slot[] slots = equipBar.getSlots();
+        for (Slot slot : slots) {
+            if (slot != null && slot.getEquipItem() != null) {
+                EquipItem equipItem = slot.getEquipItem();
+                ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId());
+                EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
+                EquipAttrResource equipAttrResource = SpringContext.getEquipmentService().getEquipAttrResourceById(itemResource.getItemId());
+                playerAttributeContainer.putAttributeSet(equipmentType, equipAttrResource.getAttributes());
+            }
+        }
+
+        //计算属性的值
+        playerAttributeContainer.compute();
+        return playerAttributeContainer.getAttributeMap();
     }
 }

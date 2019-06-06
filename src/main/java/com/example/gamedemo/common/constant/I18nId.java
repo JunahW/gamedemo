@@ -81,4 +81,19 @@ public interface I18nId {
      */
     int POSITION_NO_DEFINE = 50004;
 
+    /**
+     * 装备栏卡槽位置参数不合法
+     */
+    int SLOT_POSITION_ILLEGAL = 50005;
+
+    /**
+     * 装备栏该卡槽已升满级
+     */
+    int SLOT_LEVEL_CELL = 50006;
+
+    /**
+     * 卡槽升级所需道具不足
+     */
+    int SLOT_UP_ITEM_NO_ENOUGH = 50007;
+
 }

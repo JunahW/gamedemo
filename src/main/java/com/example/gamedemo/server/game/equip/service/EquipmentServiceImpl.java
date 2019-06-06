@@ -3,18 +3,25 @@ package com.example.gamedemo.server.game.equip.service;
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.model.Consume;
+import com.example.gamedemo.server.game.equip.model.Slot;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
+import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author wengj
@@ -65,7 +72,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         //更细属性容器
         EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
-        EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
+        EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
         player.getPlayerAttributeContainer().putAndComputeAttributes(equipmentType, equipAttrResource.getAttributes());
 
 
@@ -161,8 +168,68 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public boolean enhanceEquip(Player player, int position) {
+        ItemStorage pack = player.getPack();
         EquipStorage equipBar = player.getEquipBar();
+        Slot slot = equipBar.getSlotByPosision(position);
+        if (slot == null) {
+            logger.info("[{}]卡槽位置参数不合法");
+            RequestException.throwException(I18nId.SLOT_POSITION_ILLEGAL);
+        }
+        int level = slot.getLevel();
+        EquipEnhanceResource equipEnhanceResource = equipmentManager.getEquipEnhanceResourceByPositionAndLevel(position, level + 1);
+        if (equipEnhanceResource == null) {
+            logger.info("该位置已升级到最高级别");
+            RequestException.throwException(I18nId.SLOT_LEVEL_CELL);
+        }
 
-        return false;
+        /**
+         * 检查所需消耗物
+         */
+        List<Consume> consumeList = equipEnhanceResource.getConsumeList();
+        boolean isEnough = false;
+        for (Consume consume : consumeList) {
+            //消耗背包物品
+            String itemId = consume.getItemId();
+            int quantity = consume.getQuantity();
+            //检查背包是否满足条件
+            isEnough = pack.checkPackItemQuantity(itemId, quantity);
+            if (isEnough == false) {
+                break;
+            }
+        }
+        if (isEnough == false) {
+            logger.info("装备栏卡槽升级所需的道具数量不足");
+            RequestException.throwException(I18nId.SLOT_UP_ITEM_NO_ENOUGH);
+        }
+
+        /**
+         * 消耗道具
+         */
+        for (Consume consume : consumeList) {
+            //消耗背包物品
+            String itemId = consume.getItemId();
+            int quantity = consume.getQuantity();
+            pack.reduceStorageItemByItemResourceId(itemId, quantity);
+        }
+
+        /**
+         * 修改卡槽等级
+         */
+        slot.setLevel(equipEnhanceResource.getLevel());
+
+
+        /**
+         * TODO增强的属性
+         */
+        List<Attribute> attributeList = equipEnhanceResource.getAttributeList();
+
+
+        return isEnough;
     }
+
+    @Override
+    public EquipAttrResource getEquipAttrResourceById(String id) {
+        return equipmentManager.getequipAttrResourceById(id);
+    }
+
 }

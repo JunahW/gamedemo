@@ -90,11 +90,16 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
         V entity = null;
         try {
             entity = cache.get(id);
-            if (entity == null) {
+            if (entity instanceof EmptyEntity) {
                 entity = accessor.load(clazz, id);
                 //反序列化
-                entity.deSerialize();
-                cache.put(id, entity);
+                if (entity != null) {
+                    entity.deSerialize();
+                    cache.put(id, entity);
+                } else {
+                    entity = null;
+                }
+
             }
         } catch (ExecutionException e) {
             e.printStackTrace();

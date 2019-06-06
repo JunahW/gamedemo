@@ -5,7 +5,6 @@ import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
-import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -34,7 +32,6 @@ public class PlayerManager {
     @Autowired
     private Accessor accessor;
 
-
     private EntityCacheServiceImpl<String, PlayerEnt> entityCacheService = new EntityCacheServiceImpl<>();
 
 
@@ -48,32 +45,6 @@ public class PlayerManager {
         SystemInitializer.initResource();
     }
 
-
-    /**
-     * 所有账户
-     */
-    private static ConcurrentHashMap<String, Player> accountId2AccountMap = new ConcurrentHashMap<String, Player>();
-
-    /**
-     * 通过id获取账户信息
-     *
-     * @param accountId
-     * @return
-     */
-    public static Player getAccountById(String accountId) {
-        return accountId2AccountMap.get(accountId);
-    }
-
-    /**
-     * 添加或者账户信息修改
-     *
-     * @param player
-     */
-    public static void setAccount(Player player) {
-        if (null != player) {
-            accountId2AccountMap.put(player.getPlayerId(), player);
-        }
-    }
 
     /**
      * 获取玩家配置信息
@@ -104,6 +75,17 @@ public class PlayerManager {
      */
     public SceneResource getSceneResourceById(String sceneId) {
         return sceneResource.get(sceneId);
+    }
+
+
+    /**
+     * 获取玩家信息
+     *
+     * @param playerId
+     * @return
+     */
+    public PlayerEnt getPlayerEntByPlayerId(String playerId) {
+        return entityCacheService.load(playerId);
     }
 
 
