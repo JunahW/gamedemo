@@ -4,11 +4,9 @@ import com.example.gamedemo.server.game.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
-import com.example.gamedemo.server.game.equip.model.SlotAttribute;
+import com.example.gamedemo.server.game.equip.model.Slot;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -19,29 +17,15 @@ import java.util.Map;
 public class EquipStorage {
 
     /**
-     * 物品
-     */
-    private AbstractItem[] equipItems = new AbstractItem[EquipmentType.values().length];
-
-    /**
      * 卡槽属性
      */
-    private Map<Integer, SlotAttribute> slotAttributeMap = new HashMap<>(EquipmentType.values().length);
+    private Slot[] slots = new Slot[EquipmentType.values().length];
 
-
-    public AbstractItem[] getEquipItems() {
-        return equipItems;
-    }
-
-    public void setEquipItems(AbstractItem[] equipItems) {
-        this.equipItems = equipItems;
-    }
 
     @Override
     public String toString() {
         return "EquipStorage{" +
-                "equipItems=" + Arrays.toString(equipItems) +
-                ", slotAttributeMap=" + slotAttributeMap +
+                ", slotAttributes=" + Arrays.toString(slots) +
                 '}';
     }
 
@@ -53,8 +37,13 @@ public class EquipStorage {
      */
     public AbstractItem equip(EquipItem equipItem) {
         int position = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId()).getPosition();
-        AbstractItem unEquipItem = equipItems[position];
-        equipItems[position] = equipItem;
+        //AbstractItem unEquipItem = equipItems[position];
+
+        if (slots[position] == null) {
+            slots[position] = new Slot();
+        }
+        EquipItem unEquipItem = slots[position].getEquipItem();
+        slots[position].setEquipItem(equipItem);
         return unEquipItem;
     }
 
@@ -65,7 +54,9 @@ public class EquipStorage {
      * @return
      */
     public AbstractItem unEquip(int position) {
-        AbstractItem equipItem = equipItems[position];
+        Slot slot = slots[position];
+        EquipItem equipItem = slot.getEquipItem();
+        slot.setEquipItem(null);
         return equipItem;
     }
 
@@ -76,9 +67,14 @@ public class EquipStorage {
      * @return
      */
     public AbstractItem getEquipmentByGuid(long guid) {
-        for (AbstractItem item : equipItems) {
-            if (item != null && item.getObjectId() == guid) {
-                return item;
+        for (Slot slot : slots) {
+            if (slot != null) {
+                EquipItem equipItem = slot.getEquipItem();
+                if (null != equipItem) {
+                    if (equipItem.getObjectId() == guid) {
+                        return equipItem;
+                    }
+                }
             }
         }
         return null;
@@ -94,6 +90,18 @@ public class EquipStorage {
         if (position >= EquipmentType.values().length) {
             return null;
         }
-        return equipItems[position];
+        Slot slot = slots[position];
+        if (null == slot) {
+            return null;
+        }
+        return slots[position].getEquipItem();
+    }
+
+    public Slot[] getSlots() {
+        return slots;
+    }
+
+    public void setSlots(Slot[] slots) {
+        this.slots = slots;
     }
 }

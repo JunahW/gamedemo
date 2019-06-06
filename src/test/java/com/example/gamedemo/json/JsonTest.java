@@ -3,6 +3,7 @@ package com.example.gamedemo.json;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.bag.model.*;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -46,6 +47,13 @@ public class JsonTest {
         Object o = JsonUtils.deSerializeEntity("", Object.class);
         System.out.println(o);
 
+    }
+
+    @Test
+    public void testJsonSlotAttribute() {
+        EquipStorage equipStorage = new EquipStorage();
+        String s = JsonUtils.serializeEntity(equipStorage);
+        System.out.println(s);
     }
 
 }

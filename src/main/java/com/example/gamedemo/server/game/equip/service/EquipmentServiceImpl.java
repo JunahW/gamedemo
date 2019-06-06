@@ -115,7 +115,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public void saveEquipmentStorageEnt(Player player) {
-        equipmentManager.saveEquipStorageEnt(getEquipStorageEnt(player.getPlayerName()));
+        equipmentManager.saveEquipStorageEnt(getEquipStorageEnt(player.getPlayerId()));
 
     }
 

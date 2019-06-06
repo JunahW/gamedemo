@@ -7,7 +7,7 @@ import com.example.gamedemo.server.game.bag.model.EquipItem;
  * @description:装备卡槽属性
  * @date 2019/6/5
  */
-public class SlotAttribute {
+public class Slot {
     /**
      * 卡槽的等级
      */
@@ -32,5 +32,13 @@ public class SlotAttribute {
 
     public void setEquipItem(EquipItem equipItem) {
         this.equipItem = equipItem;
+    }
+
+    @Override
+    public String toString() {
+        return "SlotAttribute{" +
+                "level=" + level +
+                ", equipItem=" + equipItem +
+                '}';
     }
 }
