@@ -46,7 +46,7 @@ public class PlayerManager {
      * @param modeId
      * @return
      */
-    public PlayerResource getPlayerResourceById(String modeId) {
+    public PlayerResource getPlayerResourceById(int modeId) {
         return playerResource.get(modeId);
     }
 
@@ -57,7 +57,7 @@ public class PlayerManager {
      * @param playerType
      * @return
      */
-    public BaseAttributeResource getAttributeResourceByPlayerType(String playerType) {
+    public BaseAttributeResource getAttributeResourceByPlayerType(int playerType) {
         return baseAttributeResource.get(playerType);
     }
 

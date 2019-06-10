@@ -27,7 +27,7 @@ public class PlayerEnt implements Entity<String> {
     private String accountId;
 
     @Column
-    private String playerType;
+    private int playerType;
 
     /**
      * x轴位置
@@ -64,7 +64,7 @@ public class PlayerEnt implements Entity<String> {
         return accountId;
     }
 
-    public String getPlayerType() {
+    public int getPlayerType() {
         return playerType;
     }
 
@@ -96,7 +96,7 @@ public class PlayerEnt implements Entity<String> {
         this.accountId = accountId;
     }
 
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(int playerType) {
         this.playerType = playerType;
     }
 

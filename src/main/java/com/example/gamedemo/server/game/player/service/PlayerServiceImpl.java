@@ -4,7 +4,7 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
@@ -145,7 +145,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType) {
+    public BaseAttributeResource getBaseAttributeResourceByPlayerType(int playerType) {
         return playerManager.getAttributeResourceByPlayerType(playerType);
     }
 

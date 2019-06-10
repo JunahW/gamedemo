@@ -1,6 +1,6 @@
 package com.example.gamedemo;
 
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

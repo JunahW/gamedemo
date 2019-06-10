@@ -22,7 +22,7 @@ public class EquipEnhanceResource implements ResourceInterface {
      * 唯一id
      */
     @ExcelColumn(columnName = "enhanceId")
-    private String enhanceId;
+    private int enhanceId;
 
     /**
      * 等级
@@ -73,7 +73,7 @@ public class EquipEnhanceResource implements ResourceInterface {
         }));
     }
 
-    public String getEnhanceId() {
+    public int getEnhanceId() {
         return enhanceId;
     }
 
@@ -101,7 +101,7 @@ public class EquipEnhanceResource implements ResourceInterface {
         return attributeList;
     }
 
-    public void setEnhanceId(String enhanceId) {
+    public void setEnhanceId(int enhanceId) {
         this.enhanceId = enhanceId;
     }
 

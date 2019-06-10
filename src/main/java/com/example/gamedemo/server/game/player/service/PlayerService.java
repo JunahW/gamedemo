@@ -69,7 +69,7 @@ public interface PlayerService {
      * @param playerType
      * @return
      */
-    BaseAttributeResource getBaseAttributeResourceByPlayerType(String playerType);
+    BaseAttributeResource getBaseAttributeResourceByPlayerType(int playerType);
 
     /**
      * 获取玩家的属性集合

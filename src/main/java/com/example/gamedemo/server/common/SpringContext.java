@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game;
+package com.example.gamedemo.server.common;
 
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;

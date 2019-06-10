@@ -1,86 +1,57 @@
-package com.example.gamedemo.common.dispatcher;
+package com.example.gamedemo.server.common;
 
-import com.example.gamedemo.common.session.TSession;
-import org.springframework.util.ReflectionUtils;
+import com.example.gamedemo.common.dispatcher.ControllerManager;
+import com.example.gamedemo.common.utils.ParameterCheckUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.MessageToMessageDecoder;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.nio.charset.Charset;
+import java.util.List;
 
 /**
  * @author wengj
- * @description 请求对应的方法
- * @date 2019/5/7
+ * @description：自定义解码器
+ * @date 2019/6/10
  */
-public class InvokeMethod {
-    /**
-     * 执行对象
-     */
-    private Object object;
-    /**
-     * 执行方法
-     */
-    private Method method;
 
-    public Object getObject() {
-        return object;
+@ChannelHandler.Sharable
+public class MsgDecoder extends MessageToMessageDecoder<ByteBuf> {
+    public MsgDecoder() {
+        super();
     }
 
-    public InvokeMethod() {
-    }
-
-    public InvokeMethod(Object object, Method method) {
-        this.object = object;
-        this.method = method;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
+    @Override
+    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> out) throws Exception {
+        String msg = byteBuf.toString(Charset.defaultCharset());
+        MsgPacket msgPacket = transformMsg2MsgPacket(msg);
+        out.add(msgPacket);
     }
 
     /**
-     * 执行请求
-     *
-     * @param session
-     * @param packet
-     * @return
-     */
-    public Object invoke(TSession session, Object packet) {
-        //Object req = transformMsg2Packet(msg);
-
-        return ReflectionUtils.invokeMethod(method, object, session, packet);
-    }
-
-    /* *//**
-     * 将字符串数据转换为packet对象
+     * 将字符串数据转换为msgPacket对象
      *
      * @param msg
      * @return
-     *//*
-    private Object transformMsg2Packet(String msg) {
+     */
+    private MsgPacket transformMsg2MsgPacket(String msg) {
 
         Class classByCmd = ControllerManager.getClassByCmd(msg.split(" ")[0]);
 
-        *//**
-         * 兼容先前版本
-     *//*
-        if (classByCmd == null || classByCmd == String.class) {
-            return msg;
-        }
-
         Object packet = null;
+        MsgPacket msgPacket = new MsgPacket();
+
+        boolean flag = ParameterCheckUtils.checkParams(msg, classByCmd);
+
         try {
             packet = classByCmd.newInstance();
 
             Field[] declaredFields = classByCmd.getDeclaredFields();
 
             String[] msgs = msg.split(" ");
+            msgPacket.setCmd(msgs[0]);
             for (int i = 0; i < declaredFields.length; i++) {
                 declaredFields[i].setAccessible(true);
                 Class<?> fieldType = declaredFields[i].getType();
@@ -108,12 +79,13 @@ public class InvokeMethod {
                     }
                 }
             }
+            msgPacket.setMsg(packet);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        return msgPacket;
+    }
 
-        return packet;
-    }*/
 }

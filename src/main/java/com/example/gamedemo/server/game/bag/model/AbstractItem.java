@@ -13,7 +13,7 @@ public class AbstractItem extends GameObject implements Cloneable {
     /**
      * 道具的资源id
      */
-    private String itemResourceId;
+    private int itemResourceId;
 
     /**
      * 道具名称
@@ -26,7 +26,7 @@ public class AbstractItem extends GameObject implements Cloneable {
     private int quantity;
 
 
-    public String getItemResourceId() {
+    public int getItemResourceId() {
         return itemResourceId;
     }
 
@@ -39,7 +39,7 @@ public class AbstractItem extends GameObject implements Cloneable {
     }
 
 
-    public void setItemResourceId(String itemResourceId) {
+    public void setItemResourceId(int itemResourceId) {
         this.itemResourceId = itemResourceId;
     }
 

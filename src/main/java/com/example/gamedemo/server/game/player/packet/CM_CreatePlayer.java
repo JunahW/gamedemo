@@ -15,13 +15,13 @@ public class CM_CreatePlayer {
     /**
      * 玩家类型
      */
-    private String playerType;
+    private int playerType;
 
     public String getPlayerId() {
         return playerId;
     }
 
-    public String getPlayerType() {
+    public int getPlayerType() {
         return playerType;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.equip.storage;
 
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;

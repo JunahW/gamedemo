@@ -12,12 +12,12 @@ import com.example.gamedemo.common.resource.ResourceInterface;
 @Resource
 public class PlayerResource implements ResourceInterface {
     @ExcelColumn(columnName = "playerId")
-    private String playerId;
+    private int playerId;
 
     @ExcelColumn(columnName = "playerName")
     private String playerName;
 
-    public String getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
@@ -25,7 +25,7 @@ public class PlayerResource implements ResourceInterface {
         return playerName;
     }
 
-    public void setPlayerId(String playerId) {
+    public void setPlayerId(int playerId) {
         this.playerId = playerId;
     }
 

@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game;
+package com.example.gamedemo.server.common;
 
 import com.example.gamedemo.common.session.SessionManager;
 import io.netty.channel.ChannelHandlerContext;
@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
  * @date: 2019/5/6
  * @description: 会话处理器
  */
-public class SessionHandler extends SimpleChannelInboundHandler<String> {
+public class SessionHandler extends SimpleChannelInboundHandler<MsgPacket> {
 
     private static final Logger logger = LoggerFactory.getLogger(SessionHandler.class);
 
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+    public void channelRead0(ChannelHandlerContext ctx, MsgPacket msg) throws Exception {
         ctx.fireChannelRead(msg);
     }
 

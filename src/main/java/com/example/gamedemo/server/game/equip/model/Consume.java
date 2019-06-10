@@ -10,14 +10,14 @@ public class Consume {
     /**
      * 物品id
      */
-    private String itemId;
+    private int itemId;
 
     /**
      * 数量
      */
     private int quantity;
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
@@ -25,7 +25,7 @@ public class Consume {
         return quantity;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 

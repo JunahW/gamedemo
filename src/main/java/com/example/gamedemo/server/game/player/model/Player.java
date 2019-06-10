@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.player.model;
 
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
@@ -35,7 +35,7 @@ public class Player implements Serializable {
     /**
      * 玩家的类型
      */
-    private String playerType;
+    private int playerType;
 
     /**
      * x轴位置
@@ -83,7 +83,7 @@ public class Player implements Serializable {
     }
 
 
-    public String getPlayerType() {
+    public int getPlayerType() {
         return playerType;
     }
 
@@ -115,7 +115,7 @@ public class Player implements Serializable {
         this.y = y;
     }
 
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(int playerType) {
         this.playerType = playerType;
     }
 

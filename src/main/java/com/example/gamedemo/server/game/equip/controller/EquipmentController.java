@@ -5,7 +5,7 @@ import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.packet.*;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;

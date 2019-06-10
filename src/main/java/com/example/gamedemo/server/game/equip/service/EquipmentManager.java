@@ -89,7 +89,7 @@ public class EquipmentManager {
      * @param resourceId
      * @return
      */
-    public EquipAttrResource getequipAttrResourceById(String resourceId) {
+    public EquipAttrResource getequipAttrResourceById(int resourceId) {
         return equipAttrResource.get(resourceId);
     }
 

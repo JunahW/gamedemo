@@ -82,7 +82,7 @@ public interface EquipmentService {
      * @param id
      * @return
      */
-    EquipAttrResource getEquipAttrResourceById(String id);
+    EquipAttrResource getEquipAttrResourceById(int id);
 
 
 }

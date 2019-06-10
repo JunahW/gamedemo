@@ -15,7 +15,7 @@ public class ItemResource implements ResourceInterface {
      * 配置的唯一id
      */
     @ExcelColumn(columnName = "id")
-    private String itemId;
+    private int itemId;
 
     /**
      * 道具名称
@@ -49,7 +49,7 @@ public class ItemResource implements ResourceInterface {
     @ExcelColumn(columnName = "position")
     private int position;
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
@@ -65,7 +65,7 @@ public class ItemResource implements ResourceInterface {
         return overLimit;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 

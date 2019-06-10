@@ -51,7 +51,7 @@ public class ItemManager {
      * @param itemId
      * @return
      */
-    public ItemResource getResourceById(String itemId) {
+    public ItemResource getResourceById(int itemId) {
         return itemResource.get(itemId);
     }
 

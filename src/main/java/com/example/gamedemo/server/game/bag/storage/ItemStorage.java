@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.bag.storage;
 
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 
@@ -91,12 +91,12 @@ public class ItemStorage {
      * @param itemResourceId
      * @param quantity
      */
-    public boolean reduceStorageItemByItemResourceId(String itemResourceId, int quantity) {
+    public boolean reduceStorageItemByItemResourceId(int itemResourceId, int quantity) {
         //检查数量是否够消耗
         int storageQuantity = 0;
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
-                if (abstractItems[i].getItemResourceId().equals(itemResourceId)) {
+                if (abstractItems[i].getItemResourceId() == itemResourceId) {
                     storageQuantity += abstractItems[i].getQuantity();
                     if (storageQuantity >= quantity) {
                         break;
@@ -111,7 +111,7 @@ public class ItemStorage {
         //消耗道具
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
-                if (abstractItems[i].getItemResourceId().equals(itemResourceId)) {
+                if (abstractItems[i].getItemResourceId() == itemResourceId) {
                     quantity -= abstractItems[i].getQuantity();
                     if (quantity < 0) {
                         abstractItems[i].setQuantity(-quantity);
@@ -132,7 +132,7 @@ public class ItemStorage {
      * @return
      */
     public boolean addStorageItem(AbstractItem item) {
-        String itemResourceId = item.getItemResourceId();
+        int itemResourceId = item.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         boolean exist = isExist(item);
         //物品存在
@@ -141,7 +141,7 @@ public class ItemStorage {
                 if (abstractItem != null) {
                     //可堆叠
                     //已经存在
-                    if (item.getItemResourceId().equals(abstractItem.getItemResourceId())) {
+                    if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
                         //判断是否超过堆叠上限
                         if (abstractItem.getQuantity() + item.getQuantity() <= itemResource.getOverLimit()) {
                             abstractItem.setQuantity(abstractItem.getQuantity() + item.getQuantity());
@@ -207,7 +207,7 @@ public class ItemStorage {
     private boolean isExist(AbstractItem item) {
         for (AbstractItem abstractItem : abstractItems) {
             if (abstractItem != null) {
-                if (abstractItem.getItemResourceId().equals(item.getItemResourceId())) {
+                if (abstractItem.getItemResourceId() == item.getItemResourceId()) {
                     return true;
                 }
             }
@@ -222,11 +222,11 @@ public class ItemStorage {
      * @param quantity
      * @return
      */
-    public boolean checkPackItemQuantity(String itemResourceId, int quantity) {
+    public boolean checkPackItemQuantity(int itemResourceId, int quantity) {
         int total = 0;
         for (AbstractItem item : abstractItems) {
             if (item != null) {
-                if (item.getItemResourceId().equals(itemResourceId)) {
+                if (item.getItemResourceId() == itemResourceId) {
                     total = +item.getQuantity();
                     if (total >= quantity) {
                         return true;

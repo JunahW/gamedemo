@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.equip.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
-import com.example.gamedemo.server.game.SpringContext;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
@@ -45,7 +45,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             RequestException.throwException(I18nId.EQUIPMENT_NO_EXIST);
         }
 
-        String itemResourceId = item.getItemResourceId();
+        int itemResourceId = item.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         /**
          * 如果非装备类型，直接返回
@@ -98,7 +98,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
         }
 
-        String itemResourceId = equipItem.getItemResourceId();
+        int itemResourceId = equipItem.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         //更细属性容器
         EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
@@ -189,7 +189,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         boolean isEnough = false;
         for (Consume consume : consumeList) {
             //消耗背包物品
-            String itemId = consume.getItemId();
+            int itemId = consume.getItemId();
             int quantity = consume.getQuantity();
             //检查背包是否满足条件
             isEnough = pack.checkPackItemQuantity(itemId, quantity);
@@ -207,7 +207,7 @@ public class EquipmentServiceImpl implements EquipmentService {
          */
         for (Consume consume : consumeList) {
             //消耗背包物品
-            String itemId = consume.getItemId();
+            int itemId = consume.getItemId();
             int quantity = consume.getQuantity();
             pack.reduceStorageItemByItemResourceId(itemId, quantity);
         }
@@ -233,7 +233,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipAttrResource getEquipAttrResourceById(String id) {
+    public EquipAttrResource getEquipAttrResourceById(int id) {
         return equipmentManager.getequipAttrResourceById(id);
     }
 

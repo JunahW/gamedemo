@@ -19,7 +19,7 @@ public interface ItemService {
      * @param itemId
      * @return
      */
-    boolean addItem(Player player, String itemId);
+    boolean addItem(Player player, int itemId);
 
     /**
      * 使用背包道具
@@ -39,7 +39,7 @@ public interface ItemService {
      * @param quantity
      * @return
      */
-    boolean useItem(Player player, String itemResourceId, int quantity);
+    boolean useItem(Player player, int itemResourceId, int quantity);
 
     /**
      * 查看查询某个物品数量
@@ -64,7 +64,7 @@ public interface ItemService {
      * @param itemResourceId
      * @return
      */
-    AbstractItem createItem(String itemResourceId);
+    AbstractItem createItem(int itemResourceId);
 
     /**
      * 减少道具
@@ -90,7 +90,7 @@ public interface ItemService {
      * @param itemResourceId
      * @return
      */
-    ItemResource getItemResourceByItemResourceId(String itemResourceId);
+    ItemResource getItemResourceByItemResourceId(int itemResourceId);
 
     /**
      * 保存背包信息

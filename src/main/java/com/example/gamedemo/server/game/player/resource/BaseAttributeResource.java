@@ -20,7 +20,7 @@ public class BaseAttributeResource implements ResourceInterface {
      * 玩家类型（职业）
      */
     @ExcelColumn(columnName = "playerType")
-    private String playerType;
+    private int playerType;
 
     /**
      * 生命值
@@ -72,7 +72,7 @@ public class BaseAttributeResource implements ResourceInterface {
 
     private List<Attribute> attributes;
 
-    public String getPlayerType() {
+    public int getPlayerType() {
         return playerType;
     }
 
@@ -104,7 +104,7 @@ public class BaseAttributeResource implements ResourceInterface {
         return attributes;
     }
 
-    public void setPlayerType(String playerType) {
+    public void setPlayerType(int playerType) {
         this.playerType = playerType;
     }
 

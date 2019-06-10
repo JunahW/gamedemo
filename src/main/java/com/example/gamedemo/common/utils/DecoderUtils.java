@@ -1,86 +1,39 @@
-package com.example.gamedemo.common.dispatcher;
+package com.example.gamedemo.common.utils;
 
-import com.example.gamedemo.common.session.TSession;
-import org.springframework.util.ReflectionUtils;
+import com.example.gamedemo.client.MsgMapping;
+import com.example.gamedemo.server.common.MsgPacket;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 /**
  * @author wengj
- * @description 请求对应的方法
- * @date 2019/5/7
+ * @description：编码工具
+ * @date 2019/6/10
  */
-public class InvokeMethod {
-    /**
-     * 执行对象
-     */
-    private Object object;
-    /**
-     * 执行方法
-     */
-    private Method method;
-
-    public Object getObject() {
-        return object;
-    }
-
-    public InvokeMethod() {
-    }
-
-    public InvokeMethod(Object object, Method method) {
-        this.object = object;
-        this.method = method;
-    }
-
-    public Method getMethod() {
-        return method;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-
-    public void setMethod(Method method) {
-        this.method = method;
-    }
+public class DecoderUtils {
 
     /**
-     * 执行请求
-     *
-     * @param session
-     * @param packet
-     * @return
-     */
-    public Object invoke(TSession session, Object packet) {
-        //Object req = transformMsg2Packet(msg);
-
-        return ReflectionUtils.invokeMethod(method, object, session, packet);
-    }
-
-    /* *//**
-     * 将字符串数据转换为packet对象
+     * 将字符串数据转换为msgPacket对象
      *
      * @param msg
      * @return
-     *//*
-    private Object transformMsg2Packet(String msg) {
+     */
+    public static MsgPacket transformMsg2MsgPacket(String msg) {
 
-        Class classByCmd = ControllerManager.getClassByCmd(msg.split(" ")[0]);
-
-        *//**
-         * 兼容先前版本
-     *//*
-        if (classByCmd == null || classByCmd == String.class) {
-            return msg;
-        }
+        Class classByCmd = MsgMapping.getClassByCmd(msg.split(" ")[0]);
 
         Object packet = null;
+        MsgPacket msgPacket = new MsgPacket();
+
+        //boolean flag = ParameterCheckUtils.checkParams(msg, classByCmd);
+
         try {
             packet = classByCmd.newInstance();
 
             Field[] declaredFields = classByCmd.getDeclaredFields();
 
             String[] msgs = msg.split(" ");
+            msgPacket.setCmd(msgs[0]);
             for (int i = 0; i < declaredFields.length; i++) {
                 declaredFields[i].setAccessible(true);
                 Class<?> fieldType = declaredFields[i].getType();
@@ -108,12 +61,13 @@ public class InvokeMethod {
                     }
                 }
             }
+            msgPacket.setMsg(packet);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        return msgPacket;
+    }
 
-        return packet;
-    }*/
 }

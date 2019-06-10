@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public boolean addItem(Player player, String itemId) {
+    public boolean addItem(Player player, int itemId) {
         ItemStorage pack = player.getPack();
         AbstractItem abstractItem = createItem(itemId);
         if (abstractItem == null) {
@@ -71,7 +71,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Override
-    public boolean useItem(Player player, String itemResourceId, int quantity) {
+    public boolean useItem(Player player, int itemResourceId, int quantity) {
         ItemStorage pack = player.getPack();
 
         boolean isUse = pack.reduceStorageItemByItemResourceId(itemResourceId, quantity);
@@ -107,7 +107,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public AbstractItem createItem(String itemResourceId) {
+    public AbstractItem createItem(int itemResourceId) {
         ItemResource itemResource = itemManager.getResourceById(itemResourceId);
         if (itemResource == null) {
             logger.warn("参数有误[{}]该道具不存在", itemResourceId);
@@ -154,7 +154,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResource getItemResourceByItemResourceId(String itemResourceId) {
+    public ItemResource getItemResourceByItemResourceId(int itemResourceId) {
         return itemManager.getResourceById(itemResourceId);
     }
 

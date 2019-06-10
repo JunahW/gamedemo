@@ -21,7 +21,7 @@ public class EquipAttrResource implements ResourceInterface {
      * 配置表唯一id
      */
     @ExcelColumn(columnName = "itemId")
-    private String itemId;
+    private int itemId;
 
     /**
      * 基础属性字符串
@@ -40,7 +40,7 @@ public class EquipAttrResource implements ResourceInterface {
         return this.itemId;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
@@ -57,7 +57,7 @@ public class EquipAttrResource implements ResourceInterface {
         return attributes;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
