@@ -101,7 +101,28 @@ public class EquipmentController {
      */
     @HandlerMethod(cmd = "equipEnhance")
     public void equipEnhance(TSession session, CM_EquipEnhance req) {
+        Player player = session.getPlayer();
+        boolean enhanceEquip = false;
+        try {
+            enhanceEquip = SpringContext.getEquipmentService().enhanceEquip(player, req.getPosition());
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, "升级装备失败：错误码->" + e.getErrorCode() + "\r\n");
+        }
+        if (enhanceEquip) {
+            SessionManager.sendMessage(session, "升级装备成功\r\n");
+        } else {
+            SessionManager.sendMessage(session, "升级装备失败\r\n");
+        }
+    }
 
+    /**
+     * 查看部位等级
+     *
+     * @param session
+     * @param rep
+     */
+    @HandlerMethod(cmd = "checkPosition")
+    public void checkPosition(TSession session, CM_CheckPosition rep) {
 
     }
 }

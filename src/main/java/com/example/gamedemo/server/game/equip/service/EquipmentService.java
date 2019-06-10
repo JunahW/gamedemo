@@ -84,4 +84,5 @@ public interface EquipmentService {
      */
     EquipAttrResource getEquipAttrResourceById(String id);
 
+
 }

@@ -25,7 +25,7 @@ public class EquipStorage {
     @Override
     public String toString() {
         return "EquipStorage{" +
-                ", slotAttributes=" + Arrays.toString(slots) +
+                "slots=" + Arrays.toString(slots) +
                 '}';
     }
 

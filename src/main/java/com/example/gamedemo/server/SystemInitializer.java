@@ -64,7 +64,7 @@ public class SystemInitializer implements Ordered {
      * 初始化静态资源
      */
     public static void initResource() {
-        logger.info("开始初始化静态资源");
+        //logger.info("开始初始化静态资源");
         ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
         Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(Resource.class);
         Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
@@ -78,7 +78,7 @@ public class SystemInitializer implements Ordered {
                 ResourceManager.putResourceItem(aClass, resourceItem.getId(), object);
             }
         }
-        logger.info("完成初始化静态资源");
+        //logger.info("完成初始化静态资源");
 
 
     }

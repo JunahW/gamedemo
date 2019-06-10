@@ -211,11 +211,16 @@ public class EquipmentServiceImpl implements EquipmentService {
             int quantity = consume.getQuantity();
             pack.reduceStorageItemByItemResourceId(itemId, quantity);
         }
+        //保存背包
+        SpringContext.getItemService().saveItemStorageEnt(player);
 
         /**
          * 修改卡槽等级
          */
         slot.setLevel(equipEnhanceResource.getLevel());
+
+        //保存装备栏
+        saveEquipmentStorageEnt(player);
 
 
         /**

@@ -36,7 +36,7 @@ public class Slot {
 
     @Override
     public String toString() {
-        return "SlotAttribute{" +
+        return "Slot{" +
                 "level=" + level +
                 ", equipItem=" + equipItem +
                 '}';
