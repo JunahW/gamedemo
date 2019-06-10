@@ -44,7 +44,19 @@ public enum AttributeTypeEnum {
     /**
      * 防御力上限
      */
-    DEFENSE_UPPER("DEFENSE_UPPER", "防御力上限");
+    DEFENSE_UPPER("DEFENSE_UPPER", "防御力上限"),
+
+    /**
+     * 攻击加成
+     */
+    ATTACK_PERCENTAGE("", "攻击加成"),
+
+
+    /**
+     * 防御加成
+     */
+    DEFENSE_PERCENTAGE("", "防御加成");
+
 
     /**
      * 属性id

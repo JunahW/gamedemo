@@ -43,11 +43,21 @@ public class Attribute {
         this.value = value;
     }
 
+    public Attribute(AttributeTypeEnum type, long value) {
+        this.type = type;
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return "Attribute{" +
                 "type=" + type +
                 ", value=" + value +
                 '}';
+    }
+
+    public static Attribute valueof(AttributeTypeEnum type, long value) {
+        Attribute attribute = new Attribute(type, value);
+        return attribute;
     }
 }

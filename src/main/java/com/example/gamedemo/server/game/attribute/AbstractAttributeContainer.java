@@ -66,8 +66,24 @@ public abstract class AbstractAttributeContainer<T> {
 
             }
         }
+        //计算攻击加成
+        if (null != attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE)) {
+            if (null != attributeMap.get(AttributeTypeEnum.ATTACK)) {
+                Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE);
+                Attribute attackAttribute = attributeMap.get(AttributeTypeEnum.ATTACK);
+                attackAttribute.setValue(attackAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
+            }
 
+        }
 
+        //计算防御加成
+        if (null != attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE)) {
+            if (null != attributeMap.get(AttributeTypeEnum.DEFENSE)) {
+                Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE);
+                Attribute defenseAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE);
+                defenseAttribute.setValue(defenseAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
+            }
+        }
     }
 
     public void putAndComputeAttributes(AttributeModelId attributeModelId, List<Attribute> attributeList) {
@@ -90,7 +106,7 @@ public abstract class AbstractAttributeContainer<T> {
         if (attributeSet == null) {
             attributeSet = new AttributeSet();
             for (Attribute attribute : attributeList) {
-                attributeSet.getAttributeMap().put(attribute.getType(), attribute);
+                attributeSet.getAttributeMap().put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
             }
             modelAttributeListMap.put(attributeModelId, attributeSet);
             return;
@@ -99,7 +115,7 @@ public abstract class AbstractAttributeContainer<T> {
         modelAttributeListMap.get(attributeModelId).getAttributeMap().clear();
 
         for (Attribute attribute : attributeList) {
-            modelAttributeListMap.get(attributeModelId).getAttributeMap().put(attribute.getType(), attribute);
+            modelAttributeListMap.get(attributeModelId).getAttributeMap().put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
         }
     }
 

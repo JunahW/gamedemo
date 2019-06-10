@@ -9,7 +9,6 @@ import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
-import org.apache.ibatis.annotations.Mapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,19 +82,6 @@ public class GamedemoApplicationTests {
     }
 
 
-    @Test
-    public void testMapperAnno() {
-        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(Mapper.class);
-        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
-        for (Map.Entry<String, Object> entry : entries) {
-            Class<?> aClass = entry.getValue().getClass();
-            Method[] methods = aClass.getDeclaredMethods();
-            for (Method method : methods) {
-                System.out.println(method.getName());
-            }
-
-        }
-    }
 
     @Test
     public void testHandlerAnno() {
