@@ -2,9 +2,13 @@ package com.example.gamedemo.server;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.anno.ReceiverHandler;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.common.dispatcher.InvokeMethod;
+import com.example.gamedemo.common.event.Event;
+import com.example.gamedemo.common.event.EventBusManager;
+import com.example.gamedemo.common.event.ReceiverInvoke;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.common.utils.ApplicationContextProvider;
@@ -82,4 +86,35 @@ public class SystemInitializer implements Ordered {
 
 
     }
+
+
+    /**
+     * 初始化事件和处理方法
+     */
+    public static void initEventReceiverInvokeMap() {
+        logger.info("开始初始化事件和处理方案映射表");
+        ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation(HandlerClass.class);
+        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Class<?> aClass = entry.getValue().getClass();
+            Method[] declaredMethods = aClass.getDeclaredMethods();
+            for (Method method : declaredMethods) {
+                if (method.isAnnotationPresent(ReceiverHandler.class)) {
+                    ReceiverInvoke receiverInvoke = new ReceiverInvoke(entry.getValue(), method);
+                    //初始化指令和消息映射关系
+                    Parameter[] parameters = method.getParameters();
+                    Class<? extends Event> clazz = null;
+                    try {
+                        clazz = (Class<? extends Event>) parameters[0].getType();
+                    } catch (ClassCastException e) {
+                        logger.error("Receiver[{}]处理方法参数有误，应该实现[{}]接口", entry.getValue(), Event.class);
+                    }
+                    EventBusManager.registerReceiverInvoke(clazz, receiverInvoke);
+                }
+            }
+        }
+        logger.info("完成初始化事件和处理方案映射表");
+    }
+
 }

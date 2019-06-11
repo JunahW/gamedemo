@@ -3,6 +3,8 @@ package com.example.gamedemo.server.game.player.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.anno.ReceiverHandler;
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
@@ -10,6 +12,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.*;
 import org.springframework.stereotype.Component;
@@ -152,6 +155,24 @@ public class PlayerController {
             SessionManager.sendMessage(session, "查看玩家属性失败：错误码->" + e.getErrorCode() + "\r\n");
         }
         SessionManager.sendMessage(session, "玩家属性：" + attributeMap + "\r\n");
+    }
+
+    @ReceiverHandler
+    public void handlerPlayerLoad(PlayerLoadEvent event) {
+        System.out.println(1111111);
+        System.out.println(event);
+    }
+
+    @ReceiverHandler
+    public void handlerPlayerLoad2(PlayerLoadEvent event) {
+        System.out.println(2222222);
+        System.out.println(event);
+    }
+
+    @HandlerMethod(cmd = "event")
+    public void triggerEvent(TSession session, CM_TestEvent rep) {
+        EventBusManager.submitEvent(new PlayerLoadEvent(session.getPlayer()));
+        System.out.println("触发了事件");
     }
 
 }

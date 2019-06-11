@@ -21,6 +21,7 @@ public class GamedemoApplication {
         //初始化
         // SystemInitializer.initResource();
         SystemInitializer.initControllerMap();
+        SystemInitializer.initEventReceiverInvokeMap();
 
         new MyServer().start(args);
     }
