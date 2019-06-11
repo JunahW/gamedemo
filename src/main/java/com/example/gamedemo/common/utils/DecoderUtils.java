@@ -1,6 +1,6 @@
 package com.example.gamedemo.common.utils;
 
-import com.example.gamedemo.client.MsgMapping;
+import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.MsgPacket;
 
 import java.lang.reflect.Field;
@@ -20,12 +20,10 @@ public class DecoderUtils {
      */
     public static MsgPacket transformMsg2MsgPacket(String msg) {
 
-        Class classByCmd = MsgMapping.getClassByCmd(msg.split(" ")[0]);
+        Class classByCmd = ControllerManager.getClassByCmd(msg.split(" ")[0]);
 
         Object packet = null;
         MsgPacket msgPacket = new MsgPacket();
-
-        //boolean flag = ParameterCheckUtils.checkParams(msg, classByCmd);
 
         try {
             packet = classByCmd.newInstance();

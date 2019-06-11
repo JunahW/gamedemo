@@ -1,9 +1,10 @@
 package com.example.gamedemo.server;
 
 
-import com.example.gamedemo.server.common.MsgDecoder;
+import com.example.gamedemo.server.common.PacketToStringHandler;
 import com.example.gamedemo.server.common.RequestHandler;
 import com.example.gamedemo.server.common.SessionHandler;
+import com.example.gamedemo.server.common.StringToPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -14,6 +15,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.DelimiterBasedFrameDecoder;
 import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,8 +41,10 @@ public class MyServer {
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
                     pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
-                    pipeline.addLast("decoder", new MsgDecoder());
+                    pipeline.addLast("decoder", new StringDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
+                    pipeline.addLast("stringToPacket", new StringToPacketHandler());
+                    pipeline.addLast("packetToString", new PacketToStringHandler());
                     pipeline.addLast("sessionHandler", new SessionHandler());
                     pipeline.addLast("requestHandler", new RequestHandler());
                 }

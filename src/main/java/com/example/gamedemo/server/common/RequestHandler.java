@@ -25,17 +25,7 @@ public class RequestHandler extends SimpleChannelInboundHandler<MsgPacket> {
         //执行请求分发
         //根据指令获取当前的指令多对应的controller
         InvokeMethod invokeMethod = ControllerManager.get(msgPacket.getCmd());
-        if (invokeMethod != null) {
-            TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
-            //boolean flag = ParameterCheckUtils.checkParams(session, msg, clazz);
-            if (true) {
-                invokeMethod.invoke(session, msgPacket.getMsg());
-            }
-
-        } else {
-            ctx.channel().writeAndFlush("指令有误\r\n");
-        }
+        TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
+        invokeMethod.invoke(session, msgPacket.getMsg());
     }
-
-
 }
