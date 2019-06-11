@@ -19,7 +19,7 @@ public abstract class AbstractAttributeContainer<T> {
     /**
      * 属性容器所属者
      */
-    private T owner;
+    protected T owner;
     /**
      * 各个属性容器
      */
@@ -29,6 +29,19 @@ public abstract class AbstractAttributeContainer<T> {
      * 不同模块的属性容器
      */
     private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap = new ConcurrentHashMap<>();
+
+
+    public AbstractAttributeContainer(T owner) {
+        this.owner = owner;
+    }
+
+    public AbstractAttributeContainer() {
+    }
+
+    /**
+     * 计算玩家战力
+     */
+    public abstract void computeCombatIndex();
 
     /**
      * 获取属性的值
@@ -85,6 +98,7 @@ public abstract class AbstractAttributeContainer<T> {
             }
         }
         //TODO 计算战力
+        computeCombatIndex();
     }
 
     public void putAndComputeAttributes(AttributeModelId attributeModelId, List<Attribute> attributeList) {

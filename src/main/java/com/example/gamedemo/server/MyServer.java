@@ -42,9 +42,9 @@ public class MyServer {
                     ChannelPipeline pipeline = ch.pipeline();
                     pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
                     pipeline.addLast("decoder", new StringDecoder());
-                    pipeline.addLast("stringToPacket", new PacketDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
                     pipeline.addLast("packetToString", new PacketEncoder());
+                    pipeline.addLast("stringToPacket", new PacketDecoder());
                     pipeline.addLast("sessionHandler", new SessionHandler());
                     pipeline.addLast("requestHandler", new RequestHandler());
                 }

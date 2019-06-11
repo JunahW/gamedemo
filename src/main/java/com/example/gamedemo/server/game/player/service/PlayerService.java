@@ -88,5 +88,12 @@ public interface PlayerService {
      */
     void computePlayerBaseAttributes(PlayerLoadEvent event);
 
+    /**
+     * 保存玩家信息
+     *
+     * @param player
+     */
+    void savePlayerEnt(Player player);
+
 
 }

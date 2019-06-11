@@ -82,5 +82,14 @@ public class PlayerManager {
         return entityCacheService.load(playerId);
     }
 
+    /**
+     * 保存玩家信息
+     *
+     * @param playerEnt
+     */
+    public void savePlayerEnt(PlayerEnt playerEnt) {
+        entityCacheService.writeBack(playerEnt.getPlayerId(), playerEnt);
+    }
+
 
 }

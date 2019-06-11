@@ -38,6 +38,11 @@ public class Player implements Serializable {
     private int playerType;
 
     /**
+     * 玩家战力
+     */
+    private long combatIndex;
+
+    /**
      * x轴位置
      */
     private int x;
@@ -50,7 +55,7 @@ public class Player implements Serializable {
     /**
      * 玩家属性容器
      */
-    private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer();
+    private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
 
     /**
      * 场景
@@ -72,6 +77,10 @@ public class Player implements Serializable {
 
     public SceneResource getSceneResource() {
         return sceneResource;
+    }
+
+    public long getCombatIndex() {
+        return combatIndex;
     }
 
     public int getX() {
@@ -105,6 +114,10 @@ public class Player implements Serializable {
 
     public void setSceneResource(SceneResource sceneResource) {
         this.sceneResource = sceneResource;
+    }
+
+    public void setCombatIndex(long combatIndex) {
+        this.combatIndex = combatIndex;
     }
 
     public void setX(int x) {

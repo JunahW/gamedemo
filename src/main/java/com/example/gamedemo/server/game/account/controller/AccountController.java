@@ -74,6 +74,7 @@ public class AccountController {
         String returnMsg = null;
         Account account = session.getAccount();
         //异步保存用户信息
+        SpringContext.getPlayerService().savePlayerEnt(session.getPlayer());
         returnMsg = account.getAccountName() + "注销登录";
         SessionManager.sendMessage(session, returnMsg);
         SessionManager.close(session.getChannel());

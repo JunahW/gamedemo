@@ -19,7 +19,7 @@ public class PacketDecoder extends MessageToMessageDecoder<String> {
     protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
         boolean checkCmd = ParameterCheckUtils.checkCmd(msg);
         if (!checkCmd) {
-            ctx.writeAndFlush("指令有误\r\n");
+            ctx.writeAndFlush("指令有误");
             return;
         }
 
@@ -28,7 +28,7 @@ public class PacketDecoder extends MessageToMessageDecoder<String> {
             MsgPacket msgPacket = DecoderUtils.transformMsg2MsgPacket(msg);
             out.add(msgPacket);
         } else {
-            ctx.writeAndFlush("请求参数有误\r\n");
+            ctx.writeAndFlush("请求参数有误");
         }
     }
 }

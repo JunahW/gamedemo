@@ -94,6 +94,7 @@ public interface EquipmentService {
 
     /**
      * 计算玩家的装备模块
+     * @param event
      */
     void computeEquipEnhanceModelAttributes(PlayerLoadEvent event);
 

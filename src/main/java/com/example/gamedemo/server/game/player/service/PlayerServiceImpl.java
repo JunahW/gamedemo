@@ -179,4 +179,9 @@ public class PlayerServiceImpl implements PlayerService {
         playerAttributeContainer.putAttributeSet(AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());
 
     }
+
+    @Override
+    public void savePlayerEnt(Player player) {
+        playerManager.savePlayerEnt(PlayerEnt.valueOf(player));
+    }
 }

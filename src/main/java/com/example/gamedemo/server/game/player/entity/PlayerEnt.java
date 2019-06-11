@@ -30,6 +30,12 @@ public class PlayerEnt implements Entity<String> {
     private int playerType;
 
     /**
+     * 玩家战力
+     */
+    @Column
+    private long combatIndex;
+
+    /**
      * x轴位置
      */
     @Column
@@ -68,6 +74,10 @@ public class PlayerEnt implements Entity<String> {
         return playerType;
     }
 
+    public long getCombatIndex() {
+        return combatIndex;
+    }
+
     public int getX() {
         return x;
     }
@@ -98,6 +108,10 @@ public class PlayerEnt implements Entity<String> {
 
     public void setPlayerType(int playerType) {
         this.playerType = playerType;
+    }
+
+    public void setCombatIndex(long combatIndex) {
+        this.combatIndex = combatIndex;
     }
 
     public void setX(int x) {
@@ -134,6 +148,7 @@ public class PlayerEnt implements Entity<String> {
         this.setPlayerName(player.getPlayerName());
         this.setAccountId(player.getAccountId());
         this.setPlayerType(player.getPlayerType());
+        this.setCombatIndex(player.getCombatIndex());
         return true;
     }
 
@@ -147,7 +162,21 @@ public class PlayerEnt implements Entity<String> {
         player.setPlayerName(getPlayerName());
         player.setAccountId(getAccountId());
         player.setPlayerType(getPlayerType());
+        player.setCombatIndex(getCombatIndex());
         this.setPlayer(player);
         return true;
+    }
+
+    /**
+     * 获取player的存储对象
+     *
+     * @param player
+     * @return
+     */
+    public static PlayerEnt valueOf(Player player) {
+        PlayerEnt playerEnt = new PlayerEnt();
+        playerEnt.setPlayer(player);
+        playerEnt.setPlayerId(player.getPlayerId());
+        return playerEnt;
     }
 }
