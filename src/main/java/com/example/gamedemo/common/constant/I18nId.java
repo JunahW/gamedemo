@@ -54,6 +54,11 @@ public interface I18nId {
      */
     int ITEM_QUANTITY_NO_ENOUGH = 40002;
 
+    /**
+     * 道具扣除失败
+     */
+    int ITEM_REDUCE_FAIL = 40003;
+
     /**==========================装备相关=========================**/
 
     /**

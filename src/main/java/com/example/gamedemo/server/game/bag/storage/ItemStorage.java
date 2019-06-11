@@ -64,14 +64,17 @@ public class ItemStorage {
      * 通过guid减少道具数量
      *
      * @param guid
-     * @param quanlity
+     * @param quantity
      */
-    public boolean reduceStorageItemByObjectId(long guid, int quanlity) {
+    public boolean reduceStorageItemByObjectId(long guid, int quantity) {
         boolean isReduce = false;
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
-                if (abstractItems[i].getQuantity() >= quanlity) {
-                    int size = abstractItems[i].getQuantity() - quanlity;
+                if (guid != abstractItems[i].getObjectId()) {
+                    continue;
+                }
+                if (abstractItems[i].getQuantity() >= quantity) {
+                    int size = abstractItems[i].getQuantity() - quantity;
                     if (size > 0) {
                         abstractItems[i].setQuantity(size);
                     } else {

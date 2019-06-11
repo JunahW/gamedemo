@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.player.service;
 
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 
@@ -72,13 +73,20 @@ public interface PlayerService {
     BaseAttributeResource getBaseAttributeResourceByPlayerType(int playerType);
 
     /**
-     * 获取玩家的属性集合
+     * 获取玩家的属性集合，触发事件
      *
      * @param player
      * @param playerId
      * @return
      */
     ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, String playerId);
+
+    /**
+     * 计算玩家的职业基础属性
+     *
+     * @param event
+     */
+    void computePlayerBaseAttributes(PlayerLoadEvent event);
 
 
 }

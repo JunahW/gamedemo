@@ -157,18 +157,22 @@ public class PlayerController {
         SessionManager.sendMessage(session, "玩家属性：" + attributeMap + "\r\n");
     }
 
+    /**
+     * 处理用户加载事件
+     *
+     * @param event
+     */
     @ReceiverHandler
     public void handlerPlayerLoad(PlayerLoadEvent event) {
-        System.out.println(1111111);
-        System.out.println(event);
+        SpringContext.getPlayerService().computePlayerBaseAttributes(event);
     }
 
-    @ReceiverHandler
-    public void handlerPlayerLoad2(PlayerLoadEvent event) {
-        System.out.println(2222222);
-        System.out.println(event);
-    }
-
+    /**
+     * 测试触发事件
+     *
+     * @param session
+     * @param rep
+     */
     @HandlerMethod(cmd = "event")
     public void triggerEvent(TSession session, CM_TestEvent rep) {
         EventBusManager.submitEvent(new PlayerLoadEvent(session.getPlayer()));

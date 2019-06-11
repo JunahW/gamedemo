@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.equip.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.anno.ReceiverHandler;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
@@ -9,6 +10,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.packet.*;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.springframework.stereotype.Component;
 
@@ -124,5 +126,25 @@ public class EquipmentController {
     @HandlerMethod(cmd = "checkPosition")
     public void checkPosition(TSession session, CM_CheckPosition rep) {
 
+    }
+
+    /**
+     * 处理用户加载事件
+     *
+     * @param event
+     */
+    @ReceiverHandler
+    public void handlerPlayerLoadEvent(PlayerLoadEvent event) {
+        SpringContext.getEquipmentService().computeEquipModelAttributes(event);
+    }
+
+    /**
+     * 处理用户加载事件
+     *
+     * @param event
+     */
+    @ReceiverHandler
+    public void handlerPlayerLoadEvent2(PlayerLoadEvent event) {
+        SpringContext.getEquipmentService().computeEquipEnhanceModelAttributes(event);
     }
 }

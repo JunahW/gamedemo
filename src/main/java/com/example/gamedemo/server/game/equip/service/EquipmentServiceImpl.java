@@ -4,10 +4,12 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.equip.constant.EquipmentEnhanceType;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.model.Consume;
@@ -15,6 +17,7 @@ import com.example.gamedemo.server.game.equip.model.Slot;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,10 +68,18 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
 
         //减少背包道具
-        player.getPack().reduceStorageItemByObjectId(equipId, 1);
+        boolean reduce = player.getPack().reduceStorageItemByObjectId(equipId, 1);
+        if (!reduce) {
+            logger.info("扣除道具失败");
+            RequestException.throwException(I18nId.ITEM_REDUCE_FAIL);
+        }
 
         //装备物品
-        player.getEquipBar().equip(equipItem);
+        AbstractItem oreEquip = player.getEquipBar().equip(equipItem);
+        // 替代装备,将旧装备放回背包
+        if (oreEquip != null) {
+            player.getPack().addStorageItem(oreEquip);
+        }
 
         //更细属性容器
         EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
@@ -101,7 +112,6 @@ public class EquipmentServiceImpl implements EquipmentService {
         int itemResourceId = equipItem.getItemResourceId();
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         //更细属性容器
-        EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
         EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
         player.getPlayerAttributeContainer().removeAndComputeAttributeSet(equipmentType);
         logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getObjectId());
@@ -157,9 +167,9 @@ public class EquipmentServiceImpl implements EquipmentService {
          * 判断玩家类型和装备类型是否匹配
          */
         ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId());
-        String[] playerTypes = itemResource.getPlayerType().split(",");
-        for (String playerType : playerTypes) {
-            if (playerType.equals(player.getPlayerType())) {
+        int[] playerTypes = itemResource.getPlayerTypes();
+        for (int playerType : playerTypes) {
+            if (playerType == player.getPlayerType()) {
                 return true;
             }
         }
@@ -237,4 +247,54 @@ public class EquipmentServiceImpl implements EquipmentService {
         return equipmentManager.getequipAttrResourceById(id);
     }
 
+    @Override
+    public void computeEquipModelAttributes(PlayerLoadEvent event) {
+        logger.info("处理玩家加载事件");
+        Player player = event.getPlayer();
+        //玩家容器
+        PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+        //获取装备栏
+        EquipStorage equipBar = player.getEquipBar();
+        Slot[] slots = equipBar.getSlots();
+        for (Slot slot : slots) {
+
+            if (slot != null && slot.getEquipItem() != null) {
+                EquipItem equipItem = slot.getEquipItem();
+                ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId());
+                EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
+                EquipAttrResource equipAttrResource = SpringContext.getEquipmentService().getEquipAttrResourceById(itemResource.getItemId());
+                playerAttributeContainer.putAttributeSet(equipmentType, equipAttrResource.getAttributes());
+            }
+        }
+        //TODO 是否计算
+        // playerAttributeContainer.compute();
+    }
+
+    @Override
+    public void computeEquipEnhanceModelAttributes(PlayerLoadEvent event) {
+        logger.info("处理玩家加载事件");
+        Player player = event.getPlayer();
+        //玩家容器
+        PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+        //获取装备栏
+        EquipStorage equipBar = player.getEquipBar();
+        Slot[] slots = equipBar.getSlots();
+        for (int position = 0; position < slots.length; position++) {
+            if (slots[position] != null) {
+                int level = slots[position].getLevel();
+                EquipEnhanceResource resource = equipmentManager.getEquipEnhanceResourceByPositionAndLevel(position, level);
+                if (resource == null) {
+                    continue;
+                }
+                List<Attribute> attributeList = resource.getAttributeList();
+                /**
+                 * 部位名称
+                 */
+                playerAttributeContainer.putAttributeSet(EquipmentEnhanceType.getEquipmentEnhanceTypeByPosition(position), attributeList);
+
+            }
+        }
+        //TODO 是否计算
+        // playerAttributeContainer.compute();
+    }
 }

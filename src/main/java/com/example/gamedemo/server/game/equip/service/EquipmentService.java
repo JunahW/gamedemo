@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.equip.service;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 
 /**
@@ -84,5 +85,16 @@ public interface EquipmentService {
      */
     EquipAttrResource getEquipAttrResourceById(int id);
 
+    /**
+     * 计算玩家的装备属性集
+     *
+     * @param event
+     */
+    void computeEquipModelAttributes(PlayerLoadEvent event);
+
+    /**
+     * 计算玩家的装备模块
+     */
+    void computeEquipEnhanceModelAttributes(PlayerLoadEvent event);
 
 }

@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.player.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.server.common.SpringContext;
@@ -9,13 +10,8 @@ import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
-import com.example.gamedemo.server.game.bag.model.EquipItem;
-import com.example.gamedemo.server.game.bag.resource.ItemResource;
-import com.example.gamedemo.server.game.equip.constant.EquipmentType;
-import com.example.gamedemo.server.game.equip.model.Slot;
-import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
-import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
+import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
@@ -156,30 +152,31 @@ public class PlayerServiceImpl implements PlayerService {
             logger.info("[{}]该玩家不存在", playerId);
             RequestException.throwException(I18nId.PLAYER_NO_EXIST);
         }
+
+        /**
+         * 触发事件，交给各个receiver处理
+         */
+
         Player checkedPlayer = playerEnt.getPlayer();
+        EventBusManager.submitEvent(PlayerLoadEvent.valueof(checkedPlayer));
+
+        //计算属性的值
+        PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getPlayerAttributeContainer();
+        playerAttributeContainer.compute();
+        return playerAttributeContainer.getAttributeMap();
+    }
+
+    @Override
+    public void computePlayerBaseAttributes(PlayerLoadEvent event) {
+        logger.info("处理玩家加载事件");
+        Player player = event.getPlayer();
         //玩家的积存属性
-        BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(checkedPlayer.getPlayerType());
+        BaseAttributeResource baseAttribute = SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getPlayerType());
 
         //玩家容器
-        PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getPlayerAttributeContainer();
+        PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
         //玩家基本属性
         playerAttributeContainer.putAttributeSet(AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());
 
-        //获取装备栏
-        EquipStorage equipBar = checkedPlayer.getEquipBar();
-        Slot[] slots = equipBar.getSlots();
-        for (Slot slot : slots) {
-            if (slot != null && slot.getEquipItem() != null) {
-                EquipItem equipItem = slot.getEquipItem();
-                ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(equipItem.getItemResourceId());
-                EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
-                EquipAttrResource equipAttrResource = SpringContext.getEquipmentService().getEquipAttrResourceById(itemResource.getItemId());
-                playerAttributeContainer.putAttributeSet(equipmentType, equipAttrResource.getAttributes());
-            }
-        }
-
-        //计算属性的值
-        playerAttributeContainer.compute();
-        return playerAttributeContainer.getAttributeMap();
     }
 }

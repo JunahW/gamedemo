@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.bag.resource;
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wengj
@@ -41,7 +42,7 @@ public class ItemResource implements ResourceInterface {
     @ExcelColumn(columnName = "playerType")
     private String playerType;
 
-    private String[] playerTypes;
+    private int[] playerTypes;
 
     /**
      * 装备的位置
@@ -73,15 +74,11 @@ public class ItemResource implements ResourceInterface {
         return playerType;
     }
 
-    public String[] getPlayerTypes() {
-        if (playerTypes == null) {
-            String[] playerStrings = this.getPlayerType().split(",");
-            this.playerTypes = playerStrings;
-        }
+    public int[] getPlayerTypes() {
         return playerTypes;
     }
 
-    public void setPlayerTypes(String[] playerTypes) {
+    public void setPlayerTypes(int[] playerTypes) {
         this.playerTypes = playerTypes;
     }
 
@@ -116,7 +113,17 @@ public class ItemResource implements ResourceInterface {
 
     @Override
     public void postInit() {
-
+        if (playerTypes == null) {
+            if (StringUtils.isEmpty(this.getPlayerType())) {
+                return;
+            }
+            String[] playerStrings = this.getPlayerType().split(",");
+            int[] array = new int[playerStrings.length];
+            for (int i = 0; i < playerStrings.length; i++) {
+                array[i] = Integer.parseInt(playerStrings[i]);
+            }
+            this.playerTypes = array;
+        }
     }
 
 }
