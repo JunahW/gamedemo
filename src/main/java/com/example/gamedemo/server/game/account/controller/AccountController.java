@@ -6,6 +6,8 @@ import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.packet.SM_ErrorCode;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.packet.CM_CreateAccount;
 import com.example.gamedemo.server.game.account.packet.CM_LoginAccount;
@@ -34,15 +36,9 @@ public class AccountController {
         account.setAccountName(req.getAccountName());
         boolean flag = false;
         try {
-            flag = SpringContext.getAccountService().createAccount(account);
+            SpringContext.getAccountService().createAccount(account);
         } catch (RequestException e) {
-            SessionManager.sendMessage(session, "创建账户失败：错误码->" + e.getErrorCode() + "\r\n");
-        }
-
-        if (flag) {
-            SessionManager.sendMessage(session, "创建成功\r\n");
-        } else {
-            SessionManager.sendMessage(session, "创建失败\r\n");
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
     }
 
@@ -57,14 +53,12 @@ public class AccountController {
         Account account = null;
         try {
             account = SpringContext.getAccountService().loginAccount(req.getAccountId());
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, "登陆账户失败：错误码->" + e.getErrorCode() + "\r\n");
-        }
-        if (account == null) {
-            SessionManager.sendMessage(session, "登录失败\r\n");
-        } else {
             SessionManager.registerAccount(session, account);
-            SessionManager.sendMessage(session, "登录成功\r\n");
+        } catch (RequestException e) {
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+        }
+        if (account != null) {
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("登陆成功"));
         }
     }
 
@@ -80,7 +74,7 @@ public class AccountController {
         String returnMsg = null;
         Account account = session.getAccount();
         //异步保存用户信息
-        returnMsg = account.getAccountName() + "注销登录\r\n";
+        returnMsg = account.getAccountName() + "注销登录";
         SessionManager.sendMessage(session, returnMsg);
         SessionManager.close(session.getChannel());
     }

@@ -46,7 +46,7 @@ public class TSession {
         /**
          * 将accounid放入player
          */
-        player.setAccountId(account.getAccountId());
+        //player.setAccountId(account.getAccountId());
         this.player = player;
     }
 

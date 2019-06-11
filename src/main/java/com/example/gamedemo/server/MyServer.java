@@ -1,10 +1,10 @@
 package com.example.gamedemo.server;
 
 
-import com.example.gamedemo.server.common.PacketToStringHandler;
-import com.example.gamedemo.server.common.RequestHandler;
-import com.example.gamedemo.server.common.SessionHandler;
-import com.example.gamedemo.server.common.StringToPacketHandler;
+import com.example.gamedemo.common.net.PacketToStringHandler;
+import com.example.gamedemo.common.net.RequestHandler;
+import com.example.gamedemo.common.net.SessionHandler;
+import com.example.gamedemo.common.net.StringToPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;

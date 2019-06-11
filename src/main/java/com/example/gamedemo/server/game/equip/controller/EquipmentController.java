@@ -7,6 +7,8 @@ import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.packet.SM_ErrorCode;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.equip.packet.*;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
@@ -38,9 +40,7 @@ public class EquipmentController {
             SessionManager.sendMessage(session, "装备失败：错误码->" + e.getErrorCode() + "\r\n");
         }
         if (equip) {
-            SessionManager.sendMessage(session, "穿上装备成功" + "\r\n");
-        } else {
-            SessionManager.sendMessage(session, "穿上装备失败" + "\r\n");
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("穿上装备成功"));
         }
 
     }
@@ -61,9 +61,7 @@ public class EquipmentController {
             SessionManager.sendMessage(session, "脱下装备失败：错误码->" + e.getErrorCode() + "\r\n");
         }
         if (flag) {
-            SessionManager.sendMessage(session, "脱下装备" + "\r\n");
-        } else {
-            SessionManager.sendMessage(session, "脱下装备失败" + "\r\n");
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("脱下装备"));
         }
 
     }
@@ -78,7 +76,7 @@ public class EquipmentController {
     public void getEquipmentMsg(TSession session, CM_GetEquipMsg req) {
         Player player = session.getPlayer();
         AbstractItem equipItem = SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
-        SessionManager.sendMessage(session, "装备信息：" + equipItem + "\r\n");
+        SessionManager.sendMessage(session, equipItem);
     }
 
     /**
@@ -91,7 +89,7 @@ public class EquipmentController {
     public void showEquipment(TSession session, CM_ShowEquipmentBar req) {
         Player player = session.getPlayer();
         EquipStorage equipBar = player.getEquipBar();
-        SessionManager.sendMessage(session, "装备栏：" + equipBar + "\r\n");
+        SessionManager.sendMessage(session, equipBar);
 
     }
 
@@ -108,12 +106,10 @@ public class EquipmentController {
         try {
             enhanceEquip = SpringContext.getEquipmentService().enhanceEquip(player, req.getPosition());
         } catch (RequestException e) {
-            SessionManager.sendMessage(session, "升级装备失败：错误码->" + e.getErrorCode() + "\r\n");
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
         if (enhanceEquip) {
-            SessionManager.sendMessage(session, "升级装备成功\r\n");
-        } else {
-            SessionManager.sendMessage(session, "升级装备失败\r\n");
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("升级装备成功"));
         }
     }
 

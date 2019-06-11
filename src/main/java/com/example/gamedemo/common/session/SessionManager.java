@@ -34,7 +34,7 @@ public class SessionManager {
      */
     private static ConcurrentMap<String, TSession> accountIdSessionMap = new ConcurrentHashMap<>(16);
 
-    public static TSession getSession(String accountId) {
+    public static TSession getSessionByAccountId(String accountId) {
         return accountIdSessionMap.get(accountId);
     }
 
@@ -64,7 +64,7 @@ public class SessionManager {
      */
     public static void registerPlayer(TSession session, Player player) {
         session.registerPlayer(player);
-        accountIdSessionMap.put(player.getPlayerId(), session);
+        accountIdSessionMap.put(player.getAccountId(), session);
     }
 
     /**
@@ -113,7 +113,7 @@ public class SessionManager {
 
             Player player = session.getPlayer();
             if (player != null) {
-                boolean remove = accountIdSessionMap.remove(player.getPlayerId(), session);
+                boolean remove = accountIdSessionMap.remove(player.getAccountId(), session);
                 logger.info("Session unregister, accountId={}, remove={}", player.getPlayerId(), remove);
             }
         }
@@ -135,8 +135,19 @@ public class SessionManager {
      * @param channel
      * @param msg
      */
-    public static void sendMessage(Channel channel, String msg) {
+    public static void sendMessage(Channel channel, Object msg) {
         sendMessage(getSessionByChannel(channel), msg);
+    }
+
+    /**
+     * 发送信息
+     *
+     * @param player
+     * @param msg
+     */
+    public static void sendMessage(Player player, Object msg) {
+        TSession session = getSessionByAccountId(player.getAccountId());
+        sendMessage(session, msg);
     }
 
     /**
@@ -145,7 +156,7 @@ public class SessionManager {
      * @param session
      * @param msg
      */
-    public static void sendMessage(TSession session, String msg) {
+    public static void sendMessage(TSession session, Object msg) {
         session.getChannel().writeAndFlush(msg);
     }
 

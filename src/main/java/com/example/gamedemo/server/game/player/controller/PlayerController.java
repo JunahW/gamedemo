@@ -9,6 +9,8 @@ import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.packet.SM_ErrorCode;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
@@ -65,12 +67,10 @@ public class PlayerController {
         try {
             isSuccess = SpringContext.getPlayerService().createPlayer(player);
         } catch (RequestException e) {
-            SessionManager.sendMessage(session, "创建玩家失败：错误码->" + e.getErrorCode() + "\r\n");
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
         if (isSuccess == 1) {
-            SessionManager.sendMessage(session, "创建角色成功\r\n");
-        } else {
-            SessionManager.sendMessage(session, "创建角色失败\r\n");
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色成功"));
         }
 
     }
@@ -88,19 +88,13 @@ public class PlayerController {
         try {
             player = SpringContext.getPlayerService().selectPlayer(req.getPlayerId());
         } catch (RequestException e) {
-            SessionManager.sendMessage(session, "选择玩家失败：错误码->" + e.getErrorCode() + "\r\n");
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
-        String returnMsg = null;
-        if (player == null) {
-            returnMsg = "玩家不存在\r\n";
-        } else {
-            /**
-             * 注册玩家
-             */
+        if (player != null) {
             SessionManager.registerPlayer(session, player);
-            returnMsg = "选择玩家： " + req.getPlayerId() + "\r\n";
+            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("选择玩家完成"));
         }
-        SessionManager.sendMessage(session, returnMsg);
+
     }
 
     /**
@@ -152,9 +146,9 @@ public class PlayerController {
         try {
             attributeMap = (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));
         } catch (RequestException e) {
-            SessionManager.sendMessage(session, "查看玩家属性失败：错误码->" + e.getErrorCode() + "\r\n");
+            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
-        SessionManager.sendMessage(session, "玩家属性：" + attributeMap + "\r\n");
+        SessionManager.sendMessage(session, SM_PlayerAttrs.valueOf(attributeMap));
     }
 
     /**

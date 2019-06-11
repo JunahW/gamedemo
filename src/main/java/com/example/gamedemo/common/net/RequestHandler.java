@@ -1,10 +1,11 @@
-package com.example.gamedemo.server.common;
+package com.example.gamedemo.common.net;
 
 import com.example.gamedemo.common.constant.SessionAttributeKey;
 import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.common.utils.AttributeUtils;
+import com.example.gamedemo.server.common.MsgPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;

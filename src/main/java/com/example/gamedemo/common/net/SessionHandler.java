@@ -1,6 +1,7 @@
-package com.example.gamedemo.server.common;
+package com.example.gamedemo.common.net;
 
 import com.example.gamedemo.common.session.SessionManager;
+import com.example.gamedemo.server.common.MsgPacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;

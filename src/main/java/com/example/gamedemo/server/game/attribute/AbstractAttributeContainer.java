@@ -66,7 +66,7 @@ public abstract class AbstractAttributeContainer<T> {
 
             }
         }
-        //计算攻击加成
+        //TODO 计算攻击加成
         if (null != attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE)) {
             if (null != attributeMap.get(AttributeTypeEnum.ATTACK)) {
                 Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE);
@@ -76,7 +76,7 @@ public abstract class AbstractAttributeContainer<T> {
 
         }
 
-        //计算防御加成
+        //TODO 计算防御加成
         if (null != attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE)) {
             if (null != attributeMap.get(AttributeTypeEnum.DEFENSE)) {
                 Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE);
@@ -84,6 +84,7 @@ public abstract class AbstractAttributeContainer<T> {
                 defenseAttribute.setValue(defenseAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
             }
         }
+        //TODO 计算战力
     }
 
     public void putAndComputeAttributes(AttributeModelId attributeModelId, List<Attribute> attributeList) {

@@ -7,10 +7,6 @@ package com.example.gamedemo.server.common;
  */
 public class MsgPacket {
     /**
-     * 消息指令和消息体的度
-     */
-    private int packetLength;
-    /**
      * 指令
      */
     private String cmd;
@@ -20,9 +16,6 @@ public class MsgPacket {
      */
     private Object msg;
 
-    public int getPacketLength() {
-        return packetLength;
-    }
 
     public String getCmd() {
         return cmd;
@@ -32,9 +25,6 @@ public class MsgPacket {
         return msg;
     }
 
-    public void setPacketLength(int packetLength) {
-        this.packetLength = packetLength;
-    }
 
     public void setCmd(String cmd) {
         this.cmd = cmd;
@@ -47,7 +37,6 @@ public class MsgPacket {
     @Override
     public String toString() {
         return "MsgPacket{" +
-                "packetLength=" + packetLength +
                 ", cmd='" + cmd + '\'' +
                 ", msg=" + msg +
                 '}';

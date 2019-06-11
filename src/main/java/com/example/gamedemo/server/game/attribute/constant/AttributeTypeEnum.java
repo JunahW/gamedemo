@@ -19,6 +19,7 @@ public enum AttributeTypeEnum {
     /**
      * 攻击力
      */
+    //TODO
     ATTACK("ATTACK", "攻击力"),
 
     /**
