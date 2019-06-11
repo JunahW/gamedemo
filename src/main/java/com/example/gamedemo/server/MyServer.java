@@ -1,10 +1,10 @@
 package com.example.gamedemo.server;
 
 
-import com.example.gamedemo.common.net.PacketToStringHandler;
+import com.example.gamedemo.common.net.PacketDecoder;
+import com.example.gamedemo.common.net.PacketEncoder;
 import com.example.gamedemo.common.net.RequestHandler;
 import com.example.gamedemo.common.net.SessionHandler;
-import com.example.gamedemo.common.net.StringToPacketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -42,9 +42,9 @@ public class MyServer {
                     ChannelPipeline pipeline = ch.pipeline();
                     pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
                     pipeline.addLast("decoder", new StringDecoder());
+                    pipeline.addLast("stringToPacket", new PacketDecoder());
                     pipeline.addLast("encoder", new StringEncoder());
-                    pipeline.addLast("stringToPacket", new StringToPacketHandler());
-                    pipeline.addLast("packetToString", new PacketToStringHandler());
+                    pipeline.addLast("packetToString", new PacketEncoder());
                     pipeline.addLast("sessionHandler", new SessionHandler());
                     pipeline.addLast("requestHandler", new RequestHandler());
                 }
