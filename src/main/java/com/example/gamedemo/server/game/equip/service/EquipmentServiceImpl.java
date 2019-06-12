@@ -114,6 +114,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         //更细属性容器
         EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
         player.getPlayerAttributeContainer().removeAndComputeAttributeSet(equipmentType);
+
         logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getObjectId());
         return true;
     }
@@ -234,10 +235,11 @@ public class EquipmentServiceImpl implements EquipmentService {
 
 
         /**
-         * TODO增强的属性
+         * T增强的属性
          */
         List<Attribute> attributeList = equipEnhanceResource.getAttributeList();
-
+        PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+        playerAttributeContainer.putAndComputeAttributes(EquipmentEnhanceType.getEquipmentEnhanceTypeByPosition(position), attributeList);
 
         return isEnough;
     }
