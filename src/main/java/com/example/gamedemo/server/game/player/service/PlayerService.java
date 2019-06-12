@@ -35,10 +35,11 @@ public interface PlayerService {
     /**
      * 账户登录
      *
+     * @param accountId
      * @param playerId
      * @return
      */
-    Player selectPlayer(String playerId);
+    Player selectPlayer(String accountId, String playerId);
 
     /**
      * 更细账户

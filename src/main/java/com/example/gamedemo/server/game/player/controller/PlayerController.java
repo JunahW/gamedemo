@@ -83,10 +83,10 @@ public class PlayerController {
      */
     @HandlerMethod(cmd = "selectPlayer")
     public void selectPlayer(TSession session, CM_LoginAccount req) {
-
+        Account account = session.getAccount();
         Player player = null;
         try {
-            player = SpringContext.getPlayerService().selectPlayer(req.getPlayerId());
+            player = SpringContext.getPlayerService().selectPlayer(account.getAccountId(), req.getPlayerId());
         } catch (RequestException e) {
             SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
         }
