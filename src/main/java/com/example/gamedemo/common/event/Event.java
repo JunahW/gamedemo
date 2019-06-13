@@ -6,5 +6,5 @@ package com.example.gamedemo.common.event;
  * @description: 事件接口
  */
 public interface Event<T> {
-    T getOwnerId();
+  T getOwnerId();
 }

@@ -1,7 +1,5 @@
 package com.example.gamedemo;
 
-import com.example.gamedemo.common.dispatcher.ControllerManager;
-import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.server.MyServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,8 +19,6 @@ public class GamedemoApplication {
     SpringApplication.run(GamedemoApplication.class, args);
     // 初始化
     // SystemInitializer.initResource();
-    ControllerManager.initControllerMap();
-    EventBusManager.initEventReceiverInvokeMap();
 
     new MyServer().start(args);
   }

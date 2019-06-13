@@ -21,14 +21,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ControllerManager {
   private static final Logger logger = LoggerFactory.getLogger(ControllerManager.class);
 
-  /**
-   * 请求和处理之间的映射
-   */
+  /** 请求和处理之间的映射 */
   private static final Map<String, InvokeMethod> CONTROLLER_MAP = new ConcurrentHashMap<>();
 
-  /**
-   * 请求和消息之间的映射
-   */
+  /** 请求和消息之间的映射 */
   private static final Map<String, Class> CMD_PACKER_MAP = new ConcurrentHashMap<>();
 
   /**
@@ -81,14 +77,12 @@ public class ControllerManager {
     return CMD_PACKER_MAP.get(cmd);
   }
 
-  /**
-   * 初始化指令和处理方法映射表
-   */
+  /** 初始化指令和处理方法映射表 */
   public static void initControllerMap() {
     logger.info("开始初始化指令和处理方案映射表");
     ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
     Map<String, Object> beansWithAnnotation =
-            applicationContext.getBeansWithAnnotation(HandlerClass.class);
+        applicationContext.getBeansWithAnnotation(HandlerClass.class);
     Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
     for (Map.Entry<String, Object> entry : entries) {
       Class<?> aClass = entry.getValue().getClass();

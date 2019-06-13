@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.anno;
 
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.ElementType;
@@ -16,6 +15,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 @Component
-@Order(1)
-public @interface Resource {
-}
+public @interface Resource {}
