@@ -24,120 +24,125 @@ import org.springframework.stereotype.Component;
 @Component
 @HandlerClass
 public class EquipmentController {
-    /**
-     * 穿上装备
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "equip")
-    public void equip(TSession session, CM_EquipItem req) {
-        Player player = session.getPlayer();
-        boolean equip = false;
-        try {
-            equip = SpringContext.getEquipmentService().equip(player, req.getGuid());
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, "装备失败：错误码->" + e.getErrorCode() + "\r\n");
-        }
-        if (equip) {
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("穿上装备成功"));
-        }
+  /**
+   * 穿上装备
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "equip")
+  public void equip(TSession session, CM_EquipItem req) {
+    Player player = session.getPlayer();
+    boolean equip = false;
+    try {
+      equip = SpringContext.getEquipmentService().equip(player, req.getGuid());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, "装备失败：错误码->" + e.getErrorCode() + "\r\n");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    if (equip) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("穿上装备成功"));
+    }
+  }
 
-    /**
-     * 卸下装备
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "unEquip")
-    public void unEquip(TSession session, CM_UnEquipItem req) {
-        Player player = session.getPlayer();
-        boolean flag = false;
-        try {
-            flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, "脱下装备失败：错误码->" + e.getErrorCode() + "\r\n");
-        }
-        if (flag) {
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("脱下装备"));
-        }
+  /**
+   * 卸下装备
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "unEquip")
+  public void unEquip(TSession session, CM_UnEquipItem req) {
+    Player player = session.getPlayer();
+    boolean flag = false;
+    try {
+      flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, "脱下装备失败：错误码->" + e.getErrorCode() + "\r\n");
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    if (flag) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("脱下装备"));
+    }
+  }
 
-    /**
-     * 获取装备信息
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "getEquip")
-    public void getEquipmentMsg(TSession session, CM_GetEquipMsg req) {
-        Player player = session.getPlayer();
-        AbstractItem equipItem =
-                SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
-        SessionManager.sendMessage(session, equipItem);
-    }
+  /**
+   * 获取装备信息
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "getEquip")
+  public void getEquipmentMsg(TSession session, CM_GetEquipMsg req) {
+    Player player = session.getPlayer();
+    AbstractItem equipItem =
+        SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
+    SessionManager.sendMessage(session, equipItem);
+  }
 
-    /**
-     * 展示装备栏
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "showBar")
-    public void showEquipment(TSession session, CM_ShowEquipmentBar req) {
-        Player player = session.getPlayer();
-        EquipStorage equipBar = player.getEquipBar();
-        SessionManager.sendMessage(session, equipBar);
-    }
+  /**
+   * 展示装备栏
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "showBar")
+  public void showEquipment(TSession session, CM_ShowEquipmentBar req) {
+    Player player = session.getPlayer();
+    EquipStorage equipBar = player.getEquipBar();
+    SessionManager.sendMessage(session, equipBar);
+  }
 
-    /**
-     * 装备卡槽升级
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "equipEnhance")
-    public void equipEnhance(TSession session, CM_EquipEnhance req) {
-        Player player = session.getPlayer();
-        boolean enhanceEquip = false;
-        try {
-            enhanceEquip = SpringContext.getEquipmentService().enhanceEquip(player, req.getPosition());
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
-        if (enhanceEquip) {
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("升级装备成功"));
-        }
+  /**
+   * 装备卡槽升级
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "equipEnhance")
+  public void equipEnhance(TSession session, CM_EquipEnhance req) {
+    Player player = session.getPlayer();
+    boolean enhanceEquip = false;
+    try {
+      enhanceEquip = SpringContext.getEquipmentService().enhanceEquip(player, req.getPosition());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    if (enhanceEquip) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("升级装备成功"));
+    }
+  }
 
-    /**
-     * 查看部位等级
-     *
-     * @param session
-     * @param rep
-     */
-    @HandlerMethod(cmd = "checkPosition")
-    public void checkPosition(TSession session, CM_CheckPosition rep) {
-    }
+  /**
+   * 查看部位等级
+   *
+   * @param session
+   * @param rep
+   */
+  @HandlerMethod(cmd = "checkPosition")
+  public void checkPosition(TSession session, CM_CheckPosition rep) {}
 
-    /**
-     * 处理用户加载事件
-     *
-     * @param event
-     */
-    @ReceiverHandler
-    public void handlerPlayerLoadEvent(PlayerLoadEvent event) {
-        SpringContext.getEquipmentService().computeEquipModelAttributes(event);
-    }
+  /**
+   * 处理用户加载事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handlerPlayerLoadEvent(PlayerLoadEvent event) {
+    SpringContext.getEquipmentService().computeEquipModelAttributes(event);
+  }
 
-    /**
-     * 处理用户加载事件
-     *
-     * @param event
-     */
-    @ReceiverHandler
-    public void handlerPlayerLoadEvent2(PlayerLoadEvent event) {
-        SpringContext.getEquipmentService().computeEquipEnhanceModelAttributes(event);
-    }
+  /**
+   * 处理用户加载事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handlerPlayerLoadEvent2(PlayerLoadEvent event) {
+    SpringContext.getEquipmentService().computeEquipEnhanceModelAttributes(event);
+  }
 }

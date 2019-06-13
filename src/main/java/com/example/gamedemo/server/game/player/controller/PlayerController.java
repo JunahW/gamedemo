@@ -88,6 +88,8 @@ public class PlayerController {
           SpringContext.getPlayerService().selectPlayer(account.getAccountId(), req.getPlayerId());
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     if (player != null) {
       SessionManager.registerPlayer(session, player);
@@ -148,6 +150,8 @@ public class PlayerController {
           (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     SessionManager.sendMessage(session, SM_PlayerAttrs.valueOf(attributeMap));
   }

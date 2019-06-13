@@ -23,60 +23,64 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountController {
 
-    /**
-     * 创建用户
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "createAccount")
-    public void createAccount(TSession session, CM_CreateAccount req) {
-        Account account = new Account();
-        account.setAccountId(req.getAccountId());
-        account.setAccountName(req.getAccountName());
-        boolean flag = false;
-        try {
-            SpringContext.getAccountService().createAccount(account);
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
+  /**
+   * 创建用户
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "createAccount")
+  public void createAccount(TSession session, CM_CreateAccount req) {
+    Account account = new Account();
+    account.setAccountId(req.getAccountId());
+    account.setAccountName(req.getAccountName());
+    boolean flag = false;
+    try {
+      SpringContext.getAccountService().createAccount(account);
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+  }
 
-    /**
-     * 登陆账户
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "loginAccount")
-    public void loginAccount(TSession session, CM_LoginAccount req) {
-        Account account = null;
-        try {
-            account = SpringContext.getAccountService().loginAccount(req.getAccountId());
-            SessionManager.registerAccount(session, account);
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
-        if (account != null) {
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("登陆成功"));
-        }
+  /**
+   * 登陆账户
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "loginAccount")
+  public void loginAccount(TSession session, CM_LoginAccount req) {
+    Account account = null;
+    try {
+      account = SpringContext.getAccountService().loginAccount(req.getAccountId());
+      SessionManager.registerAccount(session, account);
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
+    if (account != null) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("登陆成功"));
+    }
+  }
 
-    /**
-     * 退出登录
-     *
-     * @param session
-     * @param req
-     * @return
-     */
-    @HandlerMethod(cmd = "logout")
-    public void logout(TSession session, CM_LogoutAccount req) {
-        String returnMsg = null;
-        Account account = session.getAccount();
-        // 异步保存用户信息
-        SpringContext.getPlayerService().savePlayerEnt(session.getPlayer());
-        returnMsg = account.getAccountName() + "注销登录";
-        SessionManager.sendMessage(session, returnMsg);
-        SessionManager.close(session.getChannel());
-    }
+  /**
+   * 退出登录
+   *
+   * @param session
+   * @param req
+   * @return
+   */
+  @HandlerMethod(cmd = "logout")
+  public void logout(TSession session, CM_LogoutAccount req) {
+    String returnMsg = null;
+    Account account = session.getAccount();
+    // 异步保存用户信息
+    SpringContext.getPlayerService().savePlayerEnt(session.getPlayer());
+    returnMsg = account.getAccountName() + "注销登录";
+    SessionManager.sendMessage(session, returnMsg);
+    SessionManager.close(session.getChannel());
+  }
 }
