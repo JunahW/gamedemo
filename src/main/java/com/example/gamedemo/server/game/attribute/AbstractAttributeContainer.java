@@ -15,172 +15,160 @@ import java.util.concurrent.ConcurrentMap;
  */
 public abstract class AbstractAttributeContainer<T> {
 
-    /**
-     * 属性容器所属者
-     */
-    protected T owner;
-    /**
-     * 各个属性容器
-     */
-    private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
+  /** 属性容器所属者 */
+  protected T owner;
+  /** 各个属性容器 */
+  private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
 
-    /**
-     * 不同模块的属性容器
-     */
-    private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap =
-            new ConcurrentHashMap<>();
+  /** 不同模块的属性容器 */
+  private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap =
+      new ConcurrentHashMap<>();
 
-    public AbstractAttributeContainer(T owner) {
-        this.owner = owner;
-    }
+  public AbstractAttributeContainer(T owner) {
+    this.owner = owner;
+  }
 
-    public AbstractAttributeContainer() {
-    }
+  public AbstractAttributeContainer() {}
 
-    /**
-     * 计算玩家战力
-     */
-    public abstract void computeCombatIndex();
+  /** 计算玩家战力 */
+  public abstract void computeCombatIndex();
 
-    /**
-     * 获取属性的值
-     *
-     * @param attributeType
-     * @return
-     */
-    public double getAttributeValue(String attributeType) {
-        Attribute attribute = attributeMap.get(attributeType);
-        return attribute.getValue();
-    }
+  /**
+   * 获取属性的值
+   *
+   * @param attributeType
+   * @return
+   */
+  public double getAttributeValue(String attributeType) {
+    Attribute attribute = attributeMap.get(attributeType);
+    return attribute.getValue();
+  }
 
-    /**
-     * 计算属性值
-     */
-    public void compute() {
-        attributeMap.clear();
-        for (Map.Entry<AttributeModelId, AttributeSet> entry : modelAttributeListMap.entrySet()) {
-            AttributeSet attributeSet = entry.getValue();
-
-            for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry :
-                    attributeSet.getAttributeMap().entrySet()) {
-                Attribute attribute = attributeEntry.getValue();
-                if (attributeMap.containsKey(attribute.getType())) {
-                    long value = attributeMap.get(attribute.getType()).getValue();
-                    // 新建有一个对象，不能修改list的内容
-                    Attribute newAttribute = new Attribute();
-                    newAttribute.setValue(value + attribute.getValue());
-                    newAttribute.setType(attribute.getType());
-
-                    // 计算属性
-                    attributeMap.put(newAttribute.getType(), newAttribute);
-                } else {
-                    attributeMap.put(attribute.getType(), attribute);
-                }
-            }
+  /** 计算属性值 */
+  public void compute() {
+    attributeMap.clear();
+    for (Map.Entry<AttributeModelId, AttributeSet> entry : modelAttributeListMap.entrySet()) {
+      AttributeSet attributeSet = entry.getValue();
+      // 累加各个属性的值
+      for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry :
+          attributeSet.getAttributeMap().entrySet()) {
+        Attribute attribute = attributeEntry.getValue();
+        if (attributeMap.containsKey(attribute.getType())) {
+          long value = attributeMap.get(attribute.getType()).getValue();
+          // 新建有一个对象，不能修改list的内容
+          attributeMap.put(
+              attribute.getType(),
+              Attribute.valueof(attribute.getType(), attribute.getValue() + value));
+        } else {
+          attributeMap.put(
+              attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
         }
-        // TODO 计算攻击加成
-        if (null != attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE)) {
-            if (null != attributeMap.get(AttributeTypeEnum.ATTACK)) {
-                Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE);
-                Attribute attackAttribute = attributeMap.get(AttributeTypeEnum.ATTACK);
-                attackAttribute.setValue(
-                        attackAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
-            }
+      }
+    }
+    // 计算最终的值，包括加成
+    for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeMap.entrySet()) {
+      Attribute attribute = attributeEntry.getValue();
+      if (attribute == null) {
+        continue;
+      }
+      // 获取所受到影响的百分比值
+      AttributeTypeEnum[] percentageAttributes = attribute.getType().getPercentageAttributes();
+      long percentage = 0;
+      if (percentageAttributes == null) {
+        continue;
+      }
+      for (AttributeTypeEnum attributeTypeEnum : percentageAttributes) {
+        if (attributeMap.get(attributeTypeEnum) != null) {
+          percentage += attributeMap.get(attributeTypeEnum).getValue();
         }
+      }
+      // 属性加成
+      attribute.setValue(attribute.getValue() * (100 + percentage) / 100);
+    }
+    // 计算战力
+    computeCombatIndex();
+  }
 
-        // TODO 计算防御加成
-        if (null != attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE)) {
-            if (null != attributeMap.get(AttributeTypeEnum.DEFENSE)) {
-                Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE);
-                Attribute defenseAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE);
-                defenseAttribute.setValue(
-                        defenseAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
-            }
-        }
-        // TODO 计算战力
-        computeCombatIndex();
+  public void putAndComputeAttributes(
+      AttributeModelId attributeModelId, List<Attribute> attributeList) {
+    putAttributeSet(attributeModelId, attributeList);
+    compute();
+  }
+
+  /**
+   * 新增模块属性
+   *
+   * @param attributeModelId
+   * @param attributeList
+   */
+  public void putAttributeSet(AttributeModelId attributeModelId, List<Attribute> attributeList) {
+    if (attributeList == null) {
+      throw new NullPointerException();
+    }
+    AttributeSet attributeSet = modelAttributeListMap.get(attributeModelId);
+    // 不存在
+    if (attributeSet == null) {
+      attributeSet = new AttributeSet();
+      for (Attribute attribute : attributeList) {
+        attributeSet
+            .getAttributeMap()
+            .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
+      }
+      modelAttributeListMap.put(attributeModelId, attributeSet);
+      return;
     }
 
-    public void putAndComputeAttributes(
-            AttributeModelId attributeModelId, List<Attribute> attributeList) {
-        putAttributeSet(attributeModelId, attributeList);
-        compute();
+    modelAttributeListMap.get(attributeModelId).getAttributeMap().clear();
+
+    for (Attribute attribute : attributeList) {
+      modelAttributeListMap
+          .get(attributeModelId)
+          .getAttributeMap()
+          .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
     }
+  }
 
-    /**
-     * 新增模块属性
-     *
-     * @param attributeModelId
-     * @param attributeList
-     */
-    public void putAttributeSet(AttributeModelId attributeModelId, List<Attribute> attributeList) {
-        if (attributeList == null) {
-            throw new NullPointerException();
-        }
-        AttributeSet attributeSet = modelAttributeListMap.get(attributeModelId);
-        // 不存在
-        if (attributeSet == null) {
-            attributeSet = new AttributeSet();
-            for (Attribute attribute : attributeList) {
-                attributeSet
-                        .getAttributeMap()
-                        .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
-            }
-            modelAttributeListMap.put(attributeModelId, attributeSet);
-            return;
-        }
+  /**
+   * 移除某模块属性
+   *
+   * @param attributeModelId
+   */
+  public void removeAttributeSet(AttributeModelId attributeModelId) {
+    modelAttributeListMap.remove(attributeModelId);
+  }
 
-        modelAttributeListMap.get(attributeModelId).getAttributeMap().clear();
+  /**
+   * 移除某一模块的属性并重新计算
+   *
+   * @param attributeModelId
+   */
+  public void removeAndComputeAttributeSet(AttributeModelId attributeModelId) {
+    modelAttributeListMap.remove(attributeModelId);
+    compute();
+  }
 
-        for (Attribute attribute : attributeList) {
-            modelAttributeListMap
-                    .get(attributeModelId)
-                    .getAttributeMap()
-                    .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
-        }
-    }
+  public T getOwner() {
+    return owner;
+  }
 
-    /**
-     * 移除某模块属性
-     *
-     * @param attributeModelId
-     */
-    public void removeAttributeSet(AttributeModelId attributeModelId) {
-        modelAttributeListMap.remove(attributeModelId);
-    }
+  public void setOwner(T owner) {
+    this.owner = owner;
+  }
 
-    /**
-     * 移除某一模块的属性并重新计算
-     *
-     * @param attributeModelId
-     */
-    public void removeAndComputeAttributeSet(AttributeModelId attributeModelId) {
-        modelAttributeListMap.remove(attributeModelId);
-        compute();
-    }
+  public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
+    return attributeMap;
+  }
 
-    public T getOwner() {
-        return owner;
-    }
+  public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+    this.attributeMap = attributeMap;
+  }
 
-    public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
-        return attributeMap;
-    }
+  public ConcurrentMap<AttributeModelId, AttributeSet> getModelAttributeListMap() {
+    return modelAttributeListMap;
+  }
 
-    public ConcurrentMap<AttributeModelId, AttributeSet> getModelAttributeListMap() {
-        return modelAttributeListMap;
-    }
-
-    public void setOwner(T owner) {
-        this.owner = owner;
-    }
-
-    public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
-        this.attributeMap = attributeMap;
-    }
-
-    public void setModelAttributeListMap(
-            ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
-        this.modelAttributeListMap = modelAttributeListMap;
-    }
+  public void setModelAttributeListMap(
+      ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
+    this.modelAttributeListMap = modelAttributeListMap;
+  }
 }
