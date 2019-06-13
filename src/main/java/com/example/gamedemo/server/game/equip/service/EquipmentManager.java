@@ -47,7 +47,7 @@ public class EquipmentManager {
   public void init() {
     entityCacheService.setClazz(EquipStorageEnt.class);
     entityCacheService.setAccessor(accessor);
-    // initEquipEnhanceResource();
+    initEquipEnhanceResource();
   }
 
   /**
