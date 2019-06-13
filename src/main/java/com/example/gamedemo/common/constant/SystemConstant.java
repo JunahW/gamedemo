@@ -7,18 +7,15 @@ package com.example.gamedemo.common.constant;
  */
 public interface SystemConstant {
 
-  /**
-   * 信息分割符号
-   */
+  /** 信息分割符号 */
   String SPLIT_TOKEN = " ";
 
-  /**
-   * 默认起始之地
-   */
+  /** 默认起始之地 */
   String DEFAULT_SCENE = "s2001";
 
-  /**
-   * 消息结束标记
-   */
+  /** 消息结束标记 */
   String MSG_END_TOKEN = "\r\n";
+
+  /** 万分数的分母 */
+  int TEN_THOUSAND = 10000;
 }
