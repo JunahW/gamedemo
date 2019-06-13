@@ -70,10 +70,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     // 装备物品
-    AbstractItem oreEquip = player.getEquipBar().equip(equipItem);
+    AbstractItem preEquip = player.getEquipBar().equip(equipItem);
     // 替代装备,将旧装备放回背包
-    if (oreEquip != null) {
-      player.getPack().addStorageItem(oreEquip);
+    if (preEquip != null) {
+      player.getPack().addStorageItem(preEquip);
     }
 
     // 更细属性容器
@@ -192,29 +192,14 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     /** 检查所需消耗物 */
     List<Consume> consumeList = equipEnhanceResource.getConsumeList();
-    boolean isEnough = false;
-    for (Consume consume : consumeList) {
-      // 消耗背包物品
-      int itemId = consume.getItemId();
-      int quantity = consume.getQuantity();
-      // 检查背包是否满足条件
-      isEnough = pack.checkPackItemQuantity(itemId, quantity);
-      if (isEnough == false) {
-        break;
-      }
-    }
+    boolean isEnough = checkPackItems(pack, consumeList);
     if (isEnough == false) {
       logger.info("装备栏卡槽升级所需的道具数量不足");
       RequestException.throwException(I18nId.SLOT_UP_ITEM_NO_ENOUGH);
     }
 
     /** 消耗道具 */
-    for (Consume consume : consumeList) {
-      // 消耗背包物品
-      int itemId = consume.getItemId();
-      int quantity = consume.getQuantity();
-      pack.reduceStorageItemByItemResourceId(itemId, quantity);
-    }
+    consumePackItems(pack, consumeList);
     // 保存背包
     SpringContext.getItemService().saveItemStorageEnt(player);
 
@@ -224,7 +209,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     // 保存装备栏
     saveEquipmentStorageEnt(player);
 
-    /** T增强的属性 */
+    /** 增强的属性 */
     List<Attribute> attributeList = equipEnhanceResource.getAttributeList();
     PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
     playerAttributeContainer.putAndComputeAttributes(
@@ -289,5 +274,42 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
     // TODO 是否计算
     // playerAttributeContainer.compute();
+  }
+
+  /**
+   * 检查背包的道具数量是否满足
+   *
+   * @param pack
+   * @param consumeList
+   * @return
+   */
+  private boolean checkPackItems(ItemStorage pack, List<Consume> consumeList) {
+    boolean isEnough = false;
+    for (Consume consume : consumeList) {
+      // 消耗背包物品
+      int itemId = consume.getItemId();
+      int quantity = consume.getQuantity();
+      // 检查背包是否满足条件
+      isEnough = pack.checkPackItemQuantity(itemId, quantity);
+      if (isEnough == false) {
+        break;
+      }
+    }
+    return isEnough;
+  }
+
+  /**
+   * 消耗背包道具
+   *
+   * @param pack
+   * @param consumeList
+   */
+  private void consumePackItems(ItemStorage pack, List<Consume> consumeList) {
+    for (Consume consume : consumeList) {
+      // 消耗背包物品
+      int itemId = consume.getItemId();
+      int quantity = consume.getQuantity();
+      pack.reduceStorageItemByItemResourceId(itemId, quantity);
+    }
   }
 }
