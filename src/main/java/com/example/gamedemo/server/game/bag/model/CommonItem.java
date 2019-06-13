@@ -7,8 +7,8 @@ package com.example.gamedemo.server.game.bag.model;
  */
 public class CommonItem extends AbstractItem {
 
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
+  @Override
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
 }

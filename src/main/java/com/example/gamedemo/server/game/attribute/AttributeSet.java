@@ -11,16 +11,14 @@ import java.util.concurrent.ConcurrentMap;
  * @date 2019/6/5
  */
 public class AttributeSet {
-    /**
-     * 属性集合
-     */
-    private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
+  /** 属性集合 */
+  private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
 
-    public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
-        return attributeMap;
-    }
+  public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
+    return attributeMap;
+  }
 
-    public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
-        this.attributeMap = attributeMap;
-    }
+  public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+    this.attributeMap = attributeMap;
+  }
 }

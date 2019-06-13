@@ -6,13 +6,13 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.model.Consume;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.constant.EquipmentEnhanceType;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
-import com.example.gamedemo.server.game.equip.model.Consume;
 import com.example.gamedemo.server.game.equip.model.Slot;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
@@ -245,8 +245,6 @@ public class EquipmentServiceImpl implements EquipmentService {
         playerAttributeContainer.putAttributeSet(equipmentType, equipAttrResource.getAttributes());
       }
     }
-    // TODO 是否计算
-    // playerAttributeContainer.compute();
   }
 
   @Override

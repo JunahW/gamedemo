@@ -5,5 +5,4 @@ package com.example.gamedemo.server.game.bag.packet;
  * @description:查看背包信息
  * @date 2019/5/29
  */
-public class CM_ShowStorage {
-}
+public class CM_ShowStorage {}

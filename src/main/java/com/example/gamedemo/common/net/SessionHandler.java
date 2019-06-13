@@ -14,18 +14,18 @@ import org.slf4j.LoggerFactory;
  */
 public class SessionHandler extends SimpleChannelInboundHandler<MsgPacket> {
 
-    private static final Logger logger = LoggerFactory.getLogger(SessionHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(SessionHandler.class);
 
-    @Override
-    public void channelRead0(ChannelHandlerContext ctx, MsgPacket msg) throws Exception {
-        ctx.fireChannelRead(msg);
-    }
+  @Override
+  public void channelRead0(ChannelHandlerContext ctx, MsgPacket msg) throws Exception {
+    ctx.fireChannelRead(msg);
+  }
 
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        // 创建session
-        logger.info("创建session");
-        SessionManager.create(ctx.channel());
-        ctx.fireChannelActive();
-    }
+  @Override
+  public void channelActive(ChannelHandlerContext ctx) throws Exception {
+    // 创建session
+    logger.info("创建session");
+    SessionManager.create(ctx.channel());
+    ctx.fireChannelActive();
+  }
 }

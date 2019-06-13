@@ -21,73 +21,64 @@ import java.util.concurrent.ConcurrentMap;
 @Component
 public class ItemManager {
 
-    /**
-     * 静态资源
-     */
-    private ConcurrentMap<String, ItemResource> itemResource =
-            ResourceManager.getResourceMap(ItemResource.class);
+  private final Class clazz = ItemStorageEnt.class;
+  /** 静态资源 */
+  private ConcurrentMap<String, ItemResource> itemResource =
+      ResourceManager.getResourceMap(ItemResource.class);
 
-    static {
-        ResourceManager.initResource();
-    }
+  @Autowired private Accessor accessor;
+  private EntityCacheServiceImpl<String, ItemStorageEnt> entityCacheService =
+      new EntityCacheServiceImpl<>();
 
-    @Autowired
-    private Accessor accessor;
+  @PostConstruct
+  public void init() {
+    entityCacheService.setClazz(clazz);
+    entityCacheService.setAccessor(accessor);
+  }
 
-    private final Class clazz = ItemStorageEnt.class;
+  /**
+   * 通过id获取配置的项
+   *
+   * @param itemId
+   * @return
+   */
+  public ItemResource getResourceById(int itemId) {
+    return itemResource.get(itemId);
+  }
 
-    private EntityCacheServiceImpl<String, ItemStorageEnt> entityCacheService =
-            new EntityCacheServiceImpl<>();
-
-    @PostConstruct
-    public void init() {
-        entityCacheService.setClazz(clazz);
-        entityCacheService.setAccessor(accessor);
-    }
-
-    /**
-     * 通过id获取配置的项
-     *
-     * @param itemId
-     * @return
-     */
-    public ItemResource getResourceById(int itemId) {
-        return itemResource.get(itemId);
-    }
-
-    /**
-     * 获取背包
-     *
-     * @param accountId
-     * @return
-     */
-    public ItemStorageEnt getItemStorageEnt(String accountId) {
-        ItemStorageEnt storageEnt =
-                entityCacheService.loadOrCreate(
-                        accountId,
-                        new EntityBuilder<String, ItemStorageEnt>() {
-                            @Override
-                            public ItemStorageEnt newInstance(String id) {
+  /**
+   * 获取背包
+   *
+   * @param accountId
+   * @return
+   */
+  public ItemStorageEnt getItemStorageEnt(String accountId) {
+    ItemStorageEnt storageEnt =
+        entityCacheService.loadOrCreate(
+            accountId,
+            new EntityBuilder<String, ItemStorageEnt>() {
+              @Override
+              public ItemStorageEnt newInstance(String id) {
 
                 ItemStorageEnt itemStorageEnt = new ItemStorageEnt();
                 ItemStorage pack = new ItemStorage();
 
                 itemStorageEnt.setItemStorage(pack);
                 itemStorageEnt.setAccountId(accountId);
-                                // FIXME 去除 itemStorageEnt.serialize();
-                                return itemStorageEnt;
-                            }
-                        });
-        return storageEnt;
-    }
+                // FIXME 去除 itemStorageEnt.serialize();
+                return itemStorageEnt;
+              }
+            });
+    return storageEnt;
+  }
 
-    /**
-     * 保存背包信息
-     *
-     * @param itemStorageEnt
-     */
-    public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
-        // FIXME 去除 itemStorageEnt.serialize();
-        entityCacheService.writeBack(itemStorageEnt.getId(), itemStorageEnt);
+  /**
+   * 保存背包信息
+   *
+   * @param itemStorageEnt
+   */
+  public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
+    // FIXME 去除 itemStorageEnt.serialize();
+    entityCacheService.writeBack(itemStorageEnt.getId(), itemStorageEnt);
   }
 }

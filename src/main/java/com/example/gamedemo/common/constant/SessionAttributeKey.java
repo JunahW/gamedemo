@@ -10,8 +10,6 @@ import io.netty.util.AttributeKey;
  */
 public class SessionAttributeKey {
 
-  /**
-   * AttributeKey Session
-   */
+  /** AttributeKey Session */
   public static final AttributeKey<TSession> SESSION = AttributeKey.newInstance("SESSION");
 }

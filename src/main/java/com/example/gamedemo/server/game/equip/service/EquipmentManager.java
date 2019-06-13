@@ -9,6 +9,7 @@ import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,7 @@ import java.util.concurrent.ConcurrentMap;
  * @date 2019/5/30
  */
 @Component
+@Order(3)
 public class EquipmentManager {
 
   /** 静态资源 */
@@ -45,7 +47,7 @@ public class EquipmentManager {
   public void init() {
     entityCacheService.setClazz(EquipStorageEnt.class);
     entityCacheService.setAccessor(accessor);
-    initEquipEnhanceResource();
+    // initEquipEnhanceResource();
   }
 
   /**

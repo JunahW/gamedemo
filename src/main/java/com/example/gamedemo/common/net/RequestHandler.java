@@ -18,15 +18,15 @@ import org.slf4j.LoggerFactory;
  */
 public class RequestHandler extends SimpleChannelInboundHandler<MsgPacket> {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
+  private static final Logger logger = LoggerFactory.getLogger(RequestHandler.class);
 
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, MsgPacket msgPacket) throws Exception {
-        logger.info("===>receive msg:" + msgPacket);
-        // 执行请求分发
-        // 根据指令获取当前的指令多对应的controller
-        InvokeMethod invokeMethod = ControllerManager.get(msgPacket.getCmd());
-        TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
-        invokeMethod.invoke(session, msgPacket.getMsg());
-    }
+  @Override
+  protected void channelRead0(ChannelHandlerContext ctx, MsgPacket msgPacket) throws Exception {
+    logger.info("===>receive msg:" + msgPacket);
+    // 执行请求分发
+    // 根据指令获取当前的指令多对应的controller
+    InvokeMethod invokeMethod = ControllerManager.get(msgPacket.getCmd());
+    TSession session = AttributeUtils.get(ctx.channel(), SessionAttributeKey.SESSION);
+    invokeMethod.invoke(session, msgPacket.getMsg());
+  }
 }

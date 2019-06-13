@@ -16,68 +16,61 @@ import javax.persistence.Transient;
 @javax.persistence.Entity
 @Table
 public class AccountEnt implements Entity<String> {
-    /**
-     * 账户id
-     */
-    @Id
-    private String accountId;
+  /** 账户id */
+  @Id private String accountId;
 
-    /**
-     * 账户名称
-     */
-    @Column
-    private String accountName;
+  /** 账户名称 */
+  @Column private String accountName;
 
-    @Transient
-    private Account account;
+  @Transient private Account account;
 
-    @Override
-    public String getId() {
-        return accountId;
-    }
+  @Override
+  public String getId() {
+    return accountId;
+  }
 
-    @Override
-    public void setNullId() {
-        accountId = null;
-    }
+  @Override
+  public void setNullId() {
+    accountId = null;
+  }
 
-    @Override
-    public boolean serialize() {
-        this.setAccountId(account.getAccountId());
-        this.setAccountName(account.getAccountName());
-        return true;
-    }
+  @Override
+  public boolean serialize() {
+    this.setAccountId(account.getAccountId());
+    this.setAccountName(account.getAccountName());
+    return true;
+  }
 
-    @Override
-    public boolean deSerialize() {
-        Account account = new Account();
-        account.setAccountId(accountId);
-        account.setAccountName(accountName);
-        this.setAccount(account);
-        return true;
-    }
+  @Override
+  public boolean deSerialize() {
+    Account account = new Account();
+    account.setAccountId(accountId);
+    account.setAccountName(accountName);
+    this.setAccount(account);
+    return true;
+  }
 
-    public String getAccountId() {
-        return accountId;
-    }
+  public String getAccountId() {
+    return accountId;
+  }
 
-    public String getAccountName() {
-        return accountName;
-    }
+  public void setAccountId(String accountId) {
+    this.accountId = accountId;
+  }
 
-    public Account getAccount() {
-        return account;
-    }
+  public String getAccountName() {
+    return accountName;
+  }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+  public void setAccountName(String accountName) {
+    this.accountName = accountName;
+  }
 
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
+  public Account getAccount() {
+    return account;
+  }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+  public void setAccount(Account account) {
+    this.account = account;
+  }
 }

@@ -13,54 +13,54 @@ import java.lang.reflect.Field;
  */
 public class DecoderUtils {
 
-    /**
-     * 将字符串数据转换为msgPacket对象
-     *
-     * @param msg
-     * @return
-     */
-    public static MsgPacket transformMsg2MsgPacket(String msg) {
+  /**
+   * 将字符串数据转换为msgPacket对象
+   *
+   * @param msg
+   * @return
+   */
+  public static MsgPacket transformMsg2MsgPacket(String msg) {
 
-        Class classByCmd = ControllerManager.getClassByCmd(msg.split(SystemConstant.SPLIT_TOKEN)[0]);
+    Class classByCmd = ControllerManager.getClassByCmd(msg.split(SystemConstant.SPLIT_TOKEN)[0]);
 
-        Object packet = null;
-        MsgPacket msgPacket = new MsgPacket();
+    Object packet = null;
+    MsgPacket msgPacket = new MsgPacket();
 
-        try {
-            packet = classByCmd.newInstance();
+    try {
+      packet = classByCmd.newInstance();
 
-            Field[] declaredFields = classByCmd.getDeclaredFields();
+      Field[] declaredFields = classByCmd.getDeclaredFields();
 
-            String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
-            msgPacket.setCmd(msgs[0]);
-            for (int i = 0; i < declaredFields.length; i++) {
-                declaredFields[i].setAccessible(true);
-                Class<?> fieldType = declaredFields[i].getType();
-                String value = msgs[i + 1];
-                if (String.class == fieldType) {
-                    declaredFields[i].set(packet, String.valueOf(value));
-                } else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
-                    declaredFields[i].set(packet, Integer.valueOf(value));
-                } else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
-                    declaredFields[i].set(packet, Long.valueOf(value));
-                } else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
-                    declaredFields[i].set(packet, Float.valueOf(value));
-                } else if ((Short.TYPE == fieldType) || (Short.class == fieldType)) {
-                    declaredFields[i].set(packet, Short.valueOf(value));
-                } else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
-                    declaredFields[i].set(packet, Double.valueOf(value));
-                } else if (Character.TYPE == fieldType) {
-                    if (value.length() > 0) {
-                        declaredFields[i].set(packet, value.charAt(0));
-                    }
-                }
-            }
-            msgPacket.setMsg(packet);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
+      String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
+      msgPacket.setCmd(msgs[0]);
+      for (int i = 0; i < declaredFields.length; i++) {
+        declaredFields[i].setAccessible(true);
+        Class<?> fieldType = declaredFields[i].getType();
+        String value = msgs[i + 1];
+        if (String.class == fieldType) {
+          declaredFields[i].set(packet, String.valueOf(value));
+        } else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
+          declaredFields[i].set(packet, Integer.valueOf(value));
+        } else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
+          declaredFields[i].set(packet, Long.valueOf(value));
+        } else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
+          declaredFields[i].set(packet, Float.valueOf(value));
+        } else if ((Short.TYPE == fieldType) || (Short.class == fieldType)) {
+          declaredFields[i].set(packet, Short.valueOf(value));
+        } else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
+          declaredFields[i].set(packet, Double.valueOf(value));
+        } else if (Character.TYPE == fieldType) {
+          if (value.length() > 0) {
+            declaredFields[i].set(packet, value.charAt(0));
+          }
         }
-        return msgPacket;
+      }
+      msgPacket.setMsg(packet);
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
     }
+    return msgPacket;
+  }
 }

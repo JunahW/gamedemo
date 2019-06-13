@@ -18,65 +18,58 @@ import javax.persistence.Transient;
 @javax.persistence.Entity
 public class EquipStorageEnt implements Entity<String> {
 
-    /**
-     * 主键
-     */
-    @Id
-    private String playerId;
+  /** 主键 */
+  @Id private String playerId;
 
-    /**
-     * 装备栏数据
-     */
-    @Column
-    private String equipStorageData;
+  /** 装备栏数据 */
+  @Column private String equipStorageData;
 
-    @Transient
-    private EquipStorage equipStorage;
+  @Transient private EquipStorage equipStorage;
 
-    @Override
-    public String getId() {
-        return this.playerId;
-    }
+  @Override
+  public String getId() {
+    return this.playerId;
+  }
 
-    @Override
-    public void setNullId() {
-        this.playerId = null;
-    }
+  @Override
+  public void setNullId() {
+    this.playerId = null;
+  }
 
-    @Override
-    public boolean serialize() {
-        this.setEquipStorageData(JsonUtils.serializeEntity(this.getEquipStorage()));
-        return true;
-    }
+  @Override
+  public boolean serialize() {
+    this.setEquipStorageData(JsonUtils.serializeEntity(this.getEquipStorage()));
+    return true;
+  }
 
-    @Override
-    public boolean deSerialize() {
-        this.setEquipStorage(
-                JsonUtils.deSerializeEntity(this.getEquipStorageData(), EquipStorage.class));
-        return true;
-    }
+  @Override
+  public boolean deSerialize() {
+    this.setEquipStorage(
+        JsonUtils.deSerializeEntity(this.getEquipStorageData(), EquipStorage.class));
+    return true;
+  }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
-    }
+  public String getEquipStorageData() {
+    return equipStorageData;
+  }
 
-    public String getEquipStorageData() {
-        return equipStorageData;
-    }
+  public void setEquipStorageData(String equipStorageData) {
+    this.equipStorageData = equipStorageData;
+  }
 
-    public EquipStorage getEquipStorage() {
-        return equipStorage;
-    }
+  public EquipStorage getEquipStorage() {
+    return equipStorage;
+  }
 
-    public String getPlayerId() {
-        return playerId;
-    }
+  public void setEquipStorage(EquipStorage equipStorage) {
+    this.equipStorage = equipStorage;
+  }
 
-    public void setEquipStorageData(String equipStorageData) {
-        this.equipStorageData = equipStorageData;
-    }
+  public String getPlayerId() {
+    return playerId;
+  }
 
-    public void setEquipStorage(EquipStorage equipStorage) {
-        this.equipStorage = equipStorage;
-    }
+  public void setPlayerId(String playerId) {
+    this.playerId = playerId;
+  }
 }

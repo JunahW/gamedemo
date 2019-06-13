@@ -8,34 +8,30 @@ import com.example.gamedemo.server.game.bag.model.EquipItem;
  * @date 2019/6/5
  */
 public class Slot {
-    /**
-     * 卡槽的等级
-     */
-    private int level;
+  /** 卡槽的等级 */
+  private int level;
 
-    /**
-     * 卡槽的装备
-     */
-    private EquipItem equipItem;
+  /** 卡槽的装备 */
+  private EquipItem equipItem;
 
-    public int getLevel() {
-        return level;
-    }
+  public int getLevel() {
+    return level;
+  }
 
-    public EquipItem getEquipItem() {
-        return equipItem;
-    }
+  public void setLevel(int level) {
+    this.level = level;
+  }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
+  public EquipItem getEquipItem() {
+    return equipItem;
+  }
 
-    public void setEquipItem(EquipItem equipItem) {
-        this.equipItem = equipItem;
-    }
+  public void setEquipItem(EquipItem equipItem) {
+    this.equipItem = equipItem;
+  }
 
-    @Override
-    public String toString() {
-        return "Slot{" + "level=" + level + ", equipItem=" + equipItem + '}';
-    }
+  @Override
+  public String toString() {
+    return "Slot{" + "level=" + level + ", equipItem=" + equipItem + '}';
+  }
 }

@@ -6,10 +6,10 @@ package com.example.gamedemo.server.game.attribute.constant;
  * @description: 模块id接口
  */
 public interface AttributeModelId {
-    /**
-     * 获取模块名称
-     *
-     * @return
-     */
-    String getModelName();
+  /**
+   * 获取模块名称
+   *
+   * @return
+   */
+  String getModelName();
 }

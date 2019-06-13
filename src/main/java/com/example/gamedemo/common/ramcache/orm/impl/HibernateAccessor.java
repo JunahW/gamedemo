@@ -19,35 +19,34 @@ import java.io.Serializable;
 @Component
 @Transactional(rollbackFor = Exception.class)
 public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
-    @Autowired
-    private SessionFactory sessionFactory;
+  @Autowired private SessionFactory sessionFactory;
 
-    @Resource(name = "sessionFactory")
-    public void setSuperSessionFactory(SessionFactory sessionFactory) {
-        super.setSessionFactory(sessionFactory);
-    }
+  @Resource(name = "sessionFactory")
+  public void setSuperSessionFactory(SessionFactory sessionFactory) {
+    super.setSessionFactory(sessionFactory);
+  }
 
-    @Override
-    public <PK extends Serializable, T extends Entity> T load(Class<T> clazz, PK id) {
-        return getHibernateTemplate().get(clazz, id);
-    }
+  @Override
+  public <PK extends Serializable, T extends Entity> T load(Class<T> clazz, PK id) {
+    return getHibernateTemplate().get(clazz, id);
+  }
 
-    @Override
-    public <PK extends Serializable, T extends Entity> PK save(Class<T> clazz, T entity) {
-        return (PK) getHibernateTemplate().save(entity);
-    }
+  @Override
+  public <PK extends Serializable, T extends Entity> PK save(Class<T> clazz, T entity) {
+    return (PK) getHibernateTemplate().save(entity);
+  }
 
-    @Override
-    public <PK extends Serializable, T extends Entity> void remove(Class<T> clazz, PK id) {
-        T entity = load(clazz, id);
-        if (null == entity) {
-            return;
-        }
-        getHibernateTemplate().delete(entity);
+  @Override
+  public <PK extends Serializable, T extends Entity> void remove(Class<T> clazz, PK id) {
+    T entity = load(clazz, id);
+    if (null == entity) {
+      return;
     }
+    getHibernateTemplate().delete(entity);
+  }
 
-    @Override
-    public <PK extends Serializable, T extends Entity> void saveOrUpdate(Class<T> clazz, T entity) {
-        getHibernateTemplate().saveOrUpdate(entity);
-    }
+  @Override
+  public <PK extends Serializable, T extends Entity> void saveOrUpdate(Class<T> clazz, T entity) {
+    getHibernateTemplate().saveOrUpdate(entity);
+  }
 }

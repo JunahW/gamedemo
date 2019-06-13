@@ -9,13 +9,9 @@ import java.util.concurrent.BlockingDeque;
  */
 public class QueuePersister implements Persister {
 
-    /**
-     * 更新队列
-     */
-    private BlockingDeque<Element> queue;
+  /** 更新队列 */
+  private BlockingDeque<Element> queue;
 
-    /**
-     * 消费线程
-     */
-    private QueueConsumer consumer;
+  /** 消费线程 */
+  private QueueConsumer consumer;
 }

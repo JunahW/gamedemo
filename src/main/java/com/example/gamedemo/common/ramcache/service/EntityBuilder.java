@@ -10,11 +10,11 @@ import java.io.Serializable;
  * @description: Entity构建器
  */
 public interface EntityBuilder<PK extends Comparable<PK> & Serializable, T extends Entity> {
-    /**
-     * 创建实例
-     *
-     * @param id
-     * @return
-     */
-    T newInstance(PK id);
+  /**
+   * 创建实例
+   *
+   * @param id
+   * @return
+   */
+  T newInstance(PK id);
 }

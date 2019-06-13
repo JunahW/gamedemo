@@ -6,21 +6,21 @@ package com.example.gamedemo.server.common.packet;
  * @date 2019/6/11
  */
 public class SM_NoticeMessge {
-    private String content;
+  private String content;
 
-    public String getContent() {
-        return content;
-    }
+  public SM_NoticeMessge(String content) {
+    this.content = content;
+  }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+  public static SM_NoticeMessge valueOf(String content) {
+    return new SM_NoticeMessge(content);
+  }
 
-    public SM_NoticeMessge(String content) {
-        this.content = content;
-    }
+  public String getContent() {
+    return content;
+  }
 
-    public static SM_NoticeMessge valueOf(String content) {
-        return new SM_NoticeMessge(content);
-    }
+  public void setContent(String content) {
+    this.content = content;
+  }
 }

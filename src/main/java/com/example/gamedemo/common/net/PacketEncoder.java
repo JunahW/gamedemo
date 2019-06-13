@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class PacketEncoder extends MessageToMessageEncoder<Object> {
 
-    @Override
-    protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
-        String resultString;
-        if (msg instanceof String) {
-            resultString = msg.toString();
-        } else {
-            resultString = JsonUtils.serializeEntity(msg);
-        }
-        System.out.println(resultString);
-        out.add(resultString + SystemConstant.MSG_END_TOKEN);
+  @Override
+  protected void encode(ChannelHandlerContext ctx, Object msg, List<Object> out) throws Exception {
+    String resultString;
+    if (msg instanceof String) {
+      resultString = msg.toString();
+    } else {
+      resultString = JsonUtils.serializeEntity(msg);
     }
+    System.out.println(resultString);
+    out.add(resultString + SystemConstant.MSG_END_TOKEN);
+  }
 }

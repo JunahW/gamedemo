@@ -6,34 +6,30 @@ package com.example.gamedemo.server.common;
  * @date 2019/6/10
  */
 public class MsgPacket {
-    /**
-     * 指令
-     */
-    private String cmd;
+  /** 指令 */
+  private String cmd;
 
-    /**
-     * 消息对象
-     */
-    private Object msg;
+  /** 消息对象 */
+  private Object msg;
 
-    public String getCmd() {
-        return cmd;
-    }
+  public String getCmd() {
+    return cmd;
+  }
 
-    public Object getMsg() {
-        return msg;
-    }
+  public void setCmd(String cmd) {
+    this.cmd = cmd;
+  }
 
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
+  public Object getMsg() {
+    return msg;
+  }
 
-    public void setMsg(Object msg) {
-        this.msg = msg;
-    }
+  public void setMsg(Object msg) {
+    this.msg = msg;
+  }
 
-    @Override
-    public String toString() {
-        return "MsgPacket{" + ", cmd='" + cmd + '\'' + ", msg=" + msg + '}';
-    }
+  @Override
+  public String toString() {
+    return "MsgPacket{" + ", cmd='" + cmd + '\'' + ", msg=" + msg + '}';
+  }
 }

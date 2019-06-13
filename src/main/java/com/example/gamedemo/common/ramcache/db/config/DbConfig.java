@@ -11,8 +11,8 @@ import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
  */
 @Configuration
 public class DbConfig {
-    @Bean
-    public HibernateJpaSessionFactoryBean sessionFactory() {
-        return new HibernateJpaSessionFactoryBean();
-    }
+  @Bean
+  public HibernateJpaSessionFactoryBean sessionFactory() {
+    return new HibernateJpaSessionFactoryBean();
+  }
 }

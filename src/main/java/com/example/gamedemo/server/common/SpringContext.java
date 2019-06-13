@@ -19,46 +19,36 @@ import javax.annotation.PostConstruct;
  */
 @Component
 public class SpringContext implements ApplicationContextAware {
-    @Autowired
-    private ApplicationContext applicationContext;
+  private static SpringContext instance;
+  @Autowired private ApplicationContext applicationContext;
+  @Autowired private ItemService itemService;
+  @Autowired private EquipmentService equipmentService;
+  @Autowired private PlayerService playerService;
+  @Autowired private AccountService accountService;
 
-    private static SpringContext instance;
+  public static ItemService getItemService() {
+    return instance.itemService;
+  }
 
-    @PostConstruct
-    public void init() {
-        instance = this;
-    }
+  public static EquipmentService getEquipmentService() {
+    return instance.equipmentService;
+  }
 
-    @Override
-    public void setApplicationContext(ApplicationContext ac) throws BeansException {
-        applicationContext = ac;
-    }
+  public static PlayerService getPlayerService() {
+    return instance.playerService;
+  }
 
-    @Autowired
-    private ItemService itemService;
+  public static AccountService getAccountService() {
+    return instance.accountService;
+  }
 
-    @Autowired
-    private EquipmentService equipmentService;
+  @PostConstruct
+  public void init() {
+    instance = this;
+  }
 
-    @Autowired
-    private PlayerService playerService;
-
-    @Autowired
-    private AccountService accountService;
-
-    public static ItemService getItemService() {
-        return instance.itemService;
-    }
-
-    public static EquipmentService getEquipmentService() {
-        return instance.equipmentService;
-    }
-
-    public static PlayerService getPlayerService() {
-        return instance.playerService;
-    }
-
-    public static AccountService getAccountService() {
-        return instance.accountService;
-    }
+  @Override
+  public void setApplicationContext(ApplicationContext ac) throws BeansException {
+    applicationContext = ac;
+  }
 }

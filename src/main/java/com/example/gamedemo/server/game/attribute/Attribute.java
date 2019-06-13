@@ -9,52 +9,47 @@ import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
  */
 public class Attribute {
 
-    /**
-     * 属性类型
-     */
-    private AttributeTypeEnum type;
+  /** 属性类型 */
+  private AttributeTypeEnum type;
 
-    /**
-     * 属性值
-     */
-    private long value;
+  /** 属性值 */
+  private long value;
 
-    public AttributeTypeEnum getType() {
-        return type;
-    }
+  public Attribute() {}
 
-    public long getValue() {
-        return value;
-    }
+  public Attribute(String type, long value) {
+    this.type = AttributeTypeEnum.getAttributeTypeEnumByType(type);
+    this.value = value;
+  }
 
-    public void setType(AttributeTypeEnum type) {
-        this.type = type;
-    }
+  public Attribute(AttributeTypeEnum type, long value) {
+    this.type = type;
+    this.value = value;
+  }
 
-    public void setValue(long value) {
-        this.value = value;
-    }
+  public static Attribute valueof(AttributeTypeEnum type, long value) {
+    Attribute attribute = new Attribute(type, value);
+    return attribute;
+  }
 
-    public Attribute() {
-    }
+  public AttributeTypeEnum getType() {
+    return type;
+  }
 
-    public Attribute(String type, long value) {
-        this.type = AttributeTypeEnum.getAttributeTypeEnumByType(type);
-        this.value = value;
-    }
+  public void setType(AttributeTypeEnum type) {
+    this.type = type;
+  }
 
-    public Attribute(AttributeTypeEnum type, long value) {
-        this.type = type;
-        this.value = value;
-    }
+  public long getValue() {
+    return value;
+  }
 
-    @Override
-    public String toString() {
-        return "Attribute{" + "type=" + type + ", value=" + value + '}';
-    }
+  public void setValue(long value) {
+    this.value = value;
+  }
 
-    public static Attribute valueof(AttributeTypeEnum type, long value) {
-        Attribute attribute = new Attribute(type, value);
-        return attribute;
-    }
+  @Override
+  public String toString() {
+    return "Attribute{" + "type=" + type + ", value=" + value + '}';
+  }
 }

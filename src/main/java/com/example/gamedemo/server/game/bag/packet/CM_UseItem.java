@@ -6,9 +6,9 @@ package com.example.gamedemo.server.game.bag.packet;
  * @date 2019/5/29
  */
 public class CM_UseItem {
-    private long guid;
+  private long guid;
 
-    public long getGuid() {
-        return guid;
-    }
+  public long getGuid() {
+    return guid;
+  }
 }

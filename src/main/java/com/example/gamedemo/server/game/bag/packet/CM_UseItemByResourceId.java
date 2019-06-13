@@ -6,15 +6,15 @@ package com.example.gamedemo.server.game.bag.packet;
  * @date 2019/5/29
  */
 public class CM_UseItemByResourceId {
-    private int resourceId;
+  private int resourceId;
 
-    private int quantity;
+  private int quantity;
 
-    public int getResourceId() {
-        return resourceId;
-    }
+  public int getResourceId() {
+    return resourceId;
+  }
 
-    public int getQuantity() {
-        return quantity;
-    }
+  public int getQuantity() {
+    return quantity;
+  }
 }

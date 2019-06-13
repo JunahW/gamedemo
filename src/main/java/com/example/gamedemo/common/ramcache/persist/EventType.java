@@ -6,23 +6,15 @@ package com.example.gamedemo.common.ramcache.persist;
  * @description: 存储事件类型
  */
 public enum EventType {
-    /**
-     * 插入
-     */
-    SAVE,
+  /** 插入 */
+  SAVE,
 
-    /**
-     * 更新
-     */
-    UPDATE,
+  /** 更新 */
+  UPDATE,
 
-    /**
-     * 删除
-     */
-    REMOVE,
+  /** 删除 */
+  REMOVE,
 
-    /**
-     * 查找
-     */
-    FIND;
+  /** 查找 */
+  FIND;
 }

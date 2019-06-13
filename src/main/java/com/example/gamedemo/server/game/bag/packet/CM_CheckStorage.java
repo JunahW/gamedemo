@@ -5,5 +5,4 @@ package com.example.gamedemo.server.game.bag.packet;
  * @description：检查背包是否已满信息
  * @date 2019/5/29
  */
-public class CM_CheckStorage {
-}
+public class CM_CheckStorage {}

@@ -13,10 +13,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface ExcelColumn {
-    /**
-     * 列的名称
-     *
-     * @return
-     */
-    String columnName();
+  /**
+   * 列的名称
+   *
+   * @return
+   */
+  String columnName();
 }

@@ -13,7 +13,6 @@ public enum AttributeTypeEnum {
   MP("MP", "魔法值", false),
 
   /** 攻击力 */
-  // TODO
   ATTACK("ATTACK", "攻击力", false) {
     @Override
     public AttributeTypeEnum[] getPercentageAttributes() {

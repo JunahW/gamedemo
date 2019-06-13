@@ -6,21 +6,21 @@ package com.example.gamedemo.server.common.packet;
  * @date 2019/6/11
  */
 public class SM_ErrorCode {
-    private int errorCode;
+  private int errorCode;
 
-    public int getErrorCode() {
-        return errorCode;
-    }
+  public SM_ErrorCode(int errorCode) {
+    this.errorCode = errorCode;
+  }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
+  public static SM_ErrorCode valueOf(int errorCode) {
+    return new SM_ErrorCode(errorCode);
+  }
 
-    public SM_ErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
+  public int getErrorCode() {
+    return errorCode;
+  }
 
-    public static SM_ErrorCode valueOf(int errorCode) {
-        return new SM_ErrorCode(errorCode);
-    }
+  public void setErrorCode(int errorCode) {
+    this.errorCode = errorCode;
+  }
 }

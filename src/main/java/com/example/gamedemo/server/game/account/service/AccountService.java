@@ -9,19 +9,19 @@ import com.example.gamedemo.server.game.account.model.Account;
  */
 public interface AccountService {
 
-    /**
-     * 创建账户
-     *
-     * @param account
-     * @return
-     */
-    boolean createAccount(Account account);
+  /**
+   * 创建账户
+   *
+   * @param account
+   * @return
+   */
+  boolean createAccount(Account account);
 
-    /**
-     * 账户登录
-     *
-     * @param accountId
-     * @return
-     */
-    Account loginAccount(String accountId);
+  /**
+   * 账户登录
+   *
+   * @param accountId
+   * @return
+   */
+  Account loginAccount(String accountId);
 }

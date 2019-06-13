@@ -9,69 +9,62 @@ import com.example.gamedemo.server.game.bag.model.*;
  */
 public enum ItemType {
 
-    /**
-     * 背包物品
-     */
-    Common(0, CommonItem.class),
+  /** 背包物品 */
+  Common(0, CommonItem.class),
 
-    Equip(1, EquipItem.class),
+  Equip(1, EquipItem.class),
 
-    Gemstone(2, GemstoneItem.class),
+  Gemstone(2, GemstoneItem.class),
 
-    Medicine(3, MedicineItem.class),
-    ;
+  Medicine(3, MedicineItem.class),
+  ;
 
-    ItemType(int id, Class bagItemClazz) {
-        this.id = id;
-        this.itemClazz = bagItemClazz;
-    }
+  /** 道具类型id */
+  private int id;
+  /** 道具实例的class */
+  private Class<? extends AbstractItem> itemClazz;
 
-    /**
-     * 道具类型id
-     */
-    private int id;
+  ItemType(int id, Class bagItemClazz) {
+    this.id = id;
+    this.itemClazz = bagItemClazz;
+  }
 
-    /**
-     * 道具实例的class
-     */
-    private Class<? extends AbstractItem> itemClazz;
+  /**
+   * 创建背包道具
+   *
+   * @return
+   */
+  public static AbstractItem create(int id) {
 
-    public int getId() {
-        return id;
-    }
-
-    public Class<? extends AbstractItem> getItemClazz() {
-        return itemClazz;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setItemClazz(Class<? extends AbstractItem> itemClazz) {
-        this.itemClazz = itemClazz;
-    }
-
-    /**
-     * 创建背包道具
-     *
-     * @return
-     */
-    public static AbstractItem create(int id) {
-
-        ItemType[] values = values();
-        AbstractItem abstractItem = null;
-        for (ItemType itemType : values) {
-            if (itemType.getId() == id) {
-                try {
-                    abstractItem = itemType.getItemClazz().newInstance();
-                    break;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    throw new IllegalArgumentException("生成道具失败" + itemType.getItemClazz().getName());
-                }
-            }
+    ItemType[] values = values();
+    AbstractItem abstractItem = null;
+    for (ItemType itemType : values) {
+      if (itemType.getId() == id) {
+        try {
+          abstractItem = itemType.getItemClazz().newInstance();
+          break;
+        } catch (Exception e) {
+          e.printStackTrace();
+          throw new IllegalArgumentException("生成道具失败" + itemType.getItemClazz().getName());
         }
-        return abstractItem;
+      }
     }
+    return abstractItem;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public Class<? extends AbstractItem> getItemClazz() {
+    return itemClazz;
+  }
+
+  public void setItemClazz(Class<? extends AbstractItem> itemClazz) {
+    this.itemClazz = itemClazz;
+  }
 }

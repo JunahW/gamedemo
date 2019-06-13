@@ -6,12 +6,10 @@ package com.example.gamedemo.server.game.equip.packet;
  * @date 2019/6/10
  */
 public class CM_CheckPosition {
-    /**
-     * 物品id
-     */
-    private int position;
+  /** 物品id */
+  private int position;
 
-    public int getPosition() {
-        return position;
-    }
+  public int getPosition() {
+    return position;
+  }
 }

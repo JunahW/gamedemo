@@ -6,16 +6,14 @@ package com.example.gamedemo.server.game.account.packet;
  * @date 2019/5/27
  */
 public class CM_LoginAccount {
-    /**
-     * 账户id
-     */
-    private String accountId;
+  /** 账户id */
+  private String accountId;
 
-    public String getAccountId() {
-        return accountId;
-    }
+  public String getAccountId() {
+    return accountId;
+  }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+  public void setAccountId(String accountId) {
+    this.accountId = accountId;
+  }
 }

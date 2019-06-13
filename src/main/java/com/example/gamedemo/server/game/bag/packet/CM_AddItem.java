@@ -6,9 +6,9 @@ package com.example.gamedemo.server.game.bag.packet;
  * @date 2019/5/29
  */
 public class CM_AddItem {
-    private int itemResourceId;
+  private int itemResourceId;
 
-    public int getItemResourceId() {
-        return itemResourceId;
-    }
+  public int getItemResourceId() {
+    return itemResourceId;
+  }
 }

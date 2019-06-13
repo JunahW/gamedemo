@@ -8,22 +8,21 @@ import java.io.Serializable;
  * @date 2019/5/29
  */
 public class EmptyEntity<PK extends Serializable & Comparable<PK>> implements Entity<PK> {
-    @Override
-    public PK getId() {
-        return null;
-    }
+  @Override
+  public PK getId() {
+    return null;
+  }
 
-    @Override
-    public void setNullId() {
-    }
+  @Override
+  public void setNullId() {}
 
-    @Override
-    public boolean serialize() {
-        return false;
-    }
+  @Override
+  public boolean serialize() {
+    return false;
+  }
 
-    @Override
-    public boolean deSerialize() {
-        return false;
-    }
+  @Override
+  public boolean deSerialize() {
+    return false;
+  }
 }

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.attribute;
 
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
@@ -83,7 +84,7 @@ public abstract class AbstractAttributeContainer<T> {
         }
       }
       // 属性加成
-      attribute.setValue(attribute.getValue() * (100 + percentage) / 100);
+      attribute.setValue(attribute.getValue() * (1 + percentage / SystemConstant.TEN_THOUSAND));
     }
     // 计算战力
     computeCombatIndex();

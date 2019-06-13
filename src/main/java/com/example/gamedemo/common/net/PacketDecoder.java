@@ -15,20 +15,20 @@ import java.util.List;
  */
 public class PacketDecoder extends MessageToMessageDecoder<String> {
 
-    @Override
-    protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
-        boolean checkCmd = ParameterCheckUtils.checkCmd(msg);
-        if (!checkCmd) {
-            ctx.writeAndFlush("指令有误");
-            return;
-        }
-
-        boolean flag = ParameterCheckUtils.checkParams(msg);
-        if (flag) {
-            MsgPacket msgPacket = DecoderUtils.transformMsg2MsgPacket(msg);
-            out.add(msgPacket);
-        } else {
-            ctx.writeAndFlush("请求参数有误");
-        }
+  @Override
+  protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
+    boolean checkCmd = ParameterCheckUtils.checkCmd(msg);
+    if (!checkCmd) {
+      ctx.writeAndFlush("指令有误");
+      return;
     }
+
+    boolean flag = ParameterCheckUtils.checkParams(msg);
+    if (flag) {
+      MsgPacket msgPacket = DecoderUtils.transformMsg2MsgPacket(msg);
+      out.add(msgPacket);
+    } else {
+      ctx.writeAndFlush("请求参数有误");
+    }
+  }
 }
