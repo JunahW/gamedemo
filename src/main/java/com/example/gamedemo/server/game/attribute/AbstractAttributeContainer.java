@@ -1,6 +1,5 @@
 package com.example.gamedemo.server.game.attribute;
 
-
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
@@ -28,8 +27,8 @@ public abstract class AbstractAttributeContainer<T> {
     /**
      * 不同模块的属性容器
      */
-    private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap = new ConcurrentHashMap<>();
-
+    private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap =
+            new ConcurrentHashMap<>();
 
     public AbstractAttributeContainer(T owner) {
         this.owner = owner;
@@ -62,46 +61,48 @@ public abstract class AbstractAttributeContainer<T> {
         for (Map.Entry<AttributeModelId, AttributeSet> entry : modelAttributeListMap.entrySet()) {
             AttributeSet attributeSet = entry.getValue();
 
-            for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeSet.getAttributeMap().entrySet()) {
+            for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry :
+                    attributeSet.getAttributeMap().entrySet()) {
                 Attribute attribute = attributeEntry.getValue();
                 if (attributeMap.containsKey(attribute.getType())) {
                     long value = attributeMap.get(attribute.getType()).getValue();
-                    //新建有一个对象，不能修改list的内容
+                    // 新建有一个对象，不能修改list的内容
                     Attribute newAttribute = new Attribute();
                     newAttribute.setValue(value + attribute.getValue());
                     newAttribute.setType(attribute.getType());
 
-                    //计算属性
+                    // 计算属性
                     attributeMap.put(newAttribute.getType(), newAttribute);
                 } else {
                     attributeMap.put(attribute.getType(), attribute);
                 }
-
             }
         }
-        //TODO 计算攻击加成
+        // TODO 计算攻击加成
         if (null != attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE)) {
             if (null != attributeMap.get(AttributeTypeEnum.ATTACK)) {
                 Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.ATTACK_PERCENTAGE);
                 Attribute attackAttribute = attributeMap.get(AttributeTypeEnum.ATTACK);
-                attackAttribute.setValue(attackAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
+                attackAttribute.setValue(
+                        attackAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
             }
-
         }
 
-        //TODO 计算防御加成
+        // TODO 计算防御加成
         if (null != attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE)) {
             if (null != attributeMap.get(AttributeTypeEnum.DEFENSE)) {
                 Attribute percentageAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE_PERCENTAGE);
                 Attribute defenseAttribute = attributeMap.get(AttributeTypeEnum.DEFENSE);
-                defenseAttribute.setValue(defenseAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
+                defenseAttribute.setValue(
+                        defenseAttribute.getValue() * (1 + percentageAttribute.getValue() / 100));
             }
         }
-        //TODO 计算战力
+        // TODO 计算战力
         computeCombatIndex();
     }
 
-    public void putAndComputeAttributes(AttributeModelId attributeModelId, List<Attribute> attributeList) {
+    public void putAndComputeAttributes(
+            AttributeModelId attributeModelId, List<Attribute> attributeList) {
         putAttributeSet(attributeModelId, attributeList);
         compute();
     }
@@ -117,11 +118,13 @@ public abstract class AbstractAttributeContainer<T> {
             throw new NullPointerException();
         }
         AttributeSet attributeSet = modelAttributeListMap.get(attributeModelId);
-        //不存在
+        // 不存在
         if (attributeSet == null) {
             attributeSet = new AttributeSet();
             for (Attribute attribute : attributeList) {
-                attributeSet.getAttributeMap().put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
+                attributeSet
+                        .getAttributeMap()
+                        .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
             }
             modelAttributeListMap.put(attributeModelId, attributeSet);
             return;
@@ -130,7 +133,10 @@ public abstract class AbstractAttributeContainer<T> {
         modelAttributeListMap.get(attributeModelId).getAttributeMap().clear();
 
         for (Attribute attribute : attributeList) {
-            modelAttributeListMap.get(attributeModelId).getAttributeMap().put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
+            modelAttributeListMap
+                    .get(attributeModelId)
+                    .getAttributeMap()
+                    .put(attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
         }
     }
 
@@ -153,7 +159,6 @@ public abstract class AbstractAttributeContainer<T> {
         compute();
     }
 
-
     public T getOwner() {
         return owner;
     }
@@ -174,7 +179,8 @@ public abstract class AbstractAttributeContainer<T> {
         this.attributeMap = attributeMap;
     }
 
-    public void setModelAttributeListMap(ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
+    public void setModelAttributeListMap(
+            ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
         this.modelAttributeListMap = modelAttributeListMap;
     }
 }

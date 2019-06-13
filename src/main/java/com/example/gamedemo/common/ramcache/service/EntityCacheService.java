@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.ramcache.service;
 
-
 import com.example.gamedemo.common.ramcache.Entity;
 
 import java.io.Serializable;
@@ -10,7 +9,8 @@ import java.io.Serializable;
  * @date: 2019/5/27
  * @description:
  */
-public interface EntityCacheService<PK extends Comparable<PK> & Serializable, V extends Entity<PK>> {
+public interface EntityCacheService<
+        PK extends Comparable<PK> & Serializable, V extends Entity<PK>> {
     /**
      * 通过id加载实体
      *
@@ -18,7 +18,6 @@ public interface EntityCacheService<PK extends Comparable<PK> & Serializable, V 
      * @return
      */
     V load(PK id);
-
 
     /**
      * 先缓存中的数据写入数据库

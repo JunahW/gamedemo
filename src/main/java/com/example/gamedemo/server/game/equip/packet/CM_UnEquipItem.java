@@ -6,12 +6,10 @@ package com.example.gamedemo.server.game.equip.packet;
  * @date 2019/5/30
  */
 public class CM_UnEquipItem {
-    /**
-     * 物品id
-     */
-    private int position;
+  /** 物品id */
+  private int position;
 
-    public int getPosition() {
-        return position;
-    }
+  public int getPosition() {
+    return position;
+  }
 }

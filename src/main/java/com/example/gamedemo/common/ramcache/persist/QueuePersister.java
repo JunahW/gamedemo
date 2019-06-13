@@ -18,6 +18,4 @@ public class QueuePersister implements Persister {
      * 消费线程
      */
     private QueueConsumer consumer;
-
-
 }

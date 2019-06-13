@@ -23,33 +23,33 @@ import java.io.InputStreamReader;
 public class MyClient {
     private static final Logger logger = LoggerFactory.getLogger(MyClient.class);
 
-
     public static void main(String[] args) throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
             b.group(group);
             b.channel(NioSocketChannel.class);
-            b.handler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                protected void initChannel(SocketChannel ch) throws Exception {
-                    ChannelPipeline pipeline = ch.pipeline();
-                    pipeline.addLast("framer", new DelimiterBasedFrameDecoder(1024 * 8, Delimiters.lineDelimiter()));
-                    pipeline.addLast("decoder", new StringDecoder());
-                    pipeline.addLast("encoder", new StringEncoder());
-
-                    pipeline.addLast("handler", new SimpleChannelInboundHandler<String>() {
+            b.handler(
+                    new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
-                            logger.info(msg);
+                        protected void initChannel(SocketChannel ch) throws Exception {
+                            ChannelPipeline pipeline = ch.pipeline();
+                            pipeline.addLast(
+                                    "framer", new DelimiterBasedFrameDecoder(1024 * 8, Delimiters.lineDelimiter()));
+                            pipeline.addLast("decoder", new StringDecoder());
+                            pipeline.addLast("encoder", new StringEncoder());
+
+                            pipeline.addLast(
+                                    "handler",
+                                    new SimpleChannelInboundHandler<String>() {
+                                        @Override
+                                        protected void channelRead0(ChannelHandlerContext ctx, String msg)
+                                                throws Exception {
+                                            logger.info(msg);
+                                        }
+                                    });
                         }
-
-
                     });
-                }
-
-
-            });
 
             Channel ch = b.connect("127.0.0.1", 7777).sync().channel();
             BufferedReader in = new BufferedReader(new InputStreamReader(System.in));

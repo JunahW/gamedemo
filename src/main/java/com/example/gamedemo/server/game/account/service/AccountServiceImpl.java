@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean createAccount(Account account) {
-        //判断用户是否存在
+        // 判断用户是否存在
         String accountId = account.getAccountId();
         AccountEnt load = accessor.load(AccountEnt.class, accountId);
         if (load != null) {

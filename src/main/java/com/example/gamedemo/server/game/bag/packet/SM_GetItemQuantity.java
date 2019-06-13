@@ -8,7 +8,6 @@ package com.example.gamedemo.server.game.bag.packet;
 public class SM_GetItemQuantity {
     private int itemQuantity;
 
-
     public int getItemQuantity() {
         return itemQuantity;
     }

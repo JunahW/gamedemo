@@ -1,7 +1,6 @@
 package com.example.gamedemo.item;
 
 import com.example.gamedemo.common.resource.ResourceManager;
-import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
@@ -23,34 +22,32 @@ import java.util.concurrent.ConcurrentMap;
 @SpringBootTest
 public class TestItem {
 
-    @Autowired
-    private ItemManager itemManager;
+  @Autowired private ItemManager itemManager;
 
-    @Test
-    public void testItemResource() {
-        SystemInitializer.initResource();
-        ConcurrentMap<String, ItemResource> itemResource = ResourceManager.getResourceMap(ItemResource.class);
-        System.out.println(itemResource);
+  @Test
+  public void testItemResource() {
+    ResourceManager.initResource();
+    ConcurrentMap<String, ItemResource> itemResource =
+        ResourceManager.getResourceMap(ItemResource.class);
+    System.out.println(itemResource);
+  }
+
+  @Test
+  public void testManager() {
+    System.out.println(itemManager.getItemStorageEnt("8521"));
+    System.out.println(itemManager.getItemStorageEnt("8521"));
+  }
+
+  @Test
+  public void testItem() {
+    EquipItem equipItem = new EquipItem();
+    equipItem.setQuantity(10);
+
+    try {
+      AbstractItem clone = (AbstractItem) equipItem.clone();
+      System.out.println(clone.getClass());
+    } catch (CloneNotSupportedException e) {
+      e.printStackTrace();
     }
-
-    @Test
-    public void testManager() {
-        System.out.println(itemManager.getItemStorageEnt("8521"));
-        System.out.println(itemManager.getItemStorageEnt("8521"));
-    }
-
-    @Test
-    public void testItem() {
-        EquipItem equipItem = new EquipItem();
-        equipItem.setQuantity(10);
-
-        try {
-            AbstractItem clone = (AbstractItem) equipItem.clone();
-            System.out.println(clone.getClass());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-
-    }
+  }
 }

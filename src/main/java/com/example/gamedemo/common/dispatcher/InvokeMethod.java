@@ -22,7 +22,6 @@ public class InvokeMethod {
      */
     private Method method;
 
-
     public Object getObject() {
         return object;
     }
@@ -55,25 +54,27 @@ public class InvokeMethod {
      * @return
      */
     public Object invoke(TSession session, Object packet) {
-        //TODO 线程池
+        // TODO 线程池
         Account account = session.getAccount();
         if (account == null) {
-            //未登录时，默认使用的线程
-            CommonExecutor.COMMON_SERVICE[0].submit(new Runnable() {
-                @Override
-                public void run() {
-                    ReflectionUtils.invokeMethod(method, object, session, packet);
-                }
-            });
+            // 未登录时，默认使用的线程
+            CommonExecutor.COMMON_SERVICE[0].submit(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ReflectionUtils.invokeMethod(method, object, session, packet);
+                        }
+                    });
         } else {
             String accountId = account.getAccountId();
             int index = CommonExecutor.modeIndex(accountId);
-            CommonExecutor.COMMON_SERVICE[index].submit(new Runnable() {
-                @Override
-                public void run() {
-                    ReflectionUtils.invokeMethod(method, object, session, packet);
-                }
-            });
+            CommonExecutor.COMMON_SERVICE[index].submit(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ReflectionUtils.invokeMethod(method, object, session, packet);
+                        }
+                    });
         }
         return null;
     }

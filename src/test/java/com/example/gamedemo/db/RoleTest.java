@@ -16,12 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class RoleTest {
 
-    @Autowired
-    private AccountService accountService;
+  @Autowired private AccountService accountService;
 
-    @Autowired
-    private Accessor accessor;
-
-
-
+  @Autowired private Accessor accessor;
 }

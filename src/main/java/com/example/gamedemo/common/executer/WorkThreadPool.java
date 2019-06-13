@@ -16,19 +16,28 @@ public final class WorkThreadPool {
     private static final Logger loger = LoggerFactory.getLogger(WorkThreadPool.class);
 
     /**
-     * 单线程循环执行器
-     * 用于异步储存数据
+     * 单线程循环执行器 用于异步储存数据
      */
-    private static ThreadFactory singleThreadFactory = new ThreadFactoryBuilder()
-            .setNameFormat("dao-singleThread-%d").setUncaughtExceptionHandler((t, e) -> e.printStackTrace()).build();
-    public static ScheduledExecutorService singleThreadSchedule = Executors.newSingleThreadScheduledExecutor(singleThreadFactory);
+    private static ThreadFactory singleThreadFactory =
+            new ThreadFactoryBuilder()
+                    .setNameFormat("dao-singleThread-%d")
+                    .setUncaughtExceptionHandler((t, e) -> e.printStackTrace())
+                    .build();
+
+    public static ScheduledExecutorService singleThreadSchedule =
+            Executors.newSingleThreadScheduledExecutor(singleThreadFactory);
 
     /**
      * 场景线程池
      */
-    private static ThreadFactory sceneThreadPoolFactory = new ThreadFactoryBuilder()
-            .setNameFormat("sceneThreadPool-%d").setUncaughtExceptionHandler((t, e) -> e.printStackTrace()).build();
-    public static ExecutorService sceneThreadPool = Executors.newFixedThreadPool(8, sceneThreadPoolFactory);
+    private static ThreadFactory sceneThreadPoolFactory =
+            new ThreadFactoryBuilder()
+                    .setNameFormat("sceneThreadPool-%d")
+                    .setUncaughtExceptionHandler((t, e) -> e.printStackTrace())
+                    .build();
+
+    public static ExecutorService sceneThreadPool =
+            Executors.newFixedThreadPool(8, sceneThreadPoolFactory);
 
     /**
      * 设置单线程定时任务
@@ -40,7 +49,6 @@ public final class WorkThreadPool {
     public static Future singleThreadSchedule(long delay, Runnable runnable) {
         return singleThreadSchedule.schedule(runnable, delay, TimeUnit.MILLISECONDS);
     }
-
 
     /**
      * 提交场景请求

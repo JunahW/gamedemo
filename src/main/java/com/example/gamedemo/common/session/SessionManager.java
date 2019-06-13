@@ -101,7 +101,6 @@ public class SessionManager {
         logger.info("session close success");
     }
 
-
     /**
      * 从map中移除session
      *

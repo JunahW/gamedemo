@@ -16,85 +16,84 @@ import java.util.concurrent.ConcurrentMap;
  */
 public interface PlayerService {
 
-    /**
-     * 通过id获取账户信息
-     *
-     * @param playerId
-     * @return
-     */
-    Player getPlayerById(String playerId);
+  /**
+   * 通过id获取账户信息
+   *
+   * @param playerId
+   * @return
+   */
+  Player getPlayerById(String playerId);
 
-    /**
-     * 新增账户
-     *
-     * @param player
-     * @return
-     */
-    int createPlayer(Player player);
+  /**
+   * 新增账户
+   *
+   * @param player
+   * @return
+   */
+  int createPlayer(Player player);
 
-    /**
-     * 账户登录
-     *
-     * @param accountId
-     * @param playerId
-     * @return
-     */
-    Player selectPlayer(String accountId, String playerId);
+  /**
+   * 账户登录
+   *
+   * @param accountId
+   * @param playerId
+   * @return
+   */
+  Player selectPlayer(String accountId, String playerId);
 
-    /**
-     * 更细账户
-     *
-     * @param player
-     */
-    void updateAccount(Player player);
+  /**
+   * 更细账户
+   *
+   * @param player
+   */
+  void updateAccount(Player player);
 
-    /**
-     * 获取登陆账户的集合
-     *
-     * @return
-     */
-    List<Player> getAccountList();
+  /**
+   * 获取登陆账户的集合
+   *
+   * @return
+   */
+  List<Player> getAccountList();
 
-    /**
-     * 玩家移动
-     *
-     * @param player
-     * @param x
-     * @param y
-     * @return
-     */
-    boolean move2Coordinate(Player player, int x, int y);
+  /**
+   * 玩家移动
+   *
+   * @param player
+   * @param x
+   * @param y
+   * @return
+   */
+  boolean move2Coordinate(Player player, int x, int y);
 
-    /**
-     * 玩家类型
-     *
-     * @param playerType
-     * @return
-     */
-    BaseAttributeResource getBaseAttributeResourceByPlayerType(int playerType);
+  /**
+   * 玩家类型
+   *
+   * @param playerType
+   * @return
+   */
+  BaseAttributeResource getBaseAttributeResourceByPlayerType(int playerType);
 
-    /**
-     * 获取玩家的属性集合，触发事件
-     *
-     * @param player
-     * @param playerId
-     * @return
-     */
-    ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, String playerId);
+  /**
+   * 获取玩家的属性集合，触发事件
+   *
+   * @param player
+   * @param playerId
+   * @return
+   */
+  ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(
+      Player player, String playerId);
 
-    /**
-     * 计算玩家的职业基础属性
-     *
-     * @param event
-     */
-    void computePlayerBaseAttributes(PlayerLoadEvent event);
+  /**
+   * 计算玩家的职业基础属性
+   *
+   * @param event
+   */
+  void computePlayerBaseAttributes(PlayerLoadEvent event);
 
-    /**
-     * 保存玩家信息
-     *
-     * @param player
-     */
-    void savePlayerEnt(Player player);
-
-
+  /**
+   * 保存玩家信息
+   *
+   * @param player
+   */
+  void savePlayerEnt(Player player);
 }

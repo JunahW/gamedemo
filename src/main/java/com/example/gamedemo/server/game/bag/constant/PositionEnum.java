@@ -14,5 +14,4 @@ public enum PositionEnum implements AttributeModelId {
             return "HEAD";
         }
     };
-
 }

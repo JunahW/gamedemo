@@ -24,5 +24,4 @@ public interface AccountService {
      * @return
      */
     Account loginAccount(String accountId);
-
 }

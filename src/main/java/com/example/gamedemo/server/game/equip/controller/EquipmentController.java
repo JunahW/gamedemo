@@ -42,7 +42,6 @@ public class EquipmentController {
         if (equip) {
             SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("穿上装备成功"));
         }
-
     }
 
     /**
@@ -63,7 +62,6 @@ public class EquipmentController {
         if (flag) {
             SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("脱下装备"));
         }
-
     }
 
     /**
@@ -75,7 +73,8 @@ public class EquipmentController {
     @HandlerMethod(cmd = "getEquip")
     public void getEquipmentMsg(TSession session, CM_GetEquipMsg req) {
         Player player = session.getPlayer();
-        AbstractItem equipItem = SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
+        AbstractItem equipItem =
+                SpringContext.getEquipmentService().getEquipItemByGuid(player, req.getGuid());
         SessionManager.sendMessage(session, equipItem);
     }
 
@@ -90,7 +89,6 @@ public class EquipmentController {
         Player player = session.getPlayer();
         EquipStorage equipBar = player.getEquipBar();
         SessionManager.sendMessage(session, equipBar);
-
     }
 
     /**
@@ -121,7 +119,6 @@ public class EquipmentController {
      */
     @HandlerMethod(cmd = "checkPosition")
     public void checkPosition(TSession session, CM_CheckPosition rep) {
-
     }
 
     /**

@@ -50,10 +50,7 @@ public class Attribute {
 
     @Override
     public String toString() {
-        return "Attribute{" +
-                "type=" + type +
-                ", value=" + value +
-                '}';
+        return "Attribute{" + "type=" + type + ", value=" + value + '}';
     }
 
     public static Attribute valueof(AttributeTypeEnum type, long value) {

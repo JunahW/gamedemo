@@ -19,7 +19,7 @@ public enum AttributeTypeEnum {
     /**
      * 攻击力
      */
-    //TODO
+    // TODO
     ATTACK("ATTACK", "攻击力", false),
 
     /**
@@ -52,12 +52,10 @@ public enum AttributeTypeEnum {
      */
     ATTACK_PERCENTAGE("", "攻击加成", true),
 
-
     /**
      * 防御加成
      */
     DEFENSE_PERCENTAGE("", "防御加成", true);
-
 
     /**
      * 属性id
@@ -70,7 +68,6 @@ public enum AttributeTypeEnum {
     private String description;
 
     private boolean isPercentage;
-
 
     AttributeTypeEnum(String name, String description, boolean isPercentage) {
         this.name = name;
@@ -92,7 +89,6 @@ public enum AttributeTypeEnum {
 
     public void setName(String name) {
         this.name = name;
-
     }
 
     public boolean isPercentage() {

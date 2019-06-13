@@ -17,166 +17,149 @@ import javax.persistence.Transient;
 @Table
 @javax.persistence.Entity
 public class PlayerEnt implements Entity<String> {
-    @Id
-    private String playerId;
+  @Id private String playerId;
 
-    @Column
-    private String playerName;
+  @Column private String playerName;
 
-    @Column
-    private String accountId;
+  @Column private String accountId;
 
-    @Column
-    private int playerType;
+  @Column private int playerType;
 
-    /**
-     * 玩家战力
-     */
-    @Column
-    private long combatIndex;
+  /** 玩家战力 */
+  @Column private long combatIndex;
 
-    /**
-     * x轴位置
-     */
-    @Column
-    private int x;
+  /** x轴位置 */
+  @Column private int x;
 
-    /**
-     * y轴位置
-     */
-    @Column
-    private int y;
+  /** y轴位置 */
+  @Column private int y;
 
-    @Column(length = 10000)
-    private String sceneData;
+  @Column(length = 10000)
+  private String sceneData;
 
-    /**
-     * 场景
-     */
+  /** 场景 */
+  @Transient private Player player;
 
-    @Transient
-    private Player player;
+  /**
+   * 获取player的存储对象
+   *
+   * @param player
+   * @return
+   */
+  public static PlayerEnt valueOf(Player player) {
+    PlayerEnt playerEnt = new PlayerEnt();
+    playerEnt.setPlayer(player);
+    playerEnt.setPlayerId(player.getPlayerId());
+    return playerEnt;
+  }
 
+  public String getPlayerId() {
+    return playerId;
+  }
 
-    public String getPlayerId() {
-        return playerId;
-    }
+  public void setPlayerId(String playerId) {
+    this.playerId = playerId;
+  }
 
-    public String getPlayerName() {
-        return playerName;
-    }
+  public String getPlayerName() {
+    return playerName;
+  }
 
-    public String getAccountId() {
-        return accountId;
-    }
+  public void setPlayerName(String playerName) {
+    this.playerName = playerName;
+  }
 
-    public int getPlayerType() {
-        return playerType;
-    }
+  public String getAccountId() {
+    return accountId;
+  }
 
-    public long getCombatIndex() {
-        return combatIndex;
-    }
+  public void setAccountId(String accountId) {
+    this.accountId = accountId;
+  }
 
-    public int getX() {
-        return x;
-    }
+  public int getPlayerType() {
+    return playerType;
+  }
 
-    public int getY() {
-        return y;
-    }
+  public void setPlayerType(int playerType) {
+    this.playerType = playerType;
+  }
 
-    public String getSceneData() {
-        return sceneData;
-    }
+  public long getCombatIndex() {
+    return combatIndex;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public void setCombatIndex(long combatIndex) {
+    this.combatIndex = combatIndex;
+  }
 
-    public void setPlayerId(String playerId) {
-        this.playerId = playerId;
-    }
+  public int getX() {
+    return x;
+  }
 
-    public void setPlayerName(String playerName) {
-        this.playerName = playerName;
-    }
+  public void setX(int x) {
+    this.x = x;
+  }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
+  public int getY() {
+    return y;
+  }
 
-    public void setPlayerType(int playerType) {
-        this.playerType = playerType;
-    }
+  public void setY(int y) {
+    this.y = y;
+  }
 
-    public void setCombatIndex(long combatIndex) {
-        this.combatIndex = combatIndex;
-    }
+  public String getSceneData() {
+    return sceneData;
+  }
 
-    public void setX(int x) {
-        this.x = x;
-    }
+  public void setSceneData(String sceneData) {
+    this.sceneData = sceneData;
+  }
 
-    public void setY(int y) {
-        this.y = y;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public void setSceneData(String sceneData) {
-        this.sceneData = sceneData;
-    }
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+  @Override
+  public String getId() {
+    return this.playerId;
+  }
 
-    @Override
-    public String getId() {
-        return this.playerId;
-    }
+  @Override
+  public void setNullId() {
+    this.player = null;
+  }
 
-    @Override
-    public void setNullId() {
-        this.player = null;
-    }
+  @Override
+  public boolean serialize() {
+    String sceneString = JsonUtils.serializeEntity(player.getSceneResource());
+    this.setSceneData(sceneString);
+    this.setPlayerId(player.getPlayerId());
+    this.setPlayerName(player.getPlayerName());
+    this.setAccountId(player.getAccountId());
+    this.setPlayerType(player.getPlayerType());
+    this.setCombatIndex(player.getCombatIndex());
+    return true;
+  }
 
-    @Override
-    public boolean serialize() {
-        String sceneString = JsonUtils.serializeEntity(player.getSceneResource());
-        this.setSceneData(sceneString);
-        this.setPlayerId(player.getPlayerId());
-        this.setPlayerName(player.getPlayerName());
-        this.setAccountId(player.getAccountId());
-        this.setPlayerType(player.getPlayerType());
-        this.setCombatIndex(player.getCombatIndex());
-        return true;
-    }
-
-    @Override
-    public boolean deSerialize() {
-        //TODO 序列化有问题
-        //SceneResource sceneResource = JsonUtils.deSerializeEntity(getSceneData(), SceneResource.class);
-        Player player = new Player();
-        //player.setSceneResource(sceneResource);
-        player.setPlayerId(getPlayerId());
-        player.setPlayerName(getPlayerName());
-        player.setAccountId(getAccountId());
-        player.setPlayerType(getPlayerType());
-        player.setCombatIndex(getCombatIndex());
-        this.setPlayer(player);
-        return true;
-    }
-
-    /**
-     * 获取player的存储对象
-     *
-     * @param player
-     * @return
-     */
-    public static PlayerEnt valueOf(Player player) {
-        PlayerEnt playerEnt = new PlayerEnt();
-        playerEnt.setPlayer(player);
-        playerEnt.setPlayerId(player.getPlayerId());
-        return playerEnt;
-    }
+  @Override
+  public boolean deSerialize() {
+    // TODO 序列化有问题
+    // SceneResource sceneResource = JsonUtils.deSerializeEntity(getSceneData(),
+    // SceneResource.class);
+    Player player = new Player();
+    // player.setSceneResource(sceneResource);
+    player.setPlayerId(getPlayerId());
+    player.setPlayerName(getPlayerName());
+    player.setAccountId(getAccountId());
+    player.setPlayerType(getPlayerType());
+    player.setCombatIndex(getCombatIndex());
+    this.setPlayer(player);
+    return true;
+  }
 }

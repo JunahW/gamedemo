@@ -17,14 +17,13 @@ public class ParameterCheckUtils {
      */
     public static boolean checkParams(String msg) {
         boolean flag = true;
-        Class clazz = ControllerManager.getClassByCmd(msg.split(" ")[0]);
+        Class clazz = ControllerManager.getClassByCmd(msg.split(SystemConstant.SPLIT_TOKEN)[0]);
         int paramLength = clazz.getDeclaredFields().length;
         if (null == msg || msg.split(SystemConstant.SPLIT_TOKEN).length != paramLength + 1) {
             flag = false;
         }
         return flag;
     }
-
 
     /**
      * 检查指令是否合法
@@ -34,7 +33,7 @@ public class ParameterCheckUtils {
      */
     public static boolean checkCmd(String msg) {
         boolean flag = true;
-        Class clazz = ControllerManager.getClassByCmd(msg.split(" ")[0]);
+        Class clazz = ControllerManager.getClassByCmd(msg.split(SystemConstant.SPLIT_TOKEN)[0]);
         if (clazz == null) {
             flag = false;
         }

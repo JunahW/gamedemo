@@ -25,111 +25,111 @@ import java.util.concurrent.ConcurrentMap;
 @Component
 public class EquipmentManager {
 
-    /**
-     * 静态资源
-     */
-    private ConcurrentMap<String, EquipAttrResource> equipAttrResource = ResourceManager.getResourceMap(EquipAttrResource.class);
+  /** 静态资源 */
+  private ConcurrentMap<String, EquipAttrResource> equipAttrResource =
+      ResourceManager.getResourceMap(EquipAttrResource.class);
 
-    private ConcurrentMap<String, EquipEnhanceResource> equipEnhanceResource = ResourceManager.getResourceMap(EquipEnhanceResource.class);
+  private ConcurrentMap<String, EquipEnhanceResource> equipEnhanceResource =
+      ResourceManager.getResourceMap(EquipEnhanceResource.class);
 
-    /**
-     * <位置，<等级，配置资源>>
-     */
-    private ConcurrentMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>> positionLevelResourceMap;
+  /** <位置，<等级，配置资源>> */
+  private ConcurrentMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>
+      positionLevelResourceMap;
 
+  @Autowired private Accessor accessor;
 
-    @Autowired
-    private Accessor accessor;
+  private EntityCacheServiceImpl<String, EquipStorageEnt> entityCacheService =
+      new EntityCacheServiceImpl<>();
 
+  @PostConstruct
+  public void init() {
+    entityCacheService.setClazz(EquipStorageEnt.class);
+    entityCacheService.setAccessor(accessor);
+    initEquipEnhanceResource();
+  }
 
-    private EntityCacheServiceImpl<String, EquipStorageEnt> entityCacheService = new EntityCacheServiceImpl<>();
-
-    @PostConstruct
-    public void init() {
-        entityCacheService.setClazz(EquipStorageEnt.class);
-        entityCacheService.setAccessor(accessor);
-        initEquipEnhanceResource();
-    }
-
-    /**
-     * 获取装备栏
-     *
-     * @param playerId
-     * @return
-     */
-    public EquipStorageEnt getEquipStorageEnt(String playerId) {
-        EquipStorageEnt equipStorageEnt = entityCacheService.loadOrCreate(playerId, new EntityBuilder<String, EquipStorageEnt>() {
-            @Override
-            public EquipStorageEnt newInstance(String id) {
+  /**
+   * 获取装备栏
+   *
+   * @param playerId
+   * @return
+   */
+  public EquipStorageEnt getEquipStorageEnt(String playerId) {
+    EquipStorageEnt equipStorageEnt =
+        entityCacheService.loadOrCreate(
+            playerId,
+            new EntityBuilder<String, EquipStorageEnt>() {
+              @Override
+              public EquipStorageEnt newInstance(String id) {
                 EquipStorageEnt equipStorageEnt = new EquipStorageEnt();
                 EquipStorage bar = new EquipStorage();
                 equipStorageEnt.setEquipStorage(bar);
                 equipStorageEnt.setPlayerId(playerId);
-                //FIXME 去除 equipStorageEnt.serialize();
+                // FIXME 去除 equipStorageEnt.serialize();
                 return equipStorageEnt;
-            }
-        });
-        return equipStorageEnt;
+              }
+            });
+    return equipStorageEnt;
+  }
 
+  /**
+   * 存储至数据库
+   *
+   * @param equipStorageEnt
+   */
+  public void saveEquipStorageEnt(EquipStorageEnt equipStorageEnt) {
+    // FIXME equipStorageEnt.serialize();
+    entityCacheService.writeBack(equipStorageEnt.getId(), equipStorageEnt);
+  }
+
+  /**
+   * 通过id获取装备的属性资源
+   *
+   * @param resourceId
+   * @return
+   */
+  public EquipAttrResource getequipAttrResourceById(int resourceId) {
+    return equipAttrResource.get(resourceId);
+  }
+
+  /**
+   * 通过部位和等级获取强化配置
+   *
+   * @param position
+   * @param level
+   * @return
+   */
+  public EquipEnhanceResource getEquipEnhanceResourceByPositionAndLevel(int position, int level) {
+    ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource =
+        positionLevelResourceMap.get(position);
+    if (null != positionLevelResource) {
+      EquipEnhanceResource equipEnhanceResource = positionLevelResource.get(level);
+      return equipEnhanceResource;
     }
+    return null;
+  }
 
-    /**
-     * 存储至数据库
-     *
-     * @param equipStorageEnt
-     */
-    public void saveEquipStorageEnt(EquipStorageEnt equipStorageEnt) {
-        //FIXME equipStorageEnt.serialize();
-        entityCacheService.writeBack(equipStorageEnt.getId(), equipStorageEnt);
+  /** 初始化equipEnhanceResource */
+  private void initEquipEnhanceResource() {
+    ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>
+        positionLevelResourceMap =
+            new ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>();
+
+    Set<Map.Entry<String, EquipEnhanceResource>> entries = equipEnhanceResource.entrySet();
+    for (Map.Entry<String, EquipEnhanceResource> enhanceResourceEntry : entries) {
+      EquipEnhanceResource resourceValue = enhanceResourceEntry.getValue();
+      int position = resourceValue.getPosition();
+      if (!positionLevelResourceMap.containsKey(position)) {
+        positionLevelResourceMap.put(position, new ConcurrentHashMap<>(16));
+      }
+      ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource =
+          positionLevelResourceMap.get(position);
+
+      int level = resourceValue.getLevel();
+      if (!positionLevelResource.containsKey(level)) {
+        positionLevelResource.put(level, resourceValue);
+      }
     }
-
-    /**
-     * 通过id获取装备的属性资源
-     *
-     * @param resourceId
-     * @return
-     */
-    public EquipAttrResource getequipAttrResourceById(int resourceId) {
-        return equipAttrResource.get(resourceId);
-    }
-
-    /**
-     * 通过部位和等级获取强化配置
-     *
-     * @param position
-     * @param level
-     * @return
-     */
-    public EquipEnhanceResource getEquipEnhanceResourceByPositionAndLevel(int position, int level) {
-        ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource = positionLevelResourceMap.get(position);
-        if (null != positionLevelResource) {
-            EquipEnhanceResource equipEnhanceResource = positionLevelResource.get(level);
-            return equipEnhanceResource;
-        }
-        return null;
-    }
-
-
-    /**
-     * 初始化equipEnhanceResource
-     */
-    private void initEquipEnhanceResource() {
-        ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>> positionLevelResourceMap = new ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>();
-
-        Set<Map.Entry<String, EquipEnhanceResource>> entries = equipEnhanceResource.entrySet();
-        for (Map.Entry<String, EquipEnhanceResource> enhanceResourceEntry : entries) {
-            EquipEnhanceResource resourceValue = enhanceResourceEntry.getValue();
-            int position = resourceValue.getPosition();
-            if (!positionLevelResourceMap.containsKey(position)) {
-                positionLevelResourceMap.put(position, new ConcurrentHashMap<>(16));
-            }
-            ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource = positionLevelResourceMap.get(position);
-
-            int level = resourceValue.getLevel();
-            if (!positionLevelResource.containsKey(level)) {
-                positionLevelResource.put(level, resourceValue);
-            }
-        }
-        this.positionLevelResourceMap = positionLevelResourceMap;
-    }
+    this.positionLevelResourceMap = positionLevelResourceMap;
+  }
 }

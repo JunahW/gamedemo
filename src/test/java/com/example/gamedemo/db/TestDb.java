@@ -17,25 +17,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class TestDb {
 
+  @Autowired private SessionFactory sessionFactory;
 
-    @Autowired
-    private SessionFactory sessionFactory;
+  @Autowired private Accessor accessor;
 
-    @Autowired
-    private Accessor accessor;
+  @Test
+  public void tsetDb() {
+    System.out.println("==========");
+    System.out.println(sessionFactory);
+  }
 
-    @Test
-    public void tsetDb() {
-        System.out.println("==========");
-        System.out.println(sessionFactory);
-    }
-
-
-    /**
-     * 测试持久层
-     */
-    @Test
-    public void testAccessor() {
-
-    }
+  /** 测试持久层 */
+  @Test
+  public void testAccessor() {}
 }

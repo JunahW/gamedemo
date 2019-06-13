@@ -11,5 +11,4 @@ public class CM_AddItem {
     public int getItemResourceId() {
         return itemResourceId;
     }
-
 }

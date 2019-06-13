@@ -19,16 +19,12 @@ public class AccountManager {
     @Autowired
     private Accessor accessor;
 
-
-    private EntityCacheServiceImpl<String, AccountEnt> entEntityCacheService = new EntityCacheServiceImpl<>();
+    private EntityCacheServiceImpl<String, AccountEnt> entEntityCacheService =
+            new EntityCacheServiceImpl<>();
 
     @PostConstruct
     public void init() {
         entEntityCacheService.setClazz(AccountEnt.class);
         entEntityCacheService.setAccessor(accessor);
     }
-
-
-
-
 }

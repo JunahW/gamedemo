@@ -25,6 +25,4 @@ public enum AttributeModelIdEnum implements AttributeModelId {
             return "EQUIPMENT";
         }
     };
-
-
 }

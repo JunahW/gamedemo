@@ -27,7 +27,6 @@ public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
         super.setSessionFactory(sessionFactory);
     }
 
-
     @Override
     public <PK extends Serializable, T extends Entity> T load(Class<T> clazz, PK id) {
         return getHibernateTemplate().get(clazz, id);

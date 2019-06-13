@@ -1,5 +1,6 @@
 package com.example.gamedemo.common.net;
 
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.utils.JsonUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageEncoder;
@@ -22,7 +23,6 @@ public class PacketEncoder extends MessageToMessageEncoder<Object> {
             resultString = JsonUtils.serializeEntity(msg);
         }
         System.out.println(resultString);
-        out.add(resultString + "\r\n");
+        out.add(resultString + SystemConstant.MSG_END_TOKEN);
     }
-
 }

@@ -13,13 +13,10 @@ import org.slf4j.LoggerFactory;
 public class EntityCacheLoader<PK, V> extends CacheLoader<PK, V> {
     private static final Logger logger = LoggerFactory.getLogger(EntityCacheLoader.class);
 
-
     @Override
     public V load(PK k) throws Exception {
         logger.info("缓存中没有命中");
 
         return (V) new EmptyEntity<String>();
     }
-
-
 }

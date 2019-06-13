@@ -125,5 +125,4 @@ public class ItemResource implements ResourceInterface {
             this.playerTypes = array;
         }
     }
-
 }

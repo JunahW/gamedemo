@@ -25,16 +25,26 @@ public class CommonExecutor {
     /**
      * 线程池数量，可以控制每个账户在同一个线程执行
      */
-    public static final ThreadPoolExecutor[] COMMON_SERVICE = new ThreadPoolExecutor[DEFAULT_THREAD_SIZE];
+    public static final ThreadPoolExecutor[] COMMON_SERVICE =
+            new ThreadPoolExecutor[DEFAULT_THREAD_SIZE];
 
     static {
         logger.info("开始通用线程。。。");
-        ThreadFactory singleThreadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("Common-Thread-%d").setUncaughtExceptionHandler((t, e) -> e.printStackTrace()).build();
+        ThreadFactory singleThreadFactory =
+                new ThreadFactoryBuilder()
+                        .setNameFormat("Common-Thread-%d")
+                        .setUncaughtExceptionHandler((t, e) -> e.printStackTrace())
+                        .build();
         for (int i = 0; i < DEFAULT_THREAD_SIZE; i++) {
-            COMMON_SERVICE[i] = new ThreadPoolExecutor(1, 1, 0L,
-                    TimeUnit.MILLISECONDS, new LinkedBlockingDeque<Runnable>(), singleThreadFactory,
-                    new ThreadPoolExecutor.DiscardPolicy());
+            COMMON_SERVICE[i] =
+                    new ThreadPoolExecutor(
+                            1,
+                            1,
+                            0L,
+                            TimeUnit.MILLISECONDS,
+                            new LinkedBlockingDeque<Runnable>(),
+                            singleThreadFactory,
+                            new ThreadPoolExecutor.DiscardPolicy());
         }
         logger.info("初始化通用线程完成");
     }
@@ -48,5 +58,4 @@ public class CommonExecutor {
     public static int modeIndex(String id) {
         return id.hashCode() % DEFAULT_THREAD_SIZE;
     }
-
 }

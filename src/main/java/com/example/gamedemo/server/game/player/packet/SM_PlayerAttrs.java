@@ -14,29 +14,28 @@ import java.util.concurrent.ConcurrentMap;
  * @date 2019/6/11
  */
 public class SM_PlayerAttrs {
-    List<Attribute> attributes;
+  List<Attribute> attributes;
 
+  public SM_PlayerAttrs(List<Attribute> attributes) {
+    this.attributes = attributes;
+  }
 
-    public List<Attribute> getAttributes() {
-        return attributes;
+  public static SM_PlayerAttrs valueOf(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+    LinkedList<Attribute> attributes = new LinkedList<>();
+    for (Map.Entry<AttributeTypeEnum, Attribute> entry : attributeMap.entrySet()) {
+      Attribute attribute = entry.getValue();
+      if (attribute != null) {
+        attributes.add(attribute);
+      }
     }
+    return new SM_PlayerAttrs(attributes);
+  }
 
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
+  public List<Attribute> getAttributes() {
+    return attributes;
+  }
 
-    public SM_PlayerAttrs(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    public static SM_PlayerAttrs valueOf(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
-        LinkedList<Attribute> attributes = new LinkedList<>();
-        for (Map.Entry<AttributeTypeEnum, Attribute> entry : attributeMap.entrySet()) {
-            Attribute attribute = entry.getValue();
-            if (attribute != null) {
-                attributes.add(attribute);
-            }
-        }
-        return new SM_PlayerAttrs(attributes);
-    }
+  public void setAttributes(List<Attribute> attributes) {
+    this.attributes = attributes;
+  }
 }

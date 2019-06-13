@@ -6,5 +6,4 @@ package com.example.gamedemo.common.ramcache.persist;
  * @description: 持久化处理接口
  */
 public interface Persister {
-
 }

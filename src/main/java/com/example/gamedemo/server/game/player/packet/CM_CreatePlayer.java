@@ -7,21 +7,17 @@ package com.example.gamedemo.server.game.player.packet;
  */
 public class CM_CreatePlayer {
 
-    /**
-     * 账户id
-     */
-    private String playerId;
+  /** 账户id */
+  private String playerId;
 
-    /**
-     * 玩家类型
-     */
-    private int playerType;
+  /** 玩家类型 */
+  private int playerType;
 
-    public String getPlayerId() {
-        return playerId;
-    }
+  public String getPlayerId() {
+    return playerId;
+  }
 
-    public int getPlayerType() {
-        return playerType;
-    }
+  public int getPlayerType() {
+    return playerType;
+  }
 }

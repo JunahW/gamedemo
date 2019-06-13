@@ -16,11 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class GenericTest {
 
-
-    @Test
-    public void getInstance() {
-        ItemService itemService = SpringContext.getItemService();
-        System.out.println(itemService);
-    }
-
+  @Test
+  public void getInstance() {
+    ItemService itemService = SpringContext.getItemService();
+    System.out.println(itemService);
+  }
 }

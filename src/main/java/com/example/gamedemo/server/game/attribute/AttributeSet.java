@@ -16,7 +16,6 @@ public class AttributeSet {
      */
     private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
 
-
     public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
         return attributeMap;
     }

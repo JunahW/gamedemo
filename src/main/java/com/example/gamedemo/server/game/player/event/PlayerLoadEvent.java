@@ -9,44 +9,39 @@ import com.example.gamedemo.server.game.player.model.Player;
  * @date 2019/6/11
  */
 public class PlayerLoadEvent implements Event {
-    private Player player;
+  private Player player;
 
+  public PlayerLoadEvent() {}
 
-    @Override
-    public Object getOwnerId() {
-        return player.getPlayerId();
-    }
+  public PlayerLoadEvent(Player player) {
+    this.player = player;
+  }
 
-    /**
-     * 获取事件对象
-     *
-     * @param player
-     * @return
-     */
-    public static PlayerLoadEvent valueof(Player player) {
-        return new PlayerLoadEvent(player);
-    }
+  /**
+   * 获取事件对象
+   *
+   * @param player
+   * @return
+   */
+  public static PlayerLoadEvent valueof(Player player) {
+    return new PlayerLoadEvent(player);
+  }
 
-    public PlayerLoadEvent() {
-    }
+  @Override
+  public Object getOwnerId() {
+    return player.getPlayerId();
+  }
 
-    public PlayerLoadEvent(Player player) {
-        this.player = player;
-    }
+  public Player getPlayer() {
+    return player;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }
+  public void setPlayer(Player player) {
+    this.player = player;
+  }
 
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    @Override
-    public String toString() {
-        return "PlayerLoadEvent{" +
-                "player=" + player +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "PlayerLoadEvent{" + "player=" + player + '}';
+  }
 }

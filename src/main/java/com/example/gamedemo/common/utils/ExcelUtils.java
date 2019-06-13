@@ -42,12 +42,12 @@ public class ExcelUtils {
             if (rows < 0) {
                 return list;
             }
-            //获取加ExcelColumn注解的字段
+            // 获取加ExcelColumn注解的字段
             List<Field> allFields = getMappedFiled(clazz, null);
 
             // 第一行为表头
             Row rowHead = sheet.getRow(0);
-            //获取row下标和Field的映射表
+            // 获取row下标和Field的映射表
             Map<Integer, Field> rowIndex2FiledMap = getRowIndex2FiledMap(rowHead, allFields);
 
             // 从第2行开始取数据
@@ -59,7 +59,7 @@ public class ExcelUtils {
                     if (cell == null) {
                         continue;
                     }
-                    //获取单元格数据
+                    // 获取单元格数据
                     String value = getCellValue(cell);
 
                     if (value == null || value.equals("")) {
@@ -100,8 +100,7 @@ public class ExcelUtils {
     private static <T> InputStream getInputStreamByClass(Class<T> clazz) {
         String simpleName = clazz.getSimpleName();
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("classpath:resource/")
-                .append(simpleName).append(".xlsx");
+        stringBuilder.append("classpath:resource/").append(simpleName).append(".xlsx");
         File file = null;
         FileInputStream fileInputStream = null;
         try {
@@ -171,7 +170,7 @@ public class ExcelUtils {
     private static <T> void setEntityFieldValue(T entity, Field field, String value) {
         Class<?> fieldType = field.getType();
         try {
-            //判断是否为数组
+            // 判断是否为数组
             if (fieldType.isArray()) {
                 String[] rows = value.split("\n");
                 int x = 0, y = 0;
@@ -192,20 +191,15 @@ public class ExcelUtils {
                 field.set(entity, array);
             } else if (String.class == fieldType) {
                 field.set(entity, String.valueOf(value));
-            } else if ((Integer.TYPE == fieldType)
-                    || (Integer.class == fieldType)) {
+            } else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
                 field.set(entity, Integer.valueOf(value));
-            } else if ((Long.TYPE == fieldType)
-                    || (Long.class == fieldType)) {
+            } else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
                 field.set(entity, Long.valueOf(value));
-            } else if ((Float.TYPE == fieldType)
-                    || (Float.class == fieldType)) {
+            } else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
                 field.set(entity, Float.valueOf(value));
-            } else if ((Short.TYPE == fieldType)
-                    || (Short.class == fieldType)) {
+            } else if ((Short.TYPE == fieldType) || (Short.class == fieldType)) {
                 field.set(entity, Short.valueOf(value));
-            } else if ((Double.TYPE == fieldType)
-                    || (Double.class == fieldType)) {
+            } else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
                 field.set(entity, Double.valueOf(value));
             } else if (Character.TYPE == fieldType) {
                 if (value.length() > 0) {
@@ -217,7 +211,6 @@ public class ExcelUtils {
         } finally {
         }
     }
-
 
     /**
      * 获取实体类（包括父类）通过注解映射了数据表的字段
@@ -238,11 +231,9 @@ public class ExcelUtils {
                 fields.add(field);
             }
         }
-        if (clazz.getSuperclass() != null
-                && !clazz.getSuperclass().equals(Object.class)) {
+        if (clazz.getSuperclass() != null && !clazz.getSuperclass().equals(Object.class)) {
             getMappedFiled(clazz.getSuperclass(), fields);
         }
         return fields;
     }
-
 }

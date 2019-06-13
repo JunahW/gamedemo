@@ -11,35 +11,35 @@ import java.util.List;
  * @description: 场景业务接口层
  */
 public interface SceneService {
-    /**
-     * 获取场景列表
-     *
-     * @return
-     */
-    List<SceneResource> getSceneList();
+  /**
+   * 获取场景列表
+   *
+   * @return
+   */
+  List<SceneResource> getSceneList();
 
-    /**
-     * 进入场景
-     *
-     * @param player
-     * @param sceneResource
-     */
-    void gotoScene(Player player, SceneResource sceneResource);
+  /**
+   * 进入场景
+   *
+   * @param player
+   * @param sceneResource
+   */
+  void gotoScene(Player player, SceneResource sceneResource);
 
-    /**
-     * 通过ID获取场景
-     *
-     * @param sceneId
-     * @return
-     */
-    SceneResource getSceneById(String sceneId);
+  /**
+   * 通过ID获取场景
+   *
+   * @param sceneId
+   * @return
+   */
+  SceneResource getSceneById(String sceneId);
 
-    /**
-     * 去其他的相邻场景
-     *
-     * @param player
-     * @param sceneResource
-     * @return
-     */
-    int move2Scene(Player player, SceneResource sceneResource);
+  /**
+   * 去其他的相邻场景
+   *
+   * @param player
+   * @param sceneResource
+   * @return
+   */
+  int move2Scene(Player player, SceneResource sceneResource);
 }

@@ -17,63 +17,57 @@ import java.util.List;
 @Resource
 public class EquipAttrResource implements ResourceInterface {
 
-    /**
-     * 配置表唯一id
-     */
-    @ExcelColumn(columnName = "itemId")
-    private int itemId;
+  /** 配置表唯一id */
+  @ExcelColumn(columnName = "itemId")
+  private int itemId;
 
-    /**
-     * 基础属性字符串
-     */
-    @ExcelColumn(columnName = "basicAttributeString")
-    private String basicAttributeString;
+  /** 基础属性字符串 */
+  @ExcelColumn(columnName = "basicAttributeString")
+  private String basicAttributeString;
 
-    /**
-     * 将基础字符串转换为集合
-     */
-    private List<Attribute> attributes;
+  /** 将基础字符串转换为集合 */
+  private List<Attribute> attributes;
 
+  @Override
+  public Object getId() {
+    return this.itemId;
+  }
 
-    @Override
-    public Object getId() {
-        return this.itemId;
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
+  }
+
+  public String getBasicAttributeString() {
+    return basicAttributeString;
+  }
+
+  public void setBasicAttributeString(String basicAttributeString) {
+    this.basicAttributeString = basicAttributeString;
+  }
+
+  /**
+   * 将字符串的json转换为对象
+   *
+   * @return
+   */
+  public List<Attribute> getAttributes() {
+    return attributes;
+  }
+
+  public void setAttributes(List<Attribute> attributes) {
+    this.attributes = attributes;
+  }
+
+  @Override
+  public void postInit() {
+    if (attributes == null) {
+      attributes =
+          JsonUtils.getListByString(
+              this.basicAttributeString, new TypeReference<List<Attribute>>() {});
     }
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public String getBasicAttributeString() {
-        return basicAttributeString;
-    }
-
-    /**
-     * 将字符串的json转换为对象
-     *
-     * @return
-     */
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
-    public void setBasicAttributeString(String basicAttributeString) {
-        this.basicAttributeString = basicAttributeString;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
-    }
-
-    @Override
-    public void postInit() {
-        if (attributes == null) {
-            attributes = JsonUtils.getListByString(this.basicAttributeString, new TypeReference<List<Attribute>>() {
-            });
-        }
-    }
+  }
 }

@@ -73,7 +73,6 @@ public class QueueConsumer implements Runnable {
                 logger.error("持久化出现异常：{}", e.getStackTrace());
             }
         }
-
     }
 
     /**

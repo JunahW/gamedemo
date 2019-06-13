@@ -24,7 +24,7 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
         long combatIndex = 0;
         long percentage = 100;
         ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = this.getAttributeMap();
-        //计算战力
+        // TODO 公式 计算战力
         for (Map.Entry<AttributeTypeEnum, Attribute> entry : attributeMap.entrySet()) {
             Attribute attribute = entry.getValue();
             if (attribute == null) {
@@ -39,9 +39,7 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
         //
         combatIndex *= percentage / 100;
 
-        /**
-         * 设置战力
-         */
+        /** 设置战力 */
         owner.setCombatIndex(combatIndex);
     }
 }

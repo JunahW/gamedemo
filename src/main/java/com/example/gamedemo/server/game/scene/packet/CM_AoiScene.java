@@ -5,5 +5,4 @@ package com.example.gamedemo.server.game.scene.packet;
  * @description：显示场景信息
  * @date 2019/5/27
  */
-public class CM_AoiScene {
-}
+public class CM_AoiScene {}

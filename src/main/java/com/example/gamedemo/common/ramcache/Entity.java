@@ -33,6 +33,4 @@ public interface Entity<PK extends Serializable & Comparable<PK>> {
      * @return
      */
     boolean deSerialize();
-
-
 }

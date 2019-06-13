@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.utils;
 
-
 /**
  * @author: wengj
  * @date: 2019/5/29
@@ -10,60 +9,57 @@ public class UniqueIdUtils {
 
     /**
      * 起始的时间戳
-     * <p>
-     * 某个时间点相对1970-01-01的毫秒数
+     *
+     * <p>某个时间点相对1970-01-01的毫秒数
      */
-    private final static long START_STAMP = 1501516800000L;
+    private static final long START_STAMP = 1501516800000L;
 
     /**
      * 序列号占用的位数
      */
-    private final static long SEQUENCE_BIT = 12;
+    private static final long SEQUENCE_BIT = 12;
 
     /**
      * 机器标识占用的位数
      */
-    private final static long MACHINE_BIT = 5;
+    private static final long MACHINE_BIT = 5;
 
     /**
      * 数据中心占用的位数
      */
-    private final static long DATA_CENTER_BIT = 5;
+    private static final long DATA_CENTER_BIT = 5;
 
     /**
      * 每一部分的最大值
-     * <p>
-     * -1L^(-1L<<n)表示n个bit的数字最大值 相关知识 异或 位移 原码 反码 补码
+     *
+     * <p>-1L^(-1L<<n)表示n个bit的数字最大值 相关知识 异或 位移 原码 反码 补码
      */
-    private final static long MAX_SEQUENCE = ~(-1L << SEQUENCE_BIT);
+    private static final long MAX_SEQUENCE = ~(-1L << SEQUENCE_BIT);
 
     /**
      * 每一部分向左的位移
      */
-    private final static long MACHINE_LEFT = SEQUENCE_BIT;
-    private final static long DATA_CENTER_LEFT = SEQUENCE_BIT + MACHINE_BIT;
-    private final static long TIMESTAMP_LEFT = DATA_CENTER_LEFT + DATA_CENTER_BIT;
+    private static final long MACHINE_LEFT = SEQUENCE_BIT;
 
+    private static final long DATA_CENTER_LEFT = SEQUENCE_BIT + MACHINE_BIT;
+    private static final long TIMESTAMP_LEFT = DATA_CENTER_LEFT + DATA_CENTER_BIT;
 
     /**
      * 数据中心
      */
-    private final static long DATACENTER_ID = 1;
+    private static final long DATACENTER_ID = 1;
     /**
      * 机器标识
      */
-    private final static long MACHINE_ID = 1;
+    private static final long MACHINE_ID = 1;
     /**
      * 序列号
      */
-
     private static long sequence = 0L;
     /**
      * 上一次时间戳
      */
-
     private static long lastStamp = -1L;
-
 
     /**
      * 产生下一个ID
@@ -107,7 +103,6 @@ public class UniqueIdUtils {
     private static long getNewStamp() {
         return System.currentTimeMillis();
     }
-
 
     public static void main(String[] args) {
         long id = UniqueIdUtils.nextId();

@@ -1,5 +1,6 @@
 package com.example.gamedemo.common.utils;
 
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.server.common.MsgPacket;
 
@@ -20,7 +21,7 @@ public class DecoderUtils {
      */
     public static MsgPacket transformMsg2MsgPacket(String msg) {
 
-        Class classByCmd = ControllerManager.getClassByCmd(msg.split(" ")[0]);
+        Class classByCmd = ControllerManager.getClassByCmd(msg.split(SystemConstant.SPLIT_TOKEN)[0]);
 
         Object packet = null;
         MsgPacket msgPacket = new MsgPacket();
@@ -30,7 +31,7 @@ public class DecoderUtils {
 
             Field[] declaredFields = classByCmd.getDeclaredFields();
 
-            String[] msgs = msg.split(" ");
+            String[] msgs = msg.split(SystemConstant.SPLIT_TOKEN);
             msgPacket.setCmd(msgs[0]);
             for (int i = 0; i < declaredFields.length; i++) {
                 declaredFields[i].setAccessible(true);
@@ -38,20 +39,15 @@ public class DecoderUtils {
                 String value = msgs[i + 1];
                 if (String.class == fieldType) {
                     declaredFields[i].set(packet, String.valueOf(value));
-                } else if ((Integer.TYPE == fieldType)
-                        || (Integer.class == fieldType)) {
+                } else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
                     declaredFields[i].set(packet, Integer.valueOf(value));
-                } else if ((Long.TYPE == fieldType)
-                        || (Long.class == fieldType)) {
+                } else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
                     declaredFields[i].set(packet, Long.valueOf(value));
-                } else if ((Float.TYPE == fieldType)
-                        || (Float.class == fieldType)) {
+                } else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
                     declaredFields[i].set(packet, Float.valueOf(value));
-                } else if ((Short.TYPE == fieldType)
-                        || (Short.class == fieldType)) {
+                } else if ((Short.TYPE == fieldType) || (Short.class == fieldType)) {
                     declaredFields[i].set(packet, Short.valueOf(value));
-                } else if ((Double.TYPE == fieldType)
-                        || (Double.class == fieldType)) {
+                } else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
                     declaredFields[i].set(packet, Double.valueOf(value));
                 } else if (Character.TYPE == fieldType) {
                     if (value.length() > 0) {
@@ -67,5 +63,4 @@ public class DecoderUtils {
         }
         return msgPacket;
     }
-
 }

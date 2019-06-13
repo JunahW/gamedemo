@@ -1,6 +1,5 @@
 package com.example.gamedemo.server.game.equip.entity;
 
-
 import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
@@ -34,7 +33,6 @@ public class EquipStorageEnt implements Entity<String> {
     @Transient
     private EquipStorage equipStorage;
 
-
     @Override
     public String getId() {
         return this.playerId;
@@ -53,7 +51,8 @@ public class EquipStorageEnt implements Entity<String> {
 
     @Override
     public boolean deSerialize() {
-        this.setEquipStorage(JsonUtils.deSerializeEntity(this.getEquipStorageData(), EquipStorage.class));
+        this.setEquipStorage(
+                JsonUtils.deSerializeEntity(this.getEquipStorageData(), EquipStorage.class));
         return true;
     }
 

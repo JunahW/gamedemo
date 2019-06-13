@@ -1,6 +1,5 @@
 package com.example.gamedemo.server.game.player.controller;
 
-
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.anno.ReceiverHandler;
@@ -30,147 +29,148 @@ import java.util.concurrent.ConcurrentMap;
 @HandlerClass
 public class PlayerController {
 
-    /**
-     * 通过id获取账户信息
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "getPlayer")
-    public void getPlayerById(TSession session, CM_GetPlayer req) {
-        //获取当前的账户信息
-        Player player = session.getPlayer();
-        String returnMsg = null;
-        if (player == null) {
-            returnMsg = "未选择角色\r\n";
-        } else {
-            returnMsg = player.toString() + "\r\n";
-        }
-
-        SessionManager.sendMessage(session, returnMsg);
+  /**
+   * 通过id获取账户信息
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "getPlayer")
+  public void getPlayerById(TSession session, CM_GetPlayer req) {
+    // 获取当前的账户信息
+    Player player = session.getPlayer();
+    String returnMsg = null;
+    if (player == null) {
+      returnMsg = "未选择角色\r\n";
+    } else {
+      returnMsg = player.toString() + "\r\n";
     }
 
-    /**
-     * 创建用户
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "createPlayer")
-    public void createPlayer(TSession session, CM_CreatePlayer req) {
-        Account account = session.getAccount();
-        Player player = new Player();
-        player.setPlayerId(req.getPlayerId());
-        player.setPlayerType(req.getPlayerType());
-        player.setAccountId(account.getAccountId());
-        int isSuccess = 0;
-        try {
-            isSuccess = SpringContext.getPlayerService().createPlayer(player);
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
-        if (isSuccess == 1) {
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色成功"));
-        }
+    SessionManager.sendMessage(session, returnMsg);
+  }
 
+  /**
+   * 创建用户
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "createPlayer")
+  public void createPlayer(TSession session, CM_CreatePlayer req) {
+    Account account = session.getAccount();
+    Player player = new Player();
+    player.setPlayerId(req.getPlayerId());
+    player.setPlayerType(req.getPlayerType());
+    player.setAccountId(account.getAccountId());
+    int isSuccess = 0;
+    try {
+      isSuccess = SpringContext.getPlayerService().createPlayer(player);
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     }
-
-    /**
-     * 选择角色
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "selectPlayer")
-    public void selectPlayer(TSession session, CM_LoginAccount req) {
-        Account account = session.getAccount();
-        Player player = null;
-        try {
-            player = SpringContext.getPlayerService().selectPlayer(account.getAccountId(), req.getPlayerId());
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
-        if (player != null) {
-            SessionManager.registerPlayer(session, player);
-            SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("选择玩家完成"));
-        }
-
+    if (isSuccess == 1) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色成功"));
     }
+  }
 
-    /**
-     * 获取当前位置
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "where")
-    public void getWhere(TSession session, CM_Location req) {
-        Player player = session.getPlayer();
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(player.getSceneResource().getSceneName())
-                .append("坐标(")
-                .append(player.getX())
-                .append(",")
-                .append(player.getY())
-                .append(")\r\n");
-        SessionManager.sendMessage(session, stringBuilder.toString());
+  /**
+   * 选择角色
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "selectPlayer")
+  public void selectPlayer(TSession session, CM_LoginAccount req) {
+    Account account = session.getAccount();
+    Player player = null;
+    try {
+      player =
+          SpringContext.getPlayerService().selectPlayer(account.getAccountId(), req.getPlayerId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     }
-
-    /**
-     * 玩家移动到指定坐标
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "moveto")
-    public void move2Coordinate(TSession session, CM_MovePosition req) {
-        Player player = session.getPlayer();
-        boolean isSuccess = SpringContext.getPlayerService().move2Coordinate(player, req.getX(), req.getY());
-        if (isSuccess) {
-            SessionManager.sendMessage(session, "移动成功\r\n");
-        } else {
-            SessionManager.sendMessage(session, "移动失败\r\n");
-        }
+    if (player != null) {
+      SessionManager.registerPlayer(session, player);
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("选择玩家完成"));
     }
+  }
 
-    /**
-     * 查看玩家属性
-     *
-     * @param session
-     * @param req
-     */
-    @HandlerMethod(cmd = "playerAttr")
-    public void getPlayerAttributeByPlayerId(TSession session, CM_PlayerAttr req) {
-        Player player = session.getPlayer();
-        ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = null;
-        try {
-            attributeMap = (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));
-        } catch (RequestException e) {
-            SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-        }
-        SessionManager.sendMessage(session, SM_PlayerAttrs.valueOf(attributeMap));
+  /**
+   * 获取当前位置
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "where")
+  public void getWhere(TSession session, CM_Location req) {
+    Player player = session.getPlayer();
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder
+        .append(player.getSceneResource().getSceneName())
+        .append("坐标(")
+        .append(player.getX())
+        .append(",")
+        .append(player.getY())
+        .append(")\r\n");
+    SessionManager.sendMessage(session, stringBuilder.toString());
+  }
+
+  /**
+   * 玩家移动到指定坐标
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "moveto")
+  public void move2Coordinate(TSession session, CM_MovePosition req) {
+    Player player = session.getPlayer();
+    boolean isSuccess =
+        SpringContext.getPlayerService().move2Coordinate(player, req.getX(), req.getY());
+    if (isSuccess) {
+      SessionManager.sendMessage(session, "移动成功\r\n");
+    } else {
+      SessionManager.sendMessage(session, "移动失败\r\n");
     }
+  }
 
-    /**
-     * 处理用户加载事件
-     *
-     * @param event
-     */
-    @ReceiverHandler
-    public void handlerPlayerLoad(PlayerLoadEvent event) {
-        SpringContext.getPlayerService().computePlayerBaseAttributes(event);
+  /**
+   * 查看玩家属性
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "playerAttr")
+  public void getPlayerAttributeByPlayerId(TSession session, CM_PlayerAttr req) {
+    Player player = session.getPlayer();
+    ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = null;
+    try {
+      attributeMap =
+          (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     }
+    SessionManager.sendMessage(session, SM_PlayerAttrs.valueOf(attributeMap));
+  }
 
-    /**
-     * 测试触发事件
-     *
-     * @param session
-     * @param rep
-     */
-    @HandlerMethod(cmd = "event")
-    public void triggerEvent(TSession session, CM_TestEvent rep) {
-        EventBusManager.submitEvent(new PlayerLoadEvent(session.getPlayer()));
-        System.out.println("触发了事件");
-    }
+  /**
+   * 处理用户加载事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handlerPlayerLoad(PlayerLoadEvent event) {
+    SpringContext.getPlayerService().computePlayerBaseAttributes(event);
+  }
 
+  /**
+   * 测试触发事件
+   *
+   * @param session
+   * @param rep
+   */
+  @HandlerMethod(cmd = "event")
+  public void triggerEvent(TSession session, CM_TestEvent rep) {
+    EventBusManager.submitEvent(new PlayerLoadEvent(session.getPlayer()));
+    System.out.println("触发了事件");
+  }
 }

@@ -6,17 +6,14 @@ package com.example.gamedemo.server.game.scene.packet;
  * @date 2019/5/27
  */
 public class CM_GotoScene {
-    /**
-     * 场景id
-     */
-    private String sceneId;
+  /** 场景id */
+  private String sceneId;
 
+  public String getSceneId() {
+    return sceneId;
+  }
 
-    public String getSceneId() {
-        return sceneId;
-    }
-
-    public void setSceneId(String sceneId) {
-        this.sceneId = sceneId;
-    }
+  public void setSceneId(String sceneId) {
+    this.sceneId = sceneId;
+  }
 }

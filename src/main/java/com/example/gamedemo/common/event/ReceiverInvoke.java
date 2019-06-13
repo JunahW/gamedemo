@@ -34,9 +34,7 @@ public class ReceiverInvoke {
     public void invoke(Event event) {
         ReflectionUtils.makeAccessible(method);
         ReflectionUtils.invokeMethod(method, bean, event);
-
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -47,8 +45,7 @@ public class ReceiverInvoke {
             return false;
         }
         ReceiverInvoke that = (ReceiverInvoke) o;
-        return Objects.equals(bean, that.bean) &&
-                Objects.equals(method, that.method);
+        return Objects.equals(bean, that.bean) && Objects.equals(method, that.method);
     }
 
     @Override

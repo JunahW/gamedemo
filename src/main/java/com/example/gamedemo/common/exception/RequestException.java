@@ -36,6 +36,5 @@ public class RequestException extends RuntimeException {
     public static void throwException(int i18nId) {
         RequestException requestException = new RequestException(i18nId);
         throw requestException;
-
     }
 }

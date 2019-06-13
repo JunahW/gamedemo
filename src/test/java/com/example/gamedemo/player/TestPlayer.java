@@ -1,7 +1,6 @@
 package com.example.gamedemo.player;
 
 import com.example.gamedemo.common.resource.ResourceManager;
-import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
 import com.example.gamedemo.server.game.player.service.PlayerManager;
@@ -22,22 +21,19 @@ import java.util.concurrent.ConcurrentMap;
 @SpringBootTest
 public class TestPlayer {
 
-    @Autowired
-    private PlayerManager playerManager;
+  @Autowired private PlayerManager playerManager;
 
+  @Test
+  public void testPlayerResource() {
+    ResourceManager.initResource();
+    ConcurrentMap<String, PlayerResource> itemResource =
+        ResourceManager.getResourceMap(PlayerResource.class);
+    System.out.println(itemResource);
+  }
 
-    @Test
-    public void testPlayerResource() {
-        SystemInitializer.initResource();
-        ConcurrentMap<String, PlayerResource> itemResource = ResourceManager.getResourceMap(PlayerResource.class);
-        System.out.println(itemResource);
-    }
-
-    @Test
-    public void testGetPlayer() {
-        PlayerEnt playerEntByPlayerId = playerManager.getPlayerEntByPlayerId("p1001");
-        System.out.println(playerEntByPlayerId.getPlayer());
-
-    }
-
+  @Test
+  public void testGetPlayer() {
+    PlayerEnt playerEntByPlayerId = playerManager.getPlayerEntByPlayerId("p1001");
+    System.out.println(playerEntByPlayerId.getPlayer());
+  }
 }

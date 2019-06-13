@@ -1,7 +1,8 @@
 package com.example.gamedemo;
 
+import com.example.gamedemo.common.dispatcher.ControllerManager;
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.server.MyServer;
-import com.example.gamedemo.server.SystemInitializer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -15,15 +16,14 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 @EntityScan("com.example.gamedemo.server.game")
 public class GamedemoApplication {
 
-    public static void main(String[] args) {
+  public static void main(String[] args) {
 
-        SpringApplication.run(GamedemoApplication.class, args);
-        //初始化
-        // SystemInitializer.initResource();
-        SystemInitializer.initControllerMap();
-        SystemInitializer.initEventReceiverInvokeMap();
+    SpringApplication.run(GamedemoApplication.class, args);
+    // 初始化
+    // SystemInitializer.initResource();
+    ControllerManager.initControllerMap();
+    EventBusManager.initEventReceiverInvokeMap();
 
-        new MyServer().start(args);
-    }
-
+    new MyServer().start(args);
+  }
 }

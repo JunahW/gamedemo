@@ -15,5 +15,4 @@ public class DbConfig {
     public HibernateJpaSessionFactoryBean sessionFactory() {
         return new HibernateJpaSessionFactoryBean();
     }
-
 }

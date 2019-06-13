@@ -5,6 +5,4 @@ package com.example.gamedemo.server.game.scene.service;
  * @date: 2019/4/29
  * @description:
  */
-public class SceneManager {
-
-}
+public class SceneManager {}

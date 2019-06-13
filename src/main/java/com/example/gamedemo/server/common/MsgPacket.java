@@ -16,7 +16,6 @@ public class MsgPacket {
      */
     private Object msg;
 
-
     public String getCmd() {
         return cmd;
     }
@@ -24,7 +23,6 @@ public class MsgPacket {
     public Object getMsg() {
         return msg;
     }
-
 
     public void setCmd(String cmd) {
         this.cmd = cmd;
@@ -36,9 +34,6 @@ public class MsgPacket {
 
     @Override
     public String toString() {
-        return "MsgPacket{" +
-                ", cmd='" + cmd + '\'' +
-                ", msg=" + msg +
-                '}';
+        return "MsgPacket{" + ", cmd='" + cmd + '\'' + ", msg=" + msg + '}';
     }
 }

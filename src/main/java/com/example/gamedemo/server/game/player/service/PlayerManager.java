@@ -21,75 +21,72 @@ import java.util.concurrent.ConcurrentMap;
 @Component
 public class PlayerManager {
 
-    private ConcurrentMap<String, PlayerResource> playerResource = ResourceManager.getResourceMap(PlayerResource.class);
+  private ConcurrentMap<String, PlayerResource> playerResource =
+      ResourceManager.getResourceMap(PlayerResource.class);
 
-    private ConcurrentMap<String, BaseAttributeResource> baseAttributeResource = ResourceManager.getResourceMap(BaseAttributeResource.class);
+  private ConcurrentMap<String, BaseAttributeResource> baseAttributeResource =
+      ResourceManager.getResourceMap(BaseAttributeResource.class);
 
-    private ConcurrentMap<String, SceneResource> sceneResource = ResourceManager.getResourceMap(SceneResource.class);
+  private ConcurrentMap<String, SceneResource> sceneResource =
+      ResourceManager.getResourceMap(SceneResource.class);
 
+  @Autowired private Accessor accessor;
 
-    @Autowired
-    private Accessor accessor;
+  private EntityCacheServiceImpl<String, PlayerEnt> entityCacheService =
+      new EntityCacheServiceImpl<>();
 
-    private EntityCacheServiceImpl<String, PlayerEnt> entityCacheService = new EntityCacheServiceImpl<>();
+  @PostConstruct
+  public void init() {
+    entityCacheService.setClazz(PlayerEnt.class);
+    entityCacheService.setAccessor(accessor);
+  }
 
+  /**
+   * 获取玩家配置信息
+   *
+   * @param modeId
+   * @return
+   */
+  public PlayerResource getPlayerResourceById(int modeId) {
+    return playerResource.get(modeId);
+  }
 
-    @PostConstruct
-    public void init() {
-        entityCacheService.setClazz(PlayerEnt.class);
-        entityCacheService.setAccessor(accessor);
-    }
+  /**
+   * 获取玩家的基础属性
+   *
+   * @param playerType
+   * @return
+   */
+  public BaseAttributeResource getAttributeResourceByPlayerType(int playerType) {
+    return baseAttributeResource.get(playerType);
+  }
 
-    /**
-     * 获取玩家配置信息
-     *
-     * @param modeId
-     * @return
-     */
-    public PlayerResource getPlayerResourceById(int modeId) {
-        return playerResource.get(modeId);
-    }
+  /**
+   * 通过id获取场景
+   *
+   * @param sceneId
+   * @return
+   */
+  public SceneResource getSceneResourceById(String sceneId) {
+    return sceneResource.get(sceneId);
+  }
 
+  /**
+   * 获取玩家信息
+   *
+   * @param playerId
+   * @return
+   */
+  public PlayerEnt getPlayerEntByPlayerId(String playerId) {
+    return entityCacheService.load(playerId);
+  }
 
-    /**
-     * 获取玩家的基础属性
-     *
-     * @param playerType
-     * @return
-     */
-    public BaseAttributeResource getAttributeResourceByPlayerType(int playerType) {
-        return baseAttributeResource.get(playerType);
-    }
-
-    /**
-     * 通过id获取场景
-     *
-     * @param sceneId
-     * @return
-     */
-    public SceneResource getSceneResourceById(String sceneId) {
-        return sceneResource.get(sceneId);
-    }
-
-
-    /**
-     * 获取玩家信息
-     *
-     * @param playerId
-     * @return
-     */
-    public PlayerEnt getPlayerEntByPlayerId(String playerId) {
-        return entityCacheService.load(playerId);
-    }
-
-    /**
-     * 保存玩家信息
-     *
-     * @param playerEnt
-     */
-    public void savePlayerEnt(PlayerEnt playerEnt) {
-        entityCacheService.writeBack(playerEnt.getPlayerId(), playerEnt);
-    }
-
-
+  /**
+   * 保存玩家信息
+   *
+   * @param playerEnt
+   */
+  public void savePlayerEnt(PlayerEnt playerEnt) {
+    entityCacheService.writeBack(playerEnt.getPlayerId(), playerEnt);
+  }
 }

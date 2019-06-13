@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.utils;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +15,8 @@ import java.util.List;
  */
 public class JsonUtils {
 
-    private static final ObjectMapper mapper = new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+    private static final ObjectMapper mapper =
+            new ObjectMapper().disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 
     /**
      * 序列化对象
@@ -59,7 +59,8 @@ public class JsonUtils {
      * @param typeReference
      * @return
      */
-    public static <T> List<T> getListByString(String jsonString, TypeReference<List<T>> typeReference) {
+    public static <T> List<T> getListByString(
+            String jsonString, TypeReference<List<T>> typeReference) {
         List<T> list = null;
         try {
             list = mapper.readValue(jsonString, typeReference);

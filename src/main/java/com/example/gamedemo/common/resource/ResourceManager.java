@@ -1,5 +1,13 @@
 package com.example.gamedemo.common.resource;
 
+import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.utils.ApplicationContextProvider;
+import com.example.gamedemo.common.utils.ExcelUtils;
+import org.springframework.context.ApplicationContext;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -54,4 +62,25 @@ public class ResourceManager {
         resourceMap.get(clazz).put(key, value);
     }
 
+    /**
+     * 初始化静态资源
+     */
+    public static void initResource() {
+        // logger.info("开始初始化静态资源");
+        ApplicationContext applicationContext = ApplicationContextProvider.getApplicationContext();
+        Map<String, Object> beansWithAnnotation =
+                applicationContext.getBeansWithAnnotation(Resource.class);
+        Set<Map.Entry<String, Object>> entries = beansWithAnnotation.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Class<?> aClass = entry.getValue().getClass();
+            List<?> list = ExcelUtils.importExcel((entry.getValue().getClass()));
+            for (Object object : list) {
+                ResourceInterface resourceItem = (ResourceInterface) object;
+                // 加载完成进行处理，如字符串装换成特殊格式的数据
+                resourceItem.postInit();
+                ResourceManager.putResourceItem(aClass, resourceItem.getId(), object);
+            }
+        }
+        // logger.info("完成初始化静态资源");
+    }
 }

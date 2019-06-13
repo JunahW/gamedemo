@@ -1,7 +1,6 @@
 package com.example.gamedemo.player;
 
 import com.example.gamedemo.common.resource.ResourceManager;
-import com.example.gamedemo.server.SystemInitializer;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +18,11 @@ import java.util.concurrent.ConcurrentMap;
 @SpringBootTest
 public class AttributeTest {
 
-    @Test
-    public void testAttributeResource() {
-        SystemInitializer.initResource();
-        ConcurrentMap<Object, BaseAttributeResource> resourceMap = ResourceManager.getResourceMap(BaseAttributeResource.class);
-        System.out.println(resourceMap);
-    }
-
+  @Test
+  public void testAttributeResource() {
+    ResourceManager.initResource();
+    ConcurrentMap<Object, BaseAttributeResource> resourceMap =
+        ResourceManager.getResourceMap(BaseAttributeResource.class);
+    System.out.println(resourceMap);
+  }
 }

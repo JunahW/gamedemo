@@ -25,7 +25,6 @@ public class AbstractItem extends GameObject implements Cloneable {
      */
     private int quantity;
 
-
     public int getItemResourceId() {
         return itemResourceId;
     }
@@ -37,7 +36,6 @@ public class AbstractItem extends GameObject implements Cloneable {
     public int getQuantity() {
         return quantity;
     }
-
 
     public void setItemResourceId(int itemResourceId) {
         this.itemResourceId = itemResourceId;
@@ -51,15 +49,20 @@ public class AbstractItem extends GameObject implements Cloneable {
         this.quantity = quantity;
     }
 
-
     @Override
     public String toString() {
-        return "AbstractItem{" +
-                "itemResourceId='" + itemResourceId + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", quantity=" + quantity +
-                ", id=" + super.getObjectId() +
-                '}';
+        return "AbstractItem{"
+                + "itemResourceId='"
+                + itemResourceId
+                + '\''
+                + ", itemName='"
+                + itemName
+                + '\''
+                + ", quantity="
+                + quantity
+                + ", id="
+                + super.getObjectId()
+                + '}';
     }
 
     @Override

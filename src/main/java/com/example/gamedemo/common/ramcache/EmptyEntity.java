@@ -15,7 +15,6 @@ public class EmptyEntity<PK extends Serializable & Comparable<PK>> implements En
 
     @Override
     public void setNullId() {
-
     }
 
     @Override

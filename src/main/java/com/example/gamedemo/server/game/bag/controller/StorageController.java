@@ -45,7 +45,6 @@ public class StorageController {
         }
     }
 
-
     /**
      * 使用道具
      *
@@ -65,7 +64,6 @@ public class StorageController {
         if (useItem) {
             SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用成功"));
         }
-
     }
 
     /**
@@ -128,7 +126,6 @@ public class StorageController {
     @HandlerMethod(cmd = "removeItem")
     public void removeItem(TSession session, CM_RemoveItem req) {
         Player player = session.getPlayer();
-
     }
 
     /**
@@ -142,7 +139,5 @@ public class StorageController {
         Player player = session.getPlayer();
         int bagNum = itemService.checkBag(player);
         SessionManager.sendMessage(session, SM_GetBagCapacity.valueOf(bagNum));
-
     }
-
 }

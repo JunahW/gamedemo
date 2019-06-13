@@ -5,5 +5,4 @@ package com.example.gamedemo.server.game.player.packet;
  * @description：获取玩家信息请求
  * @date 2019/5/27
  */
-public class CM_GetPlayer {
-}
+public class CM_GetPlayer {}

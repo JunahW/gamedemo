@@ -6,7 +6,6 @@ import io.netty.channel.Channel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * @author wengj
  * @description 游戏会话
@@ -20,9 +19,7 @@ public class TSession {
      */
     private final Channel channel;
     /**
-     * 用户信息
-     * 用户信息可能为空。
-     * 只有在register(登录)之后，里面才会赋值
+     * 用户信息 用户信息可能为空。 只有在register(登录)之后，里面才会赋值
      */
     private Player player;
 
@@ -43,10 +40,8 @@ public class TSession {
      * @param player 玩家信息
      */
     void registerPlayer(Player player) {
-        /**
-         * 将accounid放入player
-         */
-        //player.setAccountId(account.getAccountId());
+        /** 将accounid放入player */
+        // player.setAccountId(account.getAccountId());
         this.player = player;
     }
 
@@ -73,7 +68,6 @@ public class TSession {
         } catch (InterruptedException e) {
             logger.error("channel.close find error ", e);
         }
-
     }
 
     public Player getPlayer() {

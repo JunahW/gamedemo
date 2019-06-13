@@ -23,7 +23,6 @@ public class ItemStorage {
      */
     private AbstractItem[] abstractItems = new AbstractItem[50];
 
-
     public Integer getSize() {
         return size;
     }
@@ -32,7 +31,6 @@ public class ItemStorage {
         this.abstractItems = abstractItems;
     }
 
-
     public void setSize(Integer size) {
         this.size = size;
     }
@@ -40,7 +38,6 @@ public class ItemStorage {
     public AbstractItem[] getAbstractItems() {
         return abstractItems;
     }
-
 
     /**
      * 通过guid获取道具
@@ -55,7 +52,6 @@ public class ItemStorage {
                     return abstractItems[i];
                 }
             }
-
         }
         return null;
     }
@@ -95,7 +91,7 @@ public class ItemStorage {
      * @param quantity
      */
     public boolean reduceStorageItemByItemResourceId(int itemResourceId, int quantity) {
-        //检查数量是否够消耗
+        // 检查数量是否够消耗
         int storageQuantity = 0;
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
@@ -111,7 +107,7 @@ public class ItemStorage {
         if (storageQuantity < quantity) {
             return false;
         }
-        //消耗道具
+        // 消耗道具
         for (int i = 0; i < abstractItems.length; i++) {
             if (abstractItems[i] != null) {
                 if (abstractItems[i].getItemResourceId() == itemResourceId) {
@@ -136,16 +132,17 @@ public class ItemStorage {
      */
     public boolean addStorageItem(AbstractItem item) {
         int itemResourceId = item.getItemResourceId();
-        ItemResource itemResource = SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
+        ItemResource itemResource =
+                SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
         boolean exist = isExist(item);
-        //物品存在
+        // 物品存在
         if (exist) {
             for (AbstractItem abstractItem : abstractItems) {
                 if (abstractItem != null) {
-                    //可堆叠
-                    //已经存在
+                    // 可堆叠
+                    // 已经存在
                     if (item.getItemResourceId() == abstractItem.getItemResourceId()) {
-                        //判断是否超过堆叠上限
+                        // 判断是否超过堆叠上限
                         if (abstractItem.getQuantity() + item.getQuantity() <= itemResource.getOverLimit()) {
                             abstractItem.setQuantity(abstractItem.getQuantity() + item.getQuantity());
                             item.setQuantity(0);
@@ -157,12 +154,11 @@ public class ItemStorage {
                             abstractItem.setQuantity(abstractItem.getQuantity() + add);
                             item.setQuantity(rest);
                         }
-
                     }
                 }
             }
         }
-        //不可堆叠 堆叠达到上限 或者道具不存在
+        // 不可堆叠 堆叠达到上限 或者道具不存在
         if (!exist || item.getQuantity() > 0) {
             for (int i = 0; i < abstractItems.length; i++) {
                 if (abstractItems[i] == null) {
@@ -170,7 +166,7 @@ public class ItemStorage {
                         abstractItems[i] = item;
                         break;
                     } else {
-                        //超过上限
+                        // 超过上限
                         AbstractItem cloneItem = null;
                         try {
                             cloneItem = (AbstractItem) item.clone();
@@ -185,7 +181,7 @@ public class ItemStorage {
                     }
                 }
                 if (i == abstractItems.length - 1 && item.getQuantity() > 0) {
-                    //格子已满
+                    // 格子已满
                     return false;
                 }
             }
@@ -195,10 +191,12 @@ public class ItemStorage {
 
     @Override
     public String toString() {
-        return "ItemStorage{" +
-                "size=" + size +
-                ", abstractItems=" + Arrays.toString(abstractItems) +
-                '}';
+        return "ItemStorage{"
+                + "size="
+                + size
+                + ", abstractItems="
+                + Arrays.toString(abstractItems)
+                + '}';
     }
 
     /**

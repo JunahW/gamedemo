@@ -28,7 +28,6 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private ItemManager itemManager;
 
-
     @Override
     public boolean addItem(Player player, int itemId) {
         ItemStorage pack = player.getPack();
@@ -38,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
         }
         boolean isAdd = pack.addStorageItem(abstractItem);
         if (isAdd) {
-            //保存入库
+            // 保存入库
             saveItemStorageEnt(player);
         }
         return isAdd;
@@ -55,29 +54,26 @@ public class ItemServiceImpl implements ItemService {
         if (commonItem.getQuantity() < quantity) {
             logger.info("道具数量不足");
             RequestException.throwException(I18nId.ITEM_QUANTITY_NO_ENOUGH);
-
         }
-        //减少道具
+        // 减少道具
         pack.reduceStorageItemByObjectId(guid, quantity);
         logger.info("[{}]玩家使用了道具[{}]", player.getPlayerName(), commonItem.getItemName());
 
-        //保存入库
+        // 保存入库
         saveItemStorageEnt(player);
 
-        //产生效果
+        // 产生效果
 
         return true;
     }
-
 
     @Override
     public boolean useItem(Player player, int itemResourceId, int quantity) {
         ItemStorage pack = player.getPack();
 
         boolean isUse = pack.reduceStorageItemByItemResourceId(itemResourceId, quantity);
-        //保存入库
+        // 保存入库
         saveItemStorageEnt(player);
-
 
         return isUse;
     }
@@ -127,7 +123,7 @@ public class ItemServiceImpl implements ItemService {
     private AbstractItem doCreateItem(ItemResource itemResource, int num) {
         int itemType = itemResource.getItemType();
         AbstractItem abstractItem = ItemType.create(itemType);
-        //唯一id
+        // 唯一id
         abstractItem.setObjectId(UniqueIdUtils.nextId());
         abstractItem.setItemName(itemResource.getName());
         abstractItem.setItemResourceId(itemResource.getItemId());
@@ -143,7 +139,7 @@ public class ItemServiceImpl implements ItemService {
         }
         ItemStorage pack = player.getPack();
         boolean isReduce = pack.reduceStorageItemByObjectId(item.getObjectId(), quanlity);
-        //保存入库
+        // 保存入库
         saveItemStorageEnt(player);
         return isReduce;
     }
