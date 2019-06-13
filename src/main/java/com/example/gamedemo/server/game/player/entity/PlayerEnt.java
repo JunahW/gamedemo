@@ -1,7 +1,6 @@
 package com.example.gamedemo.server.game.player.entity;
 
 import com.example.gamedemo.common.ramcache.Entity;
-import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.player.model.Player;
 
 import javax.persistence.Column;
@@ -34,8 +33,11 @@ public class PlayerEnt implements Entity<String> {
   /** y轴位置 */
   @Column private int y;
 
-  @Column(length = 10000)
-  private String sceneData;
+  /** */
+  @Column private int mapId;
+
+  /** 等级 */
+  @Column private int level;
 
   /** 场景 */
   @Transient private Player player;
@@ -109,12 +111,12 @@ public class PlayerEnt implements Entity<String> {
     this.y = y;
   }
 
-  public String getSceneData() {
-    return sceneData;
+  public int getMapId() {
+    return mapId;
   }
 
-  public void setSceneData(String sceneData) {
-    this.sceneData = sceneData;
+  public void setMapId(int mapId) {
+    this.mapId = mapId;
   }
 
   public Player getPlayer() {
@@ -123,6 +125,14 @@ public class PlayerEnt implements Entity<String> {
 
   public void setPlayer(Player player) {
     this.player = player;
+  }
+
+  public int getLevel() {
+    return level;
+  }
+
+  public void setLevel(int level) {
+    this.level = level;
   }
 
   @Override
@@ -137,28 +147,30 @@ public class PlayerEnt implements Entity<String> {
 
   @Override
   public boolean serialize() {
-    String sceneString = JsonUtils.serializeEntity(player.getSceneResource());
-    this.setSceneData(sceneString);
     this.setPlayerId(player.getPlayerId());
     this.setPlayerName(player.getPlayerName());
     this.setAccountId(player.getAccountId());
     this.setPlayerType(player.getPlayerType());
     this.setCombatIndex(player.getCombatIndex());
+    this.setX(player.getX());
+    this.setY(player.getY());
+    this.setMapId(player.getSceneId());
+    this.setLevel(player.getLevel());
     return true;
   }
 
   @Override
   public boolean deSerialize() {
-    // TODO 序列化有问题
-    // SceneResource sceneResource = JsonUtils.deSerializeEntity(getSceneData(),
-    // SceneResource.class);
     Player player = new Player();
-    // player.setSceneResource(sceneResource);
     player.setPlayerId(getPlayerId());
     player.setPlayerName(getPlayerName());
     player.setAccountId(getAccountId());
     player.setPlayerType(getPlayerType());
     player.setCombatIndex(getCombatIndex());
+    player.setX(getX());
+    player.setY(getY());
+    player.setSceneId(getMapId());
+    player.setLevel(getLevel());
     this.setPlayer(player);
     return true;
   }

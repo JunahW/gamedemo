@@ -6,7 +6,6 @@ import com.example.gamedemo.common.dispatcher.ControllerManager;
 import com.example.gamedemo.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.service.AccountService;
-import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import org.junit.Test;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,19 +54,6 @@ public class GamedemoApplicationTests {
         }
       }
     }
-  }
-
-  @Test
-  public void testObjectSize() {
-    LinkedList<Player> players = new LinkedList<>();
-    for (int i = 0; i < 1000; i++) {
-      Player player = new Player();
-      player.setPlayerId("54654546");
-      player.setPlayerName("5465465的店了解到");
-      player.setSceneResource(new SceneResource("555"));
-      players.add(player);
-    }
-    System.out.println();
   }
 
   @Test

@@ -1,13 +1,18 @@
 package com.example.gamedemo.server.game.scene.service;
 
+import com.example.gamedemo.common.constant.I18nId;
+import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * @author: wengj
@@ -18,43 +23,40 @@ import java.util.*;
 public class SceneServiceImpl implements SceneService {
   private static final Logger logger = LoggerFactory.getLogger(SceneServiceImpl.class);
 
+  @Autowired private SceneManager sceneManager;
+
   @Override
-  public List<SceneResource> getSceneList() {
-    LinkedList<SceneResource> list = new LinkedList<SceneResource>();
-    Set<Map.Entry<Object, SceneResource>> entries =
-        ResourceManager.getResourceMap(SceneResource.class).entrySet();
-    Iterator<Map.Entry<Object, SceneResource>> iterator = entries.iterator();
-    while (iterator.hasNext()) {
-      list.add(iterator.next().getValue());
-    }
-    return list;
+  public List<Scene> getSceneList() {
+    List<Scene> sceneList = sceneManager.getSceneList();
+    return sceneList;
   }
 
   @Override
-  public void gotoScene(Player player, SceneResource sceneResource) {
-    player.setSceneResource(sceneResource);
+  public void gotoScene(Player player, int sceneId) {
+    player.setSceneId(sceneId);
 
-    logger.info("{}进入{}", player.toString(), sceneResource.getSceneName());
+    logger.info("{}进入{}", player.getPlayerId(), sceneId);
     // sceneResource.getPlayerSet().add(player);
   }
 
   @Override
-  public SceneResource getSceneById(String sceneId) {
+  public SceneResource getSceneById(int sceneId) {
     return ResourceManager.getResourceItemById(SceneResource.class, sceneId);
   }
 
   @Override
-  public int move2Scene(Player player, SceneResource sceneResource) {
-    if (null == sceneResource) {
-      logger.info("该场景不存在");
-      return 0;
+  public boolean move2Scene(Player player, int sceneId) {
+    Scene scene = sceneManager.getSceneBysceneResourceId(sceneId);
+    if (scene == null) {
+      logger.info("场景[{}]不存在", sceneId);
+      RequestException.throwException(I18nId.SCENE_NO_EXIST);
     }
     // 当前的场景
-    SceneResource currentSceneResource =
-        ResourceManager.getResourceItemById(
-            SceneResource.class, player.getSceneResource().getSceneId());
+    Scene currentScene = sceneManager.getSceneBysceneResourceId(player.getSceneId());
+    int sceneResourceId = currentScene.getSceneResourceId();
+    SceneResource sceneResource = sceneManager.getSceneResourceById(sceneResourceId);
 
-    String[] neighbors = currentSceneResource.getNeighbors().split(",");
+    String[] neighbors = sceneResource.getNeighbors().split(SystemConstant.SPLIT_TOKEN_COMMA);
     // 判断场景是否相邻
     boolean isNeighbor = false;
     for (String neighbor : neighbors) {
@@ -65,18 +67,19 @@ public class SceneServiceImpl implements SceneService {
     }
     if (!isNeighbor) {
       logger.info("{}进入{}失败，只能进入相邻的场景", player.getPlayerName(), sceneResource.getSceneName());
-      return 0;
+      RequestException.throwException(I18nId.SCENE_NO_NEIGHBOR);
     }
 
     // 退出当前场景
-    // ResourceManager.getResourceItemById(SceneResource.class,
-    // currentSceneResource.getSceneId()).getPlayerSet().remove(player);
+    currentScene.leaveScene(player.getPlayerId());
     // 进入新的场景
-    player.setSceneResource(sceneResource);
+
+    Scene targetScene = sceneManager.getSceneBysceneResourceId(sceneId);
+    player.setSceneId(sceneId);
     player.setX(sceneResource.getX());
     player.setY(sceneResource.getY());
-    // sceneResource.getPlayerSet().add(player);
+    targetScene.enterScene(player);
     logger.info("{}进入{}", player.getPlayerName(), sceneResource.getSceneName());
-    return 1;
+    return true;
   }
 }

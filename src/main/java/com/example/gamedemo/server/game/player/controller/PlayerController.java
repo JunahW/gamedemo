@@ -108,7 +108,7 @@ public class PlayerController {
     Player player = session.getPlayer();
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder
-        .append(player.getSceneResource().getSceneName())
+        .append(player.getSceneId())
         .append("坐标(")
         .append(player.getX())
         .append(",")

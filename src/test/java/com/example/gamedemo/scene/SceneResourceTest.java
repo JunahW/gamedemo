@@ -1,5 +1,6 @@
 package com.example.gamedemo.scene;
 
+import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.common.utils.ExcelUtils;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.npc.resource.NpcResource;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -22,8 +24,9 @@ public class SceneResourceTest {
 
   @Test
   public void testSceneImportExcel() throws Exception {
-    List<SceneResource> sceneResources = ExcelUtils.importExcel(SceneResource.class);
-    System.out.println(sceneResources);
+    ConcurrentMap<Object, SceneResource> resourceMap =
+        ResourceManager.getResourceMap(SceneResource.class);
+    System.out.println(resourceMap);
   }
 
   @Test

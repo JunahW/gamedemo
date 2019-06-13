@@ -14,7 +14,6 @@ import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +54,7 @@ public class PlayerServiceImpl implements PlayerService {
         playerManager.getPlayerResourceById(player.getPlayerType()).getPlayerName());
     PlayerEnt playerEnt = new PlayerEnt();
     // 设置其实地址
-    player.setSceneResource(playerManager.getSceneResourceById(SystemConstant.DEFAULT_SCENE));
+    player.setSceneId(SystemConstant.DEFAULT_SCENE);
     playerEnt.setPlayer(player);
 
     playerEnt.serialize();
@@ -104,8 +103,9 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public boolean move2Coordinate(Player player, int x, int y) {
-    SceneResource sceneResource = player.getSceneResource();
-    int[][] sceneMap = sceneResource.getSceneMap();
+    int sceneId = player.getSceneId();
+    // TODO 移动位置
+    /*    int[][] sceneMap = sceneResource.getSceneMap();
     if (sceneResource.getWidth() - 1 < x || sceneResource.getHeight() - 1 < y) {
       logger.info("请求参数不合法");
       return false;
@@ -116,12 +116,14 @@ public class PlayerServiceImpl implements PlayerService {
       return false;
     }
 
+    */
     /** 移动位置 */
+    /*
     int currentx = player.getX();
     int currenty = player.getY();
     player.setX(x);
     player.setY(y);
-    logger.info("({},{})从移动到({},{})", currentx, currenty, x, y);
+    logger.info("({},{})从移动到({},{})", currentx, currenty, x, y);*/
     return true;
   }
 

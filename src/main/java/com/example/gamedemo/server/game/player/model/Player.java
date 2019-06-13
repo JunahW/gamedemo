@@ -6,7 +6,6 @@ import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -38,11 +37,14 @@ public class Player implements Serializable {
   /** y轴位置 */
   private int y;
 
+  /** 等级 */
+  private int level;
+
   /** 玩家属性容器 */
   private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
 
   /** 场景 */
-  private SceneResource sceneResource;
+  private int sceneId;
 
   public String getPlayerId() {
     return playerId;
@@ -68,12 +70,12 @@ public class Player implements Serializable {
     this.accountId = accountId;
   }
 
-  public SceneResource getSceneResource() {
-    return sceneResource;
+  public int getSceneId() {
+    return sceneId;
   }
 
-  public void setSceneResource(SceneResource sceneResource) {
-    this.sceneResource = sceneResource;
+  public void setSceneId(int sceneId) {
+    this.sceneId = sceneId;
   }
 
   public long getCombatIndex() {
@@ -116,6 +118,14 @@ public class Player implements Serializable {
     this.playerAttributeContainer = playerAttributeContainer;
   }
 
+  public int getLevel() {
+    return level;
+  }
+
+  public void setLevel(int level) {
+    this.level = level;
+  }
+
   /**
    * 获取背包
    *
@@ -151,10 +161,20 @@ public class Player implements Serializable {
         + ", accountId='"
         + accountId
         + '\''
+        + ", playerType="
+        + playerType
+        + ", combatIndex="
+        + combatIndex
         + ", x="
         + x
         + ", y="
         + y
+        + ", level="
+        + level
+        + ", playerAttributeContainer="
+        + playerAttributeContainer
+        + ", sceneId="
+        + sceneId
         + '}';
   }
 }

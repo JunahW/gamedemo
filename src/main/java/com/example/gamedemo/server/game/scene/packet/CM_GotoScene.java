@@ -7,13 +7,13 @@ package com.example.gamedemo.server.game.scene.packet;
  */
 public class CM_GotoScene {
   /** 场景id */
-  private String sceneId;
+  private int sceneId;
 
-  public String getSceneId() {
+  public int getSceneId() {
     return sceneId;
   }
 
-  public void setSceneId(String sceneId) {
+  public void setSceneId(int sceneId) {
     this.sceneId = sceneId;
   }
 }

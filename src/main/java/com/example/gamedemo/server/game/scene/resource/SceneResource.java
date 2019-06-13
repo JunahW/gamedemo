@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.scene.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,7 +19,7 @@ import java.util.Objects;
 public class SceneResource implements Serializable, ResourceInterface {
   /** 场景id */
   @ExcelColumn(columnName = "sceneId")
-  private String sceneId;
+  private int sceneId;
 
   /** 场景名称 */
   @ExcelColumn(columnName = "sceneName")
@@ -52,26 +53,30 @@ public class SceneResource implements Serializable, ResourceInterface {
   @ExcelColumn(columnName = "npcs")
   private String npcs;
 
+  private int[] npcArray;
+
   /** 怪物字符串集合，“,”隔开 */
   @ExcelColumn(columnName = "monsters")
   private String monsters;
 
+  private int[] monsterArray;
+
   public SceneResource() {}
 
-  public SceneResource(String sceneId) {
+  public SceneResource(int sceneId) {
     this.sceneId = sceneId;
   }
 
-  public SceneResource(String sceneId, String sceneName) {
+  public SceneResource(int sceneId, String sceneName) {
     this.sceneId = sceneId;
     this.sceneName = sceneName;
   }
 
-  public String getSceneId() {
+  public int getSceneId() {
     return sceneId;
   }
 
-  public void setSceneId(String sceneId) {
+  public void setSceneId(int sceneId) {
     this.sceneId = sceneId;
   }
 
@@ -147,6 +152,22 @@ public class SceneResource implements Serializable, ResourceInterface {
     this.sceneMap = sceneMap;
   }
 
+  public int[] getNpcArray() {
+    return npcArray;
+  }
+
+  public void setNpcArray(int[] npcArray) {
+    this.npcArray = npcArray;
+  }
+
+  public int[] getMonsterArray() {
+    return monsterArray;
+  }
+
+  public void setMonsterArray(int[] monsterArray) {
+    this.monsterArray = monsterArray;
+  }
+
   @Override
   public String toString() {
     return "Scene{"
@@ -202,5 +223,19 @@ public class SceneResource implements Serializable, ResourceInterface {
   }
 
   @Override
-  public void postInit() {}
+  public void postInit() {
+    String[] npcSplit = npcs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+    int[] npcTmp = new int[npcSplit.length];
+    for (int i = 0; i < npcSplit.length; i++) {
+      npcTmp[i] = Integer.parseInt(npcSplit[i]);
+    }
+    npcArray = npcTmp;
+
+    String[] monsterSplit = monsters.split(SystemConstant.SPLIT_TOKEN_COMMA);
+    int[] monsterTmp = new int[monsterSplit.length];
+    for (int i = 0; i < monsterSplit.length; i++) {
+      monsterTmp[i] = Integer.parseInt(monsterSplit[i]);
+    }
+    monsterArray = monsterTmp;
+  }
 }

@@ -69,4 +69,12 @@ public interface I18nId {
 
   /** 卡槽升级所需道具不足 */
   int SLOT_UP_ITEM_NO_ENOUGH = 50007;
+
+  /** ==========================场景相关=========================* */
+
+  /** 场景不存在 */
+  int SCENE_NO_EXIST = 60000;
+
+  /** 场景不相邻 */
+  int SCENE_NO_NEIGHBOR = 60001;
 }

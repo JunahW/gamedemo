@@ -11,11 +11,14 @@ public interface SystemConstant {
   String SPLIT_TOKEN = " ";
 
   /** 默认起始之地 */
-  String DEFAULT_SCENE = "s2001";
+  int DEFAULT_SCENE = 2001;
 
   /** 消息结束标记 */
   String MSG_END_TOKEN = "\r\n";
 
   /** 万分数的分母 */
   int TEN_THOUSAND = 10000;
+
+  /** 句号分割符 */
+  String SPLIT_TOKEN_COMMA = ",";
 }

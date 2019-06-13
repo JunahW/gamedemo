@@ -6,7 +6,6 @@ import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +25,6 @@ public class PlayerManager {
 
   private ConcurrentMap<String, BaseAttributeResource> baseAttributeResource =
       ResourceManager.getResourceMap(BaseAttributeResource.class);
-
-  private ConcurrentMap<String, SceneResource> sceneResource =
-      ResourceManager.getResourceMap(SceneResource.class);
 
   @Autowired private Accessor accessor;
 
@@ -59,16 +55,6 @@ public class PlayerManager {
    */
   public BaseAttributeResource getAttributeResourceByPlayerType(int playerType) {
     return baseAttributeResource.get(playerType);
-  }
-
-  /**
-   * 通过id获取场景
-   *
-   * @param sceneId
-   * @return
-   */
-  public SceneResource getSceneResourceById(String sceneId) {
-    return sceneResource.get(sceneId);
   }
 
   /**

@@ -28,5 +28,5 @@ CREATE TABLE `player` (
 -- ----------------------------
 -- Records of player
 -- ----------------------------
-INSERT INTO `player` VALUES ('a1007', '{\"acountId\":\"a1007\",\"acountName\":\"test07\",\"scene\":{\"playerSet\":[{\"$ref\":\"$\"}],\"neighbors\":\"s2002\",\"npcSet\":[],\"sceneId\":\"s2001\",\"sceneName\":\"区庄\"}}');
+INSERT INTO `player` VALUES ('a1007', '{\"acountId\":\"a1007\",\"acountName\":\"test07\",\"scene\":{\"playerSet\":[{\"$ref\":\"$\"}],\"neighbors\":\"s2002\",\"npcSet\":[],\"mapId\":\"s2001\",\"sceneName\":\"区庄\"}}');
 INSERT INTO `player` VALUES ('a1008', '{\"acountId\":\"a1008\",\"acountName\":\"test1008\"}');

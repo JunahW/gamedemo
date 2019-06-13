@@ -5,6 +5,7 @@ import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.packet.CM_AoiScene;
 import com.example.gamedemo.server.game.scene.packet.CM_GotoScene;
 import com.example.gamedemo.server.game.scene.packet.CM_ListScene;
@@ -34,11 +35,8 @@ public class SceneController {
    */
   @HandlerMethod(cmd = "list")
   public void getSceneList(TSession session, CM_ListScene req) {
-    List<SceneResource> sceneResourceList = sceneService.getSceneList();
-    for (SceneResource sceneResource : sceneResourceList) {
-      SessionManager.sendMessage(
-          session, sceneResource.getSceneName() + sceneResource.getSceneId() + "\r\n");
-    }
+    List<Scene> sceneList = sceneService.getSceneList();
+    SessionManager.sendMessage(session, sceneList);
   }
 
   /**
@@ -52,9 +50,9 @@ public class SceneController {
 
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    SceneResource sceneResource = sceneService.getSceneById(req.getSceneId());
-    sceneService.gotoScene(player, sceneResource);
-    String returnMsg = player.getPlayerName() + "进入" + sceneResource.getSceneName();
+
+    sceneService.gotoScene(player, req.getSceneId());
+    String returnMsg = player.getPlayerName() + "进入";
     SessionManager.sendMessage(session, returnMsg + "\r\n");
   }
 
@@ -67,21 +65,9 @@ public class SceneController {
    */
   @HandlerMethod(cmd = "move")
   public void move2Scene(TSession session, CM_MoveScene req) {
-    String returnMsg = null;
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    SceneResource sceneResource = sceneService.getSceneById(req.getSceneId());
-    if (null == sceneResource) {
-      SessionManager.sendMessage(session, "该场景不存在\r\n");
-      return;
-    }
-    int isSuccess = sceneService.move2Scene(player, sceneResource);
-    if (isSuccess == 0) {
-      returnMsg = player.getPlayerName() + "进入" + sceneResource.getSceneName() + "失败";
-    } else {
-      returnMsg = player.getPlayerName() + "进入" + sceneResource.getSceneName();
-    }
-    SessionManager.sendMessage(session, returnMsg + "\r\n");
+    boolean isSuccess = sceneService.move2Scene(player, req.getSceneId());
   }
 
   /**
@@ -95,7 +81,7 @@ public class SceneController {
   public void getSceneObject(TSession session, CM_AoiScene req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    SceneResource sceneResource = sceneService.getSceneById(player.getSceneResource().getSceneId());
+    SceneResource sceneResource = sceneService.getSceneById(player.getSceneId());
     SessionManager.sendMessage(session, sceneResource.toString() + "\r\n");
   }
 }
