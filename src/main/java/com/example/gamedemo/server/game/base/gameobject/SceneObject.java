@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -67,6 +69,13 @@ public abstract class SceneObject {
   public void removeSceneObject(long id) {
     sceneObjectMap.remove(id);
   }
+
+  /**
+   * 获取当前场景对象的类型
+   *
+   * @return
+   */
+  public abstract SceneObjectTypeEnum getSceneObjectType();
 
   @Override
   public String toString() {

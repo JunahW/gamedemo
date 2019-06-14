@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.monster.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 
 /**
@@ -33,7 +34,7 @@ public class MonsterResource implements ResourceInterface {
 
   /** 场景id */
   @ExcelColumn(columnName = "sceneId")
-  private String sceneId;
+  private int sceneId;
 
   /** 血量 */
   @ExcelColumn(columnName = "hp")
@@ -47,13 +48,33 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "attack")
   private int attack;
 
+  /** 攻击力 */
+  @ExcelColumn(columnName = "defense")
+  private int defense;
+
+  /** 掉落物 */
+  @ExcelColumn(columnName = "dropObject")
+  private String dropObject;
+
+  /** 掉落物集合 */
+  private int[] dropObjectArray;
+
   @Override
   public Object getId() {
     return this.monsterId;
   }
 
   @Override
-  public void postInit() {}
+  public void postInit() {
+    if (dropObject != null) {
+      String[] dropObjectSplit = this.dropObject.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] dropObjectTmp = new int[dropObjectSplit.length];
+      for (int i = 0; i < dropObjectSplit.length; i++) {
+        dropObjectTmp[i] = Integer.parseInt(dropObjectSplit[i]);
+      }
+      dropObjectArray = dropObjectTmp;
+    }
+  }
 
   public int getMonsterId() {
     return monsterId;
@@ -95,11 +116,11 @@ public class MonsterResource implements ResourceInterface {
     this.y = y;
   }
 
-  public String getSceneId() {
+  public int getSceneId() {
     return sceneId;
   }
 
-  public void setSceneId(String sceneId) {
+  public void setSceneId(int sceneId) {
     this.sceneId = sceneId;
   }
 
@@ -125,5 +146,29 @@ public class MonsterResource implements ResourceInterface {
 
   public void setAttack(int attack) {
     this.attack = attack;
+  }
+
+  public int getDefense() {
+    return defense;
+  }
+
+  public void setDefense(int defense) {
+    this.defense = defense;
+  }
+
+  public String getDropObject() {
+    return dropObject;
+  }
+
+  public void setDropObject(String dropObject) {
+    this.dropObject = dropObject;
+  }
+
+  public int[] getDropObjectArray() {
+    return dropObjectArray;
+  }
+
+  public void setDropObjectArray(int[] dropObjectArray) {
+    this.dropObjectArray = dropObjectArray;
   }
 }

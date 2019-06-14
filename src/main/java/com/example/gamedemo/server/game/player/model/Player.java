@@ -4,6 +4,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
@@ -116,6 +117,11 @@ public class Player extends SceneObject implements Serializable {
     EquipStorageEnt equipStorageEnt =
         SpringContext.getEquipmentService().getEquipStorageEnt(super.getId());
     return equipStorageEnt.getEquipStorage();
+  }
+
+  @Override
+  public SceneObjectTypeEnum getSceneObjectType() {
+    return SceneObjectTypeEnum.PLAYER;
   }
 
   @Override
