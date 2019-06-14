@@ -17,9 +17,6 @@ public class GamedemoApplication {
   public static void main(String[] args) {
 
     SpringApplication.run(GamedemoApplication.class, args);
-    // 初始化
-    // SystemInitializer.initResource();
-
     new MyServer().start(args);
   }
 }

@@ -1,6 +1,7 @@
 package com.example.gamedemo.common.dispatcher;
 
-import com.example.gamedemo.common.executer.CommonExecutor;
+import com.example.gamedemo.common.executer.common.CommonExecutor;
+import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.game.account.model.Account;
 import org.springframework.util.ReflectionUtils;
@@ -60,10 +61,20 @@ public class InvokeMethod {
               ReflectionUtils.invokeMethod(method, object, session, packet);
             }
           });
-    } else {
+    } else if (session.getPlayer() == null) {
       String accountId = account.getAccountId();
       int index = CommonExecutor.modeIndex(accountId);
       CommonExecutor.COMMON_SERVICE[index].submit(
+          new Runnable() {
+            @Override
+            public void run() {
+              ReflectionUtils.invokeMethod(method, object, session, packet);
+            }
+          });
+    } else {
+      int sceneId = session.getPlayer().getSceneId();
+      int modeIndex = SceneExecutor.modeIndex(sceneId);
+      SceneExecutor.SCENE_SERVICE[modeIndex].submit(
           new Runnable() {
             @Override
             public void run() {

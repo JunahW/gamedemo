@@ -1,4 +1,4 @@
-package com.example.gamedemo.common.executer;
+package com.example.gamedemo.common.executer.common;
 
 import com.example.gamedemo.common.executer.account.AccountExecutor;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;

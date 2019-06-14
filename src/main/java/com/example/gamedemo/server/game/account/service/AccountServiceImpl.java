@@ -42,9 +42,10 @@ public class AccountServiceImpl implements AccountService {
     if (accountEnt != null) {
       accountEnt.deSerialize();
       Account account = accountEnt.getAccount();
+      logger.info("[{}]登陆成功", accountId);
       return account;
     } else {
-      logger.info("账户不存在");
+      logger.info("[{}]账户不存在", accountId);
       RequestException.throwException(I18nId.ACCOUNT_NO_EXIST);
     }
     return null;
