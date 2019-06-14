@@ -29,6 +29,9 @@ public class SceneResource implements Serializable, ResourceInterface {
   @ExcelColumn(columnName = "neighbors")
   private String neighbors;
 
+  /** 相邻场景 */
+  private int[] neighborArray;
+
   /** 地图的宽 */
   @ExcelColumn(columnName = "width")
   private int width;
@@ -168,6 +171,14 @@ public class SceneResource implements Serializable, ResourceInterface {
     this.monsterArray = monsterArray;
   }
 
+  public int[] getNeighborArray() {
+    return neighborArray;
+  }
+
+  public void setNeighborArray(int[] neighborArray) {
+    this.neighborArray = neighborArray;
+  }
+
   @Override
   public String toString() {
     return "Scene{"
@@ -237,5 +248,12 @@ public class SceneResource implements Serializable, ResourceInterface {
       monsterTmp[i] = Integer.parseInt(monsterSplit[i]);
     }
     monsterArray = monsterTmp;
+
+    String[] neighborSplit = neighbors.split(SystemConstant.SPLIT_TOKEN_COMMA);
+    int[] neighborTmp = new int[neighborSplit.length];
+    for (int i = 0; i < neighborSplit.length; i++) {
+      neighborTmp[i] = Integer.parseInt(neighborSplit[i]);
+    }
+    neighborArray = neighborTmp;
   }
 }

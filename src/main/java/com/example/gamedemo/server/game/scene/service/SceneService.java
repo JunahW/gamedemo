@@ -23,9 +23,10 @@ public interface SceneService {
    * 进入场景
    *
    * @param player
-   * @param sceneResource
+   * @param sceneId
+   * @return
    */
-  void gotoScene(Player player, int sceneResource);
+  boolean gotoScene(Player player, int sceneId);
 
   /**
    * 通过ID获取场景
@@ -33,7 +34,7 @@ public interface SceneService {
    * @param sceneId
    * @return
    */
-  SceneResource getSceneById(int sceneId);
+  Scene getSceneById(int sceneId);
 
   /**
    * 去其他的相邻场景
@@ -43,4 +44,12 @@ public interface SceneService {
    * @return
    */
   boolean move2Scene(Player player, int sceneId);
+
+  /**
+   * 通过id获取配置信息
+   *
+   * @param sceneId
+   * @return
+   */
+  SceneResource getSceneResourceById(int sceneId);
 }

@@ -62,7 +62,7 @@ public class PlayerController {
     player.setId(req.getPlayerId());
     player.setPlayerType(req.getPlayerType());
     player.setAccountId(account.getAccountId());
-    int isSuccess = 0;
+    boolean isSuccess = false;
     try {
       isSuccess = SpringContext.getPlayerService().createPlayer(player);
     } catch (RequestException e) {
@@ -70,8 +70,10 @@ public class PlayerController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    if (isSuccess == 1) {
+    if (isSuccess) {
       SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色成功"));
+    } else {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色失败"));
     }
   }
 
@@ -108,33 +110,8 @@ public class PlayerController {
   @HandlerMethod(cmd = "where")
   public void getWhere(TSession session, CM_Location req) {
     Player player = session.getPlayer();
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder
-        .append(player.getSceneId())
-        .append("坐标(")
-        .append(player.getX())
-        .append(",")
-        .append(player.getY())
-        .append(")\r\n");
-    SessionManager.sendMessage(session, stringBuilder.toString());
-  }
-
-  /**
-   * 玩家移动到指定坐标
-   *
-   * @param session
-   * @param req
-   */
-  @HandlerMethod(cmd = "moveto")
-  public void move2Coordinate(TSession session, CM_MovePosition req) {
-    Player player = session.getPlayer();
-    boolean isSuccess =
-        SpringContext.getPlayerService().move2Coordinate(player, req.getX(), req.getY());
-    if (isSuccess) {
-      SessionManager.sendMessage(session, "移动成功\r\n");
-    } else {
-      SessionManager.sendMessage(session, "移动失败\r\n");
-    }
+    SessionManager.sendMessage(
+        session, SM_PlayerWhere.valueOf(player.getSceneId(), player.getX(), player.getY()));
   }
 
   /**

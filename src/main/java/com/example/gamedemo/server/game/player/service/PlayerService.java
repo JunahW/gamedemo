@@ -30,7 +30,7 @@ public interface PlayerService {
    * @param player
    * @return
    */
-  int createPlayer(Player player);
+  boolean createPlayer(Player player);
 
   /**
    * 账户登录

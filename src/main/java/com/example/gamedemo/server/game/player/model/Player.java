@@ -133,8 +133,6 @@ public class Player extends SceneObject implements Serializable {
         + combatIndex
         + ", level="
         + level
-        + ", playerAttributeContainer="
-        + playerAttributeContainer
         + ", sceneId="
         + sceneId
         + '}';

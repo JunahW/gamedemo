@@ -15,10 +15,10 @@ public class Scene {
   private int sceneResourceId;
 
   /** 场景玩家 */
-  private ConcurrentHashMap<Long, Player> playerMap;
+  private ConcurrentHashMap<Long, Player> playerMap = new ConcurrentHashMap<>();
 
   /** 场景怪物 */
-  private ConcurrentHashMap<Long, Monster> monsterMap;
+  private ConcurrentHashMap<Long, Monster> monsterMap = new ConcurrentHashMap<>();
 
   public static Scene valueOf(int sceneResourceId) {
     Scene scene = new Scene();

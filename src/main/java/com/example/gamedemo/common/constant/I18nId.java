@@ -77,4 +77,10 @@ public interface I18nId {
 
   /** 场景不相邻 */
   int SCENE_NO_NEIGHBOR = 60001;
+
+  /** 移动的坐标参数有误 */
+  int SCENE_POSITION_ERROR = 60002;
+
+  /** 场景位置不可走 */
+  int SCENE_OBSTACLE = 60003;
 }

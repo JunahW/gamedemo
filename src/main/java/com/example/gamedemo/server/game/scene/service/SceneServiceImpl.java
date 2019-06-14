@@ -1,9 +1,7 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.constant.I18nId;
-import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.exception.RequestException;
-import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
@@ -32,16 +30,33 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public void gotoScene(Player player, int sceneId) {
+  public boolean gotoScene(Player player, int sceneId) {
+    Scene targetScene = getSceneById(sceneId);
+    if (targetScene == null) {
+      logger.info("[{}]场景不存在", sceneId);
+      RequestException.throwException(I18nId.SCENE_NO_EXIST);
+    }
+    // 当前场景
+    int currentSceneId = player.getSceneId();
+    Scene currentScene = sceneManager.getSceneBysceneResourceId(currentSceneId);
+    currentScene.leaveScene(player.getId());
+
+    SceneResource sceneResource = sceneManager.getSceneResourceById(sceneId);
     player.setSceneId(sceneId);
+    player.setX(sceneResource.getX());
+    player.setY(sceneResource.getY());
 
     logger.info("{}进入{}", player.getId(), sceneId);
-    // sceneResource.getPlayerSet().add(player);
+    return true;
   }
 
   @Override
-  public SceneResource getSceneById(int sceneId) {
-    return ResourceManager.getResourceItemById(SceneResource.class, sceneId);
+  public Scene getSceneById(int sceneId) {
+    Scene scene = sceneManager.getSceneBysceneResourceId(sceneId);
+    if (scene == null) {
+      RequestException.throwException(I18nId.SCENE_NO_EXIST);
+    }
+    return scene;
   }
 
   @Override
@@ -56,11 +71,11 @@ public class SceneServiceImpl implements SceneService {
     int sceneResourceId = currentScene.getSceneResourceId();
     SceneResource sceneResource = sceneManager.getSceneResourceById(sceneResourceId);
 
-    String[] neighbors = sceneResource.getNeighbors().split(SystemConstant.SPLIT_TOKEN_COMMA);
+    int[] neighborArray = sceneResource.getNeighborArray();
     // 判断场景是否相邻
     boolean isNeighbor = false;
-    for (String neighbor : neighbors) {
-      if (neighbor.equals(sceneResource.getSceneId())) {
+    for (int neighbor : neighborArray) {
+      if (neighbor == sceneId) {
         isNeighbor = true;
         break;
       }
@@ -69,11 +84,10 @@ public class SceneServiceImpl implements SceneService {
       logger.info("{}进入{}失败，只能进入相邻的场景", player.getPlayerName(), sceneResource.getSceneName());
       RequestException.throwException(I18nId.SCENE_NO_NEIGHBOR);
     }
-
     // 退出当前场景
     currentScene.leaveScene(player.getId());
-    // 进入新的场景
 
+    // 进入新的场景
     Scene targetScene = sceneManager.getSceneBysceneResourceId(sceneId);
     player.setSceneId(sceneId);
     player.setX(sceneResource.getX());
@@ -81,5 +95,10 @@ public class SceneServiceImpl implements SceneService {
     targetScene.enterScene(player);
     logger.info("{}进入{}", player.getPlayerName(), sceneResource.getSceneName());
     return true;
+  }
+
+  @Override
+  public SceneResource getSceneResourceById(int sceneId) {
+    return sceneManager.getSceneResourceById(sceneId);
   }
 }

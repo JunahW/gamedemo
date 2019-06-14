@@ -14,6 +14,8 @@ import com.example.gamedemo.server.game.player.entity.PlayerEnt;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
+import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.SceneResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +47,7 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public int createPlayer(Player player) {
+  public boolean createPlayer(Player player) {
     PlayerEnt load = accessor.load(PlayerEnt.class, player.getId());
     if (null != load) {
       logger.info("[{}]玩家已存在", player.getId());
@@ -54,8 +56,10 @@ public class PlayerServiceImpl implements PlayerService {
     player.setPlayerName(
         playerManager.getPlayerResourceById(player.getPlayerType()).getPlayerName());
     PlayerEnt playerEnt = new PlayerEnt();
-    // 设置其实地址
+    // 设置起始地址
     player.setSceneId(SystemConstant.DEFAULT_SCENE);
+    Scene scene = SpringContext.getSceneService().getSceneById(SystemConstant.DEFAULT_SCENE);
+    scene.enterScene(player);
     playerEnt.setPlayer(player);
 
     playerEnt.serialize();
@@ -64,10 +68,10 @@ public class PlayerServiceImpl implements PlayerService {
     Serializable save = accessor.save(PlayerEnt.class, playerEnt);
     if (save != null) {
       logger.info("新增用户成功");
-      return 1;
+      return true;
     } else {
       logger.info("新增用户失败");
-      return 0;
+      return false;
     }
   }
 
@@ -105,26 +109,27 @@ public class PlayerServiceImpl implements PlayerService {
   @Override
   public boolean move2Coordinate(Player player, int x, int y) {
     int sceneId = player.getSceneId();
+
+    SceneResource sceneResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
+    int[][] sceneMap = sceneResource.getSceneMap();
     // TODO 移动位置
-    /*    int[][] sceneMap = sceneResource.getSceneMap();
+
     if (sceneResource.getWidth() - 1 < x || sceneResource.getHeight() - 1 < y) {
-      logger.info("请求参数不合法");
-      return false;
+      logger.info("请求位置参数不合法");
+      RequestException.throwException(I18nId.SCENE_POSITION_ERROR);
     }
     // 修改玩家当前位置
     if (sceneMap[x][y] == 0) {
       logger.info("该位置有障碍物");
-      return false;
+      RequestException.throwException(I18nId.SCENE_OBSTACLE);
     }
 
-    */
     /** 移动位置 */
-    /*
-    int currentx = player.getX();
-    int currenty = player.getY();
+    int preX = player.getX();
+    int preY = player.getY();
     player.setX(x);
     player.setY(y);
-    logger.info("({},{})从移动到({},{})", currentx, currenty, x, y);*/
+    logger.info("({},{})从移动到({},{})", preX, preY, x, y);
     return true;
   }
 

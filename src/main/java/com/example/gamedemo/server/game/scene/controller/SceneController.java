@@ -2,17 +2,19 @@ package com.example.gamedemo.server.game.scene.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
+import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.packet.SM_ErrorCode;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.player.packet.CM_MovePosition;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.packet.CM_AoiScene;
 import com.example.gamedemo.server.game.scene.packet.CM_GotoScene;
 import com.example.gamedemo.server.game.scene.packet.CM_ListScene;
 import com.example.gamedemo.server.game.scene.packet.CM_MoveScene;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
-import com.example.gamedemo.server.game.scene.service.SceneService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,7 +27,6 @@ import java.util.List;
 @Component
 @HandlerClass
 public class SceneController {
-  @Autowired private SceneService sceneService;
 
   /**
    * 获取场景列表
@@ -33,9 +34,9 @@ public class SceneController {
    * @param session
    * @param req
    */
-  @HandlerMethod(cmd = "list")
+  @HandlerMethod(cmd = "listScene")
   public void getSceneList(TSession session, CM_ListScene req) {
-    List<Scene> sceneList = sceneService.getSceneList();
+    List<Scene> sceneList = SpringContext.getSceneService().getSceneList();
     SessionManager.sendMessage(session, sceneList);
   }
 
@@ -45,15 +46,22 @@ public class SceneController {
    * @param session
    * @param req
    */
-  @HandlerMethod(cmd = "goto")
+  @HandlerMethod(cmd = "gotoScene")
   public void gotoScene(TSession session, CM_GotoScene req) {
-
     // 获取当前的账户信息
     Player player = session.getPlayer();
 
-    sceneService.gotoScene(player, req.getSceneId());
-    String returnMsg = player.getPlayerName() + "进入";
-    SessionManager.sendMessage(session, returnMsg + "\r\n");
+    boolean isSuccess = false;
+    try {
+      isSuccess = SpringContext.getSceneService().gotoScene(player, req.getSceneId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (isSuccess) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("进入场景成功"));
+    }
   }
 
   /**
@@ -63,11 +71,43 @@ public class SceneController {
    * @param req
    * @return
    */
-  @HandlerMethod(cmd = "move")
+  @HandlerMethod(cmd = "moveScene")
   public void move2Scene(TSession session, CM_MoveScene req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    boolean isSuccess = sceneService.move2Scene(player, req.getSceneId());
+    boolean isSuccess = false;
+    try {
+      isSuccess = SpringContext.getSceneService().move2Scene(player, req.getSceneId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (isSuccess) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("进入场景成功"));
+    }
+  }
+
+  /**
+   * 玩家移动到指定坐标
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "movePosition")
+  public void move2Coordinate(TSession session, CM_MovePosition req) {
+    Player player = session.getPlayer();
+    boolean isSuccess = false;
+    try {
+      isSuccess = SpringContext.getPlayerService().move2Coordinate(player, req.getX(), req.getY());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (isSuccess) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("移动成功"));
+    }
   }
 
   /**
@@ -81,7 +121,16 @@ public class SceneController {
   public void getSceneObject(TSession session, CM_AoiScene req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    SceneResource sceneResource = sceneService.getSceneById(player.getSceneId());
-    SessionManager.sendMessage(session, sceneResource.toString() + "\r\n");
+    Scene scene = null;
+    try {
+      scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (scene != null) {
+      SessionManager.sendMessage(session, scene);
+    }
   }
 }
