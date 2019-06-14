@@ -15,7 +15,7 @@ public class Scene {
   private int sceneResourceId;
 
   /** 场景玩家 */
-  private ConcurrentHashMap<String, Player> playerMap;
+  private ConcurrentHashMap<Long, Player> playerMap;
 
   /** 场景怪物 */
   private ConcurrentHashMap<Long, Monster> monsterMap;
@@ -34,11 +34,11 @@ public class Scene {
     this.sceneResourceId = sceneResourceId;
   }
 
-  public ConcurrentHashMap<String, Player> getPlayerMap() {
+  public ConcurrentHashMap<Long, Player> getPlayerMap() {
     return playerMap;
   }
 
-  public void setPlayerMap(ConcurrentHashMap<String, Player> playerMap) {
+  public void setPlayerMap(ConcurrentHashMap<Long, Player> playerMap) {
     this.playerMap = playerMap;
   }
 
@@ -56,7 +56,7 @@ public class Scene {
    * @param player
    */
   public void enterScene(Player player) {
-    playerMap.put(player.getPlayerId(), player);
+    playerMap.put(player.getId(), player);
   }
 
   /**
@@ -64,7 +64,7 @@ public class Scene {
    *
    * @param playerId
    */
-  public void leaveScene(String playerId) {
+  public void leaveScene(Long playerId) {
     playerMap.remove(playerId);
   }
 }

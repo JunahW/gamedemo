@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentMap;
@@ -45,9 +46,9 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public int createPlayer(Player player) {
-    PlayerEnt load = accessor.load(PlayerEnt.class, player.getPlayerId());
+    PlayerEnt load = accessor.load(PlayerEnt.class, player.getId());
     if (null != load) {
-      logger.info("[{}]玩家已存在", player.getPlayerId());
+      logger.info("[{}]玩家已存在", player.getId());
       RequestException.throwException(I18nId.PLAYER_NO_EXIST);
     }
     player.setPlayerName(
@@ -60,7 +61,7 @@ public class PlayerServiceImpl implements PlayerService {
     playerEnt.serialize();
     logger.info("新增用户：{}", player.getPlayerName());
 
-    String save = accessor.save(PlayerEnt.class, playerEnt);
+    Serializable save = accessor.save(PlayerEnt.class, playerEnt);
     if (save != null) {
       logger.info("新增用户成功");
       return 1;
@@ -71,7 +72,7 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public Player selectPlayer(String accountId, String playerId) {
+  public Player selectPlayer(String accountId, Long playerId) {
     PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
     if (playerEnt != null && playerEnt.getAccountId().equals(accountId)) {
       playerEnt.deSerialize();
@@ -134,7 +135,7 @@ public class PlayerServiceImpl implements PlayerService {
 
   @Override
   public ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(
-      Player player, String playerId) {
+      Player player, Long playerId) {
     PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
     if (playerEnt == null) {
       logger.info("[{}]该玩家不存在", playerId);

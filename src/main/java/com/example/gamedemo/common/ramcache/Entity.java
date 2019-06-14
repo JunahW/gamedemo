@@ -13,7 +13,7 @@ public interface Entity<PK extends Serializable & Comparable<PK>> {
    *
    * @return
    */
-  PK getId();
+  PK getEntityId();
 
   /** 设置缓存未命中时的id为null，guava的cache不允许返回null */
   void setNullId();

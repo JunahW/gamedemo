@@ -16,10 +16,10 @@ import javax.persistence.Transient;
  */
 @Table
 @javax.persistence.Entity
-public class EquipStorageEnt implements Entity<String> {
+public class EquipStorageEnt implements Entity<Long> {
 
   /** 主键 */
-  @Id private String playerId;
+  @Id private Long id;
 
   /** 装备栏数据 */
   @Column private String equipStorageData;
@@ -27,13 +27,13 @@ public class EquipStorageEnt implements Entity<String> {
   @Transient private EquipStorage equipStorage;
 
   @Override
-  public String getId() {
-    return this.playerId;
+  public Long getEntityId() {
+    return this.id;
   }
 
   @Override
   public void setNullId() {
-    this.playerId = null;
+    this.id = null;
   }
 
   @Override
@@ -65,11 +65,11 @@ public class EquipStorageEnt implements Entity<String> {
     this.equipStorage = equipStorage;
   }
 
-  public String getPlayerId() {
-    return playerId;
+  public Long getId() {
+    return id;
   }
 
-  public void setPlayerId(String playerId) {
-    this.playerId = playerId;
+  public void setId(Long id) {
+    this.id = id;
   }
 }

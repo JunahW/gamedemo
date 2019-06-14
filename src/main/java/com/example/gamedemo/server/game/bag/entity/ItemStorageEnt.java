@@ -26,7 +26,7 @@ public class ItemStorageEnt implements Entity<String> {
   @Transient private ItemStorage itemStorage;
 
   @Override
-  public String getId() {
+  public String getEntityId() {
     return this.accountId;
   }
 

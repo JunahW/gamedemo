@@ -33,7 +33,7 @@ public class TestPlayer {
 
   @Test
   public void testGetPlayer() {
-    PlayerEnt playerEntByPlayerId = playerManager.getPlayerEntByPlayerId("p1001");
+    PlayerEnt playerEntByPlayerId = playerManager.getPlayerEntByPlayerId(1000L);
     System.out.println(playerEntByPlayerId.getPlayer());
   }
 }

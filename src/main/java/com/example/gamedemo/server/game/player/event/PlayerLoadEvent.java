@@ -29,7 +29,7 @@ public class PlayerLoadEvent implements Event {
 
   @Override
   public Object getOwnerId() {
-    return player.getPlayerId();
+    return player.getId();
   }
 
   public Player getPlayer() {

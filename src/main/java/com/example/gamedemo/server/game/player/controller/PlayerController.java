@@ -59,7 +59,7 @@ public class PlayerController {
   public void createPlayer(TSession session, CM_CreatePlayer req) {
     Account account = session.getAccount();
     Player player = new Player();
-    player.setPlayerId(req.getPlayerId());
+    player.setId(req.getPlayerId());
     player.setPlayerType(req.getPlayerType());
     player.setAccountId(account.getAccountId());
     int isSuccess = 0;
@@ -67,6 +67,8 @@ public class PlayerController {
       isSuccess = SpringContext.getPlayerService().createPlayer(player);
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
     if (isSuccess == 1) {
       SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("创建角色成功"));

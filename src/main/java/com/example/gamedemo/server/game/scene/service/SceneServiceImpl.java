@@ -35,7 +35,7 @@ public class SceneServiceImpl implements SceneService {
   public void gotoScene(Player player, int sceneId) {
     player.setSceneId(sceneId);
 
-    logger.info("{}进入{}", player.getPlayerId(), sceneId);
+    logger.info("{}进入{}", player.getId(), sceneId);
     // sceneResource.getPlayerSet().add(player);
   }
 
@@ -71,7 +71,7 @@ public class SceneServiceImpl implements SceneService {
     }
 
     // 退出当前场景
-    currentScene.leaveScene(player.getPlayerId());
+    currentScene.leaveScene(player.getId());
     // 进入新的场景
 
     Scene targetScene = sceneManager.getSceneBysceneResourceId(sceneId);

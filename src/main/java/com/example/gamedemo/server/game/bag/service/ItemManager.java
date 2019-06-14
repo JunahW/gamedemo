@@ -79,6 +79,6 @@ public class ItemManager {
    */
   public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
     // FIXME 去除 itemStorageEnt.serialize();
-    entityCacheService.writeBack(itemStorageEnt.getId(), itemStorageEnt);
+    entityCacheService.writeBack(itemStorageEnt.getEntityId(), itemStorageEnt);
   }
 }

@@ -4,6 +4,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,9 +16,7 @@ import java.io.Serializable;
  * @date: 2019/4/25
  * @description: 用户账号
  */
-public class Player implements Serializable {
-  /** 玩家id */
-  private String playerId;
+public class Player extends SceneObject implements Serializable {
 
   /** 玩家名称 */
   private String playerName;
@@ -31,12 +30,6 @@ public class Player implements Serializable {
   /** 玩家战力 */
   private long combatIndex;
 
-  /** x轴位置 */
-  private int x;
-
-  /** y轴位置 */
-  private int y;
-
   /** 等级 */
   private int level;
 
@@ -45,14 +38,6 @@ public class Player implements Serializable {
 
   /** 场景 */
   private int sceneId;
-
-  public String getPlayerId() {
-    return playerId;
-  }
-
-  public void setPlayerId(String playerId) {
-    this.playerId = playerId;
-  }
 
   public String getPlayerName() {
     return playerName;
@@ -84,22 +69,6 @@ public class Player implements Serializable {
 
   public void setCombatIndex(long combatIndex) {
     this.combatIndex = combatIndex;
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public void setX(int x) {
-    this.x = x;
-  }
-
-  public int getY() {
-    return y;
-  }
-
-  public void setY(int y) {
-    this.y = y;
   }
 
   public int getPlayerType() {
@@ -145,17 +114,14 @@ public class Player implements Serializable {
   @JsonIgnore
   public EquipStorage getEquipBar() {
     EquipStorageEnt equipStorageEnt =
-        SpringContext.getEquipmentService().getEquipStorageEnt(playerId);
+        SpringContext.getEquipmentService().getEquipStorageEnt(super.getId());
     return equipStorageEnt.getEquipStorage();
   }
 
   @Override
   public String toString() {
     return "Player{"
-        + "playerId='"
-        + playerId
-        + '\''
-        + ", playerName='"
+        + "playerName='"
         + playerName
         + '\''
         + ", accountId='"
@@ -165,10 +131,6 @@ public class Player implements Serializable {
         + playerType
         + ", combatIndex="
         + combatIndex
-        + ", x="
-        + x
-        + ", y="
-        + y
         + ", level="
         + level
         + ", playerAttributeContainer="

@@ -15,8 +15,8 @@ import javax.persistence.Transient;
  */
 @Table
 @javax.persistence.Entity
-public class PlayerEnt implements Entity<String> {
-  @Id private String playerId;
+public class PlayerEnt implements Entity<Long> {
+  @Id private Long id;
 
   @Column private String playerName;
 
@@ -51,16 +51,16 @@ public class PlayerEnt implements Entity<String> {
   public static PlayerEnt valueOf(Player player) {
     PlayerEnt playerEnt = new PlayerEnt();
     playerEnt.setPlayer(player);
-    playerEnt.setPlayerId(player.getPlayerId());
+    playerEnt.setId(player.getId());
     return playerEnt;
   }
 
-  public String getPlayerId() {
-    return playerId;
+  public Long getId() {
+    return id;
   }
 
-  public void setPlayerId(String playerId) {
-    this.playerId = playerId;
+  public void setId(Long id) {
+    this.id = id;
   }
 
   public String getPlayerName() {
@@ -136,8 +136,8 @@ public class PlayerEnt implements Entity<String> {
   }
 
   @Override
-  public String getId() {
-    return this.playerId;
+  public Long getEntityId() {
+    return this.id;
   }
 
   @Override
@@ -147,7 +147,7 @@ public class PlayerEnt implements Entity<String> {
 
   @Override
   public boolean serialize() {
-    this.setPlayerId(player.getPlayerId());
+    this.setId(player.getId());
     this.setPlayerName(player.getPlayerName());
     this.setAccountId(player.getAccountId());
     this.setPlayerType(player.getPlayerType());
@@ -162,7 +162,7 @@ public class PlayerEnt implements Entity<String> {
   @Override
   public boolean deSerialize() {
     Player player = new Player();
-    player.setPlayerId(getPlayerId());
+    player.setId(getId());
     player.setPlayerName(getPlayerName());
     player.setAccountId(getAccountId());
     player.setPlayerType(getPlayerType());

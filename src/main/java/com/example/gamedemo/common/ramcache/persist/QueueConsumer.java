@@ -42,14 +42,14 @@ public class QueueConsumer implements Runnable {
         clazz = element.getEntityClass();
         switch (element.getType()) {
           case FIND:
-            accessor.load(clazz, element.getEntity().getId());
+            accessor.load(clazz, element.getEntity().getEntityId());
             break;
           case SAVE:
             accessor.save(clazz, element.getEntity());
             break;
 
           case REMOVE:
-            accessor.remove(clazz, element.getEntity().getId());
+            accessor.remove(clazz, element.getEntity().getEntityId());
             break;
           case UPDATE:
             System.out.println(accessor);

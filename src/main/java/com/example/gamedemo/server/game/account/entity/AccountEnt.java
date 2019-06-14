@@ -25,7 +25,7 @@ public class AccountEnt implements Entity<String> {
   @Transient private Account account;
 
   @Override
-  public String getId() {
+  public String getEntityId() {
     return accountId;
   }
 

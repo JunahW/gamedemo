@@ -40,7 +40,7 @@ public class EquipmentManager {
 
   @Autowired private Accessor accessor;
 
-  private EntityCacheServiceImpl<String, EquipStorageEnt> entityCacheService =
+  private EntityCacheServiceImpl<Long, EquipStorageEnt> entityCacheService =
       new EntityCacheServiceImpl<>();
 
   @PostConstruct
@@ -56,17 +56,17 @@ public class EquipmentManager {
    * @param playerId
    * @return
    */
-  public EquipStorageEnt getEquipStorageEnt(String playerId) {
+  public EquipStorageEnt getEquipStorageEnt(Long playerId) {
     EquipStorageEnt equipStorageEnt =
         entityCacheService.loadOrCreate(
             playerId,
-            new EntityBuilder<String, EquipStorageEnt>() {
+            new EntityBuilder<Long, EquipStorageEnt>() {
               @Override
-              public EquipStorageEnt newInstance(String id) {
+              public EquipStorageEnt newInstance(Long id) {
                 EquipStorageEnt equipStorageEnt = new EquipStorageEnt();
                 EquipStorage bar = new EquipStorage();
                 equipStorageEnt.setEquipStorage(bar);
-                equipStorageEnt.setPlayerId(playerId);
+                equipStorageEnt.setId(playerId);
                 // FIXME 去除 equipStorageEnt.serialize();
                 return equipStorageEnt;
               }
@@ -80,8 +80,7 @@ public class EquipmentManager {
    * @param equipStorageEnt
    */
   public void saveEquipStorageEnt(EquipStorageEnt equipStorageEnt) {
-    // FIXME equipStorageEnt.serialize();
-    entityCacheService.writeBack(equipStorageEnt.getId(), equipStorageEnt);
+    entityCacheService.writeBack(equipStorageEnt.getEntityId(), equipStorageEnt);
   }
 
   /**
@@ -90,7 +89,7 @@ public class EquipmentManager {
    * @param resourceId
    * @return
    */
-  public EquipAttrResource getequipAttrResourceById(int resourceId) {
+  public EquipAttrResource getEquipAttrResourceById(int resourceId) {
     return equipAttrResource.get(resourceId);
   }
 

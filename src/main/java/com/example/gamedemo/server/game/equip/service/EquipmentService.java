@@ -63,7 +63,7 @@ public interface EquipmentService {
    * @param playerId
    * @return
    */
-  EquipStorageEnt getEquipStorageEnt(String playerId);
+  EquipStorageEnt getEquipStorageEnt(Long playerId);
 
   /**
    * 增强属性

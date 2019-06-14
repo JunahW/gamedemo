@@ -7,9 +7,9 @@ package com.example.gamedemo.server.game.player.packet;
  */
 public class CM_LoginAccount {
   /** 角色id */
-  private String playerId;
+  private Long playerId;
 
-  public String getPlayerId() {
+  public Long getPlayerId() {
     return playerId;
   }
 }

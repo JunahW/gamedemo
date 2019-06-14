@@ -39,7 +39,7 @@ public interface PlayerService {
    * @param playerId
    * @return
    */
-  Player selectPlayer(String accountId, String playerId);
+  Player selectPlayer(String accountId, Long playerId);
 
   /**
    * 更细账户
@@ -80,8 +80,7 @@ public interface PlayerService {
    * @param playerId
    * @return
    */
-  ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(
-      Player player, String playerId);
+  ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, Long playerId);
 
   /**
    * 计算玩家的职业基础属性

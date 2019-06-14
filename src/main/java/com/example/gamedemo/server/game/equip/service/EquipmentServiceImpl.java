@@ -77,7 +77,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     // 更细属性容器
-    EquipAttrResource equipAttrResource = equipmentManager.getequipAttrResourceById(itemResourceId);
+    EquipAttrResource equipAttrResource = equipmentManager.getEquipAttrResourceById(itemResourceId);
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
     player
         .getPlayerAttributeContainer()
@@ -131,11 +131,11 @@ public class EquipmentServiceImpl implements EquipmentService {
 
   @Override
   public void saveEquipmentStorageEnt(Player player) {
-    equipmentManager.saveEquipStorageEnt(getEquipStorageEnt(player.getPlayerId()));
+    equipmentManager.saveEquipStorageEnt(getEquipStorageEnt(player.getId()));
   }
 
   @Override
-  public EquipStorageEnt getEquipStorageEnt(String playerId) {
+  public EquipStorageEnt getEquipStorageEnt(Long playerId) {
     return equipmentManager.getEquipStorageEnt(playerId);
   }
 
@@ -220,7 +220,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
   @Override
   public EquipAttrResource getEquipAttrResourceById(int id) {
-    return equipmentManager.getequipAttrResourceById(id);
+    return equipmentManager.getEquipAttrResourceById(id);
   }
 
   @Override

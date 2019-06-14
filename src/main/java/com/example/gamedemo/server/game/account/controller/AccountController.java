@@ -42,6 +42,7 @@ public class AccountController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("账户创建成功"));
   }
 
   /**

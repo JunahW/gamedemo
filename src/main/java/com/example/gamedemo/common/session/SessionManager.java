@@ -110,7 +110,7 @@ public class SessionManager {
       Player player = session.getPlayer();
       if (player != null) {
         boolean remove = accountIdSessionMap.remove(player.getAccountId(), session);
-        logger.info("Session unregister, accountId={}, remove={}", player.getPlayerId(), remove);
+        logger.info("Session unregister, accountId={}, remove={}", player.getId(), remove);
       }
     }
   }

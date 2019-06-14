@@ -8,12 +8,12 @@ package com.example.gamedemo.server.game.player.packet;
 public class CM_CreatePlayer {
 
   /** 账户id */
-  private String playerId;
+  private Long playerId;
 
   /** 玩家类型 */
   private int playerType;
 
-  public String getPlayerId() {
+  public Long getPlayerId() {
     return playerId;
   }
 

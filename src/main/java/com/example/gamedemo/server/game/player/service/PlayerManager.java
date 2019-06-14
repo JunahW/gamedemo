@@ -28,7 +28,7 @@ public class PlayerManager {
 
   @Autowired private Accessor accessor;
 
-  private EntityCacheServiceImpl<String, PlayerEnt> entityCacheService =
+  private EntityCacheServiceImpl<Long, PlayerEnt> entityCacheService =
       new EntityCacheServiceImpl<>();
 
   @PostConstruct
@@ -63,7 +63,7 @@ public class PlayerManager {
    * @param playerId
    * @return
    */
-  public PlayerEnt getPlayerEntByPlayerId(String playerId) {
+  public PlayerEnt getPlayerEntByPlayerId(Long playerId) {
     return entityCacheService.load(playerId);
   }
 
@@ -73,6 +73,6 @@ public class PlayerManager {
    * @param playerEnt
    */
   public void savePlayerEnt(PlayerEnt playerEnt) {
-    entityCacheService.writeBack(playerEnt.getPlayerId(), playerEnt);
+    entityCacheService.writeBack(playerEnt.getId(), playerEnt);
   }
 }

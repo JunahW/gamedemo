@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 public class EmptyEntity<PK extends Serializable & Comparable<PK>> implements Entity<PK> {
   @Override
-  public PK getId() {
+  public PK getEntityId() {
     return null;
   }
 
