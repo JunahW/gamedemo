@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -20,7 +20,7 @@ public class MonsterTest {
 
   @Test
   public void testResource() {
-    ConcurrentMap<Object, MonsterResource> resourceMap =
+    Map<Object, MonsterResource> resourceMap =
         ResourceManager.getResourceMap(MonsterResource.class);
     System.out.println(resourceMap);
   }

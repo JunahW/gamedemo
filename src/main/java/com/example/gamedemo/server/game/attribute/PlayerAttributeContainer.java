@@ -4,7 +4,7 @@ import com.example.gamedemo.server.common.utils.FormulaUtils;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.player.model.Player;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -20,7 +20,7 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
   @Override
   public void computeCombatIndex() {
 
-    ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = this.getAttributeMap();
+    Map<AttributeTypeEnum, Attribute> attributeMap = this.getAttributeMap();
     /** 计算战力 */
     long combatIndex = FormulaUtils.computeCombatIndex(attributeMap);
     owner.setCombatIndex(combatIndex);

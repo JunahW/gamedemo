@@ -13,10 +13,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -28,15 +28,14 @@ import java.util.concurrent.ConcurrentMap;
 public class EquipmentManager {
 
   /** 静态资源 */
-  private ConcurrentMap<String, EquipAttrResource> equipAttrResource =
+  private Map<String, EquipAttrResource> equipAttrResource =
       ResourceManager.getResourceMap(EquipAttrResource.class);
 
-  private ConcurrentMap<String, EquipEnhanceResource> equipEnhanceResource =
+  private Map<String, EquipEnhanceResource> equipEnhanceResource =
       ResourceManager.getResourceMap(EquipEnhanceResource.class);
 
   /** <位置，<等级，配置资源>> */
-  private ConcurrentMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>
-      positionLevelResourceMap;
+  private Map<Integer, Map<Integer, EquipEnhanceResource>> positionLevelResourceMap;
 
   @Autowired private Accessor accessor;
 
@@ -67,7 +66,6 @@ public class EquipmentManager {
                 EquipStorage bar = new EquipStorage();
                 equipStorageEnt.setEquipStorage(bar);
                 equipStorageEnt.setId(playerId);
-                // FIXME 去除 equipStorageEnt.serialize();
                 return equipStorageEnt;
               }
             });
@@ -101,7 +99,7 @@ public class EquipmentManager {
    * @return
    */
   public EquipEnhanceResource getEquipEnhanceResourceByPositionAndLevel(int position, int level) {
-    ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource =
+    Map<Integer, EquipEnhanceResource> positionLevelResource =
         positionLevelResourceMap.get(position);
     if (null != positionLevelResource) {
       EquipEnhanceResource equipEnhanceResource = positionLevelResource.get(level);
@@ -112,9 +110,7 @@ public class EquipmentManager {
 
   /** 初始化equipEnhanceResource */
   private void initEquipEnhanceResource() {
-    ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>
-        positionLevelResourceMap =
-            new ConcurrentHashMap<Integer, ConcurrentMap<Integer, EquipEnhanceResource>>();
+    Map<Integer, Map<Integer, EquipEnhanceResource>> positionLevelResourceMap = new HashMap<>(16);
 
     Set<Map.Entry<String, EquipEnhanceResource>> entries = equipEnhanceResource.entrySet();
     for (Map.Entry<String, EquipEnhanceResource> enhanceResourceEntry : entries) {
@@ -123,7 +119,7 @@ public class EquipmentManager {
       if (!positionLevelResourceMap.containsKey(position)) {
         positionLevelResourceMap.put(position, new ConcurrentHashMap<>(16));
       }
-      ConcurrentMap<Integer, EquipEnhanceResource> positionLevelResource =
+      Map<Integer, EquipEnhanceResource> positionLevelResource =
           positionLevelResourceMap.get(position);
 
       int level = resourceValue.getLevel();

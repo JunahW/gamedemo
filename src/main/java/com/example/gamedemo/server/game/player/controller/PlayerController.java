@@ -18,7 +18,7 @@ import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.*;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -123,7 +123,7 @@ public class PlayerController {
   @HandlerMethod(cmd = "playerAttr")
   public void getPlayerAttributeByPlayerId(TSession session, CM_PlayerAttr req) {
     Player player = session.getPlayer();
-    ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = null;
+    Map<AttributeTypeEnum, Attribute> attributeMap = null;
     try {
       attributeMap =
           (SpringContext.getPlayerService().getPlayerAttrByPlayerId(player, req.getPlayerId()));

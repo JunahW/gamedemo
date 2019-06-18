@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author: wengj
@@ -20,10 +20,10 @@ import java.util.concurrent.ConcurrentMap;
 @Component
 public class PlayerManager {
 
-  private ConcurrentMap<String, PlayerResource> playerResource =
+  private Map<String, PlayerResource> playerResource =
       ResourceManager.getResourceMap(PlayerResource.class);
 
-  private ConcurrentMap<String, BaseAttributeResource> baseAttributeResource =
+  private Map<String, BaseAttributeResource> baseAttributeResource =
       ResourceManager.getResourceMap(BaseAttributeResource.class);
 
   @Autowired private Accessor accessor;

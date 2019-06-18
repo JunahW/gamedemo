@@ -6,7 +6,6 @@ import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -20,7 +19,7 @@ public class SM_PlayerAttrs {
     this.attributes = attributes;
   }
 
-  public static SM_PlayerAttrs valueOf(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+  public static SM_PlayerAttrs valueOf(Map<AttributeTypeEnum, Attribute> attributeMap) {
     LinkedList<Attribute> attributes = new LinkedList<>();
     for (Map.Entry<AttributeTypeEnum, Attribute> entry : attributeMap.entrySet()) {
       Attribute attribute = entry.getValue();

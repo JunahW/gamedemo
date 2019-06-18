@@ -3,7 +3,7 @@ package com.example.gamedemo.server.common.utils;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -18,7 +18,7 @@ public class FormulaUtils {
    * @param attributeMap
    * @return
    */
-  public static long computeCombatIndex(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+  public static long computeCombatIndex(Map<AttributeTypeEnum, Attribute> attributeMap) {
     long combatIndex = 0;
     Attribute hpAttribute = attributeMap.get(AttributeTypeEnum.HP);
     Attribute mpAttribute = attributeMap.get(AttributeTypeEnum.MP);

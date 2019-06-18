@@ -4,6 +4,7 @@ import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,11 +20,10 @@ public abstract class AbstractAttributeContainer<T> {
   /** 属性容器所属者 */
   protected T owner;
   /** 各个属性容器 */
-  private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
+  private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
   /** 不同模块的属性容器 */
-  private ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap =
-      new ConcurrentHashMap<>();
+  private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new ConcurrentHashMap<>();
 
   public AbstractAttributeContainer(T owner) {
     this.owner = owner;
@@ -156,7 +156,7 @@ public abstract class AbstractAttributeContainer<T> {
     this.owner = owner;
   }
 
-  public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
+  public Map<AttributeTypeEnum, Attribute> getAttributeMap() {
     return attributeMap;
   }
 
@@ -164,7 +164,7 @@ public abstract class AbstractAttributeContainer<T> {
     this.attributeMap = attributeMap;
   }
 
-  public ConcurrentMap<AttributeModelId, AttributeSet> getModelAttributeListMap() {
+  public Map<AttributeModelId, AttributeSet> getModelAttributeListMap() {
     return modelAttributeListMap;
   }
 

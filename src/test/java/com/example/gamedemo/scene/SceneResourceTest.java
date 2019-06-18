@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -24,8 +24,7 @@ public class SceneResourceTest {
 
   @Test
   public void testSceneImportExcel() throws Exception {
-    ConcurrentMap<Object, SceneResource> resourceMap =
-        ResourceManager.getResourceMap(SceneResource.class);
+    Map<Object, SceneResource> resourceMap = ResourceManager.getResourceMap(SceneResource.class);
     System.out.println(resourceMap);
   }
 

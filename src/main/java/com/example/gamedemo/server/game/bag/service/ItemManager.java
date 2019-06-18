@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -23,7 +23,7 @@ public class ItemManager {
 
   private final Class clazz = ItemStorageEnt.class;
   /** 静态资源 */
-  private ConcurrentMap<String, ItemResource> itemResource =
+  private Map<String, ItemResource> itemResource =
       ResourceManager.getResourceMap(ItemResource.class);
 
   @Autowired private Accessor accessor;
@@ -65,7 +65,6 @@ public class ItemManager {
 
                 itemStorageEnt.setItemStorage(pack);
                 itemStorageEnt.setAccountId(accountId);
-                // FIXME 去除 itemStorageEnt.serialize();
                 return itemStorageEnt;
               }
             });
@@ -78,7 +77,6 @@ public class ItemManager {
    * @param itemStorageEnt
    */
   public void saveItemStorageEnt(ItemStorageEnt itemStorageEnt) {
-    // FIXME 去除 itemStorageEnt.serialize();
     entityCacheService.writeBack(itemStorageEnt.getEntityId(), itemStorageEnt);
   }
 }

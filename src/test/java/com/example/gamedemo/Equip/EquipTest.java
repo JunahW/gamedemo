@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -54,9 +54,9 @@ public class EquipTest {
   @Test
   public void testEquipmentJson() {
     ResourceManager.initResource();
-    ConcurrentMap<Object, EquipAttrResource> resourceMap =
+    Map<Object, EquipAttrResource> resourceMap =
         ResourceManager.getResourceMap(EquipAttrResource.class);
-    ConcurrentMap<Object, EquipAttrResource> resourceMap1 =
+    Map<Object, EquipAttrResource> resourceMap1 =
         ResourceManager.getResourceMap(EquipAttrResource.class);
 
     System.out.println(resourceMap);
@@ -65,7 +65,7 @@ public class EquipTest {
   @Test
   public void testEquipEnhanceResource() {
     ResourceManager.initResource();
-    ConcurrentMap<Object, EquipEnhanceResource> resourceMap =
+    Map<Object, EquipEnhanceResource> resourceMap =
         ResourceManager.getResourceMap(EquipEnhanceResource.class);
     System.out.println(resourceMap);
   }

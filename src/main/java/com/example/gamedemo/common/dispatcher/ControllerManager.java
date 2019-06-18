@@ -9,9 +9,9 @@ import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author: wengj
@@ -22,10 +22,10 @@ public class ControllerManager {
   private static final Logger logger = LoggerFactory.getLogger(ControllerManager.class);
 
   /** 请求和处理之间的映射 */
-  private static final Map<String, InvokeMethod> CONTROLLER_MAP = new ConcurrentHashMap<>();
+  private static final Map<String, InvokeMethod> CONTROLLER_MAP = new HashMap<>();
 
   /** 请求和消息之间的映射 */
-  private static final Map<String, Class> CMD_PACKER_MAP = new ConcurrentHashMap<>();
+  private static final Map<String, Class> CMD_PACKER_MAP = new HashMap<>();
 
   /**
    * @param cmd

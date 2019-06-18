@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author: wengj
@@ -139,8 +139,7 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(
-      Player player, Long playerId) {
+  public Map<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, Long playerId) {
     PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
     if (playerEnt == null) {
       logger.info("[{}]该玩家不存在", playerId);

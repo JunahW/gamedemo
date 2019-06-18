@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -26,8 +26,7 @@ public class TestPlayer {
   @Test
   public void testPlayerResource() {
     ResourceManager.initResource();
-    ConcurrentMap<String, PlayerResource> itemResource =
-        ResourceManager.getResourceMap(PlayerResource.class);
+    Map<String, PlayerResource> itemResource = ResourceManager.getResourceMap(PlayerResource.class);
     System.out.println(itemResource);
   }
 

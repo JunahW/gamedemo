@@ -7,7 +7,7 @@ import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author: wengj
@@ -80,7 +80,7 @@ public interface PlayerService {
    * @param playerId
    * @return
    */
-  ConcurrentMap<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, Long playerId);
+  Map<AttributeTypeEnum, Attribute> getPlayerAttrByPlayerId(Player player, Long playerId);
 
   /**
    * 计算玩家的职业基础属性

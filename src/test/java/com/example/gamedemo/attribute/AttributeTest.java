@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -48,7 +48,7 @@ public class AttributeTest {
   @Test
   public void testEquipmentAttrResource() {
     ResourceManager.initResource();
-    ConcurrentMap<Object, EquipAttrResource> resourceMap =
+    Map<Object, EquipAttrResource> resourceMap =
         ResourceManager.getResourceMap(EquipAttrResource.class);
     EquipAttrResource equipAttrResource = resourceMap.get("i1003");
     List<Attribute> attributes = equipAttrResource.getAttributes();

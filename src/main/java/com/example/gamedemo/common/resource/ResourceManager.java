@@ -5,11 +5,10 @@ import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.common.utils.ExcelUtils;
 import org.springframework.context.ApplicationContext;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
@@ -18,7 +17,7 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class ResourceManager {
   /** 存放静态资源文件 */
-  public static ConcurrentHashMap<Class, ConcurrentHashMap> resourceMap = new ConcurrentHashMap<>();
+  public static Map<Class, Map> resourceMap = new HashMap<>();
 
   /**
    * 通过id获取静态资源的项
@@ -39,7 +38,7 @@ public class ResourceManager {
    * @param <K>
    * @return
    */
-  public static <K, V> ConcurrentMap<K, V> getResourceMap(Class<V> clazz) {
+  public static <K, V> Map<K, V> getResourceMap(Class<V> clazz) {
     return resourceMap.get(clazz);
   }
 
@@ -54,7 +53,7 @@ public class ResourceManager {
    */
   public static <K, V> void putResourceItem(Class clazz, K key, V value) {
     if (resourceMap.get(clazz) == null) {
-      ConcurrentHashMap<K, V> resourceItemMap = new ConcurrentHashMap<>(16);
+      Map<K, V> resourceItemMap = new HashMap<>(16);
       resourceMap.put(clazz, resourceItemMap);
     }
     resourceMap.get(clazz).put(key, value);

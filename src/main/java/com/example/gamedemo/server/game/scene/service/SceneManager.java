@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author: wengj
@@ -20,7 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 @Component
 public class SceneManager {
   /** 静态资源 */
-  private ConcurrentMap<String, SceneResource> sceneResource =
+  private Map<String, SceneResource> sceneResource =
       ResourceManager.getResourceMap(SceneResource.class);
 
   /** 动态场景 */

@@ -2,8 +2,8 @@ package com.example.gamedemo.server.game.attribute;
 
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -12,13 +12,13 @@ import java.util.concurrent.ConcurrentMap;
  */
 public class AttributeSet {
   /** 属性集合 */
-  private ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap = new ConcurrentHashMap<>();
+  private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
-  public ConcurrentMap<AttributeTypeEnum, Attribute> getAttributeMap() {
+  public Map<AttributeTypeEnum, Attribute> getAttributeMap() {
     return attributeMap;
   }
 
-  public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
+  public void setAttributeMap(Map<AttributeTypeEnum, Attribute> attributeMap) {
     this.attributeMap = attributeMap;
   }
 }
