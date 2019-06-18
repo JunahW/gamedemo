@@ -158,4 +158,13 @@ public class ItemServiceImpl implements ItemService {
     ItemStorageEnt itemStorageEnt = getItemStorageEntByAccountId(player.getAccountId());
     itemManager.saveItemStorageEnt(itemStorageEnt);
   }
+
+  @Override
+  public boolean removeItemByGuid(Player player, long guid) {
+    int quantity = getItemNum(player, guid);
+    boolean flag = player.getPack().reduceStorageItemByObjectId(guid, quantity);
+    // 保存背包
+    saveItemStorageEnt(player);
+    return flag;
+  }
 }

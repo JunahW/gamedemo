@@ -22,7 +22,8 @@ public class EquipStorageEnt implements Entity<Long> {
   @Id private Long id;
 
   /** 装备栏数据 */
-  @Column private String equipStorageData;
+  @Column(length = 10000)
+  private String equipStorageData;
 
   @Transient private EquipStorage equipStorage;
 

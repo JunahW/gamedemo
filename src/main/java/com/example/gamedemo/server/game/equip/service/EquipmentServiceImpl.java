@@ -105,6 +105,10 @@ public class EquipmentServiceImpl implements EquipmentService {
       RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
     }
 
+    // 放回背包
+    player.getPack().addStorageItem(equipItem);
+    SpringContext.getItemService().saveItemStorageEnt(player);
+
     int itemResourceId = equipItem.getItemResourceId();
     ItemResource itemResource =
         SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);

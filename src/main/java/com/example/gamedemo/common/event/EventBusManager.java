@@ -30,6 +30,9 @@ public class EventBusManager {
    */
   public static void submitEvent(Event event) {
     List<ReceiverInvoke> receiverInvokeList = eventReceiverMap.get(event.getClass());
+    if (receiverInvokeList == null) {
+      return;
+    }
     for (ReceiverInvoke receiverInvoke : receiverInvokeList) {
       receiverInvoke.invoke(event);
     }

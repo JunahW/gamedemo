@@ -30,7 +30,7 @@ import java.util.Map;
 public class PlayerController {
 
   /**
-   * 通过id获取账户信息
+   * 通过玩家信息
    *
    * @param session
    * @param req
@@ -39,14 +39,11 @@ public class PlayerController {
   public void getPlayerById(TSession session, CM_GetPlayer req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    String returnMsg = null;
     if (player == null) {
-      returnMsg = "未选择角色\r\n";
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("未选择角色"));
     } else {
-      returnMsg = player.toString() + "\r\n";
+      SessionManager.sendMessage(session, player);
     }
-
-    SessionManager.sendMessage(session, returnMsg);
   }
 
   /**

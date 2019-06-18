@@ -53,8 +53,7 @@ public class PlayerServiceImpl implements PlayerService {
       logger.info("[{}]玩家已存在", player.getId());
       RequestException.throwException(I18nId.PLAYER_NO_EXIST);
     }
-    player.setPlayerName(
-        playerManager.getPlayerResourceById(player.getPlayerType()).getPlayerName());
+    player.setPlayerName(playerManager.getPlayerResourceById(player.getPlayerType()).getRoleName());
     PlayerEnt playerEnt = new PlayerEnt();
     // 设置起始地址
     player.setSceneId(SystemConstant.DEFAULT_SCENE);
@@ -82,6 +81,8 @@ public class PlayerServiceImpl implements PlayerService {
       playerEnt.deSerialize();
       Player player = playerEnt.getPlayer();
       logger.info("{}选择角色成功", playerEnt.getPlayerName());
+      // 初始化玩家属性
+      getPlayerAttrByPlayerId(player, playerId);
       return player;
     } else {
       logger.warn("{}该玩家还未创建", playerId);
@@ -91,7 +92,7 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public void updateAccount(Player player) {
+  public void updatePlayer(Player player) {
     logger.info("异步保存数据");
     PlayerEnt playerEnt = new PlayerEnt();
     playerEnt.setPlayer(player);
@@ -100,7 +101,7 @@ public class PlayerServiceImpl implements PlayerService {
   }
 
   @Override
-  public List<Player> getAccountList() {
+  public List<Player> getPlayerList() {
     List<Player> playerList = new ArrayList<>();
 
     return playerList;

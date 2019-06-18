@@ -98,4 +98,13 @@ public interface ItemService {
    * @param player
    */
   void saveItemStorageEnt(Player player);
+
+  /**
+   * 移除物品
+   *
+   * @param player
+   * @param guid
+   * @return
+   */
+  boolean removeItemByGuid(Player player, long guid);
 }

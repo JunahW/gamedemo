@@ -5,6 +5,7 @@ import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.packet.SM_ErrorCode;
 import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.bag.packet.*;
@@ -131,6 +132,12 @@ public class StorageController {
   @HandlerMethod(cmd = "removeItem")
   public void removeItem(TSession session, CM_RemoveItem req) {
     Player player = session.getPlayer();
+    boolean flag = SpringContext.getItemService().removeItemByGuid(player, req.getGuid());
+    if (flag) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("移除成功"));
+    } else {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("移除失败"));
+    }
   }
 
   /**

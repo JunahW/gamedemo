@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.attribute;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.concurrent.ConcurrentMap;
 public abstract class AbstractAttributeContainer<T> {
 
   /** 属性容器所属者 */
-  protected T owner;
+  @JsonIgnore protected T owner;
   /** 各个属性容器 */
   private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
@@ -148,10 +149,12 @@ public abstract class AbstractAttributeContainer<T> {
     compute();
   }
 
+  @JsonIgnore
   public T getOwner() {
     return owner;
   }
 
+  @JsonIgnore
   public void setOwner(T owner) {
     this.owner = owner;
   }

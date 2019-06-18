@@ -83,6 +83,20 @@ public class EquipmentController {
   }
 
   /**
+   * 获取装备信息
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "positionEquip")
+  public void getEquipmentByPosition(TSession session, CM_GetPositionEquip req) {
+    Player player = session.getPlayer();
+    AbstractItem equipItem =
+        SpringContext.getEquipmentService().getEquipItemByPosition(player, req.getPosition());
+    SessionManager.sendMessage(session, equipItem);
+  }
+
+  /**
    * 展示装备栏
    *
    * @param session

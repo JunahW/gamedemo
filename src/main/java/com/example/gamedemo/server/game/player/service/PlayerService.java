@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author: wengj
  * @date: 2019/4/28
- * @description: 账户业务层接口
+ * @description: 玩家业务层接口
  */
 public interface PlayerService {
 
@@ -46,14 +46,14 @@ public interface PlayerService {
    *
    * @param player
    */
-  void updateAccount(Player player);
+  void updatePlayer(Player player);
 
   /**
    * 获取登陆账户的集合
    *
    * @return
    */
-  List<Player> getAccountList();
+  List<Player> getPlayerList();
 
   /**
    * 玩家移动
