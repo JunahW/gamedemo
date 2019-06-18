@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.executer.common;
 
-import com.example.gamedemo.common.executer.account.AccountExecutor;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/6/12
  */
 public class CommonExecutor {
-  private static final Logger logger = LoggerFactory.getLogger(AccountExecutor.class);
+  private static final Logger logger = LoggerFactory.getLogger(CommonExecutor.class);
   /** 默认线程数量 */
   private static final int DEFAULT_THREAD_SIZE = Runtime.getRuntime().availableProcessors();
 

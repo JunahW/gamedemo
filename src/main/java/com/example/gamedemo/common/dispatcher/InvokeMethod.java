@@ -1,9 +1,8 @@
 package com.example.gamedemo.common.dispatcher;
 
-import com.example.gamedemo.common.executer.common.CommonExecutor;
+import com.example.gamedemo.common.executer.account.AccountExecutor;
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.common.session.TSession;
-import com.example.gamedemo.server.game.account.model.Account;
 import com.example.gamedemo.server.game.account.packet.CM_CreateAccount;
 import com.example.gamedemo.server.game.account.packet.CM_LoginAccount;
 import org.springframework.util.ReflectionUtils;
@@ -52,22 +51,21 @@ public class InvokeMethod {
    * @return
    */
   public Object invoke(TSession session, Object packet) {
-    Account account = new Account();
+    String accountId = null;
     if (packet instanceof CM_CreateAccount) {
       CM_CreateAccount cm_createAccount = (CM_CreateAccount) packet;
-      account.setAccountId(cm_createAccount.getAccountId());
+      accountId = cm_createAccount.getAccountId();
     } else if (packet instanceof CM_LoginAccount) {
       CM_LoginAccount cm_loginAccount = (CM_LoginAccount) packet;
-      account.setAccountId(cm_loginAccount.getAccountId());
+      accountId = cm_loginAccount.getAccountId();
     } else {
-      account = session.getAccount();
+      accountId = session.getAccount().getAccountId();
     }
 
     // 未选择角色就在用户线程
     if (session.getPlayer() == null) {
-      String accountId = account.getAccountId();
-      int index = CommonExecutor.modeIndex(accountId);
-      CommonExecutor.COMMON_SERVICE[index].submit(
+      int index = AccountExecutor.modeIndex(accountId);
+      AccountExecutor.ACCOUNT_SERVICE[index].submit(
           new Runnable() {
             @Override
             public void run() {
