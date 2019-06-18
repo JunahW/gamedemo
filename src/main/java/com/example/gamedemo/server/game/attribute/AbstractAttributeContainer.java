@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.attribute;
 
-import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.server.common.utils.FormulaUtils;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,11 +44,8 @@ public abstract class AbstractAttributeContainer<T> {
           attributeSet.getAttributeMap().entrySet()) {
         Attribute attribute = attributeEntry.getValue();
         if (attributeMap.containsKey(attribute.getType())) {
-          long value = attributeMap.get(attribute.getType()).getValue();
-          // 新建有一个对象，不能修改list的内容
-          attributeMap.put(
-              attribute.getType(),
-              Attribute.valueof(attribute.getType(), attribute.getValue() + value));
+          // 计算同个属性计算后的值
+          FormulaUtils.computeAttribute(attributeMap, attribute);
         } else {
           attributeMap.put(
               attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
@@ -56,25 +53,7 @@ public abstract class AbstractAttributeContainer<T> {
       }
     }
     // 计算最终的值，包括加成
-    for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeMap.entrySet()) {
-      Attribute attribute = attributeEntry.getValue();
-      if (attribute == null) {
-        continue;
-      }
-      // 获取所受到影响的百分比值
-      AttributeTypeEnum[] percentageAttributes = attribute.getType().getPercentageAttributes();
-      long percentage = 0;
-      if (percentageAttributes == null) {
-        continue;
-      }
-      for (AttributeTypeEnum attributeTypeEnum : percentageAttributes) {
-        if (attributeMap.get(attributeTypeEnum) != null) {
-          percentage += attributeMap.get(attributeTypeEnum).getValue();
-        }
-      }
-      // 属性加成
-      attribute.setValue(attribute.getValue() * (1 + percentage / SystemConstant.TEN_THOUSAND));
-    }
+    FormulaUtils.computeAttributePercentage(attributeMap);
     // 计算战力
     computeCombatIndex();
   }

@@ -12,13 +12,5 @@ public enum AttributeModelIdEnum implements AttributeModelId {
     public String getModelName() {
       return "BASE";
     }
-  },
-
-  /** 装备 */
-  EQUIPMENT {
-    @Override
-    public String getModelName() {
-      return "EQUIPMENT";
-    }
   };
 }

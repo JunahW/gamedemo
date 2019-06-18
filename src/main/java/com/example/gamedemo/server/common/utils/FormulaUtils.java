@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.common.utils;
 
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 
@@ -31,5 +32,44 @@ public class FormulaUtils {
             + attackAttribute.getValue() * 300
             + defenseAttribute.getValue() * 200;
     return combatIndex;
+  }
+
+  /**
+   * 计算属性
+   *
+   * @param attributeMap
+   * @param attribute
+   */
+  public static void computeAttribute(
+      Map<AttributeTypeEnum, Attribute> attributeMap, Attribute attribute) {
+    Attribute resultAttribute = attributeMap.get(attribute.getType());
+    resultAttribute.setValue(resultAttribute.getValue() + attribute.getValue());
+  }
+
+  /**
+   * 计算属性加成
+   *
+   * @param attributeMap
+   */
+  public static void computeAttributePercentage(Map<AttributeTypeEnum, Attribute> attributeMap) {
+    for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeMap.entrySet()) {
+      Attribute attribute = attributeEntry.getValue();
+      if (attribute == null) {
+        continue;
+      }
+      // 获取所受到影响的百分比值
+      AttributeTypeEnum[] percentageAttributes = attribute.getType().getPercentageAttributes();
+      long percentage = 0;
+      if (percentageAttributes == null) {
+        continue;
+      }
+      for (AttributeTypeEnum attributeTypeEnum : percentageAttributes) {
+        if (attributeMap.get(attributeTypeEnum) != null) {
+          percentage += attributeMap.get(attributeTypeEnum).getValue();
+        }
+      }
+      // 属性加成
+      attribute.setValue(attribute.getValue() * (1 + percentage / SystemConstant.TEN_THOUSAND));
+    }
   }
 }
