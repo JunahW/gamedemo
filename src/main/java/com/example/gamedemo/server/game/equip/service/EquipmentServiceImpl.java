@@ -3,10 +3,10 @@ package com.example.gamedemo.server.game.equip.service;
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.model.Consume;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
-import com.example.gamedemo.server.game.bag.model.Consume;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
@@ -170,7 +170,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             .getItemResourceByItemResourceId(equipItem.getItemResourceId());
     int[] playerTypes = itemResource.getPlayerTypes();
     for (int playerType : playerTypes) {
-      if (playerType == player.getPlayerType()) {
+      if (playerType == player.getRoleId()) {
         return true;
       }
     }

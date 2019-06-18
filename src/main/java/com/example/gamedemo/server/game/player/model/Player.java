@@ -15,18 +15,18 @@ import java.io.Serializable;
 /**
  * @author: wengj
  * @date: 2019/4/25
- * @description: 用户账号
+ * @description: 玩家
  */
 public class Player extends SceneObject implements Serializable {
 
   /** 玩家名称 */
-  private String playerName;
+  private String roleName;
 
   /** 玩家所对应的账户id */
   private String accountId;
 
   /** 玩家的类型 */
-  private int playerType;
+  private int roleId;
 
   /** 玩家战力 */
   private long combatIndex;
@@ -40,12 +40,12 @@ public class Player extends SceneObject implements Serializable {
   /** 场景 */
   private int sceneId;
 
-  public String getPlayerName() {
-    return playerName;
+  public String getRoleName() {
+    return roleName;
   }
 
-  public void setPlayerName(String playerName) {
-    this.playerName = playerName;
+  public void setRoleName(String roleName) {
+    this.roleName = roleName;
   }
 
   public String getAccountId() {
@@ -72,12 +72,12 @@ public class Player extends SceneObject implements Serializable {
     this.combatIndex = combatIndex;
   }
 
-  public int getPlayerType() {
-    return playerType;
+  public int getRoleId() {
+    return roleId;
   }
 
-  public void setPlayerType(int playerType) {
-    this.playerType = playerType;
+  public void setRoleId(int roleId) {
+    this.roleId = roleId;
   }
 
   public PlayerAttributeContainer getPlayerAttributeContainer() {
@@ -127,14 +127,14 @@ public class Player extends SceneObject implements Serializable {
   @Override
   public String toString() {
     return "Player{"
-        + "playerName='"
-        + playerName
+        + "roleName='"
+        + roleName
         + '\''
         + ", accountId='"
         + accountId
         + '\''
-        + ", playerType="
-        + playerType
+        + ", roleId="
+        + roleId
         + ", combatIndex="
         + combatIndex
         + ", level="

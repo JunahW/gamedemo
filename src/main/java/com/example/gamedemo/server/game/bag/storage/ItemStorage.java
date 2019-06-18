@@ -224,7 +224,7 @@ public class ItemStorage {
     for (AbstractItem item : abstractItems) {
       if (item != null) {
         if (item.getItemResourceId() == itemResourceId) {
-          total = +item.getQuantity();
+          total += item.getQuantity();
           if (total >= quantity) {
             return true;
           }

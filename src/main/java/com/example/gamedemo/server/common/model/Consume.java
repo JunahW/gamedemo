@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game.bag.model;
+package com.example.gamedemo.server.common.model;
 
 /**
  * @author wengj

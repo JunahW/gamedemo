@@ -16,7 +16,6 @@ import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.SceneResource;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +31,9 @@ import java.util.Map;
  * @date: 2019/4/29
  * @description: 账户业务实现层
  */
-@Service(value = "accountService")
+@Service
 public class PlayerServiceImpl implements PlayerService {
 
-  private static final ObjectMapper mapper = new ObjectMapper();
   private static final Logger logger = LoggerFactory.getLogger(PlayerServiceImpl.class);
   @Autowired private Accessor accessor;
   @Autowired private PlayerManager playerManager;
@@ -51,9 +49,9 @@ public class PlayerServiceImpl implements PlayerService {
     PlayerEnt load = accessor.load(PlayerEnt.class, player.getId());
     if (null != load) {
       logger.info("[{}]玩家已存在", player.getId());
-      RequestException.throwException(I18nId.PLAYER_NO_EXIST);
+      RequestException.throwException(I18nId.PLAYER_EXIST);
     }
-    player.setPlayerName(playerManager.getPlayerResourceById(player.getPlayerType()).getRoleName());
+    player.setRoleName(playerManager.getPlayerResourceById(player.getRoleId()).getRoleName());
     PlayerEnt playerEnt = new PlayerEnt();
     // 设置起始地址
     player.setSceneId(SystemConstant.DEFAULT_SCENE);
@@ -62,7 +60,7 @@ public class PlayerServiceImpl implements PlayerService {
     playerEnt.setPlayer(player);
 
     playerEnt.serialize();
-    logger.info("新增用户：{}", player.getPlayerName());
+    logger.info("新增用户：{}", player.getRoleName());
 
     Serializable save = accessor.save(PlayerEnt.class, playerEnt);
     if (save != null) {
@@ -163,8 +161,7 @@ public class PlayerServiceImpl implements PlayerService {
     Player player = event.getPlayer();
     // 玩家的积存属性
     BaseAttributeResource baseAttribute =
-        SpringContext.getPlayerService()
-            .getBaseAttributeResourceByPlayerType(player.getPlayerType());
+        SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getRoleId());
 
     // 玩家容器
     PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();

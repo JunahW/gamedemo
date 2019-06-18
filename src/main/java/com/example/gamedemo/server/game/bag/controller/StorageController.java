@@ -146,10 +146,10 @@ public class StorageController {
    * @param session
    * @param req
    */
-  @HandlerMethod(cmd = "checkBag")
-  public void checkBag(TSession session, CM_CheckStorage req) {
+  @HandlerMethod(cmd = "checkPack")
+  public void checkPackFreeCapacity(TSession session, CM_CheckStorage req) {
     Player player = session.getPlayer();
-    int bagNum = itemService.checkBag(player);
+    int bagNum = itemService.checkPackFreeCapacity(player);
     SessionManager.sendMessage(session, SM_GetBagCapacity.valueOf(bagNum));
   }
 }

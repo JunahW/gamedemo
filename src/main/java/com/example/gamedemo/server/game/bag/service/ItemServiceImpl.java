@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
     }
     // 减少道具
     pack.reduceStorageItemByObjectId(guid, quantity);
-    logger.info("[{}]玩家使用了道具[{}]", player.getPlayerName(), commonItem.getItemName());
+    logger.info("[{}]玩家使用了道具[{}]", player.getRoleName(), commonItem.getItemName());
 
     // 保存入库
     saveItemStorageEnt(player);
@@ -83,13 +83,13 @@ public class ItemServiceImpl implements ItemService {
     AbstractItem item = pack.getStorageItemByObjectId(guid);
     if (item == null) {
       RequestException.throwException(I18nId.BAG_NO_EXIST_ITEM);
-      logger.info("[{}]背包不存在该物品[{}]", player.getPlayerName(), guid);
+      logger.info("[{}]背包不存在该物品[{}]", player.getRoleName(), guid);
     }
     return item.getQuantity();
   }
 
   @Override
-  public int checkBag(Player player) {
+  public int checkPackFreeCapacity(Player player) {
     ItemStorage pack = player.getPack();
     AbstractItem[] commonItems = pack.getAbstractItems();
     int size = 0;

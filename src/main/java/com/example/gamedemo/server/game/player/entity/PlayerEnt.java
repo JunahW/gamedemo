@@ -148,9 +148,9 @@ public class PlayerEnt implements Entity<Long> {
   @Override
   public boolean serialize() {
     this.setId(player.getId());
-    this.setPlayerName(player.getPlayerName());
+    this.setPlayerName(player.getRoleName());
     this.setAccountId(player.getAccountId());
-    this.setPlayerType(player.getPlayerType());
+    this.setPlayerType(player.getRoleId());
     this.setCombatIndex(player.getCombatIndex());
     this.setX(player.getX());
     this.setY(player.getY());
@@ -163,9 +163,9 @@ public class PlayerEnt implements Entity<Long> {
   public boolean deSerialize() {
     Player player = new Player();
     player.setId(getId());
-    player.setPlayerName(getPlayerName());
+    player.setRoleName(getPlayerName());
     player.setAccountId(getAccountId());
-    player.setPlayerType(getPlayerType());
+    player.setRoleId(getPlayerType());
     player.setCombatIndex(getCombatIndex());
     player.setX(getX());
     player.setY(getY());

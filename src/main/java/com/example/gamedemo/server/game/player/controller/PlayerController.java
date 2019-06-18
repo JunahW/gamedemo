@@ -57,7 +57,7 @@ public class PlayerController {
     Account account = session.getAccount();
     Player player = new Player();
     player.setId(req.getPlayerId());
-    player.setPlayerType(req.getPlayerType());
+    player.setRoleId(req.getPlayerType());
     player.setAccountId(account.getAccountId());
     boolean isSuccess = false;
     try {

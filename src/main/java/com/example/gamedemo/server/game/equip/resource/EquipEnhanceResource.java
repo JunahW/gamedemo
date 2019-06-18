@@ -4,8 +4,8 @@ import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.common.model.Consume;
 import com.example.gamedemo.server.game.attribute.Attribute;
-import com.example.gamedemo.server.game.bag.model.Consume;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;

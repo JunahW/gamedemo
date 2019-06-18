@@ -56,7 +56,7 @@ public interface ItemService {
    * @param player
    * @return
    */
-  int checkBag(Player player);
+  int checkPackFreeCapacity(Player player);
 
   /**
    * 创建道具
