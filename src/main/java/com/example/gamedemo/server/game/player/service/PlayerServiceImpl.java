@@ -4,7 +4,6 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
-import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
@@ -21,7 +20,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,18 +33,17 @@ import java.util.Map;
 public class PlayerServiceImpl implements PlayerService {
 
   private static final Logger logger = LoggerFactory.getLogger(PlayerServiceImpl.class);
-  @Autowired private Accessor accessor;
   @Autowired private PlayerManager playerManager;
 
   @Override
-  public Player getPlayerById(String playerId) {
+  public Player getPlayerById(long playerId) {
     logger.info("客户端查询accountId：{}", playerId);
-    return accessor.load(PlayerEnt.class, playerId).getPlayer();
+    return playerManager.getPlayerEntByPlayerId(playerId).getPlayer();
   }
 
   @Override
   public boolean createPlayer(Player player) {
-    PlayerEnt load = accessor.load(PlayerEnt.class, player.getId());
+    PlayerEnt load = playerManager.getPlayerEntByPlayerId(player.getId());
     if (null != load) {
       logger.info("[{}]玩家已存在", player.getId());
       RequestException.throwException(I18nId.PLAYER_EXIST);
@@ -59,24 +56,15 @@ public class PlayerServiceImpl implements PlayerService {
     scene.enterScene(player);
     playerEnt.setPlayer(player);
 
-    playerEnt.serialize();
+    savePlayerEnt(player);
     logger.info("新增用户：{}", player.getRoleName());
-
-    Serializable save = accessor.save(PlayerEnt.class, playerEnt);
-    if (save != null) {
-      logger.info("新增用户成功");
-      return true;
-    } else {
-      logger.info("新增用户失败");
-      return false;
-    }
+    return true;
   }
 
   @Override
   public Player selectPlayer(String accountId, Long playerId) {
     PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
     if (playerEnt != null && playerEnt.getAccountId().equals(accountId)) {
-      playerEnt.deSerialize();
       Player player = playerEnt.getPlayer();
       logger.info("{}选择角色成功", playerEnt.getPlayerName());
       // 初始化玩家属性
@@ -92,10 +80,7 @@ public class PlayerServiceImpl implements PlayerService {
   @Override
   public void updatePlayer(Player player) {
     logger.info("异步保存数据");
-    PlayerEnt playerEnt = new PlayerEnt();
-    playerEnt.setPlayer(player);
-    playerEnt.serialize();
-    accessor.saveOrUpdate(PlayerEnt.class, playerEnt);
+    savePlayerEnt(player);
   }
 
   @Override

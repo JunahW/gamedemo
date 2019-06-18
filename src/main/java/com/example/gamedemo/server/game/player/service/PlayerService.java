@@ -22,7 +22,7 @@ public interface PlayerService {
    * @param playerId
    * @return
    */
-  Player getPlayerById(String playerId);
+  Player getPlayerById(long playerId);
 
   /**
    * 新增账户

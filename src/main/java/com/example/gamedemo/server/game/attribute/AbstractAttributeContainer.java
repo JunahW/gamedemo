@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
@@ -24,7 +23,7 @@ public abstract class AbstractAttributeContainer<T> {
   private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
   /** 不同模块的属性容器 */
-  private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new ConcurrentHashMap<>();
+  private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new HashMap<>();
 
   public AbstractAttributeContainer(T owner) {
     this.owner = owner;
@@ -34,17 +33,6 @@ public abstract class AbstractAttributeContainer<T> {
 
   /** 计算玩家战力 */
   public abstract void computeCombatIndex();
-
-  /**
-   * 获取属性的值
-   *
-   * @param attributeType
-   * @return
-   */
-  public double getAttributeValue(String attributeType) {
-    Attribute attribute = attributeMap.get(attributeType);
-    return attribute.getValue();
-  }
 
   /** 计算属性值 */
   public void compute() {

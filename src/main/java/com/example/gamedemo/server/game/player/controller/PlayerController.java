@@ -58,9 +58,10 @@ public class PlayerController {
     Player player = new Player();
     player.setId(req.getPlayerId());
     player.setRoleId(req.getPlayerType());
-    player.setAccountId(account.getAccountId());
+
     boolean isSuccess = false;
     try {
+      player.setAccountId(account.getAccountId());
       isSuccess = SpringContext.getPlayerService().createPlayer(player);
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
