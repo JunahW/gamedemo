@@ -48,7 +48,7 @@ public class PlayerServiceImpl implements PlayerService {
       logger.info("[{}]玩家已存在", player.getId());
       RequestException.throwException(I18nId.PLAYER_EXIST);
     }
-    player.setRoleName(playerManager.getPlayerResourceById(player.getRoleId()).getRoleName());
+    player.setJobName(playerManager.getPlayerResourceById(player.getJobId()).getJobName());
     PlayerEnt playerEnt = new PlayerEnt();
     // 设置起始地址
     player.setSceneId(SystemConstant.DEFAULT_SCENE);
@@ -57,7 +57,7 @@ public class PlayerServiceImpl implements PlayerService {
     playerEnt.setPlayer(player);
 
     savePlayerEnt(player);
-    logger.info("新增用户：{}", player.getRoleName());
+    logger.info("新增用户：{}", player.getJobName());
     return true;
   }
 
@@ -66,7 +66,7 @@ public class PlayerServiceImpl implements PlayerService {
     PlayerEnt playerEnt = playerManager.getPlayerEntByPlayerId(playerId);
     if (playerEnt != null && playerEnt.getAccountId().equals(accountId)) {
       Player player = playerEnt.getPlayer();
-      logger.info("{}选择角色成功", playerEnt.getPlayerName());
+      logger.info("{}选择角色成功", playerEnt.getJobName());
       // 初始化玩家属性
       getPlayerAttrByPlayerId(player, playerId);
       return player;
@@ -146,7 +146,7 @@ public class PlayerServiceImpl implements PlayerService {
     Player player = event.getPlayer();
     // 玩家的积存属性
     BaseAttributeResource baseAttribute =
-        SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getRoleId());
+        SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getJobId());
 
     // 玩家容器
     PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();

@@ -170,7 +170,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             .getItemResourceByItemResourceId(equipItem.getItemResourceId());
     int[] playerTypes = itemResource.getPlayerTypes();
     for (int playerType : playerTypes) {
-      if (playerType == player.getRoleId()) {
+      if (playerType == player.getJobId()) {
         return true;
       }
     }

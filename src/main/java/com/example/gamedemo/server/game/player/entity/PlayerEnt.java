@@ -18,11 +18,11 @@ import javax.persistence.Transient;
 public class PlayerEnt implements Entity<Long> {
   @Id private Long id;
 
-  @Column private String playerName;
+  @Column private String jobName;
 
   @Column private String accountId;
 
-  @Column private int playerType;
+  @Column private int jobId;
 
   /** 玩家战力 */
   @Column private long combatIndex;
@@ -63,12 +63,12 @@ public class PlayerEnt implements Entity<Long> {
     this.id = id;
   }
 
-  public String getPlayerName() {
-    return playerName;
+  public String getJobName() {
+    return jobName;
   }
 
-  public void setPlayerName(String playerName) {
-    this.playerName = playerName;
+  public void setJobName(String jobName) {
+    this.jobName = jobName;
   }
 
   public String getAccountId() {
@@ -79,12 +79,12 @@ public class PlayerEnt implements Entity<Long> {
     this.accountId = accountId;
   }
 
-  public int getPlayerType() {
-    return playerType;
+  public int getJobId() {
+    return jobId;
   }
 
-  public void setPlayerType(int playerType) {
-    this.playerType = playerType;
+  public void setJobId(int jobId) {
+    this.jobId = jobId;
   }
 
   public long getCombatIndex() {
@@ -148,9 +148,9 @@ public class PlayerEnt implements Entity<Long> {
   @Override
   public boolean serialize() {
     this.setId(player.getId());
-    this.setPlayerName(player.getRoleName());
+    this.setJobName(player.getJobName());
     this.setAccountId(player.getAccountId());
-    this.setPlayerType(player.getRoleId());
+    this.setJobId(player.getJobId());
     this.setCombatIndex(player.getCombatIndex());
     this.setX(player.getX());
     this.setY(player.getY());
@@ -163,9 +163,9 @@ public class PlayerEnt implements Entity<Long> {
   public boolean deSerialize() {
     Player player = new Player();
     player.setId(getId());
-    player.setRoleName(getPlayerName());
+    player.setJobName(getJobName());
     player.setAccountId(getAccountId());
-    player.setRoleId(getPlayerType());
+    player.setJobId(getJobId());
     player.setCombatIndex(getCombatIndex());
     player.setX(getX());
     player.setY(getY());

@@ -81,7 +81,7 @@ public class SceneServiceImpl implements SceneService {
       }
     }
     if (!isNeighbor) {
-      logger.info("{}进入{}失败，只能进入相邻的场景", player.getRoleName(), sceneResource.getSceneName());
+      logger.info("{}进入{}失败，只能进入相邻的场景", player.getJobName(), sceneResource.getSceneName());
       RequestException.throwException(I18nId.SCENE_NO_NEIGHBOR);
     }
     // 退出当前场景
@@ -93,7 +93,7 @@ public class SceneServiceImpl implements SceneService {
     player.setX(sceneResource.getX());
     player.setY(sceneResource.getY());
     targetScene.enterScene(player);
-    logger.info("{}进入{}", player.getRoleName(), sceneResource.getSceneName());
+    logger.info("{}进入{}", player.getJobName(), sceneResource.getSceneName());
     return true;
   }
 

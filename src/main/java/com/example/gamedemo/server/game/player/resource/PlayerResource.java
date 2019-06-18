@@ -11,31 +11,31 @@ import com.example.gamedemo.common.resource.ResourceInterface;
  */
 @Resource
 public class PlayerResource implements ResourceInterface {
-  @ExcelColumn(columnName = "roleId")
-  private int roleId;
+  @ExcelColumn(columnName = "jobId")
+  private int jobId;
 
-  @ExcelColumn(columnName = "roleName")
-  private String roleName;
+  @ExcelColumn(columnName = "jobName")
+  private String jobName;
 
-  public int getRoleId() {
-    return roleId;
+  public int getJobId() {
+    return jobId;
   }
 
-  public void setRoleId(int roleId) {
-    this.roleId = roleId;
+  public void setJobId(int jobId) {
+    this.jobId = jobId;
   }
 
-  public String getRoleName() {
-    return roleName;
+  public String getJobName() {
+    return jobName;
   }
 
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
+  public void setJobName(String jobName) {
+    this.jobName = jobName;
   }
 
   @Override
   public Object getId() {
-    return roleId;
+    return jobId;
   }
 
   @Override

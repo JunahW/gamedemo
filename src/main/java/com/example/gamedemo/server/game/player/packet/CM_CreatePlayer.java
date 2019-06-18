@@ -11,13 +11,13 @@ public class CM_CreatePlayer {
   private Long playerId;
 
   /** 玩家类型 */
-  private int playerType;
+  private int jobId;
 
   public Long getPlayerId() {
     return playerId;
   }
 
-  public int getPlayerType() {
-    return playerType;
+  public int getJobId() {
+    return jobId;
   }
 }
