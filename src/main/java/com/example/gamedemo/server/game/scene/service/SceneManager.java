@@ -98,7 +98,6 @@ public class SceneManager {
   /** 初始化MapNpcMap */
   private void initMapNpcMap() {
     Map<Integer, Map<Integer, NpcResource>> mapNpcResourceMap = new HashMap<>(16);
-
     Set<Map.Entry<Integer, NpcResource>> entries = npcResource.entrySet();
     for (Map.Entry<Integer, NpcResource> enhanceResourceEntry : entries) {
       NpcResource resourceValue = enhanceResourceEntry.getValue();
@@ -126,19 +125,23 @@ public class SceneManager {
       Scene scene = Scene.valueOf(mapResource.getMapId());
       // 初始化npc
       Map<Integer, NpcResource> npcResourceMap = mapNpcMap.get(mapResource.getMapId());
-      for (Map.Entry<Integer, NpcResource> entry : npcResourceMap.entrySet()) {
-        NpcResource value = entry.getValue();
-        Npc npc = Npc.valueOf(value.getNpcId());
-        scene.putNpc(npc);
-      }
-      // 初始化怪物
-      Map<Integer, MonsterResource> monsterResourceMap = mapMonstercMap.get(mapResource.getMapId());
-      for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
-        MonsterResource value = entry.getValue();
-        Monster monster = Monster.valueOf(value.getMonsterId());
-        scene.putMonster(monster);
+      if (npcResourceMap != null) {
+        for (Map.Entry<Integer, NpcResource> entry : npcResourceMap.entrySet()) {
+          NpcResource value = entry.getValue();
+          Npc npc = Npc.valueOf(value.getNpcId());
+          scene.putNpc(npc);
+        }
       }
 
+      // 初始化怪物
+      Map<Integer, MonsterResource> monsterResourceMap = mapMonstercMap.get(mapResource.getMapId());
+      if (monsterResourceMap != null) {
+        for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
+          MonsterResource value = entry.getValue();
+          Monster monster = Monster.valueOf(value.getMonsterId());
+          scene.putMonster(monster);
+        }
+      }
       sceneMap.put(scene.getSceneResourceId(), scene);
     }
   }
@@ -155,7 +158,6 @@ public class SceneManager {
         mapMonsterResourceMap.put(mapId, new HashMap<>(16));
       }
       Map<Integer, MonsterResource> npcResourceMap = mapMonsterResourceMap.get(mapId);
-
       int npcId = resourceValue.getMonsterId();
       if (!npcResourceMap.containsKey(npcId)) {
         npcResourceMap.put(npcId, resourceValue);
