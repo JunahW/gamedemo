@@ -28,10 +28,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class EquipmentManager {
 
   /** 静态资源 */
-  private Map<String, EquipAttrResource> equipAttrResource =
+  private Map<Integer, EquipAttrResource> equipAttrResource =
       ResourceManager.getResourceMap(EquipAttrResource.class);
 
-  private Map<String, EquipEnhanceResource> equipEnhanceResource =
+  private Map<Integer, EquipEnhanceResource> equipEnhanceResource =
       ResourceManager.getResourceMap(EquipEnhanceResource.class);
 
   /** <位置，<等级，配置资源>> */
@@ -112,8 +112,8 @@ public class EquipmentManager {
   private void initEquipEnhanceResource() {
     Map<Integer, Map<Integer, EquipEnhanceResource>> positionLevelResourceMap = new HashMap<>(16);
 
-    Set<Map.Entry<String, EquipEnhanceResource>> entries = equipEnhanceResource.entrySet();
-    for (Map.Entry<String, EquipEnhanceResource> enhanceResourceEntry : entries) {
+    Set<Map.Entry<Integer, EquipEnhanceResource>> entries = equipEnhanceResource.entrySet();
+    for (Map.Entry<Integer, EquipEnhanceResource> enhanceResourceEntry : entries) {
       EquipEnhanceResource resourceValue = enhanceResourceEntry.getValue();
       int position = resourceValue.getPosition();
       if (!positionLevelResourceMap.containsKey(position)) {

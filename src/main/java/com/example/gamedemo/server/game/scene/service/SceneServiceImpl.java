@@ -4,7 +4,7 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
+import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,10 +41,10 @@ public class SceneServiceImpl implements SceneService {
     Scene currentScene = sceneManager.getSceneBysceneResourceId(currentSceneId);
     currentScene.leaveScene(player.getId());
 
-    SceneResource sceneResource = sceneManager.getSceneResourceById(sceneId);
+    MapResource mapResource = sceneManager.getSceneResourceById(sceneId);
     player.setSceneId(sceneId);
-    player.setX(sceneResource.getX());
-    player.setY(sceneResource.getY());
+    player.setX(mapResource.getX());
+    player.setY(mapResource.getY());
 
     logger.info("{}进入{}", player.getId(), sceneId);
     return true;
@@ -69,9 +69,9 @@ public class SceneServiceImpl implements SceneService {
     // 当前的场景
     Scene currentScene = sceneManager.getSceneBysceneResourceId(player.getSceneId());
     int sceneResourceId = currentScene.getSceneResourceId();
-    SceneResource sceneResource = sceneManager.getSceneResourceById(sceneResourceId);
+    MapResource mapResource = sceneManager.getSceneResourceById(sceneResourceId);
 
-    int[] neighborArray = sceneResource.getNeighborArray();
+    int[] neighborArray = mapResource.getNeighborArray();
     // 判断场景是否相邻
     boolean isNeighbor = false;
     for (int neighbor : neighborArray) {
@@ -81,7 +81,7 @@ public class SceneServiceImpl implements SceneService {
       }
     }
     if (!isNeighbor) {
-      logger.info("{}进入{}失败，只能进入相邻的场景", player.getJobName(), sceneResource.getSceneName());
+      logger.info("{}进入{}失败，只能进入相邻的场景", player.getJobName(), mapResource.getMapName());
       RequestException.throwException(I18nId.SCENE_NO_NEIGHBOR);
     }
     // 退出当前场景
@@ -90,15 +90,15 @@ public class SceneServiceImpl implements SceneService {
     // 进入新的场景
     Scene targetScene = sceneManager.getSceneBysceneResourceId(sceneId);
     player.setSceneId(sceneId);
-    player.setX(sceneResource.getX());
-    player.setY(sceneResource.getY());
+    player.setX(mapResource.getX());
+    player.setY(mapResource.getY());
     targetScene.enterScene(player);
-    logger.info("{}进入{}", player.getJobName(), sceneResource.getSceneName());
+    logger.info("{}进入{}", player.getJobName(), mapResource.getMapName());
     return true;
   }
 
   @Override
-  public SceneResource getSceneResourceById(int sceneId) {
+  public MapResource getSceneResourceById(int sceneId) {
     return sceneManager.getSceneResourceById(sceneId);
   }
 }

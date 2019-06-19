@@ -16,14 +16,14 @@ import java.util.Objects;
  * @description:
  */
 @Resource
-public class SceneResource implements Serializable, ResourceInterface {
+public class MapResource implements Serializable, ResourceInterface {
   /** 场景id */
-  @ExcelColumn(columnName = "sceneId")
-  private int sceneId;
+  @ExcelColumn(columnName = "mapId")
+  private int mapId;
 
   /** 场景名称 */
-  @ExcelColumn(columnName = "sceneName")
-  private String sceneName;
+  @ExcelColumn(columnName = "mapName")
+  private String mapName;
 
   /** 临近场景 用‘,’隔开 */
   @ExcelColumn(columnName = "neighbors")
@@ -49,8 +49,8 @@ public class SceneResource implements Serializable, ResourceInterface {
   private int y;
 
   /** 地图数组字符串 */
-  @ExcelColumn(columnName = "sceneMap")
-  private int[][] sceneMap;
+  @ExcelColumn(columnName = "mapArray")
+  private int[][] mapArray;
 
   /** NPC字符串集合，“,”隔开 */
   @ExcelColumn(columnName = "npcs")
@@ -64,31 +64,31 @@ public class SceneResource implements Serializable, ResourceInterface {
 
   private int[] monsterArray;
 
-  public SceneResource() {}
+  public MapResource() {}
 
-  public SceneResource(int sceneId) {
-    this.sceneId = sceneId;
+  public MapResource(int mapId) {
+    this.mapId = mapId;
   }
 
-  public SceneResource(int sceneId, String sceneName) {
-    this.sceneId = sceneId;
-    this.sceneName = sceneName;
+  public MapResource(int mapId, String mapName) {
+    this.mapId = mapId;
+    this.mapName = mapName;
   }
 
-  public int getSceneId() {
-    return sceneId;
+  public int getMapId() {
+    return mapId;
   }
 
-  public void setSceneId(int sceneId) {
-    this.sceneId = sceneId;
+  public void setMapId(int mapId) {
+    this.mapId = mapId;
   }
 
-  public String getSceneName() {
-    return sceneName;
+  public String getMapName() {
+    return mapName;
   }
 
-  public void setSceneName(String sceneName) {
-    this.sceneName = sceneName;
+  public void setMapName(String mapName) {
+    this.mapName = mapName;
   }
 
   public String getNeighbors() {
@@ -147,12 +147,12 @@ public class SceneResource implements Serializable, ResourceInterface {
     this.monsters = monsters;
   }
 
-  public int[][] getSceneMap() {
-    return sceneMap;
+  public int[][] getMapArray() {
+    return mapArray;
   }
 
-  public void setSceneMap(int[][] sceneMap) {
-    this.sceneMap = sceneMap;
+  public void setMapArray(int[][] mapArray) {
+    this.mapArray = mapArray;
   }
 
   public int[] getNpcArray() {
@@ -182,11 +182,11 @@ public class SceneResource implements Serializable, ResourceInterface {
   @Override
   public String toString() {
     return "Scene{"
-        + "sceneId='"
-        + sceneId
+        + "mapId='"
+        + mapId
         + '\''
-        + ", sceneName='"
-        + sceneName
+        + ", mapName='"
+        + mapName
         + '\''
         + ", neighbors='"
         + neighbors
@@ -199,8 +199,8 @@ public class SceneResource implements Serializable, ResourceInterface {
         + x
         + ", y="
         + y
-        + ", sceneMap="
-        + Arrays.toString(sceneMap)
+        + ", mapArray="
+        + Arrays.toString(mapArray)
         + ", npcs='"
         + npcs
         + '\''
@@ -218,19 +218,19 @@ public class SceneResource implements Serializable, ResourceInterface {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    SceneResource sceneResource = (SceneResource) o;
-    return Objects.equals(sceneId, sceneResource.sceneId);
+    MapResource mapResource = (MapResource) o;
+    return Objects.equals(mapId, mapResource.mapId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(sceneId);
+    return Objects.hash(mapId);
   }
 
   @JsonIgnore
   @Override
   public Object getId() {
-    return this.sceneId;
+    return this.mapId;
   }
 
   @Override

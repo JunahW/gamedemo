@@ -7,7 +7,7 @@ import com.example.gamedemo.common.dispatcher.InvokeMethod;
 import com.example.gamedemo.common.utils.ApplicationContextProvider;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.player.packet.CM_CreatePlayer;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
+import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class GamedemoApplicationTests {
 
   @Test
   public void testClass() {
-    Class<SceneResource> sceneClass = SceneResource.class;
+    Class<MapResource> sceneClass = MapResource.class;
     System.out.println(sceneClass.getSimpleName());
   }
 

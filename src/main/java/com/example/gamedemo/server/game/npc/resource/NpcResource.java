@@ -17,8 +17,8 @@ public class NpcResource implements ResourceInterface {
   @ExcelColumn(columnName = "npcId")
   private int npcId;
   /** 实体名称 */
-  @ExcelColumn(columnName = "objectName")
-  private String objectName;
+  @ExcelColumn(columnName = "npcName")
+  private String npcName;
   /** 实体状态 0 死亡 1 生存 */
   @ExcelColumn(columnName = "status")
   private int status;
@@ -29,12 +29,12 @@ public class NpcResource implements ResourceInterface {
   @ExcelColumn(columnName = "y")
   private int y;
   /** 场景id */
-  @ExcelColumn(columnName = "sceneId")
-  private String sceneId;
+  @ExcelColumn(columnName = "mapId")
+  private int mapId;
 
   public NpcResource(int npcId, String objectName, int status) {
     this.npcId = npcId;
-    this.objectName = objectName;
+    this.npcName = objectName;
     this.status = status;
   }
 
@@ -56,20 +56,20 @@ public class NpcResource implements ResourceInterface {
     this.status = status;
   }
 
-  public String getObjectName() {
-    return objectName;
+  public String getNpcName() {
+    return npcName;
   }
 
-  public void setObjectName(String objectName) {
-    this.objectName = objectName;
+  public void setNpcName(String npcName) {
+    this.npcName = npcName;
   }
 
-  public String getSceneId() {
-    return sceneId;
+  public int getMapId() {
+    return mapId;
   }
 
-  public void setSceneId(String sceneId) {
-    this.sceneId = sceneId;
+  public void setMapId(int mapId) {
+    this.mapId = mapId;
   }
 
   public int getX() {
@@ -93,8 +93,8 @@ public class NpcResource implements ResourceInterface {
     return "NpcResource{"
         + "npcId="
         + npcId
-        + ", objectName='"
-        + objectName
+        + ", npcName='"
+        + npcName
         + '\''
         + ", status="
         + status
@@ -102,8 +102,8 @@ public class NpcResource implements ResourceInterface {
         + x
         + ", y="
         + y
-        + ", sceneId='"
-        + sceneId
+        + ", mapId='"
+        + mapId
         + '\''
         + '}';
   }

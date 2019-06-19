@@ -23,7 +23,7 @@ public class ItemManager {
 
   private final Class clazz = ItemStorageEnt.class;
   /** 静态资源 */
-  private Map<String, ItemResource> itemResource =
+  private Map<Integer, ItemResource> itemResource =
       ResourceManager.getResourceMap(ItemResource.class);
 
   @Autowired private Accessor accessor;

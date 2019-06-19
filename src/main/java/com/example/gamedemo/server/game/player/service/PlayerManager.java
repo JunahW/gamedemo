@@ -20,10 +20,10 @@ import java.util.Map;
 @Component
 public class PlayerManager {
 
-  private Map<String, PlayerResource> playerResource =
+  private Map<Integer, PlayerResource> playerResource =
       ResourceManager.getResourceMap(PlayerResource.class);
 
-  private Map<String, BaseAttributeResource> baseAttributeResource =
+  private Map<Integer, BaseAttributeResource> baseAttributeResource =
       ResourceManager.getResourceMap(BaseAttributeResource.class);
 
   @Autowired private Accessor accessor;

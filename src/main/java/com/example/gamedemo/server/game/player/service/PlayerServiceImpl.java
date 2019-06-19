@@ -14,7 +14,7 @@ import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
+import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,11 +94,11 @@ public class PlayerServiceImpl implements PlayerService {
   public boolean move2Coordinate(Player player, int x, int y) {
     int sceneId = player.getSceneId();
 
-    SceneResource sceneResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
-    int[][] sceneMap = sceneResource.getSceneMap();
+    MapResource mapResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
+    int[][] sceneMap = mapResource.getMapArray();
     // TODO 移动位置
 
-    if (sceneResource.getWidth() - 1 < x || sceneResource.getHeight() - 1 < y) {
+    if (mapResource.getWidth() - 1 < x || mapResource.getHeight() - 1 < y) {
       logger.info("请求位置参数不合法");
       RequestException.throwException(I18nId.SCENE_POSITION_ERROR);
     }

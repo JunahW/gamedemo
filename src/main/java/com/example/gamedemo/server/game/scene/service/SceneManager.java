@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
+import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,20 +19,20 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SceneManager {
   /** 静态资源 */
-  private Map<String, SceneResource> sceneResource =
-      ResourceManager.getResourceMap(SceneResource.class);
+  private Map<Integer, MapResource> sceneResource =
+      ResourceManager.getResourceMap(MapResource.class);
 
   /** 动态场景 */
   private ConcurrentHashMap<Integer, Scene> sceneMap = new ConcurrentHashMap<>();
 
   @PostConstruct
   public void init() {
-    for (Map.Entry<String, SceneResource> sceneResourceEntry : sceneResource.entrySet()) {
-      SceneResource sceneResource = sceneResourceEntry.getValue();
-      if (sceneResource == null) {
+    for (Map.Entry<Integer, MapResource> sceneResourceEntry : sceneResource.entrySet()) {
+      MapResource mapResource = sceneResourceEntry.getValue();
+      if (mapResource == null) {
         continue;
       }
-      Scene scene = Scene.valueOf(sceneResource.getSceneId());
+      Scene scene = Scene.valueOf(mapResource.getMapId());
       sceneMap.put(scene.getSceneResourceId(), scene);
     }
   }
@@ -43,7 +43,7 @@ public class SceneManager {
    * @param sceneId
    * @return
    */
-  public SceneResource getSceneResourceById(int sceneId) {
+  public MapResource getSceneResourceById(int sceneId) {
     return sceneResource.get(sceneId);
   }
 

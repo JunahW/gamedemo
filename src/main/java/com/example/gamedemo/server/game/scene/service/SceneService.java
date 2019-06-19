@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.resource.SceneResource;
+import com.example.gamedemo.server.game.scene.resource.MapResource;
 
 import java.util.List;
 
@@ -51,5 +51,5 @@ public interface SceneService {
    * @param sceneId
    * @return
    */
-  SceneResource getSceneResourceById(int sceneId);
+  MapResource getSceneResourceById(int sceneId);
 }
