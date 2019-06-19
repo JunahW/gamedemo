@@ -37,7 +37,7 @@ public class UniqueIdUtils {
   private static final long TIMESTAMP_LEFT = DATA_CENTER_LEFT + DATA_CENTER_BIT;
 
   /** 数据中心 */
-  private static final long DATACENTER_ID = 1;
+  private static final long DATA_CENTER_ID = 1;
   /** 机器标识 */
   private static final long MACHINE_ID = 1;
   /** 序列号 */
@@ -71,7 +71,7 @@ public class UniqueIdUtils {
     lastStamp = currStmp;
     // 时间戳部分
     return (currStmp - START_STAMP) << TIMESTAMP_LEFT
-        | DATACENTER_ID << DATA_CENTER_LEFT // 数据中心部分
+        | DATA_CENTER_ID << DATA_CENTER_LEFT // 数据中心部分
         | MACHINE_ID << MACHINE_LEFT // 机器标识部分
         | sequence; // 序列号部分
   }
