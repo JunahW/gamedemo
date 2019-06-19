@@ -14,7 +14,6 @@ import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,33 +87,6 @@ public class PlayerServiceImpl implements PlayerService {
     List<Player> playerList = new ArrayList<>();
 
     return playerList;
-  }
-
-  @Override
-  public boolean move2Coordinate(Player player, int x, int y) {
-    int sceneId = player.getSceneId();
-
-    MapResource mapResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
-    int[][] sceneMap = mapResource.getMapArray();
-    // TODO 移动位置
-
-    if (mapResource.getWidth() - 1 < x || mapResource.getHeight() - 1 < y) {
-      logger.info("请求位置参数不合法");
-      RequestException.throwException(I18nId.SCENE_POSITION_ERROR);
-    }
-    // 修改玩家当前位置
-    if (sceneMap[x][y] == 0) {
-      logger.info("该位置有障碍物");
-      RequestException.throwException(I18nId.SCENE_OBSTACLE);
-    }
-
-    /** 移动位置 */
-    int preX = player.getX();
-    int preY = player.getY();
-    player.setX(x);
-    player.setY(y);
-    logger.info("({},{})从移动到({},{})", preX, preY, x, y);
-    return true;
   }
 
   @Override

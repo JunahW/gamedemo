@@ -2,8 +2,10 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +96,35 @@ public class SceneServiceImpl implements SceneService {
     player.setY(mapResource.getY());
     targetScene.enterScene(player);
     logger.info("{}进入{}", player.getJobName(), mapResource.getMapName());
+    return true;
+  }
+
+  @Override
+  public boolean move2Coordinate(Player player, int x, int y) {
+    int sceneId = player.getSceneId();
+
+    MapResource mapResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
+    LandformResource landformResource =
+        sceneManager.getLandformResourceById(mapResource.getLandformId());
+    int[][] sceneMap = landformResource.getMapArray();
+    // TODO 移动位置
+
+    if (landformResource.getWidth() - 1 < x || landformResource.getHeight() - 1 < y) {
+      logger.info("请求位置参数不合法");
+      RequestException.throwException(I18nId.SCENE_POSITION_ERROR);
+    }
+    // 修改玩家当前位置
+    if (sceneMap[x][y] == 0) {
+      logger.info("该位置有障碍物");
+      RequestException.throwException(I18nId.SCENE_OBSTACLE);
+    }
+
+    /** 移动位置 */
+    int preX = player.getX();
+    int preY = player.getY();
+    player.setX(x);
+    player.setY(y);
+    logger.info("({},{})从移动到({},{})", preX, preY, x, y);
     return true;
   }
 

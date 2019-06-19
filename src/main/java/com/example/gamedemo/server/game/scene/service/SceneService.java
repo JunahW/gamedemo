@@ -52,4 +52,14 @@ public interface SceneService {
    * @return
    */
   MapResource getSceneResourceById(int sceneId);
+
+  /**
+   * 玩家移动
+   *
+   * @param player
+   * @param x
+   * @param y
+   * @return
+   */
+  boolean move2Coordinate(Player player, int x, int y);
 }

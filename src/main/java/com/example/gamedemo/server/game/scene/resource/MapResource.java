@@ -32,14 +32,6 @@ public class MapResource implements Serializable, ResourceInterface {
   /** 相邻场景 */
   private int[] neighborArray;
 
-  /** 地图的宽 */
-  @ExcelColumn(columnName = "width")
-  private int width;
-
-  /** 地图的高 */
-  @ExcelColumn(columnName = "height")
-  private int height;
-
   /** 出生地坐标x */
   @ExcelColumn(columnName = "x")
   private int x;
@@ -48,21 +40,9 @@ public class MapResource implements Serializable, ResourceInterface {
   @ExcelColumn(columnName = "y")
   private int y;
 
-  /** 地图数组字符串 */
-  @ExcelColumn(columnName = "mapArray")
-  private int[][] mapArray;
-
-  /** NPC字符串集合，“,”隔开 */
-  @ExcelColumn(columnName = "npcs")
-  private String npcs;
-
-  private int[] npcArray;
-
-  /** 怪物字符串集合，“,”隔开 */
-  @ExcelColumn(columnName = "monsters")
-  private String monsters;
-
-  private int[] monsterArray;
+  /** 地形id */
+  @ExcelColumn(columnName = "landformId")
+  private int landformId;
 
   public MapResource() {}
 
@@ -99,20 +79,12 @@ public class MapResource implements Serializable, ResourceInterface {
     this.neighbors = neighbors;
   }
 
-  public int getWidth() {
-    return width;
+  public int[] getNeighborArray() {
+    return neighborArray;
   }
 
-  public void setWidth(int width) {
-    this.width = width;
-  }
-
-  public int getHeight() {
-    return height;
-  }
-
-  public void setHeight(int height) {
-    this.height = height;
+  public void setNeighborArray(int[] neighborArray) {
+    this.neighborArray = neighborArray;
   }
 
   public int getX() {
@@ -131,83 +103,12 @@ public class MapResource implements Serializable, ResourceInterface {
     this.y = y;
   }
 
-  public String getNpcs() {
-    return npcs;
+  public int getLandformId() {
+    return landformId;
   }
 
-  public void setNpcs(String npcs) {
-    this.npcs = npcs;
-  }
-
-  public String getMonsters() {
-    return monsters;
-  }
-
-  public void setMonsters(String monsters) {
-    this.monsters = monsters;
-  }
-
-  public int[][] getMapArray() {
-    return mapArray;
-  }
-
-  public void setMapArray(int[][] mapArray) {
-    this.mapArray = mapArray;
-  }
-
-  public int[] getNpcArray() {
-    return npcArray;
-  }
-
-  public void setNpcArray(int[] npcArray) {
-    this.npcArray = npcArray;
-  }
-
-  public int[] getMonsterArray() {
-    return monsterArray;
-  }
-
-  public void setMonsterArray(int[] monsterArray) {
-    this.monsterArray = monsterArray;
-  }
-
-  public int[] getNeighborArray() {
-    return neighborArray;
-  }
-
-  public void setNeighborArray(int[] neighborArray) {
-    this.neighborArray = neighborArray;
-  }
-
-  @Override
-  public String toString() {
-    return "Scene{"
-        + "mapId='"
-        + mapId
-        + '\''
-        + ", mapName='"
-        + mapName
-        + '\''
-        + ", neighbors='"
-        + neighbors
-        + '\''
-        + ", width="
-        + width
-        + ", height="
-        + height
-        + ", x="
-        + x
-        + ", y="
-        + y
-        + ", mapArray="
-        + Arrays.toString(mapArray)
-        + ", npcs='"
-        + npcs
-        + '\''
-        + ", monsters='"
-        + monsters
-        + '\''
-        + '}';
+  public void setLandformId(int landformId) {
+    this.landformId = landformId;
   }
 
   @Override
@@ -235,25 +136,33 @@ public class MapResource implements Serializable, ResourceInterface {
 
   @Override
   public void postInit() {
-    String[] npcSplit = npcs.split(SystemConstant.SPLIT_TOKEN_COMMA);
-    int[] npcTmp = new int[npcSplit.length];
-    for (int i = 0; i < npcSplit.length; i++) {
-      npcTmp[i] = Integer.parseInt(npcSplit[i]);
-    }
-    npcArray = npcTmp;
-
-    String[] monsterSplit = monsters.split(SystemConstant.SPLIT_TOKEN_COMMA);
-    int[] monsterTmp = new int[monsterSplit.length];
-    for (int i = 0; i < monsterSplit.length; i++) {
-      monsterTmp[i] = Integer.parseInt(monsterSplit[i]);
-    }
-    monsterArray = monsterTmp;
-
     String[] neighborSplit = neighbors.split(SystemConstant.SPLIT_TOKEN_COMMA);
     int[] neighborTmp = new int[neighborSplit.length];
     for (int i = 0; i < neighborSplit.length; i++) {
       neighborTmp[i] = Integer.parseInt(neighborSplit[i]);
     }
     neighborArray = neighborTmp;
+  }
+
+  @Override
+  public String toString() {
+    return "MapResource{"
+        + "mapId="
+        + mapId
+        + ", mapName='"
+        + mapName
+        + '\''
+        + ", neighbors='"
+        + neighbors
+        + '\''
+        + ", neighborArray="
+        + Arrays.toString(neighborArray)
+        + ", x="
+        + x
+        + ", y="
+        + y
+        + ", landformId="
+        + landformId
+        + '}';
   }
 }

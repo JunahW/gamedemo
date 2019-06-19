@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.monster.model;
 
+import com.example.gamedemo.common.utils.UniqueIdUtils;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 
@@ -11,6 +12,18 @@ import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 public class Monster extends SceneObject {
   /** 怪物资源id */
   private int monsterResourceId;
+
+  /**
+   * @param monsterResourceId
+   * @return
+   */
+  public static Monster valueOf(Integer monsterResourceId) {
+    Monster monster = new Monster();
+    monster.setId(UniqueIdUtils.nextId());
+    monster.setMonsterResourceId(monsterResourceId);
+    // TODO 设置坐标
+    return monster;
+  }
 
   public int getMonsterResourceId() {
     return monsterResourceId;

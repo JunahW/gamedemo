@@ -56,16 +56,6 @@ public interface PlayerService {
   List<Player> getPlayerList();
 
   /**
-   * 玩家移动
-   *
-   * @param player
-   * @param x
-   * @param y
-   * @return
-   */
-  boolean move2Coordinate(Player player, int x, int y);
-
-  /**
    * 玩家类型
    *
    * @param playerType

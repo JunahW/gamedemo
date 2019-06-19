@@ -99,7 +99,7 @@ public class SceneController {
     Player player = session.getPlayer();
     boolean isSuccess = false;
     try {
-      isSuccess = SpringContext.getPlayerService().move2Coordinate(player, req.getX(), req.getY());
+      isSuccess = SpringContext.getSceneService().move2Coordinate(player, req.getX(), req.getY());
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     } catch (Exception e) {

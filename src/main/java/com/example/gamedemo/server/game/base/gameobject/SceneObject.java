@@ -9,9 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description：场景对象
  * @date 2019/6/14
  */
+// TODO
 public abstract class SceneObject {
 
-  /** TODO 场景对象视觉？ */
+  /** TODO 场景对象视觉？ 组合 */
   ConcurrentHashMap<Long, SceneObject> sceneObjectMap = new ConcurrentHashMap<>();
   /** 场景对象id，唯一 */
   private Long id;

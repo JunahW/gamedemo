@@ -4,9 +4,12 @@ import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.common.utils.ExcelUtils;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.npc.resource.NpcResource;
+import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
+import com.example.gamedemo.server.game.scene.service.SceneManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -21,6 +24,7 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MapResourceTest {
+  @Autowired private SceneManager sceneManager;
 
   @Test
   public void testSceneImportExcel() throws Exception {
@@ -29,9 +33,17 @@ public class MapResourceTest {
   }
 
   @Test
+  public void testLandformImportExcel() throws Exception {
+    Map<Object, LandformResource> resourceMap =
+        ResourceManager.getResourceMap(LandformResource.class);
+    System.out.println(resourceMap);
+  }
+
+  @Test
   public void testNpcImportExcel() throws Exception {
     List<NpcResource> npcResourceList = ExcelUtils.importExcel(NpcResource.class);
     System.out.println(npcResourceList);
+    System.out.println(sceneManager);
   }
 
   @Test

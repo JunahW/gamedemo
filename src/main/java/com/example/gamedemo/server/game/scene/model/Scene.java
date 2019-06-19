@@ -1,9 +1,11 @@
 package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.npc.model.Npc;
 import com.example.gamedemo.server.game.player.model.Player;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author wengj
@@ -15,10 +17,13 @@ public class Scene {
   private int sceneResourceId;
 
   /** 场景玩家 */
-  private ConcurrentHashMap<Long, Player> playerMap = new ConcurrentHashMap<>();
+  private Map<Long, Player> playerMap = new HashMap<>();
 
   /** 场景怪物 */
-  private ConcurrentHashMap<Long, Monster> monsterMap = new ConcurrentHashMap<>();
+  private Map<Long, Monster> monsterMap = new HashMap<>();
+
+  /** 场景中的npc */
+  private Map<Long, Npc> npcMap = new HashMap<>();
 
   public static Scene valueOf(int sceneResourceId) {
     Scene scene = new Scene();
@@ -34,20 +39,28 @@ public class Scene {
     this.sceneResourceId = sceneResourceId;
   }
 
-  public ConcurrentHashMap<Long, Player> getPlayerMap() {
+  public Map<Long, Player> getPlayerMap() {
     return playerMap;
   }
 
-  public void setPlayerMap(ConcurrentHashMap<Long, Player> playerMap) {
+  public void setPlayerMap(Map<Long, Player> playerMap) {
     this.playerMap = playerMap;
   }
 
-  public ConcurrentHashMap<Long, Monster> getMonsterMap() {
+  public Map<Long, Monster> getMonsterMap() {
     return monsterMap;
   }
 
-  public void setMonsterMap(ConcurrentHashMap<Long, Monster> monsterMap) {
+  public void setMonsterMap(Map<Long, Monster> monsterMap) {
     this.monsterMap = monsterMap;
+  }
+
+  public Map<Long, Npc> getNpcMap() {
+    return npcMap;
+  }
+
+  public void setNpcMap(Map<Long, Npc> npcMap) {
+    this.npcMap = npcMap;
   }
 
   /**
@@ -66,5 +79,41 @@ public class Scene {
    */
   public void leaveScene(Long playerId) {
     playerMap.remove(playerId);
+  }
+
+  /**
+   * 新增npc
+   *
+   * @param npc
+   */
+  public void putNpc(Npc npc) {
+    npcMap.put(npc.getNpcId(), npc);
+  }
+
+  /**
+   * 移除npc
+   *
+   * @param npcId
+   */
+  public void removeNpc(Long npcId) {
+    npcMap.remove(npcId);
+  }
+
+  /**
+   * 新增怪物
+   *
+   * @param monster
+   */
+  public void putMonster(Monster monster) {
+    monsterMap.put(monster.getId(), monster);
+  }
+
+  /**
+   * 移除怪物
+   *
+   * @param id
+   */
+  public void removeMonster(Integer id) {
+    monsterMap.remove(id);
   }
 }

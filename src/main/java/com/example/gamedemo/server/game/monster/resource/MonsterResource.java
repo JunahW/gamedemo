@@ -33,8 +33,8 @@ public class MonsterResource implements ResourceInterface {
   private int y;
 
   /** 场景id */
-  @ExcelColumn(columnName = "sceneId")
-  private int sceneId;
+  @ExcelColumn(columnName = "mapId")
+  private int mapId;
 
   /** 血量 */
   @ExcelColumn(columnName = "hp")
@@ -116,12 +116,12 @@ public class MonsterResource implements ResourceInterface {
     this.y = y;
   }
 
-  public int getSceneId() {
-    return sceneId;
+  public int getMapId() {
+    return mapId;
   }
 
-  public void setSceneId(int sceneId) {
-    this.sceneId = sceneId;
+  public void setMapId(int mapId) {
+    this.mapId = mapId;
   }
 
   public int getHp() {
