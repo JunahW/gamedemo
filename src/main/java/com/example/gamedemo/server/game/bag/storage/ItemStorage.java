@@ -44,7 +44,7 @@ public class ItemStorage {
   public AbstractItem getStorageItemByObjectId(long guid) {
     for (int i = 0; i < abstractItems.length; i++) {
       if (abstractItems[i] != null) {
-        if (abstractItems[i].getObjectId() == guid) {
+        if (abstractItems[i].getId() == guid) {
           return abstractItems[i];
         }
       }
@@ -62,7 +62,7 @@ public class ItemStorage {
     boolean isReduce = false;
     for (int i = 0; i < abstractItems.length; i++) {
       if (abstractItems[i] != null) {
-        if (guid != abstractItems[i].getObjectId()) {
+        if (guid != abstractItems[i].getId()) {
           continue;
         }
         if (abstractItems[i].getQuantity() >= quantity) {

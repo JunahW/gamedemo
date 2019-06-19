@@ -13,7 +13,10 @@ public enum SceneObjectTypeEnum {
   MONSTER(2),
 
   /** 掉落物 */
-  DROP_OBJECT(3);
+  DROP_OBJECT(3),
+
+  /** NPC */
+  NPC(4);
 
   private int id;
 

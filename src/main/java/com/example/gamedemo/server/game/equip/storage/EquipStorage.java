@@ -74,7 +74,7 @@ public class EquipStorage {
       if (slot != null) {
         EquipItem equipItem = slot.getEquipItem();
         if (null != equipItem) {
-          if (equipItem.getObjectId() == guid) {
+          if (equipItem.getId() == guid) {
             return equipItem;
           }
         }

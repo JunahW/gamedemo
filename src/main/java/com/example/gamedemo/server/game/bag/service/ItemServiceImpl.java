@@ -123,7 +123,7 @@ public class ItemServiceImpl implements ItemService {
     int itemType = itemResource.getItemType();
     AbstractItem abstractItem = ItemType.create(itemType);
     // 唯一id
-    abstractItem.setObjectId(UniqueIdUtils.nextId());
+    abstractItem.setId(UniqueIdUtils.nextId());
     abstractItem.setItemName(itemResource.getName());
     abstractItem.setItemResourceId(itemResource.getItemId());
     abstractItem.setQuantity(num);
@@ -137,7 +137,7 @@ public class ItemServiceImpl implements ItemService {
       return false;
     }
     ItemStorage pack = player.getPack();
-    boolean isReduce = pack.reduceStorageItemByObjectId(item.getObjectId(), quanlity);
+    boolean isReduce = pack.reduceStorageItemByObjectId(item.getId(), quanlity);
     // 保存入库
     saveItemStorageEnt(player);
     return isReduce;

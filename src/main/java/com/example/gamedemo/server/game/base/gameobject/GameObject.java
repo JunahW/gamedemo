@@ -6,13 +6,13 @@ package com.example.gamedemo.server.game.base.gameobject;
  * @date 2019/5/29
  */
 public abstract class GameObject {
-  private long objectId;
+  private Long id;
 
-  public long getObjectId() {
-    return objectId;
+  public Long getId() {
+    return id;
   }
 
-  public void setObjectId(long objectId) {
-    this.objectId = objectId;
+  public void setId(Long id) {
+    this.id = id;
   }
 }

@@ -1,16 +1,15 @@
 package com.example.gamedemo.server.game.npc.model;
 
 import com.example.gamedemo.common.utils.UniqueIdUtils;
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 
 /**
  * @author wengj
  * @description：npc模型
  * @date 2019/6/19
  */
-public class Npc {
-  /** npcId */
-  private long npcId;
-
+public class Npc extends SceneObject {
   /** 配置表id */
   private int npcResourceId;
 
@@ -22,17 +21,14 @@ public class Npc {
    */
   public static Npc valueOf(int npcResourceId) {
     Npc npc = new Npc();
-    npc.setNpcId(UniqueIdUtils.nextId());
+    npc.setId(UniqueIdUtils.nextId());
     npc.setNpcResourceId(npcResourceId);
     return npc;
   }
 
-  public long getNpcId() {
-    return npcId;
-  }
-
-  public void setNpcId(long npcId) {
-    this.npcId = npcId;
+  @Override
+  public SceneObjectTypeEnum getSceneObjectType() {
+    return SceneObjectTypeEnum.NPC;
   }
 
   public int getNpcResourceId() {

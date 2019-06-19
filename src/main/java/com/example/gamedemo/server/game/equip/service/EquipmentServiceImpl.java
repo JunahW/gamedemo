@@ -116,8 +116,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
     player.getPlayerAttributeContainer().removeAndComputeAttributeSet(equipmentType);
 
-    logger.info(
-        "[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getObjectId());
+    logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getId());
     return true;
   }
 

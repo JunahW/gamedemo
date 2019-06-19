@@ -55,7 +55,7 @@ public class AbstractItem extends GameObject implements Cloneable {
         + ", quantity="
         + quantity
         + ", id="
-        + super.getObjectId()
+        + super.getId()
         + '}';
   }
 

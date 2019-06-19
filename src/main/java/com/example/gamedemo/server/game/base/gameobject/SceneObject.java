@@ -9,13 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
  * @description：场景对象
  * @date 2019/6/14
  */
-// TODO
-public abstract class SceneObject {
+public abstract class SceneObject extends GameObject {
 
   /** TODO 场景对象视觉？ 组合 */
   ConcurrentHashMap<Long, SceneObject> sceneObjectMap = new ConcurrentHashMap<>();
-  /** 场景对象id，唯一 */
-  private Long id;
+
   /** 场景中的x坐标 */
   private int x;
   /** 场景中的y坐标 */
@@ -27,14 +25,6 @@ public abstract class SceneObject {
 
   public void setSceneObjectMap(ConcurrentHashMap<Long, SceneObject> sceneObjectMap) {
     this.sceneObjectMap = sceneObjectMap;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
   }
 
   public int getX() {
@@ -84,7 +74,7 @@ public abstract class SceneObject {
         + "sceneObjectMap="
         + sceneObjectMap
         + ", id="
-        + id
+        + super.getId()
         + ", x="
         + x
         + ", y="

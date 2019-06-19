@@ -6,6 +6,8 @@ import com.example.gamedemo.server.game.player.model.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * @author wengj
@@ -25,9 +27,14 @@ public class Scene {
   /** 场景中的npc */
   private Map<Long, Npc> npcMap = new HashMap<>();
 
+  public Scene(int sceneResourceId) {
+    this.sceneResourceId = sceneResourceId;
+    /** 启动定时器 */
+    this.statMonsterTimer();
+  }
+
   public static Scene valueOf(int sceneResourceId) {
-    Scene scene = new Scene();
-    scene.setSceneResourceId(sceneResourceId);
+    Scene scene = new Scene(sceneResourceId);
     return scene;
   }
 
@@ -87,7 +94,7 @@ public class Scene {
    * @param npc
    */
   public void putNpc(Npc npc) {
-    npcMap.put(npc.getNpcId(), npc);
+    npcMap.put(npc.getId(), npc);
   }
 
   /**
@@ -115,5 +122,19 @@ public class Scene {
    */
   public void removeMonster(Integer id) {
     monsterMap.remove(id);
+  }
+
+  public void statMonsterTimer() {
+    new Timer()
+        .schedule(
+            new TimerTask() {
+              @Override
+              public void run() {
+                System.out.println("周期运行中" + sceneResourceId);
+                if (monsterMap.size() == 0) {}
+              }
+            },
+            1000,
+            2000);
   }
 }
