@@ -1,5 +1,6 @@
 package com.example.gamedemo.client;
 
+import com.example.gamedemo.client.utils.JsonFormatterUtils;
 import com.example.gamedemo.common.constant.SystemConstant;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -46,7 +47,7 @@ public class MyClient {
                     @Override
                     protected void channelRead0(ChannelHandlerContext ctx, String msg)
                         throws Exception {
-                      logger.info(msg);
+                      JsonFormatterUtils.printJson(msg);
                     }
                   });
             }
