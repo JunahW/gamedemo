@@ -136,7 +136,7 @@ public class Scene {
         new Runnable() {
           @Override
           public void run() {
-            logger.info("周期执行[{}]", sceneResourceId);
+            // logger.info("周期执行[{}]", sceneResourceId);
           }
         });
   }

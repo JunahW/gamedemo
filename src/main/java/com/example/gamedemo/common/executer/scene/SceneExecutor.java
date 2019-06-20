@@ -5,7 +5,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wengj
@@ -20,8 +23,8 @@ public class SceneExecutor {
   private static final int DEFAULT_THREAD_SIZE = Runtime.getRuntime().availableProcessors();
 
   /** 线程池数量，可以控制每个账户在同一个线程执行 */
-  private static final ThreadPoolExecutor[] SCENE_SERVICE =
-      new ThreadPoolExecutor[DEFAULT_THREAD_SIZE];
+  private static final ScheduledThreadPoolExecutor[] SCENE_SERVICE =
+      new ScheduledThreadPoolExecutor[DEFAULT_THREAD_SIZE];
 
   static {
     logger.info("初始化场景线程。。。");
@@ -32,14 +35,8 @@ public class SceneExecutor {
             .build();
     for (int i = 0; i < DEFAULT_THREAD_SIZE; i++) {
       SCENE_SERVICE[i] =
-          new ThreadPoolExecutor(
-              1,
-              1,
-              0L,
-              TimeUnit.MILLISECONDS,
-              new LinkedBlockingDeque<Runnable>(),
-              singleThreadFactory,
-              new ThreadPoolExecutor.DiscardPolicy());
+          new ScheduledThreadPoolExecutor(
+              1, singleThreadFactory, new ThreadPoolExecutor.DiscardPolicy());
     }
     logger.info("初始化场景线程完成");
   }
@@ -73,17 +70,9 @@ public class SceneExecutor {
    * @param timeUnit
    * @param task
    */
-  public static void addScheduleTask(int sceneId, long delay, TimeUnit timeUnit, Runnable task) {
-    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-    service.schedule(
-        new Runnable() {
-          @Override
-          public void run() {
-            addScheduleTask(sceneId, task);
-          }
-        },
-        delay,
-        timeUnit);
+  public static void addDelayTask(int sceneId, long delay, TimeUnit timeUnit, Runnable task) {
+    int index = modeIndex(sceneId);
+    SCENE_SERVICE[index].schedule(task, delay, timeUnit);
   }
 
   /**
@@ -97,17 +86,7 @@ public class SceneExecutor {
    */
   public static void addScheduleTask(
       int sceneId, long delay, long period, TimeUnit timeUnit, Runnable task) {
-    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-    // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
-    service.scheduleAtFixedRate(
-        new Runnable() {
-          @Override
-          public void run() {
-            addScheduleTask(sceneId, task);
-          }
-        },
-        delay,
-        period,
-        timeUnit);
+    int index = modeIndex(sceneId);
+    SCENE_SERVICE[index].scheduleAtFixedRate(task, delay, period, timeUnit);
   }
 }
