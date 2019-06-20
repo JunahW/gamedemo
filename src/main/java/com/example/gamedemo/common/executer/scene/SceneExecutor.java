@@ -81,12 +81,10 @@ public class SceneExecutor {
    * @param sceneId
    * @param delay
    * @param period
-   * @param timeUnit
    * @param task
    */
-  public static void addScheduleTask(
-      int sceneId, long delay, long period, TimeUnit timeUnit, Runnable task) {
+  public static void addScheduleTask(int sceneId, long delay, long period, Runnable task) {
     int index = modeIndex(sceneId);
-    SCENE_SERVICE[index].scheduleAtFixedRate(task, delay, period, timeUnit);
+    SCENE_SERVICE[index].scheduleAtFixedRate(task, delay, period, TimeUnit.MILLISECONDS);
   }
 }

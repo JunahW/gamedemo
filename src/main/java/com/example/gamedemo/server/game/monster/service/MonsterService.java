@@ -1,11 +1,24 @@
 package com.example.gamedemo.server.game.monster.service;
 
+import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.monster.resource.MonsterResource;
+
+import java.util.Map;
+
 /**
  * @author: wengj
  * @date: 2019/6/14
  * @description: 怪物业务接口
  */
 public interface MonsterService {
+  /**
+   * 获取怪物集合
+   *
+   * @param sceneId
+   * @return
+   */
+  Map<Long, Monster> getMonsters(int sceneId);
+
   /**
    * 生成怪物
    *
@@ -21,4 +34,12 @@ public interface MonsterService {
    * @param guid
    */
   void removeMonster(int sceneId, int guid);
+
+  /**
+   * 获取怪物的配置信息
+   *
+   * @param monsterResourceId
+   * @return
+   */
+  MonsterResource getMonsterResourceById(int monsterResourceId);
 }

@@ -4,6 +4,11 @@ import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @author wengj
@@ -56,6 +61,11 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "dropObject")
   private String dropObject;
 
+  @ExcelColumn(columnName = "attrs")
+  private String attrs;
+
+  private List<Attribute> attributeList;
+
   /** 掉落物集合 */
   private int[] dropObjectArray;
 
@@ -74,6 +84,8 @@ public class MonsterResource implements ResourceInterface {
       }
       dropObjectArray = dropObjectTmp;
     }
+    this.setAttributeList(
+        JsonUtils.getListByString(getAttrs(), new TypeReference<List<Attribute>>() {}));
   }
 
   public int getMonsterId() {
@@ -170,5 +182,21 @@ public class MonsterResource implements ResourceInterface {
 
   public void setDropObjectArray(int[] dropObjectArray) {
     this.dropObjectArray = dropObjectArray;
+  }
+
+  public String getAttrs() {
+    return attrs;
+  }
+
+  public void setAttrs(String attrs) {
+    this.attrs = attrs;
+  }
+
+  public List<Attribute> getAttributeList() {
+    return attributeList;
+  }
+
+  public void setAttributeList(List<Attribute> attributeList) {
+    this.attributeList = attributeList;
   }
 }

@@ -8,6 +8,7 @@ import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.skill.storage.SkillStorage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
@@ -21,22 +22,16 @@ public class Player extends SceneObject implements Serializable {
 
   /** 玩家名称 */
   private String jobName;
-
   /** 玩家所对应的账户id */
   private String accountId;
-
   /** 玩家的类型 */
   private int jobId;
-
   /** 玩家战力 */
   private long combatIndex;
-
   /** 等级 */
   private int level;
-
   /** 玩家属性容器 */
   private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
-
   /** 场景 */
   private int sceneId;
 
@@ -117,6 +112,17 @@ public class Player extends SceneObject implements Serializable {
     EquipStorageEnt equipStorageEnt =
         SpringContext.getEquipmentService().getEquipStorageEnt(super.getId());
     return equipStorageEnt.getEquipStorage();
+  }
+
+  /**
+   * 技能栏
+   *
+   * @return
+   */
+  @JsonIgnore
+  public SkillStorage getSkillStorage() {
+    SkillStorage skillStorage = SpringContext.getSkillService().getSkillStorage(super.getId());
+    return skillStorage;
   }
 
   @Override

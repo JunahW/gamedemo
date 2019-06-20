@@ -3,8 +3,10 @@ package com.example.gamedemo.server.common;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import com.example.gamedemo.server.game.equip.service.EquipmentService;
+import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
 import com.example.gamedemo.server.game.scene.service.SceneService;
+import com.example.gamedemo.server.game.skill.service.SkillService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -27,6 +29,8 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private PlayerService playerService;
   @Autowired private AccountService accountService;
   @Autowired private SceneService sceneService;
+  @Autowired private MonsterService monsterService;
+  @Autowired private SkillService skillService;
 
   public static ItemService getItemService() {
     return instance.itemService;
@@ -46,6 +50,14 @@ public class SpringContext implements ApplicationContextAware {
 
   public static SceneService getSceneService() {
     return instance.sceneService;
+  }
+
+  public static MonsterService getMonsterService() {
+    return instance.monsterService;
+  }
+
+  public static SkillService getSkillService() {
+    return instance.skillService;
   }
 
   @PostConstruct

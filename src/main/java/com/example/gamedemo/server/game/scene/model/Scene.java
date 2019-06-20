@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author wengj
@@ -132,7 +131,6 @@ public class Scene {
         sceneResourceId,
         0,
         1,
-        TimeUnit.SECONDS,
         new Runnable() {
           @Override
           public void run() {
