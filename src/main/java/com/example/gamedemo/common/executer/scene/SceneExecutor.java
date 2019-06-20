@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author wengj
@@ -23,7 +20,7 @@ public class SceneExecutor {
   private static final int DEFAULT_THREAD_SIZE = Runtime.getRuntime().availableProcessors();
 
   /** 线程池数量，可以控制每个账户在同一个线程执行 */
-  public static final ThreadPoolExecutor[] SCENE_SERVICE =
+  private static final ThreadPoolExecutor[] SCENE_SERVICE =
       new ThreadPoolExecutor[DEFAULT_THREAD_SIZE];
 
   static {
@@ -53,9 +50,64 @@ public class SceneExecutor {
    * @param id
    * @return
    */
-  public static int modeIndex(int id) {
+  private static int modeIndex(int id) {
     return id % DEFAULT_THREAD_SIZE;
   }
 
-  // TODO
+  /**
+   * 执行场景线程
+   *
+   * @param sceneId
+   * @param task
+   */
+  public static void addScheduleTask(int sceneId, Runnable task) {
+    int index = modeIndex(sceneId);
+    SCENE_SERVICE[index].submit(task);
+  }
+
+  /**
+   * 周期运行
+   *
+   * @param sceneId
+   * @param delay
+   * @param timeUnit
+   * @param task
+   */
+  public static void addScheduleTask(int sceneId, long delay, TimeUnit timeUnit, Runnable task) {
+    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+    service.schedule(
+        new Runnable() {
+          @Override
+          public void run() {
+            addScheduleTask(sceneId, task);
+          }
+        },
+        delay,
+        timeUnit);
+  }
+
+  /**
+   * 周期运行
+   *
+   * @param sceneId
+   * @param delay
+   * @param period
+   * @param timeUnit
+   * @param task
+   */
+  public static void addScheduleTask(
+      int sceneId, long delay, long period, TimeUnit timeUnit, Runnable task) {
+    ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+    // 第二个参数为首次执行的延时时间，第三个参数为定时执行的间隔时间
+    service.scheduleAtFixedRate(
+        new Runnable() {
+          @Override
+          public void run() {
+            addScheduleTask(sceneId, task);
+          }
+        },
+        delay,
+        period,
+        timeUnit);
+  }
 }

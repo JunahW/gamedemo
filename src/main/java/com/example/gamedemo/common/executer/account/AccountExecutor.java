@@ -20,7 +20,7 @@ public class AccountExecutor {
   private static final int DEFAULT_THREAD_SIZE = Runtime.getRuntime().availableProcessors();
 
   /** 线程池数量，可以控制每个账户在同一个线程执行 */
-  public static final ThreadPoolExecutor[] ACCOUNT_SERVICE =
+  private static final ThreadPoolExecutor[] ACCOUNT_SERVICE =
       new ThreadPoolExecutor[DEFAULT_THREAD_SIZE];
 
   static {
@@ -50,7 +50,18 @@ public class AccountExecutor {
    * @param accountId
    * @return
    */
-  public static int modeIndex(String accountId) {
+  private static int modeIndex(String accountId) {
     return accountId.hashCode() % DEFAULT_THREAD_SIZE;
+  }
+
+  /**
+   * 执行任务
+   *
+   * @param accountId
+   * @param task
+   */
+  public static void addTask(String accountId, Runnable task) {
+    int index = modeIndex(accountId);
+    ACCOUNT_SERVICE[index].submit(task);
   }
 }

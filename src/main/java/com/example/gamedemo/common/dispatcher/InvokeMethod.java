@@ -51,6 +51,25 @@ public class InvokeMethod {
    * @return
    */
   public Object invoke(TSession session, Object packet) {
+    // 未选择角色就在用户线程
+    if (session.getPlayer() == null) {
+      String accountId = getAccountId(session, packet);
+      AccountExecutor.addTask(accountId, new IoHandleEvent(session, packet, this));
+    } else {
+      int sceneId = session.getPlayer().getSceneId();
+      SceneExecutor.addScheduleTask(sceneId, new IoHandleEvent(session, packet, this));
+    }
+    return null;
+  }
+
+  /**
+   * 获取accountId
+   *
+   * @param session
+   * @param packet
+   * @return
+   */
+  private String getAccountId(TSession session, Object packet) {
     String accountId = null;
     if (packet instanceof CM_CreateAccount) {
       CM_CreateAccount cm_createAccount = (CM_CreateAccount) packet;
@@ -61,28 +80,24 @@ public class InvokeMethod {
     } else {
       accountId = session.getAccount().getAccountId();
     }
+    return accountId;
+  }
 
-    // 未选择角色就在用户线程
-    if (session.getPlayer() == null) {
-      int index = AccountExecutor.modeIndex(accountId);
-      AccountExecutor.ACCOUNT_SERVICE[index].submit(
-          new Runnable() {
-            @Override
-            public void run() {
-              ReflectionUtils.invokeMethod(method, object, session, packet);
-            }
-          });
-    } else {
-      int sceneId = session.getPlayer().getSceneId();
-      int modeIndex = SceneExecutor.modeIndex(sceneId);
-      SceneExecutor.SCENE_SERVICE[modeIndex].submit(
-          new Runnable() {
-            @Override
-            public void run() {
-              ReflectionUtils.invokeMethod(method, object, session, packet);
-            }
-          });
+  public final class IoHandleEvent implements Runnable {
+    private final TSession session;
+    private final Object packet;
+    private final InvokeMethod invokeMethod;
+
+    public IoHandleEvent(TSession session, Object packet, InvokeMethod invokeMethod) {
+      this.session = session;
+      this.packet = packet;
+      this.invokeMethod = invokeMethod;
     }
-    return null;
+
+    @Override
+    public void run() {
+      ReflectionUtils.invokeMethod(
+          invokeMethod.getMethod(), invokeMethod.getObject(), session, packet);
+    }
   }
 }

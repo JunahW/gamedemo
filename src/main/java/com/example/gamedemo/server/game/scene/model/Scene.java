@@ -1,13 +1,15 @@
 package com.example.gamedemo.server.game.scene.model;
 
+import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.npc.model.Npc;
 import com.example.gamedemo.server.game.player.model.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author wengj
@@ -15,6 +17,7 @@ import java.util.TimerTask;
  * @date 2019/6/13
  */
 public class Scene {
+  private static final Logger logger = LoggerFactory.getLogger(Scene.class);
   /** 场景id */
   private int sceneResourceId;
 
@@ -125,16 +128,16 @@ public class Scene {
   }
 
   public void statMonsterTimer() {
-    new Timer()
-        .schedule(
-            new TimerTask() {
-              @Override
-              public void run() {
-                System.out.println("周期运行中" + sceneResourceId);
-                if (monsterMap.size() == 0) {}
-              }
-            },
-            1000,
-            2000);
+    SceneExecutor.addScheduleTask(
+        sceneResourceId,
+        0,
+        1,
+        TimeUnit.SECONDS,
+        new Runnable() {
+          @Override
+          public void run() {
+            logger.info("周期执行[{}]", sceneResourceId);
+          }
+        });
   }
 }
