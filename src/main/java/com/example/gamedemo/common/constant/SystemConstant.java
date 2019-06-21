@@ -21,4 +21,7 @@ public interface SystemConstant {
 
   /** 句号分割符 */
   String SPLIT_TOKEN_COMMA = ",";
+
+  /** 技能槽的位置数 */
+  int SKILL_SLOT_SIZE = 4;
 }

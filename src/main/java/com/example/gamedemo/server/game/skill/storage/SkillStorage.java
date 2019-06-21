@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.skill.storage;
 
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.server.game.skill.model.Skill;
 
 import java.util.HashMap;
@@ -11,9 +12,11 @@ import java.util.Map;
  * @date 2019/6/20
  */
 public class SkillStorage {
+  /** 已学习技能 */
   private Map<Integer, Skill> skills = new HashMap<>();
 
-  // TODO 技能栏
+  /** 技能槽 */
+  private Skill[] skillSlots = new Skill[SystemConstant.SKILL_SLOT_SIZE];
 
   public Map<Integer, Skill> getSkills() {
     return skills;
@@ -21,6 +24,14 @@ public class SkillStorage {
 
   public void setSkills(Map<Integer, Skill> skills) {
     this.skills = skills;
+  }
+
+  public Skill[] getSkillSlots() {
+    return skillSlots;
+  }
+
+  public void setSkillSlots(Skill[] skillSlots) {
+    this.skillSlots = skillSlots;
   }
 
   /**

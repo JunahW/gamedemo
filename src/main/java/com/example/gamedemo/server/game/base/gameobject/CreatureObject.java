@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @description：有生命的对象
  * @date 2019/6/21
  */
-public abstract class BiologyObject extends SceneObject {
+public abstract class CreatureObject extends SceneObject {
   /** 视野 */
   @JsonIgnore private SceneObjectView sceneObjectView = new SceneObjectView();
 

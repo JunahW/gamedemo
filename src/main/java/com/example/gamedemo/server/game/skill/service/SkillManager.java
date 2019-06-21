@@ -56,4 +56,23 @@ public class SkillManager {
             });
     return skillStorageEnt;
   }
+
+  /**
+   * 获取技能配置
+   *
+   * @param id
+   * @return
+   */
+  public SkillResource getSkillResourceById(int id) {
+    return skillResource.get(id);
+  }
+
+  /**
+   * 保存技能栏
+   *
+   * @param skillStorageEnt
+   */
+  public void saveSkillStorageEnt(SkillStorageEnt skillStorageEnt) {
+    entityCacheService.writeBack(skillStorageEnt.getEntityId(), skillStorageEnt);
+  }
 }

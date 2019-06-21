@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.skill.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
+import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
 
 /**
@@ -8,6 +9,7 @@ import com.example.gamedemo.common.resource.ResourceInterface;
  * @description
  * @date 2019/6/20
  */
+@Resource
 public class SkillResource implements ResourceInterface {
   /** 技能id */
   @ExcelColumn(columnName = "skillId")

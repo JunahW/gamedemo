@@ -83,4 +83,15 @@ public interface I18nId {
 
   /** 场景位置不可走 */
   int SCENE_OBSTACLE = 60003;
+
+  /** ==========================技能相关=========================* */
+
+  /** 技能还未学习 */
+  int SKILL_NO_STUDY = 70000;
+
+  /** 技能的位置有误 */
+  int SKILL_INDEX_ERROR = 70001;
+
+  /** 技能不存在 */
+  int SKILL_NO_EXIST = 70002;
 }

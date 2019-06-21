@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game.skill.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.skill.storage.SkillStorage;
+import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
 
 /**
  * @author: wengj
@@ -16,7 +16,7 @@ public interface SkillService {
    * @param playerId
    * @return
    */
-  SkillStorage getSkillStorage(Long playerId);
+  SkillStorageEnt getSkillStorageEnt(Long playerId);
 
   /**
    * 学习技能
@@ -35,4 +35,39 @@ public interface SkillService {
    * @return
    */
   boolean upgradeSkill(Player player, int skillId);
+
+  /**
+   * 选择技能
+   *
+   * @param player
+   * @param skillId
+   * @param index
+   * @return
+   */
+  boolean selectSkill(Player player, int skillId, int index);
+
+  /**
+   * 移除技能
+   *
+   * @param player
+   * @param index
+   * @return
+   */
+  boolean removeSkill(Player player, int index);
+
+  /**
+   * 保存技能栏
+   *
+   * @param player
+   */
+  void saveSkillStorage(Player player);
+
+  /**
+   * 使用技能
+   *
+   * @param player
+   * @param skillId
+   * @param targetId
+   */
+  void useSkill(Player player, int skillId, long targetId);
 }

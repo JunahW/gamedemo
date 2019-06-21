@@ -5,9 +5,10 @@ import com.example.gamedemo.server.game.attribute.PlayerAttributeContainer;
 import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
-import com.example.gamedemo.server.game.base.gameobject.BiologyObject;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
 import com.example.gamedemo.server.game.skill.storage.SkillStorage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,7 +19,7 @@ import java.io.Serializable;
  * @date: 2019/4/25
  * @description: 玩家
  */
-public class Player extends BiologyObject implements Serializable {
+public class Player extends CreatureObject implements Serializable {
 
   /** 玩家名称 */
   private String jobName;
@@ -121,8 +122,9 @@ public class Player extends BiologyObject implements Serializable {
    */
   @JsonIgnore
   public SkillStorage getSkillStorage() {
-    SkillStorage skillStorage = SpringContext.getSkillService().getSkillStorage(super.getId());
-    return skillStorage;
+    SkillStorageEnt skillStorageEnt =
+        SpringContext.getSkillService().getSkillStorageEnt(super.getId());
+    return skillStorageEnt.getSkillStorage();
   }
 
   @Override

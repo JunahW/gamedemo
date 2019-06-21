@@ -2,7 +2,7 @@ package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
-import com.example.gamedemo.server.game.base.gameobject.BiologyObject;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,20 +61,20 @@ public class Scene {
     // 改变地图中对象的视野
     for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
       SceneObject value = sceneObjectEntry.getValue();
-      if (value instanceof BiologyObject && !sceneObject.equals(value)) {
+      if (value instanceof CreatureObject && !sceneObject.equals(value)) {
         // TODO 可以新增额外条件，判断是否加入视野范围内
-        ((BiologyObject) value).getSceneObjectView().putSceneObject(sceneObject);
+        ((CreatureObject) value).getSceneObjectView().putSceneObject(sceneObject);
       }
     }
 
     // 改变当前对象的视野
-    if (sceneObject instanceof BiologyObject) {
-      BiologyObject biologyObject = (BiologyObject) sceneObject;
+    if (sceneObject instanceof CreatureObject) {
+      CreatureObject creatureObject = (CreatureObject) sceneObject;
       for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
         SceneObject value = sceneObjectEntry.getValue();
-        if (!biologyObject.equals(value)) {
+        if (!creatureObject.equals(value)) {
           // TODO 可以新增额外条件，判断是否加入视野范围内
-          biologyObject.getSceneObjectView().putSceneObject(value);
+          creatureObject.getSceneObjectView().putSceneObject(value);
         }
       }
     }
@@ -92,13 +92,13 @@ public class Scene {
     // 改变地图中对象的视野
     for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
       SceneObject value = sceneObjectEntry.getValue();
-      if (value instanceof BiologyObject && !sceneObject.equals(value)) {
-        ((BiologyObject) value).getSceneObjectView().removeSceneObject(id);
+      if (value instanceof CreatureObject && !sceneObject.equals(value)) {
+        ((CreatureObject) value).getSceneObjectView().removeSceneObject(id);
       }
     }
     // 清除对象的视野
-    if (sceneObject instanceof BiologyObject) {
-      ((BiologyObject) sceneObject).getSceneObjectView().clearSceneObjectView();
+    if (sceneObject instanceof CreatureObject) {
+      ((CreatureObject) sceneObject).getSceneObjectView().clearSceneObjectView();
     }
     // 移除场景该对象
     removeSceneObject(id);
@@ -107,15 +107,15 @@ public class Scene {
   /**
    * 玩家移动
    *
-   * @param biologyObject
+   * @param creatureObject
    */
-  public void biologyObjectMove(BiologyObject biologyObject) {
+  public void biologyObjectMove(CreatureObject creatureObject) {
     // 更新视野
     for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
       SceneObject value = sceneObjectEntry.getValue();
-      if (value instanceof BiologyObject && !biologyObject.equals(value)) {
+      if (value instanceof CreatureObject && !creatureObject.equals(value)) {
         // TODO 可以新增额外条件，判断是否加入视野范围内
-        ((BiologyObject) value).getSceneObjectView().putSceneObject(biologyObject);
+        ((CreatureObject) value).getSceneObjectView().putSceneObject(creatureObject);
       }
     }
   }

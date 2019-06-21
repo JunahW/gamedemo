@@ -8,12 +8,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
  * @date 2019/6/20
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = false)
-public abstract class Skill {
+public class Skill {
   /** 配置表id */
   private int skillId;
 
   /** 等级 */
   private int level;
+
+  public static Skill valueOf(int skillId) {
+    Skill skill = new Skill();
+    skill.setSkillId(skillId);
+    return skill;
+  }
 
   public int getSkillId() {
     return skillId;
