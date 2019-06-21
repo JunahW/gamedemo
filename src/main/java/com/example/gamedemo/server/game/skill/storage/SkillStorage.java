@@ -13,6 +13,8 @@ import java.util.Map;
 public class SkillStorage {
   private Map<Integer, Skill> skills = new HashMap<>();
 
+  // TODO 技能栏
+
   public Map<Integer, Skill> getSkills() {
     return skills;
   }

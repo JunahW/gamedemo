@@ -51,8 +51,7 @@ public class PlayerServiceImpl implements PlayerService {
     PlayerEnt playerEnt = new PlayerEnt();
     // 设置起始地址
     player.setSceneId(SystemConstant.DEFAULT_SCENE);
-    Scene scene = SpringContext.getSceneService().getSceneById(SystemConstant.DEFAULT_SCENE);
-    scene.enterScene(player);
+
     playerEnt.setPlayer(player);
 
     savePlayerEnt(player);
@@ -68,6 +67,9 @@ public class PlayerServiceImpl implements PlayerService {
       logger.info("{}选择角色成功", playerEnt.getJobName());
       // 初始化玩家属性
       getPlayerAttrByPlayerId(player, playerId);
+      /** 触发事件 */
+      Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
+      scene.enterScene(player);
       return player;
     } else {
       logger.warn("{}该玩家还未创建", playerId);

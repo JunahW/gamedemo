@@ -23,7 +23,7 @@ public abstract class AbstractAttributeContainer<T> {
   private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
   /** 不同模块的属性容器 */
-  private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new HashMap<>();
+  @JsonIgnore private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new HashMap<>();
 
   public AbstractAttributeContainer(T owner) {
     this.owner = owner;
@@ -114,6 +114,20 @@ public abstract class AbstractAttributeContainer<T> {
   public void removeAndComputeAttributeSet(AttributeModelId attributeModelId) {
     modelAttributeListMap.remove(attributeModelId);
     compute();
+  }
+
+  /**
+   * 获取属性的值
+   *
+   * @param attributeType
+   * @return
+   */
+  public Long getAttributeValue(AttributeTypeEnum attributeType) {
+    Attribute attribute = attributeMap.get(attributeType);
+    if (attribute == null) {
+      return 0L;
+    }
+    return attribute.getValue();
   }
 
   @JsonIgnore

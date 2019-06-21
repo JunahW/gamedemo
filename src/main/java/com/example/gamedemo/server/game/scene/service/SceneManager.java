@@ -1,6 +1,10 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.resource.ResourceManager;
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.attribute.MonsterAttributeContainer;
+import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.npc.model.Npc;
@@ -34,7 +38,7 @@ public class SceneManager {
       ResourceManager.getResourceMap(MonsterResource.class);
 
   /** <sceneId,<monsterId,monsterResource>> */
-  private Map<Integer, Map<Integer, MonsterResource>> mapMonstercMap = new HashMap<>();
+  private Map<Integer, Map<Integer, MonsterResource>> mapMonsterMap = new HashMap<>();
 
   private Map<Integer, LandformResource> landformResource =
       ResourceManager.getResourceMap(LandformResource.class);
@@ -65,7 +69,7 @@ public class SceneManager {
    * @param sceneResourceId
    * @return
    */
-  public Scene getSceneBysceneResourceId(int sceneResourceId) {
+  public Scene getSceneBySceneResourceId(int sceneResourceId) {
     return sceneMap.get(sceneResourceId);
   }
 
@@ -93,6 +97,16 @@ public class SceneManager {
    */
   public LandformResource getLandformResourceById(Integer landformId) {
     return landformResource.get(landformId);
+  }
+
+  /**
+   * 获取怪物集合
+   *
+   * @param sceneId
+   * @return
+   */
+  public Set<Integer> getMonsterSetBySceneId(Integer sceneId) {
+    return mapMonsterMap.keySet();
   }
 
   /** 初始化MapNpcMap */
@@ -129,17 +143,25 @@ public class SceneManager {
         for (Map.Entry<Integer, NpcResource> entry : npcResourceMap.entrySet()) {
           NpcResource value = entry.getValue();
           Npc npc = Npc.valueOf(value.getNpcId());
-          scene.putNpc(npc);
+          scene.enterScene(npc);
         }
       }
-
       // 初始化怪物
-      Map<Integer, MonsterResource> monsterResourceMap = mapMonstercMap.get(mapResource.getMapId());
+      Map<Integer, MonsterResource> monsterResourceMap = mapMonsterMap.get(mapResource.getMapId());
       if (monsterResourceMap != null) {
         for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
           MonsterResource value = entry.getValue();
           Monster monster = Monster.valueOf(value.getMonsterId());
-          scene.putMonster(monster);
+
+          List<Attribute> attributeList = value.getAttributeList();
+          MonsterAttributeContainer attributeContainer = monster.getMonsterAttributeContainer();
+          attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
+          monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
+          monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
+          monster.setX(value.getX());
+          monster.setY(value.getY());
+
+          scene.enterScene(monster);
         }
       }
       sceneMap.put(scene.getSceneResourceId(), scene);
@@ -163,6 +185,6 @@ public class SceneManager {
         npcResourceMap.put(npcId, resourceValue);
       }
     }
-    this.mapMonstercMap = mapMonsterResourceMap;
+    this.mapMonsterMap = mapMonsterResourceMap;
   }
 }

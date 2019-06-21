@@ -1,5 +1,6 @@
 package com.example.gamedemo.executor;
 
+import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,6 +43,20 @@ public class ExecutorTest {
         1,
         2,
         TimeUnit.SECONDS);
+    while (true) {}
+  }
+
+  @Test
+  public void testSceneExecutor() {
+    SceneExecutor.addDelayTask(
+        1,
+        3000,
+        new Runnable() {
+          @Override
+          public void run() {
+            System.out.println(5555);
+          }
+        });
     while (true) {}
   }
 }

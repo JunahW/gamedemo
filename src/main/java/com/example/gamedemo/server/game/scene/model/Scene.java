@@ -1,9 +1,9 @@
 package com.example.gamedemo.server.game.scene.model;
 
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
-import com.example.gamedemo.server.game.monster.model.Monster;
-import com.example.gamedemo.server.game.npc.model.Npc;
-import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.example.gamedemo.server.game.base.gameobject.BiologyObject;
+import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +20,8 @@ public class Scene {
   /** 场景id */
   private int sceneResourceId;
 
-  /** 场景玩家 */
-  private Map<Long, Player> playerMap = new HashMap<>();
-
-  /** 场景怪物 */
-  private Map<Long, Monster> monsterMap = new HashMap<>();
-
-  /** 场景中的npc */
-  private Map<Long, Npc> npcMap = new HashMap<>();
+  /** 场景中的对象 */
+  private Map<Long, SceneObject> sceneObjectMap = new HashMap<>();
 
   public Scene(int sceneResourceId) {
     this.sceneResourceId = sceneResourceId;
@@ -48,82 +42,100 @@ public class Scene {
     this.sceneResourceId = sceneResourceId;
   }
 
-  public Map<Long, Player> getPlayerMap() {
-    return playerMap;
+  public Map<Long, SceneObject> getSceneObjectMap() {
+    return sceneObjectMap;
   }
 
-  public void setPlayerMap(Map<Long, Player> playerMap) {
-    this.playerMap = playerMap;
-  }
-
-  public Map<Long, Monster> getMonsterMap() {
-    return monsterMap;
-  }
-
-  public void setMonsterMap(Map<Long, Monster> monsterMap) {
-    this.monsterMap = monsterMap;
-  }
-
-  public Map<Long, Npc> getNpcMap() {
-    return npcMap;
-  }
-
-  public void setNpcMap(Map<Long, Npc> npcMap) {
-    this.npcMap = npcMap;
+  public void setSceneObjectMap(Map<Long, SceneObject> sceneObjectMap) {
+    this.sceneObjectMap = sceneObjectMap;
   }
 
   /**
    * 进入场景
    *
-   * @param player
+   * @param sceneObject
    */
-  public void enterScene(Player player) {
-    playerMap.put(player.getId(), player);
+  public void enterScene(SceneObject sceneObject) {
+    putSceneObject(sceneObject);
+
+    // 改变地图中对象的视野
+    for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+      SceneObject value = sceneObjectEntry.getValue();
+      if (value instanceof BiologyObject && !sceneObject.equals(value)) {
+        // TODO 可以新增额外条件，判断是否加入视野范围内
+        ((BiologyObject) value).getSceneObjectView().putSceneObject(sceneObject);
+      }
+    }
+
+    // 改变当前对象的视野
+    if (sceneObject instanceof BiologyObject) {
+      BiologyObject biologyObject = (BiologyObject) sceneObject;
+      for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+        SceneObject value = sceneObjectEntry.getValue();
+        if (!biologyObject.equals(value)) {
+          // TODO 可以新增额外条件，判断是否加入视野范围内
+          biologyObject.getSceneObjectView().putSceneObject(value);
+        }
+      }
+    }
   }
 
   /**
    * 离开场景
    *
-   * @param playerId
+   * @param id
    */
-  public void leaveScene(Long playerId) {
-    playerMap.remove(playerId);
+  public void leaveScene(Long id) {
+    // 判断是否为有生命的对象
+    SceneObject sceneObject = sceneObjectMap.get(id);
+
+    // 改变地图中对象的视野
+    for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+      SceneObject value = sceneObjectEntry.getValue();
+      if (value instanceof BiologyObject && !sceneObject.equals(value)) {
+        ((BiologyObject) value).getSceneObjectView().removeSceneObject(id);
+      }
+    }
+    // 清除对象的视野
+    if (sceneObject instanceof BiologyObject) {
+      ((BiologyObject) sceneObject).getSceneObjectView().clearSceneObjectView();
+    }
+    // 移除场景该对象
+    removeSceneObject(id);
   }
 
   /**
-   * 新增npc
+   * 玩家移动
    *
-   * @param npc
+   * @param biologyObject
    */
-  public void putNpc(Npc npc) {
-    npcMap.put(npc.getId(), npc);
+  public void biologyObjectMove(BiologyObject biologyObject) {
+    // 更新视野
+    for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+      SceneObject value = sceneObjectEntry.getValue();
+      if (value instanceof BiologyObject && !biologyObject.equals(value)) {
+        // TODO 可以新增额外条件，判断是否加入视野范围内
+        ((BiologyObject) value).getSceneObjectView().putSceneObject(biologyObject);
+      }
+    }
   }
 
   /**
-   * 移除npc
+   * 新增场景对象
    *
-   * @param npcId
+   * @param sceneObject
    */
-  public void removeNpc(Long npcId) {
-    npcMap.remove(npcId);
+  public void putSceneObject(SceneObject sceneObject) {
+    sceneObjectMap.put(sceneObject.getId(), sceneObject);
   }
 
   /**
-   * 新增怪物
-   *
-   * @param monster
-   */
-  public void putMonster(Monster monster) {
-    monsterMap.put(monster.getId(), monster);
-  }
-
-  /**
-   * 移除怪物
+   * 移除场景对象
    *
    * @param id
    */
-  public void removeMonster(Integer id) {
-    monsterMap.remove(id);
+  public void removeSceneObject(Long id) {
+    sceneObjectMap.remove(id);
   }
 
   public void statMonsterTimer() {
@@ -137,5 +149,21 @@ public class Scene {
             // logger.info("周期执行[{}]", sceneResourceId);
           }
         });
+  }
+
+  /**
+   * 获取指定类型的场景对象
+   *
+   * @param type
+   * @return
+   */
+  public Map<Long, SceneObject> getSceneObjectByType(SceneObjectTypeEnum type) {
+    Map<Long, SceneObject> map = new HashMap<>();
+    for (Map.Entry<Long, SceneObject> entry : sceneObjectMap.entrySet()) {
+      if (entry.getValue().getSceneObjectType().equals(type)) {
+        map.put(entry.getKey(), entry.getValue());
+      }
+    }
+    return map;
   }
 }

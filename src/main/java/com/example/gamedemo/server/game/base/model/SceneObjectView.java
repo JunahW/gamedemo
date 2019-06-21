@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.base.model;
 
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.base.vo.SceneObjectVo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,13 +14,13 @@ import java.util.Map;
 public class SceneObjectView {
 
   /** 场景对象的视野 */
-  private Map<Long, SceneObject> sceneObjectMap = new HashMap<>();
+  private Map<Long, SceneObjectVo> sceneObjectMap = new HashMap<>();
 
-  public Map<Long, SceneObject> getSceneObjectMap() {
+  public Map<Long, SceneObjectVo> getSceneObjectMap() {
     return sceneObjectMap;
   }
 
-  public void setSceneObjectMap(Map<Long, SceneObject> sceneObjectMap) {
+  public void setSceneObjectMap(Map<Long, SceneObjectVo> sceneObjectMap) {
     this.sceneObjectMap = sceneObjectMap;
   }
 
@@ -29,7 +30,10 @@ public class SceneObjectView {
    * @param sceneObject
    */
   public void putSceneObject(SceneObject sceneObject) {
-    sceneObjectMap.put(sceneObject.getId(), sceneObject);
+    sceneObjectMap.put(
+        sceneObject.getId(),
+        SceneObjectVo.valueOf(
+            sceneObject.getX(), sceneObject.getY(), sceneObject.getSceneObjectType()));
   }
 
   /**
@@ -39,5 +43,10 @@ public class SceneObjectView {
    */
   public void removeSceneObject(Long id) {
     sceneObjectMap.remove(id);
+  }
+
+  /** 清除视野 */
+  public void clearSceneObjectView() {
+    sceneObjectMap.clear();
   }
 }

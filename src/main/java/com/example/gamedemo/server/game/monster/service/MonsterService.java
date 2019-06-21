@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.monster.service;
 
-import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 
 import java.util.Map;
@@ -17,7 +17,7 @@ public interface MonsterService {
    * @param sceneId
    * @return
    */
-  Map<Long, Monster> getMonsters(int sceneId);
+  Map<Long, SceneObject> getMonsters(int sceneId);
 
   /**
    * 生成怪物
@@ -33,7 +33,7 @@ public interface MonsterService {
    * @param sceneId
    * @param guid
    */
-  void removeMonster(int sceneId, int guid);
+  void removeMonster(int sceneId, long guid);
 
   /**
    * 获取怪物的配置信息

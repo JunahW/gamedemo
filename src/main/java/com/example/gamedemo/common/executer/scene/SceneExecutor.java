@@ -57,7 +57,7 @@ public class SceneExecutor {
    * @param sceneId
    * @param task
    */
-  public static void addScheduleTask(int sceneId, Runnable task) {
+  public static void addTask(int sceneId, Runnable task) {
     int index = modeIndex(sceneId);
     SCENE_SERVICE[index].submit(task);
   }
@@ -67,12 +67,11 @@ public class SceneExecutor {
    *
    * @param sceneId
    * @param delay
-   * @param timeUnit
    * @param task
    */
-  public static void addDelayTask(int sceneId, long delay, TimeUnit timeUnit, Runnable task) {
+  public static void addDelayTask(int sceneId, long delay, Runnable task) {
     int index = modeIndex(sceneId);
-    SCENE_SERVICE[index].schedule(task, delay, timeUnit);
+    SCENE_SERVICE[index].schedule(task, delay, TimeUnit.MILLISECONDS);
   }
 
   /**

@@ -2,7 +2,12 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.example.gamedemo.server.game.monster.model.DropObject;
+import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.LandformResource;
@@ -13,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: wengj
@@ -40,7 +46,7 @@ public class SceneServiceImpl implements SceneService {
     }
     // 当前场景
     int currentSceneId = player.getSceneId();
-    Scene currentScene = sceneManager.getSceneBysceneResourceId(currentSceneId);
+    Scene currentScene = sceneManager.getSceneBySceneResourceId(currentSceneId);
     currentScene.leaveScene(player.getId());
 
     MapResource mapResource = sceneManager.getSceneResourceById(sceneId);
@@ -54,7 +60,7 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public Scene getSceneById(int sceneId) {
-    Scene scene = sceneManager.getSceneBysceneResourceId(sceneId);
+    Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
     if (scene == null) {
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
     }
@@ -63,13 +69,13 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public boolean move2Scene(Player player, int sceneId) {
-    Scene scene = sceneManager.getSceneBysceneResourceId(sceneId);
-    if (scene == null) {
+    Scene targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
+    if (targetScene == null) {
       logger.info("场景[{}]不存在", sceneId);
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
     }
     // 当前的场景
-    Scene currentScene = sceneManager.getSceneBysceneResourceId(player.getSceneId());
+    Scene currentScene = sceneManager.getSceneBySceneResourceId(player.getSceneId());
     int sceneResourceId = currentScene.getSceneResourceId();
     MapResource mapResource = sceneManager.getSceneResourceById(sceneResourceId);
 
@@ -90,7 +96,7 @@ public class SceneServiceImpl implements SceneService {
     currentScene.leaveScene(player.getId());
 
     // 进入新的场景
-    Scene targetScene = sceneManager.getSceneBysceneResourceId(sceneId);
+    targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
     player.setSceneId(sceneId);
     player.setX(mapResource.getX());
     player.setY(mapResource.getY());
@@ -124,6 +130,10 @@ public class SceneServiceImpl implements SceneService {
     int preY = player.getY();
     player.setX(x);
     player.setY(y);
+
+    // 通知场景玩家移动了
+    Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
+    scene.biologyObjectMove(player);
     logger.info("({},{})从移动到({},{})", preX, preY, x, y);
     return true;
   }
@@ -131,5 +141,53 @@ public class SceneServiceImpl implements SceneService {
   @Override
   public MapResource getSceneResourceById(int sceneId) {
     return sceneManager.getSceneResourceById(sceneId);
+  }
+
+  @Override
+  public void createMonsters4Scene(int sceneId) {
+    Set<Integer> monsterSet = sceneManager.getMonsterSetBySceneId(sceneId);
+    for (Integer monsterResourceId : monsterSet) {
+      SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
+    }
+    logger.info("[{}]场景生成怪物[{}]", sceneId, monsterSet);
+  }
+
+  @Override
+  public void createDropObject(int sceneId, long monsterId) {
+    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+    Monster monster = (Monster) scene.getSceneObjectMap().get(monsterId);
+    MonsterResource monsterResource =
+        SpringContext.getMonsterService().getMonsterResourceById(monster.getMonsterResourceId());
+    int[] dropObjectArray = monsterResource.getDropObjectArray();
+    for (int itemId : dropObjectArray) {
+      DropObject dropObject = DropObject.valueOf(itemId);
+      scene.putSceneObject(dropObject);
+    }
+  }
+
+  @Override
+  public void handMonsterDeadEvent(int sceneId, long monsterId) {
+    // 掉落装备
+    createDropObject(sceneId, monsterId);
+
+    Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
+
+    Monster monster =
+        (Monster) scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER).get(monsterId);
+    int monsterResourceId = monster.getMonsterResourceId();
+
+    scene.removeSceneObject(monsterId);
+
+    SceneExecutor.addDelayTask(
+        sceneId,
+        20000,
+        new Runnable() {
+          @Override
+          public void run() {
+            logger.info("[{}]重新生成怪物开始", sceneId);
+            SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
+            logger.info("[{}]重新生成怪物完成", sceneId);
+          }
+        });
   }
 }

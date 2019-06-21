@@ -62,4 +62,33 @@ public interface SceneService {
    * @return
    */
   boolean move2Coordinate(Player player, int x, int y);
+
+  /**
+   * 为场景创建怪物
+   *
+   * @param sceneId
+   */
+  void createMonsters4Scene(int sceneId);
+
+  /**
+   * 怪物死亡，创建掉落物
+   *
+   * @param sceneId
+   * @param monsterId
+   */
+  void createDropObject(int sceneId, long monsterId);
+
+  /**
+   * @param sceneId
+   * @param playerId
+   */
+  // void handlePlayerEnterScene(int sceneId, long playerId);
+
+  /**
+   * 处理怪物死亡事件
+   *
+   * @param sceneId
+   * @param monsterId
+   */
+  void handMonsterDeadEvent(int sceneId, long monsterId);
 }

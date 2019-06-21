@@ -57,7 +57,7 @@ public class InvokeMethod {
       AccountExecutor.addTask(accountId, new IoHandleEvent(session, packet, this));
     } else {
       int sceneId = session.getPlayer().getSceneId();
-      SceneExecutor.addScheduleTask(sceneId, new IoHandleEvent(session, packet, this));
+      SceneExecutor.addTask(sceneId, new IoHandleEvent(session, packet, this));
     }
     return null;
   }

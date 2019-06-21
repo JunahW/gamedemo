@@ -2,14 +2,17 @@ package com.example.gamedemo.server.game.scene.controller;
 
 import com.example.gamedemo.common.anno.HandlerClass;
 import com.example.gamedemo.common.anno.HandlerMethod;
+import com.example.gamedemo.common.anno.ReceiverHandler;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.packet.SM_ErrorCode;
 import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
+import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_MovePosition;
+import com.example.gamedemo.server.game.scene.event.PlayerEnterSceneEvent;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.packet.CM_AoiScene;
 import com.example.gamedemo.server.game.scene.packet.CM_GotoScene;
@@ -121,16 +124,16 @@ public class SceneController {
   public void getSceneObject(TSession session, CM_AoiScene req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    Scene scene = null;
-    try {
-      scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
-    } catch (RequestException e) {
-      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    if (scene != null) {
-      SessionManager.sendMessage(session, scene);
-    }
+    SessionManager.sendMessage(session, player.getSceneObjectView());
+  }
+
+  @ReceiverHandler
+  public void handlePlayerEnterScene(PlayerEnterSceneEvent event) {
+    SpringContext.getSceneService().createMonsters4Scene(event.getSceneId());
+  }
+
+  @ReceiverHandler
+  public void handleMonsterDeadEvent(MonsterDeadEvent event) {
+    SpringContext.getSceneService().handMonsterDeadEvent(event.getSceneId(), event.getMonsterId());
   }
 }
