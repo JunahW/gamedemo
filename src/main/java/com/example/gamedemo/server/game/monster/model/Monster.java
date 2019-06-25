@@ -10,7 +10,7 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
  * @description：怪物模型
  * @date 2019/6/13
  */
-public class Monster extends CreatureObject {
+public class Monster extends CreatureObject<Monster> {
   /** 怪物资源id */
   private int monsterResourceId;
 

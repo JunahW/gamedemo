@@ -19,7 +19,7 @@ import java.io.Serializable;
  * @date: 2019/4/25
  * @description: 玩家
  */
-public class Player extends CreatureObject implements Serializable {
+public class Player extends CreatureObject<Player> implements Serializable {
 
   /** 玩家名称 */
   private String jobName;

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.skill.constant;
 
+import com.example.gamedemo.server.game.skill.model.BuffSkill;
 import com.example.gamedemo.server.game.skill.model.CommonSkill;
 import com.example.gamedemo.server.game.skill.model.DurationSkill;
 
@@ -13,7 +14,10 @@ public enum SkillTypeEnum {
   COMMON_SKILL(0, CommonSkill.class),
 
   /** 持久性技能 */
-  DURATION_SKILL(1, DurationSkill.class);
+  DURATION_SKILL(1, DurationSkill.class),
+
+  /** buff技能 */
+  BUFF_SKILL(2, BuffSkill.class);
 
   private int id;
 

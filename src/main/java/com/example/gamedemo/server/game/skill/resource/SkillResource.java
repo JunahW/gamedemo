@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.skill.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
+import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.common.model.Consume;
@@ -38,6 +39,10 @@ public class SkillResource implements ResourceInterface {
 
   /** 消耗物集合 */
   private List<Consume> consumeList;
+  /** 字符串buff用","隔开 */
+  private String buffs;
+  /** buff数组 */
+  private int[] buffArray;
 
   @Override
   public Object getId() {
@@ -47,6 +52,14 @@ public class SkillResource implements ResourceInterface {
   @Override
   public void postInit() { // 将json字符串装换为对象
     setConsumeList(JsonUtils.getListByString(getConsumes(), new TypeReference<List<Consume>>() {}));
+    if (buffs != null) {
+      String[] buffSplit = buffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] ints = new int[buffSplit.length];
+      for (int i = 0; i < buffSplit.length; i++) {
+        ints[i] = Integer.parseInt(buffSplit[i]);
+      }
+      setBuffArray(ints);
+    }
   }
 
   public int getSkillId() {
@@ -95,5 +108,21 @@ public class SkillResource implements ResourceInterface {
 
   public void setConsumeList(List<Consume> consumeList) {
     this.consumeList = consumeList;
+  }
+
+  public String getBuffs() {
+    return buffs;
+  }
+
+  public void setBuffs(String buffs) {
+    this.buffs = buffs;
+  }
+
+  public int[] getBuffArray() {
+    return buffArray;
+  }
+
+  public void setBuffArray(int[] buffArray) {
+    this.buffArray = buffArray;
   }
 }

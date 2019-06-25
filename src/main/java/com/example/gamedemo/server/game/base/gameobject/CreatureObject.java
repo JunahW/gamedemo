@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
+import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  * @description：有生命的对象
  * @date 2019/6/21
  */
-public abstract class CreatureObject extends SceneObject {
+public abstract class CreatureObject<T extends CreatureObject> extends SceneObject {
   /** 视野 */
   @JsonIgnore private SceneObjectView sceneObjectView = new SceneObjectView();
 
@@ -17,6 +18,9 @@ public abstract class CreatureObject extends SceneObject {
 
   /** 魔法值 */
   private long mp;
+
+  /** Buff容器 */
+  private BuffContainer<T> buffContainer;
 
   public SceneObjectView getSceneObjectView() {
     return sceneObjectView;
@@ -40,5 +44,13 @@ public abstract class CreatureObject extends SceneObject {
 
   public void setMp(long mp) {
     this.mp = mp;
+  }
+
+  public BuffContainer<T> getBuffContainer() {
+    return buffContainer;
+  }
+
+  public void setBuffContainer(BuffContainer<T> buffContainer) {
+    this.buffContainer = buffContainer;
   }
 }
