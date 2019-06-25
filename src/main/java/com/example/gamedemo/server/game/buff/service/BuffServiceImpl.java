@@ -1,0 +1,11 @@
+package com.example.gamedemo.server.game.buff.service;
+
+import org.springframework.stereotype.Service;
+
+/**
+ * @author wengj
+ * @description：buff业务层
+ * @date 2019/6/25
+ */
+@Service
+public class BuffServiceImpl implements BuffService {}
