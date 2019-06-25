@@ -1,10 +1,12 @@
 package com.example.gamedemo.server.game.bag.storage;
 
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.model.Consume;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author wengj
@@ -232,5 +234,40 @@ public class ItemStorage {
       }
     }
     return false;
+  }
+
+  /**
+   * 检查背包是够有足够道具消耗
+   *
+   * @param consumeList
+   * @return
+   */
+  public boolean checkPackItems(List<Consume> consumeList) {
+    boolean isEnough = false;
+    for (Consume consume : consumeList) {
+      // 消耗背包物品
+      int itemId = consume.getItemId();
+      int quantity = consume.getQuantity();
+      // 检查背包是否满足条件
+      isEnough = checkPackItemQuantity(itemId, quantity);
+      if (isEnough == false) {
+        break;
+      }
+    }
+    return isEnough;
+  }
+
+  /**
+   * 消耗背包道具
+   *
+   * @param consumeList
+   */
+  public void consumePackItems(List<Consume> consumeList) {
+    for (Consume consume : consumeList) {
+      // 消耗背包物品
+      int itemId = consume.getItemId();
+      int quantity = consume.getQuantity();
+      reduceStorageItemByItemResourceId(itemId, quantity);
+    }
   }
 }

@@ -45,7 +45,7 @@ public class MonsterServiceImpl implements MonsterService {
     monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
     monster.setX(monsterResource.getX());
     monster.setY(monsterResource.getY());
-    scene.putSceneObject(monster);
+    scene.enterScene(monster);
   }
 
   @Override

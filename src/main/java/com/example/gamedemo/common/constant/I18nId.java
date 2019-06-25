@@ -94,4 +94,16 @@ public interface I18nId {
 
   /** 技能不存在 */
   int SKILL_NO_EXIST = 70002;
+
+  /** 学习技能道具不足 */
+  int SKILL_NO_ENOUGH_ITEM = 70003;
+
+  /** 魔法值不足 */
+  int MP_IS_NO_ENOUGH = 70004;
+
+  /** 目标物不是creature */
+  int TARGET_NO_CREATURE = 70005;
+
+  /** 技能还未cd完成 */
+  int SKILL_NO_CD_YET = 70006;
 }

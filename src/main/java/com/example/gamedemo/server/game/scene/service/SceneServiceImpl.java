@@ -161,12 +161,13 @@ public class SceneServiceImpl implements SceneService {
     int[] dropObjectArray = monsterResource.getDropObjectArray();
     for (int itemId : dropObjectArray) {
       DropObject dropObject = DropObject.valueOf(itemId);
-      scene.putSceneObject(dropObject);
+      scene.enterScene(dropObject);
     }
   }
 
   @Override
   public void handMonsterDeadEvent(int sceneId, long monsterId) {
+    logger.info("场景[{}]的[{}]怪物已经死亡", sceneId, monsterId);
     // 掉落装备
     createDropObject(sceneId, monsterId);
 
@@ -176,7 +177,7 @@ public class SceneServiceImpl implements SceneService {
         (Monster) scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER).get(monsterId);
     int monsterResourceId = monster.getMonsterResourceId();
 
-    scene.removeSceneObject(monsterId);
+    scene.leaveScene(monsterId);
 
     SceneExecutor.addDelayTask(
         sceneId,

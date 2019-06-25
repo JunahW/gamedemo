@@ -121,6 +121,16 @@ public class SkillController {
   @HandlerMethod(cmd = "useSkill")
   public void useSkill(TSession session, CM_UseSkill req) {
     Player player = session.getPlayer();
-    SpringContext.getSkillService().useSkill(player, req.getSkillId(), req.getTargetId());
+    boolean flag = false;
+    try {
+      flag = SpringContext.getSkillService().useSkill(player, req.getIndex(), req.getTargetId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (flag) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用技能完成"));
+    }
   }
 }

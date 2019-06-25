@@ -166,4 +166,19 @@ public class Scene {
     }
     return map;
   }
+
+  /**
+   * 获取场景中的CreatureObject
+   *
+   * @param id
+   * @return
+   */
+  public CreatureObject getCreatureObjectById(Long id) {
+    SceneObject sceneObject = sceneObjectMap.get(id);
+
+    if (sceneObject instanceof CreatureObject) {
+      return (CreatureObject) sceneObject;
+    }
+    return null;
+  }
 }

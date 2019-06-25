@@ -2,8 +2,17 @@ package com.example.gamedemo.server.game.skill.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.constant.SystemConstant;
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.model.Consume;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
 import com.example.gamedemo.server.game.skill.model.Skill;
 import com.example.gamedemo.server.game.skill.resource.SkillResource;
@@ -13,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,7 +49,17 @@ public class SkillServiceImpl implements SkillService {
       logger.info("该技能[{}]不存在", skillId);
       RequestException.throwException(I18nId.SKILL_NO_EXIST);
     }
-    // TODO 判断是否达到要求
+    // 判断是否达到要求
+    ItemStorage pack = player.getPack();
+    List<Consume> consumeList = skillResource.getConsumeList();
+    boolean isEnough = pack.checkPackItems(consumeList);
+    if (!isEnough) {
+      logger.info("道具不足，无法学习该技能");
+      RequestException.throwException(I18nId.SKILL_NO_ENOUGH_ITEM);
+    }
+    /** 消耗道具 */
+    pack.consumePackItems(consumeList);
+
     Skill skill = Skill.valueOf(skillId);
     player.getSkillStorage().getSkills().put(skill.getSkillId(), skill);
 
@@ -123,5 +143,65 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public void useSkill(Player player, int skillId, long targetId) {}
+  public boolean useSkill(Player player, int index, long targetId) {
+    // 判断条件
+    SkillStorage skillStorage = player.getSkillStorage();
+    Skill skill = skillStorage.getSkillSlots()[index];
+    if (skill == null) {
+      logger.info("技能槽不存在该技能[{}]", index);
+      RequestException.throwException(I18nId.SKILL_NO_EXIST);
+    }
+    // 判断魔法值是否满足要求
+    long mp = player.getMp();
+    SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
+
+    // 检查技能cd
+    boolean checkSkillCd = checkSkillCd(skill, skillResource.getCd());
+    if (!checkSkillCd) {
+      logger.info("技能还未冷却");
+      RequestException.throwException(I18nId.SKILL_NO_CD_YET);
+    }
+
+    if (mp < skillResource.getMp()) {
+      logger.info("魔法值不足，无法使用技能[{}]", skill.getSkillId());
+      RequestException.throwException(I18nId.MP_IS_NO_ENOUGH);
+    }
+
+    Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
+    CreatureObject creatureObject = scene.getCreatureObjectById(targetId);
+    if (creatureObject == null) {
+      logger.info("该目标物不是Creature，不能被攻击");
+      RequestException.throwException(I18nId.TARGET_NO_CREATURE);
+    }
+
+    skill.setLastUseTime(System.currentTimeMillis());
+    // 减少mp
+    player.setMp(mp - skillResource.getMp());
+    Long attack = player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK);
+    // 设置被攻击对象血量
+    creatureObject.setHp(creatureObject.getHp() - attack);
+    if (creatureObject.getHp() <= 0) {
+      if (creatureObject instanceof Monster) {
+        // 怪物死亡 触发事件
+        EventBusManager.submitEvent(MonsterDeadEvent.valueOf(scene.getSceneResourceId(), targetId));
+      }
+    }
+    return true;
+  }
+
+  /**
+   * 检查技能cd
+   *
+   * @param skill
+   * @param cd
+   * @return
+   */
+  private boolean checkSkillCd(Skill skill, int cd) {
+    long lastUseTime = skill.getLastUseTime();
+    long currentTime = System.currentTimeMillis();
+    if (currentTime >= lastUseTime + cd) {
+      return true;
+    }
+    return false;
+  }
 }

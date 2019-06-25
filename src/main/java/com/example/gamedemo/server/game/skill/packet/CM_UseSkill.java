@@ -7,13 +7,13 @@ package com.example.gamedemo.server.game.skill.packet;
  */
 public class CM_UseSkill {
   /** 技能id */
-  private int skillId;
+  private int index;
 
   /** 目标id */
   private long targetId;
 
-  public int getSkillId() {
-    return skillId;
+  public int getIndex() {
+    return index;
   }
 
   public long getTargetId() {

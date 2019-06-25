@@ -66,8 +66,9 @@ public interface SkillService {
    * 使用技能
    *
    * @param player
-   * @param skillId
+   * @param index
    * @param targetId
+   * @return
    */
-  void useSkill(Player player, int skillId, long targetId);
+  boolean useSkill(Player player, int index, long targetId);
 }
