@@ -14,6 +14,9 @@ public abstract class SceneObject extends GameObject {
   /** 场景中的y坐标 */
   private int y;
 
+  /** 场景id */
+  private int sceneId;
+
   public int getX() {
     return x;
   }
@@ -28,6 +31,14 @@ public abstract class SceneObject extends GameObject {
 
   public void setY(int y) {
     this.y = y;
+  }
+
+  public int getSceneId() {
+    return sceneId;
+  }
+
+  public void setSceneId(int sceneId) {
+    this.sceneId = sceneId;
   }
 
   /**

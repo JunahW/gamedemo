@@ -1,14 +1,13 @@
 package com.example.gamedemo.common.executer.scene;
 
+import com.example.gamedemo.common.executer.Command;
+import com.example.gamedemo.common.executer.SceneCommand;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author wengj
@@ -85,5 +84,45 @@ public class SceneExecutor {
   public static void addScheduleTask(int sceneId, long delay, long period, Runnable task) {
     int index = modeIndex(sceneId);
     SCENE_SERVICE[index].scheduleAtFixedRate(task, delay, period, TimeUnit.MILLISECONDS);
+  }
+
+  /**
+   * 执行延期指令
+   *
+   * @param command
+   * @param delay
+   */
+  public static void addDelayTask(Command command, long delay) {
+    int index = command.modIndex(DEFAULT_THREAD_SIZE);
+    SCENE_SERVICE[index].schedule(
+        new Runnable() {
+          @Override
+          public void run() {
+            command.doAction();
+          }
+        },
+        delay,
+        TimeUnit.MILLISECONDS);
+  }
+
+  public static void addScheduleTask(
+      int sceneId, long delay, long period, long endTime, SceneCommand command) {
+    int index = modeIndex(sceneId);
+    ScheduledFuture scheduledFuture =
+        SCENE_SERVICE[index].scheduleAtFixedRate(
+            new Runnable() {
+              @Override
+              public void run() {
+                if (System.currentTimeMillis() >= endTime) {
+                  command.cancel();
+                } else {
+                  command.doAction();
+                }
+              }
+            },
+            delay,
+            period,
+            TimeUnit.MILLISECONDS);
+    command.setFuture(scheduledFuture);
   }
 }

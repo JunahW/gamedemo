@@ -1,12 +1,19 @@
 package com.example.gamedemo.server.game.buff.constant;
 
-/** buff类型 */
+/**
+ * @author: wengj
+ * @date: 2019/7/1
+ * @description: buff类型
+ */
 public enum BuffTypeEnum {
-  /** 普通buff */
-  COMmon_Buff(0, null),
+  /** 眩晕buff */
+  DURATION_BUFF(0, null),
 
   /** 攻击buff */
-  Attack_buff(1, null);
+  ATTACK_BUFF(1, null),
+
+  /** 周期buff */
+  PERRIOD_BUFF(2, null);
 
   /** buff类型 */
   private int buffType;

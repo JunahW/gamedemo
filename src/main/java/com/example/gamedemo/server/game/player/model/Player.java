@@ -33,8 +33,6 @@ public class Player extends CreatureObject<Player> implements Serializable {
   private int level;
   /** 玩家属性容器 */
   private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
-  /** 场景 */
-  private int sceneId;
 
   public String getJobName() {
     return jobName;
@@ -50,14 +48,6 @@ public class Player extends CreatureObject<Player> implements Serializable {
 
   public void setAccountId(String accountId) {
     this.accountId = accountId;
-  }
-
-  public int getSceneId() {
-    return sceneId;
-  }
-
-  public void setSceneId(int sceneId) {
-    this.sceneId = sceneId;
   }
 
   public long getCombatIndex() {
@@ -148,7 +138,7 @@ public class Player extends CreatureObject<Player> implements Serializable {
         + ", level="
         + level
         + ", sceneId="
-        + sceneId
+        + super.getSceneId()
         + '}';
   }
 }

@@ -2,6 +2,7 @@ package com.example.gamedemo.server.common;
 
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
+import com.example.gamedemo.server.game.buff.service.BuffService;
 import com.example.gamedemo.server.game.equip.service.EquipmentService;
 import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
@@ -31,6 +32,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private SceneService sceneService;
   @Autowired private MonsterService monsterService;
   @Autowired private SkillService skillService;
+  @Autowired private BuffService buffService;
 
   public static ItemService getItemService() {
     return instance.itemService;
@@ -58,6 +60,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static SkillService getSkillService() {
     return instance.skillService;
+  }
+
+  public static BuffService getBuffService() {
+    return instance.buffService;
   }
 
   @PostConstruct

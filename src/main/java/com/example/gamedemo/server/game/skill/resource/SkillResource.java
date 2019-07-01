@@ -39,10 +39,17 @@ public class SkillResource implements ResourceInterface {
 
   /** 消耗物集合 */
   private List<Consume> consumeList;
+
   /** 字符串buff用","隔开 */
+  @ExcelColumn(columnName = "buffs")
   private String buffs;
+
   /** buff数组 */
   private int[] buffArray;
+
+  /** 技能类型 */
+  @ExcelColumn(columnName = "skillType")
+  private int skillType;
 
   @Override
   public Object getId() {
@@ -124,5 +131,13 @@ public class SkillResource implements ResourceInterface {
 
   public void setBuffArray(int[] buffArray) {
     this.buffArray = buffArray;
+  }
+
+  public int getSkillType() {
+    return skillType;
+  }
+
+  public void setSkillType(int skillType) {
+    this.skillType = skillType;
   }
 }

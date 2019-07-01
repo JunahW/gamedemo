@@ -143,6 +143,7 @@ public class SceneManager {
         for (Map.Entry<Integer, NpcResource> entry : npcResourceMap.entrySet()) {
           NpcResource value = entry.getValue();
           Npc npc = Npc.valueOf(value.getNpcId());
+          npc.setSceneId(scene.getSceneResourceId());
           scene.enterScene(npc);
         }
       }
@@ -160,6 +161,7 @@ public class SceneManager {
           monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
           monster.setX(value.getX());
           monster.setY(value.getY());
+          monster.setSceneId(scene.getSceneResourceId());
 
           scene.enterScene(monster);
         }

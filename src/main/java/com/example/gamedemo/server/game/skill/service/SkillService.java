@@ -71,4 +71,13 @@ public interface SkillService {
    * @return
    */
   boolean useSkill(Player player, int index, long targetId);
+
+  /**
+   * 使用技能
+   *
+   * @param player
+   * @param index
+   * @return
+   */
+  boolean useSkill(Player player, int index);
 }

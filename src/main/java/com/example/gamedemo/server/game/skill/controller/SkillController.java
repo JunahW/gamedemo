@@ -133,4 +133,13 @@ public class SkillController {
       SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用技能完成"));
     }
   }
+
+  /**
+   * 使用技能
+   *
+   * @param session
+   * @param req
+   */
+  @HandlerMethod(cmd = "useSkill2")
+  public void useSKill2(TSession session, CM_UseSkill2 req) {}
 }

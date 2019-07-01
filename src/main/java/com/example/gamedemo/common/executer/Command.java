@@ -16,4 +16,7 @@ public interface Command {
    * @return
    */
   int modIndex(int poolSize);
+
+  /** 取消command */
+  void cancel();
 }

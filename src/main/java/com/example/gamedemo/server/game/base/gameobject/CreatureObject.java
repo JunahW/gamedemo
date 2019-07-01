@@ -20,7 +20,7 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
   private long mp;
 
   /** Buff容器 */
-  private BuffContainer<T> buffContainer;
+  private BuffContainer<T> buffContainer = new BuffContainer<>();
 
   public SceneObjectView getSceneObjectView() {
     return sceneObjectView;

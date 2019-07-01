@@ -5,7 +5,7 @@ package com.example.gamedemo.common.executer;
  * @description
  * @date 2019/7/1
  */
-public class AccountCommand implements Command {
+public class AccountCommand extends AbstractCommand {
   /** 账户id */
   private String acountId;
 

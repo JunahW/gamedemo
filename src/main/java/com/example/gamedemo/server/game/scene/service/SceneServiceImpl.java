@@ -161,6 +161,7 @@ public class SceneServiceImpl implements SceneService {
     int[] dropObjectArray = monsterResource.getDropObjectArray();
     for (int itemId : dropObjectArray) {
       DropObject dropObject = DropObject.valueOf(itemId);
+      dropObject.setSceneId(sceneId);
       scene.enterScene(dropObject);
     }
   }
