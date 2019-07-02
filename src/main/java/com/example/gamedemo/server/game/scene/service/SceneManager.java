@@ -155,7 +155,7 @@ public class SceneManager {
           Monster monster = Monster.valueOf(value.getMonsterId());
 
           List<Attribute> attributeList = value.getAttributeList();
-          MonsterAttributeContainer attributeContainer = monster.getMonsterAttributeContainer();
+          MonsterAttributeContainer attributeContainer = monster.getAttributeContainer();
           attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
           monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
           monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));

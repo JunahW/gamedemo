@@ -80,7 +80,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     EquipAttrResource equipAttrResource = equipmentManager.getEquipAttrResourceById(itemResourceId);
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getPosition());
     player
-        .getPlayerAttributeContainer()
+        .getAttributeContainer()
         .putAndComputeAttributes(equipmentType, equipAttrResource.getAttributes());
 
     // 保存装备栏
@@ -114,7 +114,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         SpringContext.getItemService().getItemResourceByItemResourceId(itemResourceId);
     // 更细属性容器
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
-    player.getPlayerAttributeContainer().removeAndComputeAttributeSet(equipmentType);
+    player.getAttributeContainer().removeAndComputeAttributeSet(equipmentType);
 
     logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getId());
     return true;
@@ -214,7 +214,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     /** 增强的属性 */
     List<Attribute> attributeList = equipEnhanceResource.getAttributeList();
-    PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+    PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
     playerAttributeContainer.putAndComputeAttributes(
         EquipmentEnhanceType.getEquipmentEnhanceTypeByPosition(position), attributeList);
 
@@ -231,7 +231,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     logger.info("处理玩家加载事件");
     Player player = event.getPlayer();
     // 玩家容器
-    PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+    PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
     // 获取装备栏
     EquipStorage equipBar = player.getEquipBar();
     Slot[] slots = equipBar.getSlots();
@@ -255,7 +255,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     logger.info("处理玩家加载事件");
     Player player = event.getPlayer();
     // 玩家容器
-    PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+    PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
     // 获取装备栏
     EquipStorage equipBar = player.getEquipBar();
     Slot[] slots = equipBar.getSlots();

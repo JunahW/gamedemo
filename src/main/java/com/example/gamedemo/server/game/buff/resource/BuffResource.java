@@ -3,6 +3,11 @@ package com.example.gamedemo.server.game.buff.resource;
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.attribute.Attribute;
+import com.fasterxml.jackson.core.type.TypeReference;
+
+import java.util.List;
 
 /**
  * @author wengj
@@ -30,6 +35,16 @@ public class BuffResource implements ResourceInterface {
   /** 执行周期 */
   @ExcelColumn(columnName = "period")
   private int period;
+
+  /** 目标对象 1 自身 0 对方 */
+  @ExcelColumn(columnName = "target")
+  private int target;
+
+  /** buff影响的属性 */
+  @ExcelColumn(columnName = "effect")
+  private String effect;
+
+  private List<Attribute> effectList;
 
   public int getBuffId() {
     return buffId;
@@ -71,11 +86,37 @@ public class BuffResource implements ResourceInterface {
     this.period = period;
   }
 
+  public int getTarget() {
+    return target;
+  }
+
+  public void setTarget(int target) {
+    this.target = target;
+  }
+
+  public String getEffect() {
+    return effect;
+  }
+
+  public void setEffect(String effect) {
+    this.effect = effect;
+  }
+
+  public List<Attribute> getEffectList() {
+    return effectList;
+  }
+
+  public void setEffectList(List<Attribute> effectList) {
+    this.effectList = effectList;
+  }
+
   @Override
   public Object getId() {
     return buffId;
   }
 
   @Override
-  public void postInit() {}
+  public void postInit() {
+    effectList = JsonUtils.getListByString(this.effect, new TypeReference<List<Attribute>>() {});
+  }
 }

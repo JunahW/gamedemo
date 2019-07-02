@@ -243,14 +243,14 @@ public class ItemStorage {
    * @return
    */
   public boolean checkPackItems(List<Consume> consumeList) {
-    boolean isEnough = false;
+    boolean isEnough = true;
     for (Consume consume : consumeList) {
       // 消耗背包物品
       int itemId = consume.getItemId();
       int quantity = consume.getQuantity();
       // 检查背包是否满足条件
       isEnough = checkPackItemQuantity(itemId, quantity);
-      if (isEnough == false) {
+      if (!isEnough) {
         break;
       }
     }

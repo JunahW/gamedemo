@@ -13,7 +13,7 @@ public enum SkillTypeEnum {
   /** 普通技能 */
   COMMON_SKILL(0, CommonSkill.class),
 
-  /** 持久性技能 */
+  /** 范围技能 */
   RANGE_SKILL(1, RangeSkill.class),
 
   /** buff技能 */

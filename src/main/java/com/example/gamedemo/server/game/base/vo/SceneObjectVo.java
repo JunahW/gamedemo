@@ -8,6 +8,9 @@ import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
  * @date 2019/6/20
  */
 public class SceneObjectVo {
+
+  /** 主键 */
+  private long id;
   /** 场景中的x坐标 */
   private int x;
   /** 场景中的y坐标 */
@@ -21,8 +24,9 @@ public class SceneObjectVo {
    * @param type
    * @return
    */
-  public static SceneObjectVo valueOf(int x, int y, SceneObjectTypeEnum type) {
+  public static SceneObjectVo valueOf(long id, int x, int y, SceneObjectTypeEnum type) {
     SceneObjectVo sceneObjectVo = new SceneObjectVo();
+    sceneObjectVo.setId(id);
     sceneObjectVo.setX(x);
     sceneObjectVo.setY(y);
     sceneObjectVo.setSceneObjectTypeEnum(type);
@@ -43,6 +47,14 @@ public class SceneObjectVo {
 
   public void setY(int y) {
     this.y = y;
+  }
+
+  public long getId() {
+    return id;
+  }
+
+  public void setId(long id) {
+    this.id = id;
   }
 
   public SceneObjectTypeEnum getSceneObjectTypeEnum() {

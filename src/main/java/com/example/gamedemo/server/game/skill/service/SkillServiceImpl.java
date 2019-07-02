@@ -5,20 +5,23 @@ import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
+import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.model.Consume;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
+import com.example.gamedemo.server.game.buff.constant.TargetType;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.skill.command.PeriodBuffCommand;
 import com.example.gamedemo.server.game.skill.constant.SkillTypeEnum;
 import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
@@ -30,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -151,53 +155,6 @@ public class SkillServiceImpl implements SkillService {
   }
 
   @Override
-  public boolean useSkill(Player player, int index, long targetId) {
-    // 判断条件
-    SkillStorage skillStorage = player.getSkillStorage();
-    Skill skill = skillStorage.getSkillSlots()[index];
-    if (skill == null) {
-      logger.info("技能槽不存在该技能[{}]", index);
-      RequestException.throwException(I18nId.SKILL_NO_EXIST);
-    }
-    // 判断魔法值是否满足要求
-    long mp = player.getMp();
-    SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
-
-    // 检查技能cd
-    boolean checkSkillCd = checkSkillCd(skill, skillResource.getCd());
-    if (!checkSkillCd) {
-      logger.info("技能还未冷却");
-      RequestException.throwException(I18nId.SKILL_NO_CD_YET);
-    }
-
-    if (mp < skillResource.getMp()) {
-      logger.info("魔法值不足，无法使用技能[{}]", skill.getSkillId());
-      RequestException.throwException(I18nId.MP_IS_NO_ENOUGH);
-    }
-
-    Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
-    CreatureObject creatureObject = scene.getCreatureObjectById(targetId);
-    if (creatureObject == null) {
-      logger.info("该目标物不是Creature，不能被攻击");
-      RequestException.throwException(I18nId.TARGET_NO_CREATURE);
-    }
-    /** 普通攻击 */
-    if (SkillTypeEnum.COMMON_SKILL.getId() == skillResource.getSkillType()) {
-      useCommonSkill(player, skill, creatureObject);
-    }
-    /** 范围攻击 */
-    if (SkillTypeEnum.RANGE_SKILL.getId() == skillResource.getSkillType()) {
-      useRangeSkill(player, skill);
-    }
-
-    /** buff技能 */
-    if (SkillTypeEnum.BUFF_SKILL.getId() == skillResource.getSkillType()) {
-      useBuffSkill(player, skill, creatureObject);
-    }
-    return true;
-  }
-
-  @Override
   public boolean useSkill(Player player, int index) {
     // 判断条件
     SkillStorage skillStorage = player.getSkillStorage();
@@ -222,24 +179,25 @@ public class SkillServiceImpl implements SkillService {
       RequestException.throwException(I18nId.MP_IS_NO_ENOUGH);
     }
 
-    skill.setLastUseTime(System.currentTimeMillis());
-    // 减少mp
-    player.setMp(mp - skillResource.getMp());
-    Long attack = player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK);
-
-    Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
-    Map<Long, SceneObject> sceneObjectMap = scene.getSceneObjectMap();
-
-    SkillTypeEnum skillType = SkillTypeEnum.getSkillTypeEnumById(skillResource.getSkillType());
-
-    /** 范围攻击技能 */
-    if (SkillTypeEnum.RANGE_SKILL.equals(skillType)) {
-      // useRangeSkill(player);
-
-      /** buff攻击 */
+    /** 普通攻击 */
+    if (SkillTypeEnum.COMMON_SKILL.getId() == skillResource.getSkillType()) {
+      CreatureObject attackTarget = getAttackTarget(player, skillResource);
+      if (attackTarget == null) {
+        logger.info("附近不存在攻击对象");
+        SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("附近不存在攻击对象"));
+        return true;
+      }
+      useCommonSkill(player, skill, attackTarget);
     }
-    if (SkillTypeEnum.BUFF_SKILL.equals(skillType)) {}
+    /** 范围攻击 */
+    if (SkillTypeEnum.RANGE_SKILL.getId() == skillResource.getSkillType()) {
+      useRangeSkill(player, skill);
+    }
 
+    /** buff技能 */
+    if (SkillTypeEnum.BUFF_SKILL.getId() == skillResource.getSkillType()) {
+      useBuffSkill(player, skill);
+    }
     return true;
   }
 
@@ -266,22 +224,26 @@ public class SkillServiceImpl implements SkillService {
    * @param skill
    */
   private void useRangeSkill(Player player, Skill skill) {
-    Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
-    Map<Long, SceneObject> sceneObjectMap = scene.getSceneObjectMap();
-    Long attack = player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK);
-    for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
-      SceneObject sceneObject = sceneObjectEntry.getValue();
-      if (sceneObject instanceof CreatureObject) {
-        // TODO 判断距离
-        CreatureObject creatureObject = (CreatureObject) sceneObject;
-        // 设置被攻击对象血量
-        creatureObject.setHp(creatureObject.getHp() - attack);
-        if (creatureObject.getHp() <= 0) {
-          if (creatureObject instanceof Monster) {
-            // 怪物死亡 触发事件
-            EventBusManager.submitEvent(
-                MonsterDeadEvent.valueOf(scene.getSceneResourceId(), creatureObject.getId()));
-          }
+
+    SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
+    // 设置cd时间
+    skill.setLastUseTime(System.currentTimeMillis());
+    // 减少mp
+    player.setMp(player.getMp() - skillResource.getMp());
+
+    List<CreatureObject> attackTargetList = getAttackTargetList(player, skillResource);
+    Long attack =
+        player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK)
+            + skillResource.getAttack();
+    for (CreatureObject creatureObject : attackTargetList) {
+      // 设置被攻击对象血量
+      logger.info("[{}]受到攻击，消耗血量[{}]", creatureObject.getId(), attack);
+      creatureObject.setHp(creatureObject.getHp() - attack);
+      if (creatureObject.getHp() <= 0) {
+        if (creatureObject instanceof Monster) {
+          // 怪物死亡 触发事件
+          EventBusManager.submitEvent(
+              MonsterDeadEvent.valueOf(creatureObject.getSceneId(), creatureObject.getId()));
         }
       }
     }
@@ -293,7 +255,7 @@ public class SkillServiceImpl implements SkillService {
    * @param player
    * @param skill
    */
-  private void useBuffSkill(Player player, Skill skill, CreatureObject target) {
+  private void useBuffSkill(Player player, Skill skill) {
     logger.info("[{}]使用了buff技能[{}]", player.getId(), skill.getSkillId());
     int skillId = skill.getSkillId();
     SkillResource skillResource = skillManager.getSkillResourceById(skillId);
@@ -305,23 +267,37 @@ public class SkillServiceImpl implements SkillService {
     /** 添加buff */
     int[] buffArray = skillResource.getBuffArray();
     for (int buffId : buffArray) {
-      SpringContext.getBuffService().addBuff(target, Buff.valueOf(buffId));
       BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(buffId);
       int duration = buffResource.getDuration();
+      CreatureObject creatureObject;
+      if (TargetType.SELF == buffResource.getTarget()) {
+        creatureObject = player;
+      } else {
+        creatureObject = getAttackTarget(player, skillResource);
+        if (creatureObject == null) {
+          logger.info("附近不存在攻击对象");
+          SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("附近不存在攻击对象"));
+          return;
+        }
+      }
+      SpringContext.getBuffService().addBuff(creatureObject, Buff.valueOf(buffId));
       if (BuffTypeEnum.DURATION_BUFF.getBuffType() == buffResource.getBuffType()) {
         // 提交buff移除任务
       } else if (BuffTypeEnum.PERRIOD_BUFF.getBuffType() == buffResource.getBuffType()) {
         long endTime = System.currentTimeMillis() + duration;
-        PeriodBuffCommand command = PeriodBuffCommand.valueOf(target.getSceneId(), target, 90);
+        PeriodBuffCommand command =
+            PeriodBuffCommand.valueOf(
+                creatureObject.getSceneId(), creatureObject, buffResource.getEffectList());
         SceneExecutor.addScheduleTask(
-            target.getSceneId(), 0, buffResource.getPeriod(), endTime, command);
+            creatureObject.getSceneId(), 0, buffResource.getPeriod(), endTime, command);
 
       } else if (BuffTypeEnum.ATTACK_BUFF.getBuffType() == buffResource.getBuffType()) {
         // TODO
       }
       /** 移除buff */
       SceneExecutor.addDelayTask(
-          RemoveBuffCommand.valueOf(target.getSceneId(), target.getBuffContainer(), buffId),
+          RemoveBuffCommand.valueOf(
+              creatureObject.getSceneId(), creatureObject.getBuffContainer(), buffId),
           duration);
     }
   }
@@ -336,16 +312,90 @@ public class SkillServiceImpl implements SkillService {
   private void useCommonSkill(Player player, Skill skill, CreatureObject target) {
     SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
     skill.setLastUseTime(System.currentTimeMillis());
+
     // 减少mp
     player.setMp(player.getMp() - skillResource.getMp());
-    Long attack = player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK);
+    // 计算攻击力
+    Long attack =
+        player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK)
+            + skillResource.getAttack();
     // 设置被攻击对象血量
     target.setHp(target.getHp() - attack);
+    logger.info("[{}]受到攻击,减少血量[{}]", target.getId(), attack);
     if (target.getHp() <= 0) {
       if (target instanceof Monster) {
         // 怪物死亡 触发事件
         EventBusManager.submitEvent(MonsterDeadEvent.valueOf(target.getSceneId(), target.getId()));
       }
     }
+  }
+
+  /**
+   * 获取攻击对象
+   *
+   * @param player
+   * @param skillResource
+   * @return
+   */
+  private CreatureObject getAttackTarget(Player player, SkillResource skillResource) {
+    int x = player.getX();
+    int y = player.getY();
+    SceneObjectView sceneObjectView = player.getSceneObjectView();
+    Map<Long, SceneObject> sceneObjectMap = sceneObjectView.getSceneObjectMap();
+    for (Map.Entry<Long, SceneObject> entry : sceneObjectMap.entrySet()) {
+      SceneObject sceneObject = entry.getValue();
+      if (sceneObject instanceof CreatureObject) {
+        CreatureObject creatureObject = (CreatureObject) sceneObject;
+        int targetX = creatureObject.getX();
+        int targetY = creatureObject.getY();
+        int distance = computeDistance(x, y, targetX, targetY);
+        if (distance <= skillResource.getAttackRadius()) {
+          return creatureObject;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 获取攻击攻击对象列表
+   *
+   * @param player
+   * @param skillResource
+   * @return
+   */
+  private List<CreatureObject> getAttackTargetList(Player player, SkillResource skillResource) {
+    ArrayList<CreatureObject> creatureList = new ArrayList<>();
+    int x = player.getX();
+    int y = player.getY();
+    SceneObjectView sceneObjectView = player.getSceneObjectView();
+    Map<Long, SceneObject> sceneObjectMap = sceneObjectView.getSceneObjectMap();
+    for (Map.Entry<Long, SceneObject> entry : sceneObjectMap.entrySet()) {
+      SceneObject sceneObject = entry.getValue();
+      if (sceneObject instanceof CreatureObject) {
+        CreatureObject creatureObject = (CreatureObject) sceneObject;
+        int targetX = creatureObject.getX();
+        int targetY = creatureObject.getY();
+        int distance = computeDistance(x, y, targetX, targetY);
+        if (distance <= skillResource.getAttackRadius()) {
+          creatureList.add(creatureObject);
+        }
+      }
+    }
+    return creatureList;
+  }
+
+  /**
+   * 计算两个对象的距离
+   *
+   * @param x
+   * @param y
+   * @param targetX
+   * @param targetY
+   * @return
+   */
+  private int computeDistance(int x, int y, int targetX, int targetY) {
+    int distanceSquare = Math.abs(x * x - targetX * targetX) + Math.abs(y * y + targetY * targetY);
+    return (int) Math.sqrt(distanceSquare);
   }
 }

@@ -33,6 +33,10 @@ public class SkillResource implements ResourceInterface {
   @ExcelColumn(columnName = "mp")
   private int mp;
 
+  /** 增加的攻击力 */
+  @ExcelColumn(columnName = "attack")
+  private int attack;
+
   /** 消耗的道具json格式 */
   @ExcelColumn(columnName = "consumes")
   private String consumes;
@@ -50,6 +54,9 @@ public class SkillResource implements ResourceInterface {
   /** 技能类型 */
   @ExcelColumn(columnName = "skillType")
   private int skillType;
+  /** 攻击范围 */
+  @ExcelColumn(columnName = "attackRadius")
+  private int attackRadius;
 
   @Override
   public Object getId() {
@@ -139,5 +146,21 @@ public class SkillResource implements ResourceInterface {
 
   public void setSkillType(int skillType) {
     this.skillType = skillType;
+  }
+
+  public int getAttackRadius() {
+    return attackRadius;
+  }
+
+  public void setAttackRadius(int attackRadius) {
+    this.attackRadius = attackRadius;
+  }
+
+  public int getAttack() {
+    return attack;
+  }
+
+  public void setAttack(int attack) {
+    this.attack = attack;
   }
 }

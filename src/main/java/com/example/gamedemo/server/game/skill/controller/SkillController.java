@@ -123,7 +123,7 @@ public class SkillController {
     Player player = session.getPlayer();
     boolean flag = false;
     try {
-      flag = SpringContext.getSkillService().useSkill(player, req.getIndex(), req.getTargetId());
+      flag = SpringContext.getSkillService().useSkill(player, req.getIndex());
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     } catch (Exception e) {
@@ -133,13 +133,4 @@ public class SkillController {
       SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用技能完成"));
     }
   }
-
-  /**
-   * 使用技能
-   *
-   * @param session
-   * @param req
-   */
-  @HandlerMethod(cmd = "useSkill2")
-  public void useSKill2(TSession session, CM_UseSkill2 req) {}
 }
