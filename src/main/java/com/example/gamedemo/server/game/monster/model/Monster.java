@@ -14,11 +14,6 @@ public class Monster extends CreatureObject<Monster> {
   /** 怪物资源id */
   private int monsterResourceId;
 
-  /** 怪物属性容器 */
-  private MonsterAttributeContainer monsterAttributeContainer = new MonsterAttributeContainer();
-
-  /** 怪物视野 */
-
   /**
    * @param monsterResourceId
    * @return
@@ -30,20 +25,20 @@ public class Monster extends CreatureObject<Monster> {
     return monster;
   }
 
+  @Override
+  public MonsterAttributeContainer getAttributeContainer() {
+    if (super.getAttributeContainer() == null) {
+      super.setAttributeContainer(new MonsterAttributeContainer());
+    }
+    return (MonsterAttributeContainer) super.getAttributeContainer();
+  }
+
   public int getMonsterResourceId() {
     return monsterResourceId;
   }
 
   public void setMonsterResourceId(int monsterResourceId) {
     this.monsterResourceId = monsterResourceId;
-  }
-
-  public MonsterAttributeContainer getMonsterAttributeContainer() {
-    return monsterAttributeContainer;
-  }
-
-  public void setMonsterAttributeContainer(MonsterAttributeContainer monsterAttributeContainer) {
-    this.monsterAttributeContainer = monsterAttributeContainer;
   }
 
   @Override

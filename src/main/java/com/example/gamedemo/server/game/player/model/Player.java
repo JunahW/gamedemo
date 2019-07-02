@@ -32,7 +32,7 @@ public class Player extends CreatureObject<Player> implements Serializable {
   /** 等级 */
   private int level;
   /** 玩家属性容器 */
-  private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
+  // private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
 
   public String getJobName() {
     return jobName;
@@ -66,12 +66,12 @@ public class Player extends CreatureObject<Player> implements Serializable {
     this.jobId = jobId;
   }
 
-  public PlayerAttributeContainer getPlayerAttributeContainer() {
-    return playerAttributeContainer;
-  }
-
-  public void setPlayerAttributeContainer(PlayerAttributeContainer playerAttributeContainer) {
-    this.playerAttributeContainer = playerAttributeContainer;
+  @Override
+  public PlayerAttributeContainer getAttributeContainer() {
+    if (super.getAttributeContainer() == null) {
+      super.setAttributeContainer(new PlayerAttributeContainer(this));
+    }
+    return (PlayerAttributeContainer) super.getAttributeContainer();
   }
 
   public int getLevel() {

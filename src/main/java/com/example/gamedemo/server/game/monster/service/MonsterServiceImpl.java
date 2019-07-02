@@ -9,6 +9,7 @@ import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class MonsterServiceImpl implements MonsterService {
     List<Attribute> attributeList = monsterResource.getAttributeList();
 
     Monster monster = Monster.valueOf(monsterResourceId);
-    MonsterAttributeContainer attributeContainer = monster.getMonsterAttributeContainer();
+    MonsterAttributeContainer attributeContainer = monster.getAttributeContainer();
     attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
 
     monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
@@ -58,5 +59,13 @@ public class MonsterServiceImpl implements MonsterService {
   @Override
   public MonsterResource getMonsterResourceById(int monsterResourceId) {
     return monsterManager.getMonsterResource(monsterResourceId);
+  }
+
+  @Override
+  public Monster getMonsterById(Player player, Long monsterId) {
+    int sceneId = player.getSceneId();
+    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+    Map<Long, SceneObject> sceneObjectMap = scene.getSceneObjectMap();
+    return (Monster) sceneObjectMap.get(monsterId);
   }
 }

@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
+import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,6 +22,9 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
 
   /** Buff容器 */
   private BuffContainer<T> buffContainer = new BuffContainer<>();
+
+  /** 属性容器 */
+  private AbstractAttributeContainer attributeContainer;
 
   public SceneObjectView getSceneObjectView() {
     return sceneObjectView;
@@ -52,5 +56,13 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
 
   public void setBuffContainer(BuffContainer<T> buffContainer) {
     this.buffContainer = buffContainer;
+  }
+
+  public AbstractAttributeContainer getAttributeContainer() {
+    return attributeContainer;
+  }
+
+  public void setAttributeContainer(AbstractAttributeContainer attributeContainer) {
+    this.attributeContainer = attributeContainer;
   }
 }

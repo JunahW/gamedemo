@@ -70,8 +70,8 @@ public class PlayerServiceImpl implements PlayerService {
       /** 触发事件 */
       Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
       // 初始化hp和mp
-      player.setMp(player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.MP));
-      player.setHp(player.getPlayerAttributeContainer().getAttributeValue(AttributeTypeEnum.HP));
+      player.setMp(player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.MP));
+      player.setHp(player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.HP));
 
       scene.enterScene(player);
       return player;
@@ -113,7 +113,7 @@ public class PlayerServiceImpl implements PlayerService {
     EventBusManager.submitEvent(PlayerLoadEvent.valueof(checkedPlayer));
 
     // 计算属性的值
-    PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getPlayerAttributeContainer();
+    PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getAttributeContainer();
     playerAttributeContainer.compute();
     return playerAttributeContainer.getAttributeMap();
   }
@@ -127,7 +127,7 @@ public class PlayerServiceImpl implements PlayerService {
         SpringContext.getPlayerService().getBaseAttributeResourceByPlayerType(player.getJobId());
 
     // 玩家容器
-    PlayerAttributeContainer playerAttributeContainer = player.getPlayerAttributeContainer();
+    PlayerAttributeContainer playerAttributeContainer = player.getAttributeContainer();
     // 玩家基本属性
     playerAttributeContainer.putAttributeSet(
         AttributeModelIdEnum.BASE, baseAttribute.getPlayerBaseAttribute());

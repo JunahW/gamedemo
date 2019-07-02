@@ -1,7 +1,9 @@
 package com.example.gamedemo.server.game.monster.service;
 
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
+import com.example.gamedemo.server.game.player.model.Player;
 
 import java.util.Map;
 
@@ -42,4 +44,13 @@ public interface MonsterService {
    * @return
    */
   MonsterResource getMonsterResourceById(int monsterResourceId);
+
+  /**
+   * 获取怪物信息
+   *
+   * @param player
+   * @param monsterId
+   * @return
+   */
+  Monster getMonsterById(Player player, Long monsterId);
 }
