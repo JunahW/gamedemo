@@ -3,6 +3,7 @@ package com.example.gamedemo.server.game.skill.constant;
 import com.example.gamedemo.server.game.skill.model.BuffSkill;
 import com.example.gamedemo.server.game.skill.model.CommonSkill;
 import com.example.gamedemo.server.game.skill.model.RangeSkill;
+import com.example.gamedemo.server.game.skill.model.Skill;
 
 /**
  * @author: wengj
@@ -21,7 +22,7 @@ public enum SkillTypeEnum {
 
   private int id;
 
-  private Class skillClazz;
+  private Class<? extends Skill> skillClazz;
 
   SkillTypeEnum(int id, Class skillClazz) {
     this.id = id;
@@ -43,6 +44,29 @@ public enum SkillTypeEnum {
     return null;
   }
 
+  /**
+   * 创建技能
+   *
+   * @param id
+   * @return
+   */
+  public static Skill createSkill(int id, int skillId) {
+    Skill skill = null;
+    for (SkillTypeEnum skillTypeEnum : SkillTypeEnum.values()) {
+      if (skillTypeEnum.getId() == id) {
+        try {
+          skill = skillTypeEnum.getSkillClazz().newInstance();
+          skill.setSkillId(skillId);
+        } catch (InstantiationException e) {
+          e.printStackTrace();
+        } catch (IllegalAccessException e) {
+          e.printStackTrace();
+        }
+      }
+    }
+    return skill;
+  }
+
   public int getId() {
     return id;
   }
@@ -51,11 +75,11 @@ public enum SkillTypeEnum {
     this.id = id;
   }
 
-  public Class getSkillClazz() {
+  public Class<? extends Skill> getSkillClazz() {
     return skillClazz;
   }
 
-  public void setSkillClazz(Class skillClazz) {
+  public void setSkillClazz(Class<? extends Skill> skillClazz) {
     this.skillClazz = skillClazz;
   }
 }

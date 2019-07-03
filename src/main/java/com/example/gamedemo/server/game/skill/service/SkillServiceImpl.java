@@ -72,7 +72,8 @@ public class SkillServiceImpl implements SkillService {
     /** 消耗道具 */
     pack.consumePackItems(consumeList);
 
-    Skill skill = Skill.valueOf(skillId);
+    Skill skill = SkillTypeEnum.createSkill(skillResource.getSkillType(), skillId);
+
     player.getSkillStorage().getSkills().put(skill.getSkillId(), skill);
 
     // 保存技能栏
@@ -199,6 +200,11 @@ public class SkillServiceImpl implements SkillService {
       useBuffSkill(player, skill);
     }
     return true;
+  }
+
+  @Override
+  public SkillResource getSkillResourceById(int id) {
+    return skillManager.getSkillResourceById(id);
   }
 
   /**

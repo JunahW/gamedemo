@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game.skill.packet;
+package com.example.gamedemo.server.game.fight.packet;
 
 /**
  * @author wengj

@@ -111,26 +111,4 @@ public class SkillController {
     SkillStorage skillStorage = session.getPlayer().getSkillStorage();
     SessionManager.sendMessage(session, skillStorage);
   }
-
-  /**
-   * 使用技能
-   *
-   * @param session
-   * @param req
-   */
-  @HandlerMethod(cmd = "useSkill")
-  public void useSkill(TSession session, CM_UseSkill req) {
-    Player player = session.getPlayer();
-    boolean flag = false;
-    try {
-      flag = SpringContext.getSkillService().useSkill(player, req.getIndex());
-    } catch (RequestException e) {
-      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    if (flag) {
-      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用技能完成"));
-    }
-  }
 }

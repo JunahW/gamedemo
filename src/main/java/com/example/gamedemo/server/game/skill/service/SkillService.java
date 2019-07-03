@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.skill.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
+import com.example.gamedemo.server.game.skill.resource.SkillResource;
 
 /**
  * @author: wengj
@@ -70,4 +71,12 @@ public interface SkillService {
    * @return
    */
   boolean useSkill(Player player, int index);
+
+  /**
+   * 获取配置信息
+   *
+   * @param id
+   * @return
+   */
+  SkillResource getSkillResourceById(int id);
 }

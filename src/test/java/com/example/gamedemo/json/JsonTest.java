@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Map;
+
 /**
  * @author wengj
  * @description
@@ -49,5 +51,12 @@ public class JsonTest {
     EquipStorage equipStorage = new EquipStorage();
     String s = JsonUtils.serializeEntity(equipStorage);
     System.out.println(s);
+  }
+
+  @Test
+  public void testMapJson() {
+    Map<String, Integer> map = JsonUtils.deSerializeEntity("{\"radius\":4}", Map.class);
+    Integer integer = map.get("radius");
+    System.out.println(integer);
   }
 }

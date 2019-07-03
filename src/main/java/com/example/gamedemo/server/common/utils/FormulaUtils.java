@@ -72,4 +72,18 @@ public class FormulaUtils {
       attribute.setValue(attribute.getValue() * (1 + percentage / SystemConstant.TEN_THOUSAND));
     }
   }
+
+  /**
+   * 计算两个坐标的距离
+   *
+   * @param x
+   * @param y
+   * @param targetX
+   * @param targetY
+   * @return
+   */
+  public static int computeDistance(int x, int y, int targetX, int targetY) {
+    int distanceSquare = Math.abs(x * x - targetX * targetX) + Math.abs(y * y + targetY * targetY);
+    return (int) Math.sqrt(distanceSquare);
+  }
 }

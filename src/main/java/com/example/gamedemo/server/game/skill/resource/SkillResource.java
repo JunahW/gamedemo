@@ -54,9 +54,38 @@ public class SkillResource implements ResourceInterface {
   /** 技能类型 */
   @ExcelColumn(columnName = "skillType")
   private int skillType;
+
   /** 攻击范围 */
   @ExcelColumn(columnName = "attackRadius")
   private int attackRadius;
+
+  /** 技能释放中心 0 对方 1自身 */
+  @ExcelColumn(columnName = "centerType")
+  private int centerType;
+
+  /** 技能范围类型 1 点 2 圆形 */
+  @ExcelColumn(columnName = "skillAreaType")
+  private int skillAreaType;
+
+  /** 技能范围参数 */
+  @ExcelColumn(columnName = "skillAreaParam")
+  private String skillAreaParam;
+
+  /** 技能释放范围类型 1 点 2 圆形 */
+  @ExcelColumn(columnName = "areaType")
+  private int areaType;
+
+  /** 技能释放范围参数 */
+  @ExcelColumn(columnName = "areaParam")
+  private String areaParam;
+
+  /** 最大目标数量 */
+  @ExcelColumn(columnName = "targetMax")
+  private int targetMax;
+
+  /** 是否包括自身 */
+  @ExcelColumn(columnName = "containSelf")
+  private boolean containSelf;
 
   @Override
   public Object getId() {
@@ -162,5 +191,65 @@ public class SkillResource implements ResourceInterface {
 
   public void setAttack(int attack) {
     this.attack = attack;
+  }
+
+  public int getCenterType() {
+    return centerType;
+  }
+
+  public void setCenterType(int centerType) {
+    this.centerType = centerType;
+  }
+
+  public int getAreaType() {
+    return areaType;
+  }
+
+  public void setAreaType(int areaType) {
+    this.areaType = areaType;
+  }
+
+  public String getAreaParam() {
+    return areaParam;
+  }
+
+  public void setAreaParam(String areaParam) {
+    this.areaParam = areaParam;
+  }
+
+  public int getTargetMax() {
+    return targetMax;
+  }
+
+  public void setTargetMax(int targetMax) {
+    this.targetMax = targetMax;
+  }
+
+  public boolean getContainSelf() {
+    return containSelf;
+  }
+
+  public int getSkillAreaType() {
+    return skillAreaType;
+  }
+
+  public void setSkillAreaType(int skillAreaType) {
+    this.skillAreaType = skillAreaType;
+  }
+
+  public String getSkillAreaParam() {
+    return skillAreaParam;
+  }
+
+  public void setSkillAreaParam(String skillAreaParam) {
+    this.skillAreaParam = skillAreaParam;
+  }
+
+  public boolean isContainSelf() {
+    return containSelf;
+  }
+
+  public void setContainSelf(boolean containSelf) {
+    this.containSelf = containSelf;
   }
 }
