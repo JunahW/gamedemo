@@ -2,9 +2,9 @@ package com.example.gamedemo.server.game.monster.resource;
 
 import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
-import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -58,16 +58,15 @@ public class MonsterResource implements ResourceInterface {
   private int defense;
 
   /** 掉落物 */
-  @ExcelColumn(columnName = "dropObject")
-  private String dropObject;
+  @ExcelColumn(columnName = "dropObjectData")
+  private String dropObjectData;
+
+  private List<Drop> dropList;
 
   @ExcelColumn(columnName = "attrs")
   private String attrs;
 
   private List<Attribute> attributeList;
-
-  /** 掉落物集合 */
-  private int[] dropObjectArray;
 
   @Override
   public Object getId() {
@@ -76,14 +75,11 @@ public class MonsterResource implements ResourceInterface {
 
   @Override
   public void postInit() {
-    if (dropObject != null) {
-      String[] dropObjectSplit = this.dropObject.split(SystemConstant.SPLIT_TOKEN_COMMA);
-      int[] dropObjectTmp = new int[dropObjectSplit.length];
-      for (int i = 0; i < dropObjectSplit.length; i++) {
-        dropObjectTmp[i] = Integer.parseInt(dropObjectSplit[i]);
-      }
-      dropObjectArray = dropObjectTmp;
+    if (dropObjectData != null) {
+      this.setDropList(
+          JsonUtils.getListByString(getDropObjectData(), new TypeReference<List<Drop>>() {}));
     }
+
     this.setAttributeList(
         JsonUtils.getListByString(getAttrs(), new TypeReference<List<Attribute>>() {}));
   }
@@ -168,20 +164,12 @@ public class MonsterResource implements ResourceInterface {
     this.defense = defense;
   }
 
-  public String getDropObject() {
-    return dropObject;
+  public String getDropObjectData() {
+    return dropObjectData;
   }
 
-  public void setDropObject(String dropObject) {
-    this.dropObject = dropObject;
-  }
-
-  public int[] getDropObjectArray() {
-    return dropObjectArray;
-  }
-
-  public void setDropObjectArray(int[] dropObjectArray) {
-    this.dropObjectArray = dropObjectArray;
+  public void setDropObjectData(String dropObjectData) {
+    this.dropObjectData = dropObjectData;
   }
 
   public String getAttrs() {
@@ -198,5 +186,13 @@ public class MonsterResource implements ResourceInterface {
 
   public void setAttributeList(List<Attribute> attributeList) {
     this.attributeList = attributeList;
+  }
+
+  public List<Drop> getDropList() {
+    return dropList;
+  }
+
+  public void setDropList(List<Drop> dropList) {
+    this.dropList = dropList;
   }
 }

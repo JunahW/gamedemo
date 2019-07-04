@@ -4,6 +4,8 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.model.Drop;
+import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.monster.model.DropObject;
 import com.example.gamedemo.server.game.monster.model.Monster;
@@ -158,11 +160,15 @@ public class SceneServiceImpl implements SceneService {
     Monster monster = (Monster) scene.getSceneObjectMap().get(monsterId);
     MonsterResource monsterResource =
         SpringContext.getMonsterService().getMonsterResourceById(monster.getMonsterResourceId());
-    int[] dropObjectArray = monsterResource.getDropObjectArray();
-    for (int itemId : dropObjectArray) {
-      DropObject dropObject = DropObject.valueOf(itemId);
-      dropObject.setSceneId(sceneId);
-      scene.enterScene(dropObject);
+    List<Drop> dropList = monsterResource.getDropList();
+    for (Drop drop : dropList) {
+      double chance = drop.getChance();
+      boolean randomBoolean = RandomUtils.getRandomBoolean(chance);
+      if (randomBoolean) {
+        DropObject dropObject = DropObject.valueOf(drop.getItemId(), drop.getQuantity());
+        dropObject.setSceneId(sceneId);
+        scene.enterScene(dropObject);
+      }
     }
   }
 

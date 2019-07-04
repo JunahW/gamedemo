@@ -4,6 +4,7 @@ import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import com.example.gamedemo.server.game.buff.service.BuffService;
 import com.example.gamedemo.server.game.equip.service.EquipmentService;
+import com.example.gamedemo.server.game.fight.service.FightService;
 import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
 import com.example.gamedemo.server.game.scene.service.SceneService;
@@ -33,6 +34,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private MonsterService monsterService;
   @Autowired private SkillService skillService;
   @Autowired private BuffService buffService;
+  @Autowired private FightService fightService;
 
   public static ItemService getItemService() {
     return instance.itemService;
@@ -64,6 +66,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static BuffService getBuffService() {
     return instance.buffService;
+  }
+
+  public static FightService getFightService() {
+    return instance.fightService;
   }
 
   @PostConstruct

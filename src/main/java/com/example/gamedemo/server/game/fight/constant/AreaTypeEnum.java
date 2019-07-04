@@ -25,13 +25,14 @@ public enum AreaTypeEnum {
     public List<CreatureObject> getAreaCreatureObjectList(
         CreatureObject creatureObject, String areaParam) {
       ArrayList<CreatureObject> creatureObjectList = new ArrayList<>();
-      creatureObjectList.add(creatureObject);
+      // creatureObjectList.add(creatureObject);
 
       Map<String, Integer> map = JsonUtils.deSerializeEntity(areaParam, Map.class);
       Integer radius = map.get(RADIUS);
       Map<Long, SceneObject> sceneObjectMap =
           creatureObject.getSceneObjectView().getSceneObjectMap();
-      for (Map.Entry<Long, SceneObject> sceneObject : sceneObjectMap.entrySet()) {
+      for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+        SceneObject sceneObject = sceneObjectEntry.getValue();
         if (sceneObject instanceof CreatureObject) {
           CreatureObject targetCreature = (CreatureObject) sceneObject;
           int distance =

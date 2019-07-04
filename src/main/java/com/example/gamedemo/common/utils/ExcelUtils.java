@@ -205,6 +205,8 @@ public class ExcelUtils {
         if (value.length() > 0) {
           field.set(entity, value.charAt(0));
         }
+      } else if (Boolean.TYPE == fieldType) {
+        field.set(entity, Boolean.valueOf(value));
       }
     } catch (IllegalAccessException e) {
       e.printStackTrace();

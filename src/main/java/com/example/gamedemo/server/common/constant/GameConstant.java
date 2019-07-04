@@ -9,4 +9,10 @@ public interface GameConstant {
 
   /** 视野半径 */
   int VISION_RADIUS = 4;
+
+  /** 最小攻击力 */
+  int MIN_ATTACK = 10;
+
+  /** 百分比 */
+  int PERCENTAGE = 100;
 }

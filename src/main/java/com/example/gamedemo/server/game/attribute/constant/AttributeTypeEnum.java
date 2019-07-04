@@ -29,16 +29,36 @@ public enum AttributeTypeEnum {
   },
 
   /** 攻击力下限 */
-  ATTACK_LOWER("ATTACK_LOWER", "攻击力下限", false),
+  ATTACK_LOWER("ATTACK_LOWER", "攻击力下限", false) {
+    @Override
+    public AttributeTypeEnum[] getPercentageAttributes() {
+      return new AttributeTypeEnum[] {ATTACK_PERCENTAGE};
+    }
+  },
 
   /** 攻击力上限 */
-  ATTACK_UPPER("ATTACK_UPPER", "攻击力上限", false),
+  ATTACK_UPPER("ATTACK_UPPER", "攻击力上限", false) {
+    @Override
+    public AttributeTypeEnum[] getPercentageAttributes() {
+      return new AttributeTypeEnum[] {ATTACK_PERCENTAGE};
+    }
+  },
 
   /** 防御力下限 */
-  DEFENSE_LOWER("DEFENSE_LOWER", "防御力下限", false),
+  DEFENSE_LOWER("DEFENSE_LOWER", "防御力下限", false) {
+    @Override
+    public AttributeTypeEnum[] getPercentageAttributes() {
+      return new AttributeTypeEnum[] {DEFENSE_PERCENTAGE};
+    }
+  },
 
   /** 防御力上限 */
-  DEFENSE_UPPER("DEFENSE_UPPER", "防御力上限", false),
+  DEFENSE_UPPER("DEFENSE_UPPER", "防御力上限", false) {
+    @Override
+    public AttributeTypeEnum[] getPercentageAttributes() {
+      return new AttributeTypeEnum[] {DEFENSE_PERCENTAGE};
+    }
+  },
 
   /** 攻击加成 */
   ATTACK_PERCENTAGE("", "攻击加成", true),

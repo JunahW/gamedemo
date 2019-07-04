@@ -6,12 +6,12 @@ import java.util.List;
 
 /**
  * @author wengj
- * @description：范围技能
- * @date 2019/6/20
+ * @description：持续性技能
+ * @date 2019/7/4
  */
-public class RangeSkill extends Skill {
+public class DurationSkill extends Skill {
   @Override
   public void useSkill(CreatureObject attacker, List<CreatureObject> targetList) {
-    System.out.println("使用范围技能");
+    for (CreatureObject target : targetList) {}
   }
 }

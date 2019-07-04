@@ -79,6 +79,8 @@ public class FightServiceImpl implements FightService {
     if (skillResource.getContainSelf()) {
       targetCreatureObjectList.add(player);
     }
+    // 技能使用
+    skill.useSkillProgress(player, targetCreatureObjectList);
 
     return true;
   }

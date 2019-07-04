@@ -17,7 +17,6 @@ import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.constant.TargetType;
-import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
@@ -180,7 +179,9 @@ public class SkillServiceImpl implements SkillService {
       RequestException.throwException(I18nId.MP_IS_NO_ENOUGH);
     }
 
+    /*  */
     /** 普通攻击 */
+    /*
     if (SkillTypeEnum.COMMON_SKILL.getId() == skillResource.getSkillType()) {
       CreatureObject attackTarget = getAttackTarget(player, skillResource);
       if (attackTarget == null) {
@@ -190,15 +191,19 @@ public class SkillServiceImpl implements SkillService {
       }
       useCommonSkill(player, skill, attackTarget);
     }
+    */
     /** 范围攻击 */
+    /*
     if (SkillTypeEnum.RANGE_SKILL.getId() == skillResource.getSkillType()) {
       useRangeSkill(player, skill);
     }
 
+    */
     /** buff技能 */
+    /*
     if (SkillTypeEnum.BUFF_SKILL.getId() == skillResource.getSkillType()) {
       useBuffSkill(player, skill);
-    }
+    }*/
     return true;
   }
 
@@ -286,10 +291,11 @@ public class SkillServiceImpl implements SkillService {
           return;
         }
       }
-      SpringContext.getBuffService().addBuff(creatureObject, Buff.valueOf(buffId));
+      SpringContext.getBuffService()
+          .addBuff(creatureObject, BuffTypeEnum.createBuff(buffResource.getBuffType(), buffId));
       if (BuffTypeEnum.DURATION_BUFF.getBuffType() == buffResource.getBuffType()) {
         // 提交buff移除任务
-      } else if (BuffTypeEnum.PERRIOD_BUFF.getBuffType() == buffResource.getBuffType()) {
+      } else if (BuffTypeEnum.PERIOD_BUFF.getBuffType() == buffResource.getBuffType()) {
         long endTime = System.currentTimeMillis() + duration;
         PeriodBuffCommand command =
             PeriodBuffCommand.valueOf(

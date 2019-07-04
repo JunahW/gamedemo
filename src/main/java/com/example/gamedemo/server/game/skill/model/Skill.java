@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.skill.model;
 
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.skill.resource.SkillResource;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.List;
@@ -52,4 +54,23 @@ public abstract class Skill {
    * @param targetList
    */
   public abstract void useSkill(CreatureObject attacker, List<CreatureObject> targetList);
+
+  public void useSkillProgress(CreatureObject attacker, List<CreatureObject> targetList) {
+    beforeUseSkillProgress(attacker, targetList);
+    useSkill(attacker, targetList);
+  }
+
+  /**
+   * 使用技能前的操作
+   *
+   * @param attacker
+   * @param targetList
+   */
+  public void beforeUseSkillProgress(CreatureObject attacker, List<CreatureObject> targetList) {
+    SkillResource skillResource =
+        SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
+    this.setLastUseTime(System.currentTimeMillis());
+    // 减少mp
+    attacker.setMp(attacker.getMp() - skillResource.getMp());
+  }
 }

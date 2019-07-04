@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
+import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
+import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -64,5 +66,29 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
 
   public void setAttributeContainer(AbstractAttributeContainer attributeContainer) {
     this.attributeContainer = attributeContainer;
+  }
+
+  /**
+   * 获取攻击力
+   *
+   * @return
+   */
+  public long getAttack() {
+    Long attackLower = getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK_LOWER);
+    Long attackUpper = getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK_UPPER);
+    long attackValue = RandomUtils.getRandomNumBetween(attackLower, attackUpper);
+    return attackValue;
+  }
+
+  /**
+   * 获取防御力
+   *
+   * @return
+   */
+  public long getDefense() {
+    Long defenseLower = getAttributeContainer().getAttributeValue(AttributeTypeEnum.DEFENSE_LOWER);
+    Long defenseUpper = getAttributeContainer().getAttributeValue(AttributeTypeEnum.DEFENSE_UPPER);
+    long defenseValue = RandomUtils.getRandomNumBetween(defenseLower, defenseUpper);
+    return defenseValue;
   }
 }

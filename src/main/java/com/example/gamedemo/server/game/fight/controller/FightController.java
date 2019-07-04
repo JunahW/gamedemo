@@ -28,12 +28,12 @@ public class FightController {
    * @param session
    * @param req
    */
-  @HandlerMethod(cmd = "useSkill3")
-  public void useSkill(TSession session, CM_UseSkillWithTarget req) {
+  @HandlerMethod(cmd = "useSkill")
+  public void useSkill(TSession session, CM_UseSkill req) {
     Player player = session.getPlayer();
     boolean flag = false;
     try {
-      flag = SpringContext.getSkillService().useSkill(player, req.getIndex());
+      flag = SpringContext.getFightService().useSkill(player, req.getIndex(), null);
     } catch (RequestException e) {
       SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     } catch (Exception e) {
@@ -51,7 +51,18 @@ public class FightController {
    * @param req
    */
   @HandlerMethod(cmd = "useSkillTarget")
-  public void useSkillTarget(TSession session, CM_UseSkill req) {
+  public void useSkillTarget(TSession session, CM_UseSkillWithTarget req) {
     Player player = session.getPlayer();
+    boolean flag = false;
+    try {
+      flag = SpringContext.getFightService().useSkill(player, req.getIndex(), req.getTargetId());
+    } catch (RequestException e) {
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (flag) {
+      SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("使用技能完成"));
+    }
   }
 }

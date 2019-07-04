@@ -28,7 +28,8 @@ public enum SkillAreaTypeEnum {
       Long targetId = null;
       Map<Long, SceneObject> sceneObjectMap =
           creatureObject.getSceneObjectView().getSceneObjectMap();
-      for (Map.Entry<Long, SceneObject> sceneObject : sceneObjectMap.entrySet()) {
+      for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
+        SceneObject sceneObject = sceneObjectEntry.getValue();
         if (sceneObject instanceof CreatureObject) {
           CreatureObject targetCreature = (CreatureObject) sceneObject;
           distance =
@@ -37,10 +38,10 @@ public enum SkillAreaTypeEnum {
                   creatureObject.getY(),
                   targetCreature.getX(),
                   targetCreature.getY());
-        }
-        if (distance <= radius && distance < minDistance) {
-          minDistance = distance;
-          targetId = creatureObject.getId();
+          if (distance <= radius && distance < minDistance) {
+            minDistance = distance;
+            targetId = creatureObject.getId();
+          }
         }
       }
       return targetId;

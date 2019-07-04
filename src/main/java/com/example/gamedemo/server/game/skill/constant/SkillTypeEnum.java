@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.skill.constant;
 
-import com.example.gamedemo.server.game.skill.model.BuffSkill;
-import com.example.gamedemo.server.game.skill.model.CommonSkill;
-import com.example.gamedemo.server.game.skill.model.RangeSkill;
+import com.example.gamedemo.server.game.skill.model.AttackSkill;
+import com.example.gamedemo.server.game.skill.model.CureSkill;
+import com.example.gamedemo.server.game.skill.model.DurationSkill;
 import com.example.gamedemo.server.game.skill.model.Skill;
 
 /**
@@ -11,14 +11,14 @@ import com.example.gamedemo.server.game.skill.model.Skill;
  * @description: 技能类型
  */
 public enum SkillTypeEnum {
-  /** 普通技能 */
-  COMMON_SKILL(0, CommonSkill.class),
+  /** 攻击技能 */
+  ATTACK_SKILL(0, AttackSkill.class),
 
-  /** 范围技能 */
-  RANGE_SKILL(1, RangeSkill.class),
+  /** 治疗技能 */
+  CURE_SKILL(1, CureSkill.class),
 
   /** buff技能 */
-  BUFF_SKILL(2, BuffSkill.class);
+  DURATION_SKILL(2, DurationSkill.class);
 
   private int id;
 

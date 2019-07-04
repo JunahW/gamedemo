@@ -12,6 +12,7 @@ import java.util.List;
 public class CureSkill extends Skill {
   @Override
   public void useSkill(CreatureObject attacker, List<CreatureObject> targetList) {
+
     System.out.println("使用治疗技能");
   }
 }
