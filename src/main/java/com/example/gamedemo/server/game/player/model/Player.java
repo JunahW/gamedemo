@@ -6,6 +6,7 @@ import com.example.gamedemo.server.game.bag.entity.ItemStorageEnt;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.cooldown.CoolDownComponent;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
@@ -33,6 +34,9 @@ public class Player extends CreatureObject<Player> implements Serializable {
   private int level;
   /** 玩家属性容器 */
   // private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
+
+  /** cd组件 */
+  private CoolDownComponent cdComponent = new CoolDownComponent();
 
   public String getJobName() {
     return jobName;
@@ -80,6 +84,14 @@ public class Player extends CreatureObject<Player> implements Serializable {
 
   public void setLevel(int level) {
     this.level = level;
+  }
+
+  public CoolDownComponent getCdComponent() {
+    return cdComponent;
+  }
+
+  public void setCdComponent(CoolDownComponent cdComponent) {
+    this.cdComponent = cdComponent;
   }
 
   /**

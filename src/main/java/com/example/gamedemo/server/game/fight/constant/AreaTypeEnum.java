@@ -4,6 +4,7 @@ import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.common.utils.FormulaUtils;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.player.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +24,15 @@ public enum AreaTypeEnum {
   CIRCULAR(2) {
     @Override
     public List<CreatureObject> getAreaCreatureObjectList(
-        CreatureObject creatureObject, String areaParam) {
+        Player player, CreatureObject creatureObject, String areaParam) {
       ArrayList<CreatureObject> creatureObjectList = new ArrayList<>();
-      // creatureObjectList.add(creatureObject);
-
       Map<String, Integer> map = JsonUtils.deSerializeEntity(areaParam, Map.class);
       Integer radius = map.get(RADIUS);
       Map<Long, SceneObject> sceneObjectMap =
           creatureObject.getSceneObjectView().getSceneObjectMap();
       for (Map.Entry<Long, SceneObject> sceneObjectEntry : sceneObjectMap.entrySet()) {
         SceneObject sceneObject = sceneObjectEntry.getValue();
-        if (sceneObject instanceof CreatureObject) {
+        if (sceneObject instanceof CreatureObject && !player.getId().equals(sceneObject.getId())) {
           CreatureObject targetCreature = (CreatureObject) sceneObject;
           int distance =
               FormulaUtils.computeDistance(
@@ -90,9 +89,8 @@ public enum AreaTypeEnum {
    * @return
    */
   public List<CreatureObject> getAreaCreatureObjectList(
-      CreatureObject creatureObject, String areaParam) {
+      Player player, CreatureObject creatureObject, String areaParam) {
     ArrayList<CreatureObject> creatureObjects = new ArrayList<>();
-    // creatureObjects.add(creatureObject);
     return creatureObjects;
   }
 }

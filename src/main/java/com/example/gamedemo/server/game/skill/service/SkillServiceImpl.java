@@ -60,6 +60,12 @@ public class SkillServiceImpl implements SkillService {
       logger.info("该技能[{}]不存在", skillId);
       RequestException.throwException(I18nId.SKILL_NO_EXIST);
     }
+
+    Skill oldSkill = player.getSkillStorage().getSkills().get(skillId);
+    if (oldSkill != null) {
+      logger.info("[{}]该技能已经学习", skillId);
+      RequestException.throwException(I18nId.SKILL_STUDIED);
+    }
     // 判断是否达到要求
     ItemStorage pack = player.getPack();
     List<Consume> consumeList = skillResource.getConsumeList();
@@ -168,7 +174,7 @@ public class SkillServiceImpl implements SkillService {
     SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
 
     // 检查技能cd
-    boolean checkSkillCd = checkSkillCd(skill, skillResource.getCd());
+    boolean checkSkillCd = player.getCdComponent().isSkillInCd(skill.getSkillId());
     if (!checkSkillCd) {
       logger.info("技能还未冷却");
       RequestException.throwException(I18nId.SKILL_NO_CD_YET);
@@ -213,22 +219,6 @@ public class SkillServiceImpl implements SkillService {
   }
 
   /**
-   * 检查技能cd
-   *
-   * @param skill
-   * @param cd
-   * @return
-   */
-  private boolean checkSkillCd(Skill skill, int cd) {
-    long lastUseTime = skill.getLastUseTime();
-    long currentTime = System.currentTimeMillis();
-    if (currentTime >= lastUseTime + cd) {
-      return true;
-    }
-    return false;
-  }
-
-  /**
    * 范围攻击
    *
    * @param player
@@ -238,7 +228,9 @@ public class SkillServiceImpl implements SkillService {
 
     SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
     // 设置cd时间
-    skill.setLastUseTime(System.currentTimeMillis());
+    player
+        .getCdComponent()
+        .setSkillCd(skill.getSkillId(), System.currentTimeMillis() + skillResource.getCd());
     // 减少mp
     player.setMp(player.getMp() - skillResource.getMp());
 
@@ -275,7 +267,9 @@ public class SkillServiceImpl implements SkillService {
     int skillId = skill.getSkillId();
     SkillResource skillResource = skillManager.getSkillResourceById(skillId);
 
-    skill.setLastUseTime(System.currentTimeMillis());
+    player
+        .getCdComponent()
+        .setSkillCd(skill.getSkillId(), System.currentTimeMillis() + skillResource.getCd());
     // 减少mp
     player.setMp(player.getMp() - skillResource.getMp());
 
@@ -327,7 +321,9 @@ public class SkillServiceImpl implements SkillService {
    */
   private void useCommonSkill(Player player, Skill skill, CreatureObject target) {
     SkillResource skillResource = skillManager.getSkillResourceById(skill.getSkillId());
-    skill.setLastUseTime(System.currentTimeMillis());
+    player
+        .getCdComponent()
+        .setSkillCd(skill.getSkillId(), System.currentTimeMillis() + skillResource.getCd());
 
     // 减少mp
     player.setMp(player.getMp() - skillResource.getMp());

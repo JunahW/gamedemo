@@ -40,7 +40,7 @@ public enum SkillAreaTypeEnum {
                   targetCreature.getY());
           if (distance <= radius && distance < minDistance) {
             minDistance = distance;
-            targetId = creatureObject.getId();
+            targetId = targetCreature.getId();
           }
         }
       }

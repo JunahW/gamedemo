@@ -7,6 +7,7 @@ import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.skill.resource.SkillResource;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -25,9 +26,6 @@ public abstract class Skill {
   /** 等级 */
   private int level;
 
-  /** 最后一次使用时间 毫秒值 */
-  private long lastUseTime;
-
   public int getSkillId() {
     return skillId;
   }
@@ -44,14 +42,6 @@ public abstract class Skill {
     this.level = level;
   }
 
-  public long getLastUseTime() {
-    return lastUseTime;
-  }
-
-  public void setLastUseTime(long lastUseTime) {
-    this.lastUseTime = lastUseTime;
-  }
-
   /**
    * 使用技能
    *
@@ -60,7 +50,7 @@ public abstract class Skill {
    */
   public abstract void useSkill(CreatureObject attacker, List<CreatureObject> targetList);
 
-  public void useSkillProgress(CreatureObject attacker, List<CreatureObject> targetList) {
+  public void useSkillProgress(Player attacker, List<CreatureObject> targetList) {
     beforeUseSkillProgress(attacker, targetList);
     useSkill(attacker, targetList);
     addBuff2Target(targetList);
@@ -72,10 +62,13 @@ public abstract class Skill {
    * @param attacker
    * @param targetList
    */
-  private void beforeUseSkillProgress(CreatureObject attacker, List<CreatureObject> targetList) {
+  private void beforeUseSkillProgress(Player attacker, List<CreatureObject> targetList) {
     SkillResource skillResource =
         SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
-    this.setLastUseTime(System.currentTimeMillis());
+    // 设置cd
+    attacker
+        .getCdComponent()
+        .setSkillCd(skillId, System.currentTimeMillis() + skillResource.getCd());
     // 减少mp
     attacker.setMp(attacker.getMp() - skillResource.getMp());
   }
