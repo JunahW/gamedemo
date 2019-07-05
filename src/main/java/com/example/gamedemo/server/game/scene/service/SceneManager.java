@@ -167,6 +167,8 @@ public class SceneManager {
         }
       }
       sceneMap.put(scene.getSceneResourceId(), scene);
+
+      scene.statSceneTimer();
     }
   }
 

@@ -5,7 +5,7 @@ package com.example.gamedemo.common.executer;
  * @description
  * @date 2019/7/1
  */
-public class SceneCommand extends AbstractCommand {
+public abstract class SceneCommand extends AbstractCommand {
   /** 场景id */
   private int sceneId;
 
@@ -14,7 +14,7 @@ public class SceneCommand extends AbstractCommand {
   }
 
   @Override
-  public void doAction() {}
+  public abstract void doAction();
 
   @Override
   public int modIndex(int poolSize) {

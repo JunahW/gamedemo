@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.buff.constant;
 
 import com.example.gamedemo.server.game.buff.model.Buff;
+import com.example.gamedemo.server.game.buff.model.CureBuff;
 
 /**
  * @author: wengj
@@ -9,13 +10,13 @@ import com.example.gamedemo.server.game.buff.model.Buff;
  */
 public enum BuffTypeEnum {
   /** 眩晕buff */
-  DURATION_BUFF(0, Buff.class),
+  DURATION_BUFF(0, CureBuff.class),
 
   /** 攻击buff */
-  ATTACK_BUFF(1, Buff.class),
+  ATTACK_BUFF(1, CureBuff.class),
 
   /** 周期buff */
-  PERIOD_BUFF(2, Buff.class);
+  PERIOD_BUFF(2, CureBuff.class);
 
   /** buff类型 */
   private int buffType;
@@ -35,6 +36,7 @@ public enum BuffTypeEnum {
         try {
           buff = buffTypeEnum.getBuffClazz().newInstance();
           buff.setBuffId(buffId);
+          buff.setLastTriggerTime(System.currentTimeMillis());
         } catch (InstantiationException e) {
           e.printStackTrace();
         } catch (IllegalAccessException e) {
