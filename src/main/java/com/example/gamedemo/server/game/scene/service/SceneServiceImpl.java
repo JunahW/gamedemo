@@ -6,9 +6,8 @@ import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.common.utils.RandomUtils;
-import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.model.DropObject;
-import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -155,11 +154,11 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public void createDropObject(int sceneId, long monsterId) {
+  public void createDropObject(int sceneId, int monsterResourceId) {
     Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
-    Monster monster = (Monster) scene.getSceneObjectMap().get(monsterId);
+
     MonsterResource monsterResource =
-        SpringContext.getMonsterService().getMonsterResourceById(monster.getMonsterResourceId());
+        SpringContext.getMonsterService().getMonsterResourceById(monsterResourceId);
     List<Drop> dropList = monsterResource.getDropList();
     for (Drop drop : dropList) {
       double chance = drop.getChance();
@@ -173,17 +172,17 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public void handMonsterDeadEvent(int sceneId, long monsterId) {
+  public void handMonsterDeadEvent(
+      CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId) {
     logger.info("场景[{}]的[{}]怪物已经死亡", sceneId, monsterId);
     // 掉落装备
-    createDropObject(sceneId, monsterId);
+    createDropObject(sceneId, monsterResourceId);
+    // 新增经验
+    MonsterResource monsterResource =
+        SpringContext.getMonsterService().getMonsterResourceById(monsterResourceId);
+    attacker.setExp(attacker.getExp() + monsterResource.getExp());
 
     Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
-
-    Monster monster =
-        (Monster) scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER).get(monsterId);
-    int monsterResourceId = monster.getMonsterResourceId();
-
     scene.leaveScene(monsterId);
 
     SceneExecutor.addDelayTask(

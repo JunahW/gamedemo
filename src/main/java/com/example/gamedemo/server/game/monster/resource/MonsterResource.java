@@ -57,6 +57,10 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "defense")
   private int defense;
 
+  /** 死亡经验值 */
+  @ExcelColumn(columnName = "exp")
+  private long exp;
+
   /** 掉落物 */
   @ExcelColumn(columnName = "dropObjectData")
   private String dropObjectData;
@@ -162,6 +166,14 @@ public class MonsterResource implements ResourceInterface {
 
   public void setDefense(int defense) {
     this.defense = defense;
+  }
+
+  public long getExp() {
+    return exp;
+  }
+
+  public void setExp(long exp) {
+    this.exp = exp;
   }
 
   public String getDropObjectData() {

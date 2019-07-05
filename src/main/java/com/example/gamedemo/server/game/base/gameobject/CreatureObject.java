@@ -22,6 +22,9 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
   /** 魔法值 */
   private long mp;
 
+  /** 经验值 */
+  private long exp;
+
   /** Buff容器 */
   private BuffContainer<T> buffContainer = new BuffContainer<>();
 
@@ -50,6 +53,14 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
 
   public void setMp(long mp) {
     this.mp = mp;
+  }
+
+  public long getExp() {
+    return exp;
+  }
+
+  public void setExp(long exp) {
+    this.exp = exp;
   }
 
   public BuffContainer<T> getBuffContainer() {

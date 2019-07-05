@@ -19,6 +19,8 @@ import java.util.List;
  */
 public class PeriodBuffCommand extends SceneCommand {
   private static final Logger logger = LoggerFactory.getLogger(PeriodBuffCommand.class);
+  /** 攻击方 */
+  private CreatureObject attacker;
   /** 目标对象 */
   private CreatureObject target;
 
@@ -30,8 +32,9 @@ public class PeriodBuffCommand extends SceneCommand {
   }
 
   public static PeriodBuffCommand valueOf(
-      int sceneId, CreatureObject target, List<Attribute> effectList) {
+      int sceneId, CreatureObject attacker, CreatureObject target, List<Attribute> effectList) {
     PeriodBuffCommand command = new PeriodBuffCommand(sceneId);
+    command.setAttacker(attacker);
     command.setTarget(target);
     command.setEffectList(effectList);
     return command;
@@ -52,7 +55,11 @@ public class PeriodBuffCommand extends SceneCommand {
           if (target instanceof Monster) {
             // 怪物死亡 触发事件
             EventBusManager.submitEvent(
-                MonsterDeadEvent.valueOf(target.getSceneId(), target.getId()));
+                MonsterDeadEvent.valueOf(
+                    attacker,
+                    target.getSceneId(),
+                    target.getId(),
+                    ((Monster) target).getMonsterResourceId()));
           }
           cancel();
         }
@@ -81,5 +88,13 @@ public class PeriodBuffCommand extends SceneCommand {
 
   public void setEffectList(List<Attribute> effectList) {
     this.effectList = effectList;
+  }
+
+  public CreatureObject getAttacker() {
+    return attacker;
+  }
+
+  public void setAttacker(CreatureObject attacker) {
+    this.attacker = attacker;
   }
 }

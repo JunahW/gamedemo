@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.scene.service;
 
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
@@ -74,9 +75,9 @@ public interface SceneService {
    * 怪物死亡，创建掉落物
    *
    * @param sceneId
-   * @param monsterId
+   * @param monsterResourceId
    */
-  void createDropObject(int sceneId, long monsterId);
+  void createDropObject(int sceneId, int monsterResourceId);
 
   /**
    * @param sceneId
@@ -87,8 +88,11 @@ public interface SceneService {
   /**
    * 处理怪物死亡事件
    *
+   * @param attacker
    * @param sceneId
    * @param monsterId
+   * @param monsterResourceId
    */
-  void handMonsterDeadEvent(int sceneId, long monsterId);
+  void handMonsterDeadEvent(
+      CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId);
 }

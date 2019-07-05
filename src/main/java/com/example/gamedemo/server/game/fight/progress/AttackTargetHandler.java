@@ -36,7 +36,12 @@ public class AttackTargetHandler {
     if (target.getHp() <= 0) {
       if (target instanceof Monster) {
         // 怪物死亡 触发事件
-        EventBusManager.submitEvent(MonsterDeadEvent.valueOf(target.getSceneId(), target.getId()));
+        EventBusManager.submitEvent(
+            MonsterDeadEvent.valueOf(
+                attacker,
+                target.getSceneId(),
+                target.getId(),
+                ((Monster) target).getMonsterResourceId()));
       }
     }
   }

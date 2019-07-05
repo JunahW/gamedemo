@@ -42,6 +42,9 @@ public class PlayerEnt implements Entity<Long> {
   /** 场景 */
   @Transient private Player player;
 
+  /** 经验 */
+  private long exp;
+
   /**
    * 获取player的存储对象
    *
@@ -145,6 +148,14 @@ public class PlayerEnt implements Entity<Long> {
     this.player = null;
   }
 
+  public long getExp() {
+    return exp;
+  }
+
+  public void setExp(long exp) {
+    this.exp = exp;
+  }
+
   @Override
   public boolean serialize() {
     this.setId(player.getId());
@@ -156,6 +167,7 @@ public class PlayerEnt implements Entity<Long> {
     this.setY(player.getY());
     this.setMapId(player.getSceneId());
     this.setLevel(player.getLevel());
+    this.setExp(player.getExp());
     return true;
   }
 
@@ -171,6 +183,7 @@ public class PlayerEnt implements Entity<Long> {
     player.setY(getY());
     player.setSceneId(getMapId());
     player.setLevel(getLevel());
+    player.setExp(getExp());
     this.setPlayer(player);
     return true;
   }
