@@ -6,9 +6,9 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.player.model.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: wengj
@@ -23,9 +23,9 @@ public enum AreaTypeEnum {
   /** 圆形 */
   CIRCULAR(2) {
     @Override
-    public List<CreatureObject> getAreaCreatureObjectList(
+    public Set<CreatureObject> getAreaCreatureObjectList(
         Player player, CreatureObject creatureObject, String areaParam) {
-      ArrayList<CreatureObject> creatureObjectList = new ArrayList<>();
+      Set<CreatureObject> creatureObjectList = new HashSet<>();
       Map<String, Integer> map = JsonUtils.deSerializeEntity(areaParam, Map.class);
       Integer radius = map.get(RADIUS);
       Map<Long, SceneObject> sceneObjectMap =
@@ -88,9 +88,9 @@ public enum AreaTypeEnum {
    * @param areaParam
    * @return
    */
-  public List<CreatureObject> getAreaCreatureObjectList(
+  public Set<CreatureObject> getAreaCreatureObjectList(
       Player player, CreatureObject creatureObject, String areaParam) {
-    ArrayList<CreatureObject> creatureObjects = new ArrayList<>();
+    Set<CreatureObject> creatureObjects = new HashSet<>();
     return creatureObjects;
   }
 }

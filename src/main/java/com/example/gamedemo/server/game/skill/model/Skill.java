@@ -11,7 +11,7 @@ import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.skill.resource.SkillResource;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author wengj
@@ -46,23 +46,23 @@ public abstract class Skill {
    * 使用技能
    *
    * @param attacker
-   * @param targetList
+   * @param targetSet
    */
-  public abstract void useSkill(CreatureObject attacker, List<CreatureObject> targetList);
+  public abstract void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet);
 
-  public void useSkillProgress(Player attacker, List<CreatureObject> targetList) {
-    beforeUseSkillProgress(attacker, targetList);
-    useSkill(attacker, targetList);
-    addBuff2Target(targetList);
+  public void useSkillProgress(Player attacker, Set<CreatureObject> targetSet) {
+    beforeUseSkillProgress(attacker, targetSet);
+    useSkill(attacker, targetSet);
+    addBuff2Target(targetSet);
   }
 
   /**
    * 使用技能前的操作
    *
    * @param attacker
-   * @param targetList
+   * @param targetSet
    */
-  private void beforeUseSkillProgress(Player attacker, List<CreatureObject> targetList) {
+  private void beforeUseSkillProgress(Player attacker, Set<CreatureObject> targetSet) {
     SkillResource skillResource =
         SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
     // 设置cd
@@ -76,13 +76,13 @@ public abstract class Skill {
   /**
    * 为目标物添加buff
    *
-   * @param targetList
+   * @param targetSet
    */
-  private void addBuff2Target(List<CreatureObject> targetList) {
+  private void addBuff2Target(Set<CreatureObject> targetSet) {
     SkillResource skillResource =
         SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
     int[] buffArray = skillResource.getBuffArray();
-    for (CreatureObject target : targetList) {
+    for (CreatureObject target : targetSet) {
       if (buffArray == null) {
         break;
       }

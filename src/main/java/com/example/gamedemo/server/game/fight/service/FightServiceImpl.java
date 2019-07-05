@@ -5,6 +5,7 @@ import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.fight.constant.AreaTypeEnum;
+import com.example.gamedemo.server.game.fight.constant.FightConstant;
 import com.example.gamedemo.server.game.fight.constant.SkillAreaTypeEnum;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -15,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author wengj
@@ -74,9 +75,16 @@ public class FightServiceImpl implements FightService {
     CreatureObject target = scene.getCreatureObjectById(targetId);
     AreaTypeEnum areaTypeEnum = AreaTypeEnum.getAreaTypeEnumByAreaType(skillResource.getAreaType());
     // 获取技能的目标集合
-    List<CreatureObject> targetCreatureObjectList =
-        areaTypeEnum.getAreaCreatureObjectList(player, target, skillResource.getAreaParam());
+    Set<CreatureObject> targetCreatureObjectList;
 
+    // 技能释放中心
+    if (skillResource.getCenterType() == FightConstant.CENTER_TYPE_SELF) {
+      targetCreatureObjectList =
+          areaTypeEnum.getAreaCreatureObjectList(player, player, skillResource.getAreaParam());
+    } else {
+      targetCreatureObjectList =
+          areaTypeEnum.getAreaCreatureObjectList(player, target, skillResource.getAreaParam());
+    }
     targetCreatureObjectList.add(target);
 
     // 技能使用
