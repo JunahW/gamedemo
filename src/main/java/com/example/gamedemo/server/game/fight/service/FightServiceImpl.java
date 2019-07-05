@@ -40,8 +40,8 @@ public class FightServiceImpl implements FightService {
     SkillResource skillResource =
         SpringContext.getSkillService().getSkillResourceById(skill.getSkillId());
     // 检查技能cd
-    boolean checkSkillCd = checkSkillCd(skill, skillResource.getCd());
-    if (!checkSkillCd) {
+    boolean checkSkillCd = player.getCdComponent().isSkillInCd(skill.getSkillId());
+    if (checkSkillCd) {
       logger.info("技能还未冷却");
       RequestException.throwException(I18nId.SKILL_NO_CD_YET);
     }
@@ -75,29 +75,13 @@ public class FightServiceImpl implements FightService {
     AreaTypeEnum areaTypeEnum = AreaTypeEnum.getAreaTypeEnumByAreaType(skillResource.getAreaType());
     // 获取技能的目标集合
     List<CreatureObject> targetCreatureObjectList =
-        areaTypeEnum.getAreaCreatureObjectList(target, skillResource.getAreaParam());
-    if (skillResource.getContainSelf()) {
-      targetCreatureObjectList.add(player);
-    }
+        areaTypeEnum.getAreaCreatureObjectList(player, target, skillResource.getAreaParam());
+
+    targetCreatureObjectList.add(target);
+
     // 技能使用
     skill.useSkillProgress(player, targetCreatureObjectList);
 
     return true;
-  }
-
-  /**
-   * 检查技能cd
-   *
-   * @param skill
-   * @param cd
-   * @return
-   */
-  private boolean checkSkillCd(Skill skill, int cd) {
-    long lastUseTime = skill.getLastUseTime();
-    long currentTime = System.currentTimeMillis();
-    if (currentTime >= lastUseTime + cd) {
-      return true;
-    }
-    return false;
   }
 }
