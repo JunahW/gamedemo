@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.skill.model;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.fight.progress.CureTargetHandler;
 
 import java.util.List;
 
@@ -12,7 +13,8 @@ import java.util.List;
 public class CureSkill extends Skill {
   @Override
   public void useSkill(CreatureObject attacker, List<CreatureObject> targetList) {
-
-    System.out.println("使用治疗技能");
+    for (CreatureObject target : targetList) {
+      CureTargetHandler.handle(attacker, target, this);
+    }
   }
 }

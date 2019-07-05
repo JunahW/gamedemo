@@ -6,6 +6,7 @@ import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.common.model.Consume;
+import com.example.gamedemo.server.game.attribute.Attribute;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
@@ -87,6 +88,12 @@ public class SkillResource implements ResourceInterface {
   @ExcelColumn(columnName = "containSelf")
   private boolean containSelf;
 
+  /** 影响 */
+  @ExcelColumn(columnName = "effect")
+  private String effect;
+
+  private List<Attribute> effectList;
+
   @Override
   public Object getId() {
     return skillId;
@@ -102,6 +109,10 @@ public class SkillResource implements ResourceInterface {
         ints[i] = Integer.parseInt(buffSplit[i]);
       }
       setBuffArray(ints);
+    }
+    if (effect != null) {
+      setEffectList(
+          JsonUtils.getListByString(getEffect(), new TypeReference<List<Attribute>>() {}));
     }
   }
 
@@ -251,5 +262,21 @@ public class SkillResource implements ResourceInterface {
 
   public void setContainSelf(boolean containSelf) {
     this.containSelf = containSelf;
+  }
+
+  public String getEffect() {
+    return effect;
+  }
+
+  public void setEffect(String effect) {
+    this.effect = effect;
+  }
+
+  public List<Attribute> getEffectList() {
+    return effectList;
+  }
+
+  public void setEffectList(List<Attribute> effectList) {
+    this.effectList = effectList;
   }
 }

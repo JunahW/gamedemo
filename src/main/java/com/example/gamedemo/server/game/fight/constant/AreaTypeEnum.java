@@ -92,7 +92,7 @@ public enum AreaTypeEnum {
   public List<CreatureObject> getAreaCreatureObjectList(
       CreatureObject creatureObject, String areaParam) {
     ArrayList<CreatureObject> creatureObjects = new ArrayList<>();
-    creatureObjects.add(creatureObject);
+    // creatureObjects.add(creatureObject);
     return creatureObjects;
   }
 }
