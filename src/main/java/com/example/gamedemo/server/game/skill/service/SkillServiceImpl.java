@@ -103,8 +103,8 @@ public class SkillServiceImpl implements SkillService {
       RequestException.throwException(I18nId.SKILL_INDEX_ERROR);
     }
     // 选择技能
-    Skill[] skillSlots = skillStorage.getSkillSlots();
-    skillSlots[index] = skills.get(skillId);
+    Integer[] skillSlots = skillStorage.getSkillSlots();
+    skillSlots[index] = skillId;
     // 保存技能栏
     saveSkillStorage(player);
     return true;
@@ -117,7 +117,7 @@ public class SkillServiceImpl implements SkillService {
       logger.info("输入的技能栏位置[{}]有误", index);
       RequestException.throwException(I18nId.SKILL_INDEX_ERROR);
     }
-    Skill[] skillSlots = skillStorage.getSkillSlots();
+    Integer[] skillSlots = skillStorage.getSkillSlots();
     skillSlots[index] = null;
 
     // 保存技能栏
@@ -158,7 +158,7 @@ public class SkillServiceImpl implements SkillService {
   public boolean useSkill(Player player, int index) {
     // 判断条件
     SkillStorage skillStorage = player.getSkillStorage();
-    Skill skill = skillStorage.getSkillSlots()[index];
+    Skill skill = skillStorage.getSkillByIndex(index);
     if (skill == null) {
       logger.info("技能槽不存在该技能[{}]", index);
       RequestException.throwException(I18nId.SKILL_NO_EXIST);

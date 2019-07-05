@@ -30,7 +30,7 @@ public class FightServiceImpl implements FightService {
   public boolean useSkill(Player player, int index, Long targetId) {
     // 判断条件
     SkillStorage skillStorage = player.getSkillStorage();
-    Skill skill = skillStorage.getSkillSlots()[index];
+    Skill skill = skillStorage.getSkillByIndex(index);
     if (skill == null) {
       logger.info("技能槽不存在该技能[{}]", index);
       RequestException.throwException(I18nId.SKILL_NO_EXIST);

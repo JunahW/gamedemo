@@ -16,7 +16,7 @@ public class SkillStorage {
   private Map<Integer, Skill> skills = new HashMap<>();
 
   /** 技能槽 */
-  private Skill[] skillSlots = new Skill[SystemConstant.SKILL_SLOT_SIZE];
+  private Integer[] skillSlots = new Integer[SystemConstant.SKILL_SLOT_SIZE];
 
   public Map<Integer, Skill> getSkills() {
     return skills;
@@ -26,11 +26,11 @@ public class SkillStorage {
     this.skills = skills;
   }
 
-  public Skill[] getSkillSlots() {
+  public Integer[] getSkillSlots() {
     return skillSlots;
   }
 
-  public void setSkillSlots(Skill[] skillSlots) {
+  public void setSkillSlots(Integer[] skillSlots) {
     this.skillSlots = skillSlots;
   }
 
@@ -50,5 +50,15 @@ public class SkillStorage {
    */
   public void removeSkill(Integer skillId) {
     skills.remove(skillId);
+  }
+
+  /**
+   * 获取技能栏的技能
+   *
+   * @param index
+   * @return
+   */
+  public Skill getSkillByIndex(int index) {
+    return skills.get(skillSlots[index]);
   }
 }
