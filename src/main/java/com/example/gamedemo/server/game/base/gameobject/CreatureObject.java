@@ -1,10 +1,13 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
+import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
+import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
+import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
@@ -116,6 +119,12 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
    */
   public void addBuff(Buff buff) {
     buffContainer.putBuff(buff);
+    BuffResource buffResource =
+        SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
+    // 添加移除任务
+    SceneExecutor.addDelayTask(
+        RemoveBuffCommand.valueOf(this.getSceneId(), this.getBuffContainer(), buff.getBuffId()),
+        buffResource.getDuration());
   }
 
   /**
@@ -140,6 +149,19 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
         buff.setLastTriggerTime(buff.getLastTriggerTime() + buffResource.getPeriod());
         buff.active(this);
       }
+    }
+  }
+
+  /**
+   * 通过buffId数组新增buff
+   *
+   * @param buffArray
+   */
+  public void addBuffsByBuffIdArray(int[] buffArray) {
+    for (int buffId : buffArray) {
+      BuffResource buffResourceById = SpringContext.getBuffService().getBuffResourceById(buffId);
+      Buff buff = BuffTypeEnum.createBuff(buffResourceById.getBuffType(), buffId);
+      addBuff(buff);
     }
   }
 }

@@ -44,7 +44,6 @@ public abstract class AbstractAttributeContainer<T> {
     AttributeUtils.accumulateModeAttribute2AttributeMap(modelAttributeListMap, attributeMap);
     // 计算最终的值，包括加成
     for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeMap.entrySet()) {
-      Attribute attribute = attributeEntry.getValue();
       AttributeTypeEnum attributeType = attributeEntry.getKey();
       // 最终属性值
       long finalValue = attributeType.getAttributeComputer().compute(attributeType, attributeMap);
@@ -146,11 +145,11 @@ public abstract class AbstractAttributeContainer<T> {
     return finalAttributeMap;
   }
 
-  public void setFinalAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> finalAttributeMap) {
+  public void setFinalAttributeMap(Map<AttributeTypeEnum, Attribute> finalAttributeMap) {
     this.finalAttributeMap = finalAttributeMap;
   }
 
-  public void setFinalAttributeMap(Map<AttributeTypeEnum, Attribute> finalAttributeMap) {
+  public void setFinalAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> finalAttributeMap) {
     this.finalAttributeMap = finalAttributeMap;
   }
 
@@ -158,12 +157,12 @@ public abstract class AbstractAttributeContainer<T> {
     return modelAttributeListMap;
   }
 
-  public void setModelAttributeListMap(
-      ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
+  public void setModelAttributeListMap(Map<AttributeModelId, AttributeSet> modelAttributeListMap) {
     this.modelAttributeListMap = modelAttributeListMap;
   }
 
-  public void setModelAttributeListMap(Map<AttributeModelId, AttributeSet> modelAttributeListMap) {
+  public void setModelAttributeListMap(
+      ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
     this.modelAttributeListMap = modelAttributeListMap;
   }
 

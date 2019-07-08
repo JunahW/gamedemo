@@ -1,12 +1,7 @@
 package com.example.gamedemo.server.game.skill.model;
 
-import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
-import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
-import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
-import com.example.gamedemo.server.game.buff.model.Buff;
-import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.skill.resource.SkillResource;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -86,15 +81,7 @@ public abstract class Skill {
       if (buffArray == null) {
         break;
       }
-      for (int buffId : buffArray) {
-        BuffResource buffResourceById = SpringContext.getBuffService().getBuffResourceById(buffId);
-        Buff buff = BuffTypeEnum.createBuff(buffResourceById.getBuffType(), buffId);
-        target.addBuff(buff);
-        // 移除buff
-        SceneExecutor.addDelayTask(
-            RemoveBuffCommand.valueOf(target.getSceneId(), target.getBuffContainer(), buffId),
-            buffResourceById.getDuration());
-      }
+      target.addBuffsByBuffIdArray(buffArray);
     }
   }
 }

@@ -13,6 +13,7 @@ public abstract class SceneCommand extends AbstractCommand {
     this.sceneId = sceneId;
   }
 
+  /** command的执行逻辑 */
   @Override
   public abstract void doAction();
 
