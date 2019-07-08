@@ -1,19 +1,22 @@
 package com.example.gamedemo.common.executer.account;
 
+import com.example.gamedemo.common.executer.Command;
+import com.example.gamedemo.common.executer.account.impl.AbstractAccountDelayCommand;
+import com.example.gamedemo.common.executer.account.impl.AbstractAccountRateCommand;
+import com.example.gamedemo.server.common.SpringContext;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * @author wengj
  * @description：用户线程执行器
  * @date 2019/6/12
  */
+@Component
 public class AccountExecutor {
   private static final Logger logger = LoggerFactory.getLogger(AccountExecutor.class);
   /** 默认线程数量 */
@@ -63,5 +66,47 @@ public class AccountExecutor {
   public static void addTask(String accountId, Runnable task) {
     int index = modeIndex(accountId);
     ACCOUNT_SERVICE[index].submit(task);
+  }
+
+  /** =========================================以下为新接口========================================= */
+  /**
+   * 执行任务
+   *
+   * @param command
+   */
+  public void addTask(Command command) {
+    int index = command.modIndex(DEFAULT_THREAD_SIZE);
+    ACCOUNT_SERVICE[index].submit(
+        new Runnable() {
+          @Override
+          public void run() {
+            command.doAction();
+          }
+        });
+  }
+
+  /**
+   * 延时任务
+   *
+   * @param command
+   */
+  public void addDelayTask(AbstractAccountDelayCommand command) {
+    ScheduledFuture scheduledFuture =
+        SpringContext.getScheduleService()
+            .scheduleWithFixedDelay(() -> addTask(command), 0, command.getDelay());
+    command.setFuture(scheduledFuture);
+  }
+
+  /**
+   * 新增周期任务
+   *
+   * @param command
+   * @param delay
+   */
+  public void addScheduleTask(AbstractAccountRateCommand command, long delay) {
+    ScheduledFuture scheduledFuture =
+        SpringContext.getScheduleService()
+            .scheduleAtFixedRate(() -> addTask(command), delay, command.getPeriod());
+    command.setFuture(scheduledFuture);
   }
 }

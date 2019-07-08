@@ -15,11 +15,10 @@ import java.util.Map;
  * @description
  * @date 2019/7/5
  */
-public class AbstractSceneBuffTriggerCommand extends AbstractSceneCommand {
-  private static final Logger logger =
-      LoggerFactory.getLogger(AbstractSceneBuffTriggerCommand.class);
+public class SceneBuffRateCommand extends AbstractSceneCommand {
+  private static final Logger logger = LoggerFactory.getLogger(SceneBuffRateCommand.class);
 
-  public AbstractSceneBuffTriggerCommand(int sceneId) {
+  public SceneBuffRateCommand(int sceneId) {
     super(sceneId);
   }
 
@@ -27,8 +26,8 @@ public class AbstractSceneBuffTriggerCommand extends AbstractSceneCommand {
    * @param sceneId
    * @return
    */
-  public static AbstractSceneBuffTriggerCommand valueOf(int sceneId) {
-    return new AbstractSceneBuffTriggerCommand(sceneId);
+  public static SceneBuffRateCommand valueOf(int sceneId) {
+    return new SceneBuffRateCommand(sceneId);
   }
 
   @Override

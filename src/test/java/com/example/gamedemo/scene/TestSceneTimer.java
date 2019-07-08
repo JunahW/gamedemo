@@ -1,7 +1,7 @@
 package com.example.gamedemo.scene;
 
 import com.example.gamedemo.common.executer.scene.SceneExecutor;
-import com.example.gamedemo.server.game.scene.command.AbstractSceneBuffTriggerCommand;
+import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,8 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class TestSceneTimer {
   @Test
   public void testTimer() {
-    SceneExecutor.addScheduleTask(
-        2001, 0, 100, Long.MAX_VALUE, AbstractSceneBuffTriggerCommand.valueOf(2001));
+    SceneExecutor.addScheduleTask(2001, 0, 100, Long.MAX_VALUE, SceneBuffRateCommand.valueOf(2001));
     while (true) {}
   }
 }

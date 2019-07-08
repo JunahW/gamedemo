@@ -1,5 +1,8 @@
 package com.example.gamedemo.server.common;
 
+import com.example.gamedemo.common.executer.account.IAccountExecutorService;
+import com.example.gamedemo.common.executer.scene.ISceneExecutorService;
+import com.example.gamedemo.common.executer.schedule.ScheduleService;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import com.example.gamedemo.server.game.buff.service.BuffService;
@@ -35,6 +38,9 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private SkillService skillService;
   @Autowired private BuffService buffService;
   @Autowired private FightService fightService;
+  @Autowired private ISceneExecutorService sceneExecutorService;
+  @Autowired private IAccountExecutorService accountExecutorService;
+  @Autowired private ScheduleService scheduleService;
 
   public static ItemService getItemService() {
     return instance.itemService;
@@ -70,6 +76,18 @@ public class SpringContext implements ApplicationContextAware {
 
   public static FightService getFightService() {
     return instance.fightService;
+  }
+
+  public static ISceneExecutorService getSceneExecutorService() {
+    return instance.sceneExecutorService;
+  }
+
+  public static IAccountExecutorService getAccountExecutorService() {
+    return instance.accountExecutorService;
+  }
+
+  public static ScheduleService getScheduleService() {
+    return instance.scheduleService;
   }
 
   @PostConstruct

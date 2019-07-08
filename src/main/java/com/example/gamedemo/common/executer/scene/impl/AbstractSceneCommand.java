@@ -1,21 +1,22 @@
-package com.example.gamedemo.common.executer;
+package com.example.gamedemo.common.executer.scene.impl;
+
+import com.example.gamedemo.common.executer.AbstractCommand;
 
 /**
  * @author wengj
  * @description
  * @date 2019/7/1
  */
-public abstract class SceneCommand extends AbstractCommand {
+public abstract class AbstractSceneCommand extends AbstractCommand {
   /** 场景id */
   private int sceneId;
 
-  public SceneCommand(int sceneId) {
+  public AbstractSceneCommand(int sceneId) {
     this.sceneId = sceneId;
   }
 
-  /** command的执行逻辑 */
   @Override
-  public abstract void doAction();
+  public void doAction() {}
 
   @Override
   public int modIndex(int poolSize) {

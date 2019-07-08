@@ -4,7 +4,7 @@ import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
-import com.example.gamedemo.server.game.scene.command.AbstractSceneBuffTriggerCommand;
+import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,11 +139,7 @@ public class Scene {
 
   public void statSceneTimer() {
     SceneExecutor.addScheduleTask(
-        sceneResourceId,
-        1000,
-        200,
-        Long.MAX_VALUE,
-        AbstractSceneBuffTriggerCommand.valueOf(sceneResourceId));
+        sceneResourceId, 1000, 200, Long.MAX_VALUE, SceneBuffRateCommand.valueOf(sceneResourceId));
   }
 
   /**

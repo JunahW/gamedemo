@@ -1,7 +1,11 @@
 package com.example.gamedemo.common.executer.scene;
 
+import com.example.gamedemo.common.executer.AbstractCommand;
 import com.example.gamedemo.common.executer.Command;
-import com.example.gamedemo.common.executer.SceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneDelayCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneRateCommand;
+import com.example.gamedemo.server.common.SpringContext;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +110,7 @@ public class SceneExecutor {
   }
 
   public static void addScheduleTask(
-      int sceneId, long delay, long period, long endTime, SceneCommand command) {
+      int sceneId, long delay, long period, long endTime, AbstractSceneCommand command) {
     int index = modeIndex(sceneId);
     ScheduledFuture scheduledFuture =
         SCENE_SERVICE[index].scheduleAtFixedRate(
@@ -123,6 +127,50 @@ public class SceneExecutor {
             delay,
             period,
             TimeUnit.MILLISECONDS);
+    command.setFuture(scheduledFuture);
+  }
+  /** =======================================新接口==================================== */
+
+  /**
+   * 执行场景线程
+   *
+   * @param command
+   */
+  public static void addTask(AbstractCommand command) {
+    int index = command.modIndex(DEFAULT_THREAD_SIZE);
+    SCENE_SERVICE[index].submit(
+        new Runnable() {
+          @Override
+          public void run() {
+            if (!command.isCanceled()) {
+              command.doAction();
+            }
+          }
+        });
+  }
+
+  /**
+   * 延时任务
+   *
+   * @param command
+   */
+  public void addDelayTask(AbstractSceneDelayCommand command) {
+    ScheduledFuture scheduledFuture =
+        SpringContext.getScheduleService()
+            .scheduleWithFixedDelay(() -> addTask(command), 0, command.getDelay());
+    command.setFuture(scheduledFuture);
+  }
+
+  /**
+   * 新增周期任务
+   *
+   * @param command
+   * @param delay
+   */
+  public void addScheduleTask(AbstractSceneRateCommand command, long delay) {
+    ScheduledFuture scheduledFuture =
+        SpringContext.getScheduleService()
+            .scheduleAtFixedRate(() -> addTask(command), delay, command.getPeriod());
     command.setFuture(scheduledFuture);
   }
 }
