@@ -64,15 +64,6 @@ public interface SkillService {
   void saveSkillStorage(Player player);
 
   /**
-   * 使用技能
-   *
-   * @param player
-   * @param index
-   * @return
-   */
-  boolean useSkill(Player player, int index);
-
-  /**
    * 获取配置信息
    *
    * @param id
