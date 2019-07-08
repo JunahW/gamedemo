@@ -5,6 +5,7 @@ import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.attribute.Attribute;
+import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class BuffResource implements ResourceInterface {
   /** buff类型 */
   @ExcelColumn(columnName = "buffType")
   private int buffType;
+
+  /** buff类型 */
+  private BuffTypeEnum buffTypeEnum;
 
   /** buff的持续时间毫秒值 */
   @ExcelColumn(columnName = "duration")
@@ -68,6 +72,14 @@ public class BuffResource implements ResourceInterface {
 
   public void setBuffType(int buffType) {
     this.buffType = buffType;
+  }
+
+  public BuffTypeEnum getBuffTypeEnum() {
+    return buffTypeEnum;
+  }
+
+  public void setBuffTypeEnum(BuffTypeEnum buffTypeEnum) {
+    this.buffTypeEnum = buffTypeEnum;
   }
 
   public int getDuration() {
@@ -118,5 +130,6 @@ public class BuffResource implements ResourceInterface {
   @Override
   public void postInit() {
     effectList = JsonUtils.getListByString(this.effect, new TypeReference<List<Attribute>>() {});
+    buffTypeEnum = BuffTypeEnum.getBuffTypeEnumByBuffType(buffType);
   }
 }

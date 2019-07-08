@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.buff.model;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author wengj
@@ -8,6 +10,8 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
  * @date 2019/6/25
  */
 public abstract class Buff {
+
+  private static final Logger logger = LoggerFactory.getLogger(Buff.class);
   /** buffId; */
   private int buffId;
 
@@ -36,6 +40,24 @@ public abstract class Buff {
    * @param owner
    */
   public abstract void active(CreatureObject owner);
+
+  /**
+   * 获得buff
+   *
+   * @param owner
+   */
+  public void gainBuff(CreatureObject owner) {
+    logger.info("获取了buff");
+  }
+
+  /**
+   * 失去buff
+   *
+   * @param owner
+   */
+  public void loseBuff(CreatureObject owner) {
+    logger.info("失去了buff");
+  }
 
   /**
    * 是否达到触发时间

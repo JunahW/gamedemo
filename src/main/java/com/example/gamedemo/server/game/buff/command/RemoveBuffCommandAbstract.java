@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.buff.command;
 
-import com.example.gamedemo.common.executer.SceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 
 /**
@@ -8,14 +8,14 @@ import com.example.gamedemo.server.game.buff.model.BuffContainer;
  * @description
  * @date 2019/7/1
  */
-public class RemoveBuffCommand extends SceneCommand {
+public class RemoveBuffCommandAbstract extends AbstractSceneCommand {
   /** buff容器 */
   private BuffContainer buffContainer;
 
   /** 移除的buff */
   private Integer buffId;
 
-  public RemoveBuffCommand(int sceneId, BuffContainer buffContainer, Integer buffId) {
+  public RemoveBuffCommandAbstract(int sceneId, BuffContainer buffContainer, Integer buffId) {
     super(sceneId);
     this.buffContainer = buffContainer;
     this.buffId = buffId;
@@ -27,9 +27,10 @@ public class RemoveBuffCommand extends SceneCommand {
    * @param buffId
    * @return
    */
-  public static RemoveBuffCommand valueOf(
+  public static RemoveBuffCommandAbstract valueOf(
       int sceneId, BuffContainer buffContainer, Integer buffId) {
-    RemoveBuffCommand removeBuffCommand = new RemoveBuffCommand(sceneId, buffContainer, buffId);
+    RemoveBuffCommandAbstract removeBuffCommand =
+        new RemoveBuffCommandAbstract(sceneId, buffContainer, buffId);
     return removeBuffCommand;
   }
 

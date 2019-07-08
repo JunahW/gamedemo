@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.skill.constant;
 
 import com.example.gamedemo.server.game.skill.model.AttackSkill;
+import com.example.gamedemo.server.game.skill.model.AttributeBuffSkill;
 import com.example.gamedemo.server.game.skill.model.CureSkill;
-import com.example.gamedemo.server.game.skill.model.DurationSkill;
 import com.example.gamedemo.server.game.skill.model.Skill;
 
 /**
@@ -17,8 +17,8 @@ public enum SkillTypeEnum {
   /** 治疗技能 */
   CURE_SKILL(1, CureSkill.class),
 
-  /** buff技能 */
-  DURATION_SKILL(2, DurationSkill.class);
+  /** 修改属性的buff技能 */
+  ATTRIBUTE_BUFF_SKILL(2, AttributeBuffSkill.class);
 
   private int id;
 

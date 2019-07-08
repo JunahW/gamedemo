@@ -9,9 +9,7 @@ import java.util.Set;
  * @description：持续性技能
  * @date 2019/7/4
  */
-public class DurationSkill extends Skill {
+public class AttributeBuffSkill extends Skill {
   @Override
-  public void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet) {
-    for (CreatureObject target : targetSet) {}
-  }
+  public void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet) {}
 }

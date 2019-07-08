@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.buff.model;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +13,14 @@ import java.util.Map;
  */
 public class BuffContainer<T extends CreatureObject> {
   /** buff拥有者 */
-  private T owner;
+  @JsonIgnore private T owner;
 
   /** buffer集合 */
   private Map<Integer, Buff> buffMap = new HashMap<>();
+
+  public BuffContainer(T owner) {
+    this.owner = owner;
+  }
 
   public T getOwner() {
     return owner;
@@ -40,6 +45,7 @@ public class BuffContainer<T extends CreatureObject> {
    */
   public void putBuff(Buff buff) {
     buffMap.put(buff.getBuffId(), buff);
+    buff.gainBuff(owner);
   }
 
   /**
@@ -48,6 +54,7 @@ public class BuffContainer<T extends CreatureObject> {
    * @param buffId
    */
   public void removeBuff(Integer buffId) {
+    buffMap.get(buffId).loseBuff(owner);
     buffMap.remove(buffId);
   }
 }

@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game.skill.command;
 
 import com.example.gamedemo.common.event.EventBusManager;
-import com.example.gamedemo.common.executer.SceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
@@ -17,8 +17,8 @@ import java.util.List;
  * @description
  * @date 2019/7/1
  */
-public class PeriodBuffCommand extends SceneCommand {
-  private static final Logger logger = LoggerFactory.getLogger(PeriodBuffCommand.class);
+public class PeriodBuffCommandAbstract extends AbstractSceneCommand {
+  private static final Logger logger = LoggerFactory.getLogger(PeriodBuffCommandAbstract.class);
   /** 攻击方 */
   private CreatureObject attacker;
   /** 目标对象 */
@@ -27,13 +27,13 @@ public class PeriodBuffCommand extends SceneCommand {
   /** 影响的属性集 */
   private List<Attribute> effectList;
 
-  public PeriodBuffCommand(int sceneId) {
+  public PeriodBuffCommandAbstract(int sceneId) {
     super(sceneId);
   }
 
-  public static PeriodBuffCommand valueOf(
+  public static PeriodBuffCommandAbstract valueOf(
       int sceneId, CreatureObject attacker, CreatureObject target, List<Attribute> effectList) {
-    PeriodBuffCommand command = new PeriodBuffCommand(sceneId);
+    PeriodBuffCommandAbstract command = new PeriodBuffCommandAbstract(sceneId);
     command.setAttacker(attacker);
     command.setTarget(target);
     command.setEffectList(effectList);

@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.buff.constant;
 
+import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
+import com.example.gamedemo.server.game.buff.model.AttributeBuff;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.CureBuff;
 
@@ -8,7 +10,7 @@ import com.example.gamedemo.server.game.buff.model.CureBuff;
  * @date: 2019/7/1
  * @description: buff类型
  */
-public enum BuffTypeEnum {
+public enum BuffTypeEnum implements AttributeModelId {
   /** 眩晕buff */
   DURATION_BUFF(0, CureBuff.class),
 
@@ -16,7 +18,15 @@ public enum BuffTypeEnum {
   ATTACK_BUFF(1, CureBuff.class),
 
   /** 周期buff */
-  PERIOD_BUFF(2, CureBuff.class);
+  PERIOD_BUFF(2, CureBuff.class),
+
+  /** 修改属性的buff */
+  ATTRIBUTE_BUFF(3, AttributeBuff.class) {
+    @Override
+    public String getModelName() {
+      return "ATTRIBUTE_BUFF";
+    }
+  };
 
   /** buff类型 */
   private int buffType;
@@ -47,6 +57,21 @@ public enum BuffTypeEnum {
     return buff;
   }
 
+  /**
+   * 通过buffType获取BuffTypeEnum
+   *
+   * @param buffType
+   * @return
+   */
+  public static BuffTypeEnum getBuffTypeEnumByBuffType(int buffType) {
+    for (BuffTypeEnum buffTypeEnum : BuffTypeEnum.values()) {
+      if (buffTypeEnum.getBuffType() == buffType) {
+        return buffTypeEnum;
+      }
+    }
+    return null;
+  }
+
   public int getBuffType() {
     return buffType;
   }
@@ -61,5 +86,10 @@ public enum BuffTypeEnum {
 
   public void setBuffClazz(Class<? extends Buff> buffClazz) {
     this.buffClazz = buffClazz;
+  }
+
+  @Override
+  public String getModelName() {
+    return null;
   }
 }

@@ -6,7 +6,7 @@ import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
-import com.example.gamedemo.server.game.buff.command.RemoveBuffCommand;
+import com.example.gamedemo.server.game.buff.command.RemoveBuffCommandAbstract;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
@@ -35,7 +35,7 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
   private long exp;
 
   /** Buff容器 */
-  private BuffContainer<T> buffContainer = new BuffContainer<>();
+  private BuffContainer<T> buffContainer = new BuffContainer(this);
 
   /** 属性容器 */
   private AbstractAttributeContainer attributeContainer;
@@ -123,7 +123,8 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
         SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
     // 添加移除任务
     SceneExecutor.addDelayTask(
-        RemoveBuffCommand.valueOf(this.getSceneId(), this.getBuffContainer(), buff.getBuffId()),
+        RemoveBuffCommandAbstract.valueOf(
+            this.getSceneId(), this.getBuffContainer(), buff.getBuffId()),
         buffResource.getDuration());
   }
 

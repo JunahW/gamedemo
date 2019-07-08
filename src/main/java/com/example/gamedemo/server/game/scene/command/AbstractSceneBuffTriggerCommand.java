@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.scene.command;
 
-import com.example.gamedemo.common.executer.SceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
@@ -15,10 +15,11 @@ import java.util.Map;
  * @description
  * @date 2019/7/5
  */
-public class SceneBuffTriggerCommand extends SceneCommand {
-  private static final Logger logger = LoggerFactory.getLogger(SceneBuffTriggerCommand.class);
+public class AbstractSceneBuffTriggerCommand extends AbstractSceneCommand {
+  private static final Logger logger =
+      LoggerFactory.getLogger(AbstractSceneBuffTriggerCommand.class);
 
-  public SceneBuffTriggerCommand(int sceneId) {
+  public AbstractSceneBuffTriggerCommand(int sceneId) {
     super(sceneId);
   }
 
@@ -26,8 +27,8 @@ public class SceneBuffTriggerCommand extends SceneCommand {
    * @param sceneId
    * @return
    */
-  public static SceneBuffTriggerCommand valueOf(int sceneId) {
-    return new SceneBuffTriggerCommand(sceneId);
+  public static AbstractSceneBuffTriggerCommand valueOf(int sceneId) {
+    return new AbstractSceneBuffTriggerCommand(sceneId);
   }
 
   @Override

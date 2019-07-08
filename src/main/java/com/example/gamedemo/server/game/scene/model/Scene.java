@@ -4,7 +4,7 @@ import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
-import com.example.gamedemo.server.game.scene.command.SceneBuffTriggerCommand;
+import com.example.gamedemo.server.game.scene.command.AbstractSceneBuffTriggerCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -143,7 +143,7 @@ public class Scene {
         1000,
         200,
         Long.MAX_VALUE,
-        SceneBuffTriggerCommand.valueOf(sceneResourceId));
+        AbstractSceneBuffTriggerCommand.valueOf(sceneResourceId));
   }
 
   /**
