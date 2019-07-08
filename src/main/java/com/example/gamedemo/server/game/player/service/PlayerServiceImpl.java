@@ -115,7 +115,7 @@ public class PlayerServiceImpl implements PlayerService {
     // 计算属性的值
     PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getAttributeContainer();
     playerAttributeContainer.compute();
-    return playerAttributeContainer.getAttributeMap();
+    return playerAttributeContainer.getFinalAttributeMap();
   }
 
   @Override

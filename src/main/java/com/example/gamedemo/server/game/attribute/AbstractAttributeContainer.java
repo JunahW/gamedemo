@@ -1,8 +1,8 @@
 package com.example.gamedemo.server.game.attribute;
 
-import com.example.gamedemo.server.common.utils.FormulaUtils;
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.attribute.utils.AttributeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.HashMap;
@@ -19,6 +19,10 @@ public abstract class AbstractAttributeContainer<T> {
 
   /** 属性容器所属者 */
   @JsonIgnore protected T owner;
+
+  /** 最终属性容器 */
+  private Map<AttributeTypeEnum, Attribute> finalAttributeMap = new HashMap<>();
+
   /** 各个属性容器 */
   private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
@@ -37,23 +41,21 @@ public abstract class AbstractAttributeContainer<T> {
   /** 计算属性值 */
   public void compute() {
     attributeMap.clear();
-    for (Map.Entry<AttributeModelId, AttributeSet> entry : modelAttributeListMap.entrySet()) {
-      AttributeSet attributeSet = entry.getValue();
-      // 累加各个属性的值
-      for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry :
-          attributeSet.getAttributeMap().entrySet()) {
-        Attribute attribute = attributeEntry.getValue();
-        if (attributeMap.containsKey(attribute.getType())) {
-          // 计算同个属性计算后的值
-          FormulaUtils.computeAttribute(attributeMap, attribute);
-        } else {
-          attributeMap.put(
-              attribute.getType(), Attribute.valueof(attribute.getType(), attribute.getValue()));
-        }
+    AttributeUtils.accumulateModeAttribute2AttributeMap(modelAttributeListMap, attributeMap);
+    // 计算最终的值，包括加成
+    for (Map.Entry<AttributeTypeEnum, Attribute> attributeEntry : attributeMap.entrySet()) {
+      Attribute attribute = attributeEntry.getValue();
+      AttributeTypeEnum attributeType = attributeEntry.getKey();
+      // 最终属性值
+      long finalValue = attributeType.getAttributeComputer().compute(attributeType, attributeMap);
+
+      Attribute finalAttribute = finalAttributeMap.get(attributeType);
+      if (finalAttribute == null) {
+        finalAttributeMap.put(attributeType, Attribute.valueof(attributeType, finalValue));
+      } else {
+        finalAttribute.setValue(finalValue);
       }
     }
-    // 计算最终的值，包括加成
-    FormulaUtils.computeAttributePercentage(attributeMap);
     // 计算战力
     computeCombatIndex();
   }
@@ -123,7 +125,7 @@ public abstract class AbstractAttributeContainer<T> {
    * @return
    */
   public Long getAttributeValue(AttributeTypeEnum attributeType) {
-    Attribute attribute = attributeMap.get(attributeType);
+    Attribute attribute = finalAttributeMap.get(attributeType);
     if (attribute == null) {
       return 0L;
     }
@@ -140,12 +142,16 @@ public abstract class AbstractAttributeContainer<T> {
     this.owner = owner;
   }
 
-  public Map<AttributeTypeEnum, Attribute> getAttributeMap() {
-    return attributeMap;
+  public Map<AttributeTypeEnum, Attribute> getFinalAttributeMap() {
+    return finalAttributeMap;
   }
 
-  public void setAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> attributeMap) {
-    this.attributeMap = attributeMap;
+  public void setFinalAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> finalAttributeMap) {
+    this.finalAttributeMap = finalAttributeMap;
+  }
+
+  public void setFinalAttributeMap(Map<AttributeTypeEnum, Attribute> finalAttributeMap) {
+    this.finalAttributeMap = finalAttributeMap;
   }
 
   public Map<AttributeModelId, AttributeSet> getModelAttributeListMap() {
@@ -155,5 +161,17 @@ public abstract class AbstractAttributeContainer<T> {
   public void setModelAttributeListMap(
       ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
     this.modelAttributeListMap = modelAttributeListMap;
+  }
+
+  public void setModelAttributeListMap(Map<AttributeModelId, AttributeSet> modelAttributeListMap) {
+    this.modelAttributeListMap = modelAttributeListMap;
+  }
+
+  public Map<AttributeTypeEnum, Attribute> getAttributeMap() {
+    return attributeMap;
+  }
+
+  public void setAttributeMap(Map<AttributeTypeEnum, Attribute> attributeMap) {
+    this.attributeMap = attributeMap;
   }
 }

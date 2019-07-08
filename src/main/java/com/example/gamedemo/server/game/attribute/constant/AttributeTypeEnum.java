@@ -1,5 +1,9 @@
 package com.example.gamedemo.server.game.attribute.constant;
 
+import com.example.gamedemo.server.game.attribute.computer.IAttributeComputer;
+import com.example.gamedemo.server.game.attribute.computer.impl.DefaultAttributeComputer;
+import com.example.gamedemo.server.game.attribute.computer.impl.GeneralAttributeComputer;
+
 /**
  * @author: wengj
  * @date: 2019/6/3
@@ -34,6 +38,11 @@ public enum AttributeTypeEnum {
     public AttributeTypeEnum[] getPercentageAttributes() {
       return new AttributeTypeEnum[] {ATTACK_PERCENTAGE};
     }
+
+    @Override
+    public IAttributeComputer getAttributeComputer() {
+      return new GeneralAttributeComputer();
+    }
   },
 
   /** 攻击力上限 */
@@ -41,6 +50,11 @@ public enum AttributeTypeEnum {
     @Override
     public AttributeTypeEnum[] getPercentageAttributes() {
       return new AttributeTypeEnum[] {ATTACK_PERCENTAGE};
+    }
+
+    @Override
+    public IAttributeComputer getAttributeComputer() {
+      return new GeneralAttributeComputer();
     }
   },
 
@@ -50,6 +64,11 @@ public enum AttributeTypeEnum {
     public AttributeTypeEnum[] getPercentageAttributes() {
       return new AttributeTypeEnum[] {DEFENSE_PERCENTAGE};
     }
+
+    @Override
+    public IAttributeComputer getAttributeComputer() {
+      return new GeneralAttributeComputer();
+    }
   },
 
   /** 防御力上限 */
@@ -57,6 +76,11 @@ public enum AttributeTypeEnum {
     @Override
     public AttributeTypeEnum[] getPercentageAttributes() {
       return new AttributeTypeEnum[] {DEFENSE_PERCENTAGE};
+    }
+
+    @Override
+    public IAttributeComputer getAttributeComputer() {
+      return new GeneralAttributeComputer();
     }
   },
 
@@ -100,7 +124,11 @@ public enum AttributeTypeEnum {
    * @return
    */
   public AttributeTypeEnum[] getPercentageAttributes() {
-    return null;
+    return new AttributeTypeEnum[] {};
+  }
+
+  public IAttributeComputer getAttributeComputer() {
+    return new DefaultAttributeComputer();
   }
 
   public String getName() {

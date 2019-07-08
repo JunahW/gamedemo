@@ -1,7 +1,7 @@
 package com.example.gamedemo.server.game.attribute;
 
-import com.example.gamedemo.server.common.utils.FormulaUtils;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
+import com.example.gamedemo.server.game.attribute.utils.AttributeUtils;
 import com.example.gamedemo.server.game.player.model.Player;
 
 import java.util.Map;
@@ -20,9 +20,9 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
   @Override
   public void computeCombatIndex() {
 
-    Map<AttributeTypeEnum, Attribute> attributeMap = this.getAttributeMap();
+    Map<AttributeTypeEnum, Attribute> finalAttributeMap = this.getFinalAttributeMap();
     /** 计算战力 */
-    long combatIndex = FormulaUtils.computeCombatIndex(attributeMap);
+    long combatIndex = AttributeUtils.computeCombatIndex(finalAttributeMap);
     owner.setCombatIndex(combatIndex);
   }
 }
