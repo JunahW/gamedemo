@@ -15,6 +15,7 @@ public abstract class AbstractCommand implements Command {
   /** 定时任务句柄 */
   private ScheduledFuture future;
 
+  @Override
   public boolean isCanceled() {
     return isCanceled;
   }

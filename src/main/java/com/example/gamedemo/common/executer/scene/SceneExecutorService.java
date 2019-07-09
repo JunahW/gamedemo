@@ -3,6 +3,7 @@ package com.example.gamedemo.common.executer.scene;
 import com.example.gamedemo.common.executer.Command;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneDelayCommand;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneRateCommand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,14 +13,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SceneExecutorService implements ISceneExecutorService {
+
+  @Autowired private SceneExecutor sceneExecutor;
+
   @Override
   public void submit(Command command) {
     if (command instanceof AbstractSceneRateCommand) {
-      // SceneExecutor.addScheduleTask();
+      AbstractSceneRateCommand sceneRateCommand = (AbstractSceneRateCommand) command;
+      sceneExecutor.addScheduleTask(sceneRateCommand);
     } else if (command instanceof AbstractSceneDelayCommand) {
-      // 延时任务
+      AbstractSceneDelayCommand sceneDelayCommand = (AbstractSceneDelayCommand) command;
+      sceneExecutor.addDelayTask(sceneDelayCommand);
     } else {
-      // 其他任务
+      sceneExecutor.addTask(command);
     }
   }
 }

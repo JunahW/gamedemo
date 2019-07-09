@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.executer.scene;
 
-import com.example.gamedemo.common.executer.AbstractCommand;
 import com.example.gamedemo.common.executer.Command;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneDelayCommand;
@@ -136,7 +135,7 @@ public class SceneExecutor {
    *
    * @param command
    */
-  public static void addTask(AbstractCommand command) {
+  public void addTask(Command command) {
     int index = command.modIndex(DEFAULT_THREAD_SIZE);
     SCENE_SERVICE[index].submit(
         new Runnable() {
@@ -165,12 +164,11 @@ public class SceneExecutor {
    * 新增周期任务
    *
    * @param command
-   * @param delay
    */
-  public void addScheduleTask(AbstractSceneRateCommand command, long delay) {
+  public void addScheduleTask(AbstractSceneRateCommand command) {
     ScheduledFuture scheduledFuture =
         SpringContext.getScheduleService()
-            .scheduleAtFixedRate(() -> addTask(command), delay, command.getPeriod());
+            .scheduleAtFixedRate(() -> addTask(command), command.getDelay(), command.getPeriod());
     command.setFuture(scheduledFuture);
   }
 }

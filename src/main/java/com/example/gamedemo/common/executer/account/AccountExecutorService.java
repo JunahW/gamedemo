@@ -15,14 +15,25 @@ import org.springframework.stereotype.Component;
 public class AccountExecutorService implements IAccountExecutorService {
   @Autowired private AccountExecutor accountExecutor;
 
+  /**
+   * 兼容账户线程和场景线程
+   *
+   * @param accountId
+   * @param task
+   */
+  @Override
+  public void addTask(String accountId, Runnable task) {
+    accountExecutor.addTask(accountId, task);
+  }
+
   @Override
   public void submit(Command command) {
     if (command instanceof AbstractAccountDelayCommand) {
-      // TODO
-      AbstractAccountDelayCommand accountDelayCommand = (AbstractAccountDelayCommand) command;
+      accountExecutor.addDelayTask((AbstractAccountDelayCommand) command);
+
     } else if (command instanceof AbstractAccountRateCommand) {
       AbstractAccountRateCommand accountRateCommand = (AbstractAccountRateCommand) command;
-      // TODO
+      accountExecutor.addScheduleTask(accountRateCommand);
     } else {
       accountExecutor.addTask(command);
     }

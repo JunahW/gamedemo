@@ -19,4 +19,11 @@ public interface Command {
 
   /** 取消command */
   void cancel();
+
+  /**
+   * 指令是否已经取消
+   *
+   * @return
+   */
+  boolean isCanceled();
 }

@@ -29,11 +29,11 @@ public abstract class AbstractSceneAccountCommand<T> extends AbstractSceneComman
 
   @Override
   public void run() {
-    doInAccountThreand();
+    doInAccountThread();
     // 在场景线程执行
     SpringContext.getSceneExecutorService().submit(this);
   }
 
   /** 在账户线程执行的业务 */
-  public abstract void doInAccountThreand();
+  public abstract void doInAccountThread();
 }

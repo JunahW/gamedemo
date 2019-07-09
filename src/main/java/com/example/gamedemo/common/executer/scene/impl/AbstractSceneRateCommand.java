@@ -6,11 +6,20 @@ package com.example.gamedemo.common.executer.scene.impl;
  * @date 2019/7/8
  */
 public abstract class AbstractSceneRateCommand extends AbstractSceneCommand {
+
+  /** 延时 */
+  private long delay = 0L;
   /** 周期 */
   private long period;
 
   public AbstractSceneRateCommand(int sceneId, long period) {
     super(sceneId);
+    this.period = period;
+  }
+
+  public AbstractSceneRateCommand(int sceneId, long delay, long period) {
+    super(sceneId);
+    this.delay = delay;
     this.period = period;
   }
 
@@ -20,5 +29,13 @@ public abstract class AbstractSceneRateCommand extends AbstractSceneCommand {
 
   public void setPeriod(long period) {
     this.period = period;
+  }
+
+  public long getDelay() {
+    return delay;
+  }
+
+  public void setDelay(long delay) {
+    this.delay = delay;
   }
 }

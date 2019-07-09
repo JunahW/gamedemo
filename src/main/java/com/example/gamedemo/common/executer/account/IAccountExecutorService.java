@@ -8,6 +8,14 @@ import com.example.gamedemo.common.executer.Command;
  * @date 2019/7/8
  */
 public interface IAccountExecutorService {
+
+  /**
+   * 执行用户线程和场景线程
+   *
+   * @param accountId
+   * @param task
+   */
+  void addTask(String accountId, Runnable task);
   /**
    * 执行command
    *

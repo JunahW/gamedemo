@@ -63,7 +63,7 @@ public class AccountExecutor {
    * @param accountId
    * @param task
    */
-  public static void addTask(String accountId, Runnable task) {
+  public void addTask(String accountId, Runnable task) {
     int index = modeIndex(accountId);
     ACCOUNT_SERVICE[index].submit(task);
   }
@@ -101,12 +101,11 @@ public class AccountExecutor {
    * 新增周期任务
    *
    * @param command
-   * @param delay
    */
-  public void addScheduleTask(AbstractAccountRateCommand command, long delay) {
+  public void addScheduleTask(AbstractAccountRateCommand command) {
     ScheduledFuture scheduledFuture =
         SpringContext.getScheduleService()
-            .scheduleAtFixedRate(() -> addTask(command), delay, command.getPeriod());
+            .scheduleAtFixedRate(() -> addTask(command), command.getDelay(), command.getPeriod());
     command.setFuture(scheduledFuture);
   }
 }
