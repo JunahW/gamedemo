@@ -38,13 +38,31 @@ public interface SceneService {
   Scene getSceneById(int sceneId);
 
   /**
-   * 去其他的相邻场景
+   * 客户端请求切图
    *
    * @param player
    * @param sceneId
    * @return
    */
-  boolean move2Scene(Player player, int sceneId);
+  boolean changeScene(Player player, int sceneId);
+
+  /**
+   * 服务端切图
+   *
+   * @param player
+   * @param sceneId
+   * @return
+   */
+  boolean serverChangeScene(Player player, int sceneId);
+
+  /**
+   * 进入场景
+   *
+   * @param player
+   * @param sceneId
+   * @return
+   */
+  boolean enterScene(Player player, int sceneId);
 
   /**
    * 通过id获取配置信息
@@ -95,4 +113,7 @@ public interface SceneService {
    */
   void handMonsterDeadEvent(
       CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId);
+
+  /** 开启场景线程 */
+  void startSceneTimer();
 }

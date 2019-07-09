@@ -1,10 +1,8 @@
 package com.example.gamedemo.server.game.scene.model;
 
-import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
-import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -137,10 +135,14 @@ public class Scene {
     sceneObjectMap.remove(id);
   }
 
-  public void statSceneTimer() {
-    SceneExecutor.addScheduleTask(
-        sceneResourceId, 1000, 200, Long.MAX_VALUE, SceneBuffRateCommand.valueOf(sceneResourceId));
-  }
+  /* public void statSceneTimer() {
+  SpringContext.getSceneExecutorService()
+      .submit(SceneBuffRateCommand.valueOf(sceneResourceId, 1000, 100));
+  */
+  /* SceneExecutor.addScheduleTask(·
+  sceneResourceId, 1000, 200, Long.MAX_VALUE, SceneBuffRateCommand.valueOf(sceneResourceId));*/
+  /*
+  }*/
 
   /**
    * 获取指定类型的场景对象

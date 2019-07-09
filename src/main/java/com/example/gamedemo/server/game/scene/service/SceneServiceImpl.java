@@ -2,14 +2,18 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
-import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.model.DropObject;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.command.ChangeSceneCommand;
+import com.example.gamedemo.server.game.scene.command.EnterSceneCommand;
+import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
+import com.example.gamedemo.server.game.scene.command.SceneMonsterRebornDelayCommand;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
@@ -69,7 +73,7 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public boolean move2Scene(Player player, int sceneId) {
+  public boolean changeScene(Player player, int sceneId) {
     Scene targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
     if (targetScene == null) {
       logger.info("场景[{}]不存在", sceneId);
@@ -90,19 +94,36 @@ public class SceneServiceImpl implements SceneService {
       }
     }
     if (!isNeighbor) {
-      logger.info("{}进入{}失败，只能进入相邻的场景", player.getJobName(), mapResource.getMapName());
+      logger.info(
+          "[{}][{}]进入[{}]失败，只能进入相邻的场景", player.getSceneObjectType(), player.getId(), sceneId);
       RequestException.throwException(I18nId.SCENE_NO_NEIGHBOR);
     }
+    SpringContext.getSceneExecutorService()
+        .submit(ChangeSceneCommand.valueOf(player.getSceneId(), player, sceneId));
+    return true;
+  }
+
+  @Override
+  public boolean serverChangeScene(Player player, int sceneId) {
+
+    // 当前的场景
+    Scene currentScene = sceneManager.getSceneBySceneResourceId(player.getSceneId());
     // 退出当前场景
     currentScene.leaveScene(player.getId());
 
-    // 进入新的场景
-    targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
+    SpringContext.getSceneExecutorService().submit(EnterSceneCommand.valueOf(player, sceneId));
+    return true;
+  }
+
+  @Override
+  public boolean enterScene(Player player, int sceneId) {
+    Scene targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
+    MapResource mapResource = sceneManager.getSceneResourceById(sceneId);
     player.setSceneId(sceneId);
     player.setX(mapResource.getX());
     player.setY(mapResource.getY());
     targetScene.enterScene(player);
-    logger.info("{}进入{}", player.getJobName(), mapResource.getMapName());
+    logger.info("[{}][{}]进入[{}]", player.getSceneObjectType(), player.getId(), sceneId);
     return true;
   }
 
@@ -185,16 +206,29 @@ public class SceneServiceImpl implements SceneService {
     Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
     scene.leaveScene(monsterId);
 
-    SceneExecutor.addDelayTask(
-        sceneId,
-        20000,
-        new Runnable() {
-          @Override
-          public void run() {
-            logger.info("[{}]重新生成怪物开始", sceneId);
-            SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
-            logger.info("[{}]重新生成怪物完成", sceneId);
-          }
-        });
+    SpringContext.getSceneExecutorService()
+        .submit(
+            SceneMonsterRebornDelayCommand.valueOf(
+                sceneId, GameConstant.MONSTER_REBORN_PERIOD, monsterResourceId));
+    /* SceneExecutor.addDelayTask(
+    sceneId,
+    20000,
+    new Runnable() {
+      @Override
+      public void run() {
+        logger.info("[{}]重新生成怪物开始", sceneId);
+        SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
+        logger.info("[{}]重新生成怪物完成", sceneId);
+      }
+    });*/
+  }
+
+  @Override
+  public void startSceneTimer() {
+    List<Scene> sceneList = getSceneList();
+    for (Scene scene : sceneList) {
+      SpringContext.getSceneExecutorService()
+          .submit(SceneBuffRateCommand.valueOf(scene.getSceneResourceId(), 1000, 100));
+    }
   }
 }

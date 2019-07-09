@@ -1,6 +1,6 @@
 package com.example.gamedemo.server.game.scene.command;
 
-import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
+import com.example.gamedemo.common.executer.scene.impl.AbstractSceneRateCommand;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
@@ -15,19 +15,23 @@ import java.util.Map;
  * @description
  * @date 2019/7/5
  */
-public class SceneBuffRateCommand extends AbstractSceneCommand {
+public class SceneBuffRateCommand extends AbstractSceneRateCommand {
   private static final Logger logger = LoggerFactory.getLogger(SceneBuffRateCommand.class);
 
-  public SceneBuffRateCommand(int sceneId) {
-    super(sceneId);
+  public SceneBuffRateCommand(int sceneId, long period) {
+    super(sceneId, period);
+  }
+
+  public SceneBuffRateCommand(int sceneId, long delay, long period) {
+    super(sceneId, delay, period);
   }
 
   /**
    * @param sceneId
    * @return
    */
-  public static SceneBuffRateCommand valueOf(int sceneId) {
-    return new SceneBuffRateCommand(sceneId);
+  public static SceneBuffRateCommand valueOf(int sceneId, long delay, long period) {
+    return new SceneBuffRateCommand(sceneId, delay, period);
   }
 
   @Override

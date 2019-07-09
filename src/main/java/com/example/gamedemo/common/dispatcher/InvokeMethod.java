@@ -1,6 +1,5 @@
 package com.example.gamedemo.common.dispatcher;
 
-import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.account.packet.CM_CreateAccount;
@@ -51,15 +50,10 @@ public class InvokeMethod {
    * @return
    */
   public Object invoke(TSession session, Object packet) {
-    // 未选择角色就在用户线程
-    if (session.getPlayer() == null) {
-      String accountId = getAccountId(session, packet);
-      SpringContext.getAccountExecutorService()
-          .addTask(accountId, new IoHandleEvent(session, packet, this));
-    } else {
-      int sceneId = session.getPlayer().getSceneId();
-      SceneExecutor.addTask(sceneId, new IoHandleEvent(session, packet, this));
-    }
+    // 默认在账户线程执行任务
+    String accountId = getAccountId(session, packet);
+    SpringContext.getAccountExecutorService()
+        .addTask(accountId, new IoHandleEvent(session, packet, this));
     return null;
   }
 

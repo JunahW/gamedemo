@@ -1,7 +1,6 @@
 package com.example.gamedemo.common.executer.scene;
 
 import com.example.gamedemo.common.executer.Command;
-import com.example.gamedemo.common.executer.scene.impl.AbstractSceneCommand;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneDelayCommand;
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneRateCommand;
 import com.example.gamedemo.server.common.SpringContext;
@@ -10,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author wengj
@@ -65,72 +67,6 @@ public class SceneExecutor {
   }
 
   /**
-   * 周期运行
-   *
-   * @param sceneId
-   * @param delay
-   * @param task
-   */
-  public static void addDelayTask(int sceneId, long delay, Runnable task) {
-    int index = modeIndex(sceneId);
-    SCENE_SERVICE[index].schedule(task, delay, TimeUnit.MILLISECONDS);
-  }
-
-  /**
-   * 周期运行
-   *
-   * @param sceneId
-   * @param delay
-   * @param period
-   * @param task
-   */
-  public static void addScheduleTask(int sceneId, long delay, long period, Runnable task) {
-    int index = modeIndex(sceneId);
-    SCENE_SERVICE[index].scheduleAtFixedRate(task, delay, period, TimeUnit.MILLISECONDS);
-  }
-
-  /**
-   * 执行延期指令
-   *
-   * @param command
-   * @param delay
-   */
-  public static void addDelayTask(Command command, long delay) {
-    int index = command.modIndex(DEFAULT_THREAD_SIZE);
-    SCENE_SERVICE[index].schedule(
-        new Runnable() {
-          @Override
-          public void run() {
-            command.doAction();
-          }
-        },
-        delay,
-        TimeUnit.MILLISECONDS);
-  }
-
-  public static void addScheduleTask(
-      int sceneId, long delay, long period, long endTime, AbstractSceneCommand command) {
-    int index = modeIndex(sceneId);
-    ScheduledFuture scheduledFuture =
-        SCENE_SERVICE[index].scheduleAtFixedRate(
-            new Runnable() {
-              @Override
-              public void run() {
-                if (System.currentTimeMillis() >= endTime) {
-                  command.cancel();
-                } else {
-                  command.doAction();
-                }
-              }
-            },
-            delay,
-            period,
-            TimeUnit.MILLISECONDS);
-    command.setFuture(scheduledFuture);
-  }
-  /** =======================================新接口==================================== */
-
-  /**
    * 执行场景线程
    *
    * @param command
@@ -156,7 +92,7 @@ public class SceneExecutor {
   public void addDelayTask(AbstractSceneDelayCommand command) {
     ScheduledFuture scheduledFuture =
         SpringContext.getScheduleService()
-            .scheduleWithFixedDelay(() -> addTask(command), 0, command.getDelay());
+            .scheduleDelay(() -> addTask(command), command.getDelay());
     command.setFuture(scheduledFuture);
   }
 

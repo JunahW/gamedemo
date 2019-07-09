@@ -1,6 +1,8 @@
 package com.example.gamedemo.common.executer.schedule;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.*;
@@ -12,6 +14,9 @@ import java.util.concurrent.*;
  */
 @Component
 public class ScheduleService {
+
+  private static final Logger logger = LoggerFactory.getLogger(ScheduleService.class);
+
   private static ThreadFactory threadFactory =
       new ThreadFactoryBuilder()
           .setNameFormat("Schedule-Thread-%d")
@@ -31,6 +36,7 @@ public class ScheduleService {
    * @return
    */
   public ScheduledFuture scheduleAtFixedRate(Runnable task, long initialDelay, long period) {
+    logger.info("开始一个周期任务");
     return scheduledExecutorService.scheduleAtFixedRate(
         task, initialDelay, period, TimeUnit.MILLISECONDS);
   }
@@ -39,12 +45,11 @@ public class ScheduleService {
    * 延时任务
    *
    * @param task
-   * @param initialDelay
    * @param delay
    * @return
    */
-  public ScheduledFuture scheduleWithFixedDelay(Runnable task, long initialDelay, long delay) {
-    return scheduledExecutorService.scheduleWithFixedDelay(
-        task, initialDelay, delay, TimeUnit.MILLISECONDS);
+  public ScheduledFuture scheduleDelay(Runnable task, long delay) {
+    logger.info("开始一个延时期任务");
+    return scheduledExecutorService.schedule(task, delay, TimeUnit.MILLISECONDS);
   }
 }

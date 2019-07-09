@@ -15,4 +15,7 @@ public interface GameConstant {
 
   /** 百分比 */
   int PERCENTAGE = 100;
+
+  /** 怪物重生事件 */
+  long MONSTER_REBORN_PERIOD = 20000;
 }

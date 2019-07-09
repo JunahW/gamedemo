@@ -20,6 +20,9 @@ public class AttackSkill extends Skill {
   public void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet) {
     for (CreatureObject target : targetSet) {
       // 处理攻击
+      if (target == null) {
+        continue;
+      }
       AttackTargetHandler.handle(attacker, target, this);
     }
   }

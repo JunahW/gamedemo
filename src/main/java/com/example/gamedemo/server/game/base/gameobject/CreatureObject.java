@@ -1,17 +1,18 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
-import com.example.gamedemo.common.executer.scene.SceneExecutor;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
-import com.example.gamedemo.server.game.buff.command.RemoveBuffCommandAbstract;
+import com.example.gamedemo.server.game.buff.command.RemoveBuffDelayCommand;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.Set;
@@ -22,6 +23,8 @@ import java.util.Set;
  * @date 2019/6/21
  */
 public abstract class CreatureObject<T extends CreatureObject> extends SceneObject {
+
+  private static final Logger logger = LoggerFactory.getLogger(CreatureObject.class);
   /** 视野 */
   @JsonIgnore private SceneObjectView sceneObjectView = new SceneObjectView();
 
@@ -118,14 +121,18 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
    * @param buff
    */
   public void addBuff(Buff buff) {
+    logger.info("[{}][{}]新增buff[{}]", getSceneObjectType(), getId(), buff.getBuffId());
     buffContainer.putBuff(buff);
     BuffResource buffResource =
         SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
     // 添加移除任务
-    SceneExecutor.addDelayTask(
-        RemoveBuffCommandAbstract.valueOf(
-            this.getSceneId(), this.getBuffContainer(), buff.getBuffId()),
-        buffResource.getDuration());
+    SpringContext.getAccountExecutorService()
+        .submit(
+            RemoveBuffDelayCommand.valueOf(
+                this.getSceneId(),
+                buffResource.getDuration(),
+                this.getBuffContainer(),
+                buff.getBuffId()));
   }
 
   /**

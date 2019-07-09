@@ -68,7 +68,6 @@ public class AccountExecutor {
     ACCOUNT_SERVICE[index].submit(task);
   }
 
-  /** =========================================以下为新接口========================================= */
   /**
    * 执行任务
    *
@@ -93,7 +92,7 @@ public class AccountExecutor {
   public void addDelayTask(AbstractAccountDelayCommand command) {
     ScheduledFuture scheduledFuture =
         SpringContext.getScheduleService()
-            .scheduleWithFixedDelay(() -> addTask(command), 0, command.getDelay());
+            .scheduleDelay(() -> addTask(command), command.getDelay());
     command.setFuture(scheduledFuture);
   }
 
