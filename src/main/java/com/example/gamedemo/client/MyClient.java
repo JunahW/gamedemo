@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 
 /**
  * @author: wengj
@@ -38,7 +39,7 @@ public class MyClient {
               ChannelPipeline pipeline = ch.pipeline();
               pipeline.addLast(
                   "framer", new DelimiterBasedFrameDecoder(1024 * 8, Delimiters.lineDelimiter()));
-              pipeline.addLast("decoder", new StringDecoder());
+              pipeline.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));
               pipeline.addLast("encoder", new StringEncoder());
 
               pipeline.addLast(
