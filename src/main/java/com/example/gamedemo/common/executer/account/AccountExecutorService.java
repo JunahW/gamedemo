@@ -30,7 +30,6 @@ public class AccountExecutorService implements IAccountExecutorService {
   public void submit(Command command) {
     if (command instanceof AbstractAccountDelayCommand) {
       accountExecutor.addDelayTask((AbstractAccountDelayCommand) command);
-
     } else if (command instanceof AbstractAccountRateCommand) {
       AbstractAccountRateCommand accountRateCommand = (AbstractAccountRateCommand) command;
       accountExecutor.addScheduleTask(accountRateCommand);

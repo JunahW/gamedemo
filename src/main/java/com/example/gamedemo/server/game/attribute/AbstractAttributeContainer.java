@@ -24,7 +24,7 @@ public abstract class AbstractAttributeContainer<T> {
   private Map<AttributeTypeEnum, Attribute> finalAttributeMap = new HashMap<>();
 
   /** 各个属性容器 */
-  private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
+  @JsonIgnore private Map<AttributeTypeEnum, Attribute> attributeMap = new HashMap<>();
 
   /** 不同模块的属性容器 */
   @JsonIgnore private Map<AttributeModelId, AttributeSet> modelAttributeListMap = new HashMap<>();

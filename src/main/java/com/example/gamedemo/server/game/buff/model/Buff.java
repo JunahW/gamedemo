@@ -18,6 +18,9 @@ public abstract class Buff {
   /** 最近触发时间 */
   private long lastTriggerTime;
 
+  /** 失效时间 */
+  private long endTime;
+
   public int getBuffId() {
     return buffId;
   }
@@ -32,6 +35,14 @@ public abstract class Buff {
 
   public void setLastTriggerTime(long lastTriggerTime) {
     this.lastTriggerTime = lastTriggerTime;
+  }
+
+  public long getEndTime() {
+    return endTime;
+  }
+
+  public void setEndTime(long endTime) {
+    this.endTime = endTime;
   }
 
   /**
@@ -71,6 +82,18 @@ public abstract class Buff {
     }
     long nextTime = getLastTriggerTime() + period;
     if (System.currentTimeMillis() >= nextTime) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * buff是否到期
+   *
+   * @return
+   */
+  public boolean isEnd() {
+    if (endTime <= System.currentTimeMillis()) {
       return true;
     }
     return false;

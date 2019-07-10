@@ -5,8 +5,6 @@ import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.attribute.AbstractAttributeContainer;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
-import com.example.gamedemo.server.game.buff.command.RemoveBuffDelayCommand;
-import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.BuffContainer;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
@@ -115,35 +113,6 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
     return defenseValue;
   }
 
-  /**
-   * 新增buff
-   *
-   * @param buff
-   */
-  public void addBuff(Buff buff) {
-    logger.info("[{}][{}]新增buff[{}]", getSceneObjectType(), getId(), buff.getBuffId());
-    buffContainer.putBuff(buff);
-    BuffResource buffResource =
-        SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
-    // 添加移除任务
-    SpringContext.getAccountExecutorService()
-        .submit(
-            RemoveBuffDelayCommand.valueOf(
-                this.getSceneId(),
-                buffResource.getDuration(),
-                this.getBuffContainer(),
-                buff.getBuffId()));
-  }
-
-  /**
-   * 移除buff
-   *
-   * @param buffId
-   */
-  public void removeBuff(int buffId) {
-    buffContainer.removeBuff(buffId);
-  }
-
   /** 执行buff */
   public void executeBuff() {
     BuffContainer<T> buffContainer = getBuffContainer();
@@ -152,24 +121,15 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
       Buff buff = entry.getValue();
       BuffResource buffResource =
           SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
-      // 加条件
+      // buff是否已经结束，结束则移除
+      if (buff.isEnd()) {
+        buffContainer.removeBuff(buff.getBuffId());
+        continue;
+      }
       if (buff.canTrigger(buffResource.getPeriod())) {
         buff.setLastTriggerTime(buff.getLastTriggerTime() + buffResource.getPeriod());
         buff.active(this);
       }
-    }
-  }
-
-  /**
-   * 通过buffId数组新增buff
-   *
-   * @param buffArray
-   */
-  public void addBuffsByBuffIdArray(int[] buffArray) {
-    for (int buffId : buffArray) {
-      BuffResource buffResourceById = SpringContext.getBuffService().getBuffResourceById(buffId);
-      Buff buff = BuffTypeEnum.createBuff(buffResourceById.getBuffType(), buffId);
-      addBuff(buff);
     }
   }
 }

@@ -39,7 +39,7 @@ public enum BuffTypeEnum implements AttributeModelId {
     this.buffClazz = buffClazz;
   }
 
-  public static Buff createBuff(int buffType, int buffId) {
+  public static Buff createBuff(int buffType, int buffId, long endTime) {
     Buff buff = null;
     for (BuffTypeEnum buffTypeEnum : BuffTypeEnum.values()) {
       if (buffTypeEnum.getBuffType() == buffType) {
@@ -47,6 +47,7 @@ public enum BuffTypeEnum implements AttributeModelId {
           buff = buffTypeEnum.getBuffClazz().newInstance();
           buff.setBuffId(buffId);
           buff.setLastTriggerTime(System.currentTimeMillis());
+          buff.setEndTime(endTime);
         } catch (InstantiationException e) {
           e.printStackTrace();
         } catch (IllegalAccessException e) {

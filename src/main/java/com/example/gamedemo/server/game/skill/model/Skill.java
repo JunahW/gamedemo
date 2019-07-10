@@ -81,7 +81,8 @@ public abstract class Skill {
       if (buffArray == null) {
         break;
       }
-      target.addBuffsByBuffIdArray(buffArray);
+      target.getBuffContainer().addBuffsByBuffIdArray(buffArray);
+      // target.addBuffsByBuffIdArray(buffArray);
     }
   }
 }
