@@ -135,15 +135,6 @@ public class Scene {
     sceneObjectMap.remove(id);
   }
 
-  /* public void statSceneTimer() {
-  SpringContext.getSceneExecutorService()
-      .submit(SceneBuffRateCommand.valueOf(sceneResourceId, 1000, 100));
-  */
-  /* SceneExecutor.addScheduleTask(·
-  sceneResourceId, 1000, 200, Long.MAX_VALUE, SceneBuffRateCommand.valueOf(sceneResourceId));*/
-  /*
-  }*/
-
   /**
    * 获取指定类型的场景对象
    *

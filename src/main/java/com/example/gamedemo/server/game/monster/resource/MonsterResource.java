@@ -29,6 +29,10 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "status")
   private int status;
 
+  /** 数量 */
+  @ExcelColumn(columnName = "quantity")
+  private int quantity;
+
   /** 所在的位置x值 */
   @ExcelColumn(columnName = "x")
   private int x;
@@ -110,6 +114,14 @@ public class MonsterResource implements ResourceInterface {
 
   public void setStatus(int status) {
     this.status = status;
+  }
+
+  public int getQuantity() {
+    return quantity;
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 
   public int getX() {

@@ -4,10 +4,11 @@ import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -43,6 +44,12 @@ public class MapResource implements Serializable, ResourceInterface {
   /** 地形id */
   @ExcelColumn(columnName = "landformId")
   private int landformId;
+
+  /** 场景类型 */
+  @ExcelColumn(columnName = "sceneType")
+  private int sceneType;
+
+  private SceneTypeEnum sceneTypeEnum;
 
   public MapResource() {}
 
@@ -111,6 +118,14 @@ public class MapResource implements Serializable, ResourceInterface {
     this.landformId = landformId;
   }
 
+  public SceneTypeEnum getSceneTypeEnum() {
+    return sceneTypeEnum;
+  }
+
+  public void setSceneTypeEnum(SceneTypeEnum sceneTypeEnum) {
+    this.sceneTypeEnum = sceneTypeEnum;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -136,33 +151,14 @@ public class MapResource implements Serializable, ResourceInterface {
 
   @Override
   public void postInit() {
-    String[] neighborSplit = neighbors.split(SystemConstant.SPLIT_TOKEN_COMMA);
-    int[] neighborTmp = new int[neighborSplit.length];
-    for (int i = 0; i < neighborSplit.length; i++) {
-      neighborTmp[i] = Integer.parseInt(neighborSplit[i]);
+    if (!StringUtils.isEmpty(neighbors)) {
+      String[] neighborSplit = neighbors.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] neighborTmp = new int[neighborSplit.length];
+      for (int i = 0; i < neighborSplit.length; i++) {
+        neighborTmp[i] = Integer.parseInt(neighborSplit[i]);
+      }
+      neighborArray = neighborTmp;
     }
-    neighborArray = neighborTmp;
-  }
-
-  @Override
-  public String toString() {
-    return "MapResource{"
-        + "mapId="
-        + mapId
-        + ", mapName='"
-        + mapName
-        + '\''
-        + ", neighbors='"
-        + neighbors
-        + '\''
-        + ", neighborArray="
-        + Arrays.toString(neighborArray)
-        + ", x="
-        + x
-        + ", y="
-        + y
-        + ", landformId="
-        + landformId
-        + '}';
+    sceneTypeEnum = SceneTypeEnum.getSceneTypeEnumBySceneType(sceneType);
   }
 }

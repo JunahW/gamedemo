@@ -9,6 +9,7 @@ import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.npc.model.Npc;
 import com.example.gamedemo.server.game.npc.resource.NpcResource;
+import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
@@ -136,6 +137,9 @@ public class SceneManager {
       if (mapResource == null) {
         continue;
       }
+      if (!mapResource.getSceneTypeEnum().equals(SceneTypeEnum.COMMON_SCENE)) {
+        continue;
+      }
       Scene scene = Scene.valueOf(mapResource.getMapId());
       // 初始化npc
       Map<Integer, NpcResource> npcResourceMap = mapNpcMap.get(mapResource.getMapId());
@@ -152,18 +156,21 @@ public class SceneManager {
       if (monsterResourceMap != null) {
         for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
           MonsterResource value = entry.getValue();
-          Monster monster = Monster.valueOf(value.getMonsterId());
+          // 生成多个怪物
+          for (int i = 0; i < value.getQuantity(); i++) {
+            Monster monster = Monster.valueOf(value.getMonsterId());
 
-          List<Attribute> attributeList = value.getAttributeList();
-          MonsterAttributeContainer attributeContainer = monster.getAttributeContainer();
-          attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
-          monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
-          monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
-          monster.setX(value.getX());
-          monster.setY(value.getY());
-          monster.setSceneId(scene.getSceneResourceId());
+            List<Attribute> attributeList = value.getAttributeList();
+            MonsterAttributeContainer attributeContainer = monster.getAttributeContainer();
+            attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
+            monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
+            monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
+            monster.setX(value.getX());
+            monster.setY(value.getY());
+            monster.setSceneId(scene.getSceneResourceId());
 
-          scene.enterScene(monster);
+            scene.enterScene(monster);
+          }
         }
       }
       sceneMap.put(scene.getSceneResourceId(), scene);

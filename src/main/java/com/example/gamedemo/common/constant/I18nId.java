@@ -84,6 +84,9 @@ public interface I18nId {
   /** 场景位置不可走 */
   int SCENE_OBSTACLE = 60003;
 
+  /** 场景不存在 */
+  int SCENE_RESOURCE_NO_EXIST = 60004;
+
   /** ==========================技能相关=========================* */
 
   /** 技能还未学习 */
