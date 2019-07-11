@@ -53,7 +53,7 @@ public class MonsterServiceImpl implements MonsterService {
   @Override
   public void removeMonster(int sceneId, long guid) {
     Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
-    scene.removeSceneObject(guid);
+    scene.leaveScene(guid);
   }
 
   @Override

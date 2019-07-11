@@ -40,6 +40,7 @@ public enum AreaTypeEnum {
                   creatureObject.getY(),
                   targetCreature.getX(),
                   targetCreature.getY());
+          // 判断距离
           if (distance <= radius) {
             creatureObjectList.add(targetCreature);
           }

@@ -36,6 +36,10 @@ public class BuffResource implements ResourceInterface {
   @ExcelColumn(columnName = "duration")
   private int duration;
 
+  /** 合并次数 */
+  @ExcelColumn(columnName = "mergeTime")
+  private int mergeTime;
+
   /** 执行周期 */
   @ExcelColumn(columnName = "period")
   private int period;
@@ -88,6 +92,14 @@ public class BuffResource implements ResourceInterface {
 
   public void setDuration(int duration) {
     this.duration = duration;
+  }
+
+  public int getMergeTime() {
+    return mergeTime;
+  }
+
+  public void setMergeTime(int mergeTime) {
+    this.mergeTime = mergeTime;
   }
 
   public int getPeriod() {

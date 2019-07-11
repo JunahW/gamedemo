@@ -12,7 +12,6 @@ import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.command.ChangeSceneCommand;
 import com.example.gamedemo.server.game.scene.command.EnterSceneCommand;
-import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import com.example.gamedemo.server.game.scene.command.SceneMonsterRebornDelayCommand;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.LandformResource;
@@ -23,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -135,7 +135,6 @@ public class SceneServiceImpl implements SceneService {
     LandformResource landformResource =
         sceneManager.getLandformResourceById(mapResource.getLandformId());
     int[][] sceneMap = landformResource.getMapArray();
-    // TODO 移动位置
 
     if (landformResource.getWidth() - 1 < x || landformResource.getHeight() - 1 < y) {
       logger.info("请求位置参数不合法");
@@ -210,25 +209,19 @@ public class SceneServiceImpl implements SceneService {
         .submit(
             SceneMonsterRebornDelayCommand.valueOf(
                 sceneId, GameConstant.MONSTER_REBORN_PERIOD, monsterResourceId));
-    /* SceneExecutor.addDelayTask(
-    sceneId,
-    20000,
-    new Runnable() {
-      @Override
-      public void run() {
-        logger.info("[{}]重新生成怪物开始", sceneId);
-        SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
-        logger.info("[{}]重新生成怪物完成", sceneId);
-      }
-    });*/
   }
 
   @Override
-  public void startSceneTimer() {
+  public void sceneStart() {
     List<Scene> sceneList = getSceneList();
     for (Scene scene : sceneList) {
-      SpringContext.getSceneExecutorService()
-          .submit(SceneBuffRateCommand.valueOf(scene.getSceneResourceId(), 1000, 100));
+      scene.start();
+      scene.initMonster();
     }
+  }
+
+  @Override
+  public Map<Integer, MonsterResource> getMonsterResourceMapBySceneId(int sceneId) {
+    return sceneManager.getMonsterResourceMapBySceneId(sceneId);
   }
 }

@@ -1,11 +1,13 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author: wengj
@@ -115,5 +117,13 @@ public interface SceneService {
       CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId);
 
   /** 开启场景线程 */
-  void startSceneTimer();
+  void sceneStart();
+
+  /**
+   * 获取某场景下的怪物资源集合
+   *
+   * @param sceneId
+   * @return
+   */
+  Map<Integer, MonsterResource> getMonsterResourceMapBySceneId(int sceneId);
 }

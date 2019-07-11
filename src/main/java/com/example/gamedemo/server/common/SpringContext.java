@@ -3,6 +3,7 @@ package com.example.gamedemo.server.common;
 import com.example.gamedemo.common.executer.account.IAccountExecutorService;
 import com.example.gamedemo.common.executer.scene.ISceneExecutorService;
 import com.example.gamedemo.common.executer.schedule.ScheduleService;
+import com.example.gamedemo.server.common.service.GlobalService;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import com.example.gamedemo.server.game.buff.service.BuffService;
@@ -41,6 +42,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private ISceneExecutorService sceneExecutorService;
   @Autowired private IAccountExecutorService accountExecutorService;
   @Autowired private ScheduleService scheduleService;
+  @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
     return instance.itemService;
@@ -88,6 +90,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static ScheduleService getScheduleService() {
     return instance.scheduleService;
+  }
+
+  public static GlobalService getGlobalService() {
+    return instance.globalService;
   }
 
   @PostConstruct

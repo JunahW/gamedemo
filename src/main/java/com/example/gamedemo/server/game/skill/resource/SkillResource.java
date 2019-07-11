@@ -45,12 +45,31 @@ public class SkillResource implements ResourceInterface {
   /** 消耗物集合 */
   private List<Consume> consumeList;
 
+  @ExcelColumn(columnName = "beforeBuffs")
+  private String beforeBuffs;
+
   /** 字符串buff用","隔开 */
-  @ExcelColumn(columnName = "buffs")
-  private String buffs;
+  @ExcelColumn(columnName = "afterBuffs")
+  private String afterBuffs;
+
+  @ExcelColumn(columnName = "casterBeforeBuffs")
+  private String casterBeforeBuffs;
+
+  /** 字符串buff用","隔开 */
+  @ExcelColumn(columnName = "casterAfterBuffs")
+  private String casterAfterBuffs;
 
   /** buff数组 */
-  private int[] buffArray;
+  private int[] afterBuffArray;
+
+  /** buff数组 */
+  private int[] beforeBuffArray;
+
+  /** buff数组 */
+  private int[] casterAfterBuffArray;
+
+  /** buff数组 */
+  private int[] casterBeforeBuffArray;
 
   /** 技能类型 */
   @ExcelColumn(columnName = "skillType")
@@ -102,14 +121,42 @@ public class SkillResource implements ResourceInterface {
   @Override
   public void postInit() { // 将json字符串装换为对象
     setConsumeList(JsonUtils.getListByString(getConsumes(), new TypeReference<List<Consume>>() {}));
-    if (buffs != null) {
-      String[] buffSplit = buffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+    if (afterBuffs != null) {
+      String[] buffSplit = afterBuffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
       int[] ints = new int[buffSplit.length];
       for (int i = 0; i < buffSplit.length; i++) {
         ints[i] = Integer.parseInt(buffSplit[i]);
       }
-      setBuffArray(ints);
+      setAfterBuffArray(ints);
     }
+
+    if (beforeBuffs != null) {
+      String[] buffSplit = beforeBuffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] ints = new int[buffSplit.length];
+      for (int i = 0; i < buffSplit.length; i++) {
+        ints[i] = Integer.parseInt(buffSplit[i]);
+      }
+      setBeforeBuffArray(ints);
+    }
+
+    if (casterAfterBuffs != null) {
+      String[] buffSplit = casterAfterBuffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] ints = new int[buffSplit.length];
+      for (int i = 0; i < buffSplit.length; i++) {
+        ints[i] = Integer.parseInt(buffSplit[i]);
+      }
+      setCasterAfterBuffArray(ints);
+    }
+
+    if (casterBeforeBuffs != null) {
+      String[] buffSplit = casterBeforeBuffs.split(SystemConstant.SPLIT_TOKEN_COMMA);
+      int[] ints = new int[buffSplit.length];
+      for (int i = 0; i < buffSplit.length; i++) {
+        ints[i] = Integer.parseInt(buffSplit[i]);
+      }
+      setCasterBeforeBuffArray(ints);
+    }
+
     if (effect != null) {
       setEffectList(
           JsonUtils.getListByString(getEffect(), new TypeReference<List<Attribute>>() {}));
@@ -164,20 +211,20 @@ public class SkillResource implements ResourceInterface {
     this.consumeList = consumeList;
   }
 
-  public String getBuffs() {
-    return buffs;
+  public String getAfterBuffs() {
+    return afterBuffs;
   }
 
-  public void setBuffs(String buffs) {
-    this.buffs = buffs;
+  public void setAfterBuffs(String afterBuffs) {
+    this.afterBuffs = afterBuffs;
   }
 
-  public int[] getBuffArray() {
-    return buffArray;
+  public int[] getAfterBuffArray() {
+    return afterBuffArray;
   }
 
-  public void setBuffArray(int[] buffArray) {
-    this.buffArray = buffArray;
+  public void setAfterBuffArray(int[] afterBuffArray) {
+    this.afterBuffArray = afterBuffArray;
   }
 
   public int getSkillType() {
@@ -278,5 +325,53 @@ public class SkillResource implements ResourceInterface {
 
   public void setEffectList(List<Attribute> effectList) {
     this.effectList = effectList;
+  }
+
+  public String getBeforeBuffs() {
+    return beforeBuffs;
+  }
+
+  public void setBeforeBuffs(String beforeBuffs) {
+    this.beforeBuffs = beforeBuffs;
+  }
+
+  public int[] getBeforeBuffArray() {
+    return beforeBuffArray;
+  }
+
+  public void setBeforeBuffArray(int[] beforeBuffArray) {
+    this.beforeBuffArray = beforeBuffArray;
+  }
+
+  public String getCasterBeforeBuffs() {
+    return casterBeforeBuffs;
+  }
+
+  public void setCasterBeforeBuffs(String casterBeforeBuffs) {
+    this.casterBeforeBuffs = casterBeforeBuffs;
+  }
+
+  public String getCasterAfterBuffs() {
+    return casterAfterBuffs;
+  }
+
+  public void setCasterAfterBuffs(String casterAfterBuffs) {
+    this.casterAfterBuffs = casterAfterBuffs;
+  }
+
+  public int[] getCasterAfterBuffArray() {
+    return casterAfterBuffArray;
+  }
+
+  public void setCasterAfterBuffArray(int[] casterAfterBuffArray) {
+    this.casterAfterBuffArray = casterAfterBuffArray;
+  }
+
+  public int[] getCasterBeforeBuffArray() {
+    return casterBeforeBuffArray;
+  }
+
+  public void setCasterBeforeBuffArray(int[] casterBeforeBuffArray) {
+    this.casterBeforeBuffArray = casterBeforeBuffArray;
   }
 }

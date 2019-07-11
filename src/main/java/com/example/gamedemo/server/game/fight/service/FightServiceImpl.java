@@ -51,9 +51,28 @@ public class FightServiceImpl implements FightService {
       RequestException.throwException(I18nId.MP_IS_NO_ENOUGH);
     }
 
+    CreatureObject target = getTarget(targetId, player, skillResource);
+
+    // 获取技能的目标集合
+    Set<CreatureObject> targetSet = getTargetSet(player, target, skillResource);
+
+    // 技能使用
+    skill.useSkillProgress(player, targetSet);
+
+    return true;
+  }
+
+  /**
+   * 获取主目标对象
+   *
+   * @param targetId
+   * @param player
+   * @param skillResource
+   * @return
+   */
+  private CreatureObject getTarget(Long targetId, Player player, SkillResource skillResource) {
     SkillAreaTypeEnum skillAreaTypeEnum =
         SkillAreaTypeEnum.getAreaTypeEnumByAreaType(skillResource.getAreaType());
-
     // 获取主目标
     if (targetId == null) {
       if (skillResource.getContainSelf()) {
@@ -69,27 +88,35 @@ public class FightServiceImpl implements FightService {
         }
       }
     }
-
     Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
     // 主目标
     CreatureObject target = scene.getCreatureObjectById(targetId);
-    AreaTypeEnum areaTypeEnum = AreaTypeEnum.getAreaTypeEnumByAreaType(skillResource.getAreaType());
-    // 获取技能的目标集合
-    Set<CreatureObject> targetCreatureObjectList;
+    return target;
+  }
 
+  /**
+   * 获取目标集合
+   *
+   * @param player
+   * @param target
+   * @param skillResource
+   * @return
+   */
+  private Set<CreatureObject> getTargetSet(
+      Player player, CreatureObject target, SkillResource skillResource) {
+    // 获取技能的目标集合
+    Set<CreatureObject> targetSet;
+
+    AreaTypeEnum areaTypeEnum = AreaTypeEnum.getAreaTypeEnumByAreaType(skillResource.getAreaType());
     // 技能释放中心
     if (skillResource.getCenterType() == FightConstant.CENTER_TYPE_SELF) {
-      targetCreatureObjectList =
+      targetSet =
           areaTypeEnum.getAreaCreatureObjectList(player, player, skillResource.getAreaParam());
     } else {
-      targetCreatureObjectList =
+      targetSet =
           areaTypeEnum.getAreaCreatureObjectList(player, target, skillResource.getAreaParam());
     }
-    targetCreatureObjectList.add(target);
-
-    // 技能使用
-    skill.useSkillProgress(player, targetCreatureObjectList);
-
-    return true;
+    targetSet.add(target);
+    return targetSet;
   }
 }

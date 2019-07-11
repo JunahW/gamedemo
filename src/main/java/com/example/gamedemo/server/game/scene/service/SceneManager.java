@@ -1,11 +1,6 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.resource.ResourceManager;
-import com.example.gamedemo.server.game.attribute.Attribute;
-import com.example.gamedemo.server.game.attribute.MonsterAttributeContainer;
-import com.example.gamedemo.server.game.attribute.constant.AttributeModelIdEnum;
-import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
-import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.npc.model.Npc;
 import com.example.gamedemo.server.game.npc.resource.NpcResource;
@@ -151,28 +146,6 @@ public class SceneManager {
           scene.enterScene(npc);
         }
       }
-      // 初始化怪物
-      Map<Integer, MonsterResource> monsterResourceMap = mapMonsterMap.get(mapResource.getMapId());
-      if (monsterResourceMap != null) {
-        for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
-          MonsterResource value = entry.getValue();
-          // 生成多个怪物
-          for (int i = 0; i < value.getQuantity(); i++) {
-            Monster monster = Monster.valueOf(value.getMonsterId());
-
-            List<Attribute> attributeList = value.getAttributeList();
-            MonsterAttributeContainer attributeContainer = monster.getAttributeContainer();
-            attributeContainer.putAndComputeAttributes(AttributeModelIdEnum.BASE, attributeList);
-            monster.setHp(attributeContainer.getAttributeValue(AttributeTypeEnum.HP));
-            monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
-            monster.setX(value.getX());
-            monster.setY(value.getY());
-            monster.setSceneId(scene.getSceneResourceId());
-
-            scene.enterScene(monster);
-          }
-        }
-      }
       sceneMap.put(scene.getSceneResourceId(), scene);
     }
   }
@@ -195,5 +168,15 @@ public class SceneManager {
       }
     }
     this.mapMonsterMap = mapMonsterResourceMap;
+  }
+
+  /**
+   * 获取场景新的怪物配置资源
+   *
+   * @param sceneId
+   * @return
+   */
+  public Map<Integer, MonsterResource> getMonsterResourceMapBySceneId(int sceneId) {
+    return mapMonsterMap.get(sceneId);
   }
 }

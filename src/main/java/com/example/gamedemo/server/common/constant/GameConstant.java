@@ -18,4 +18,10 @@ public interface GameConstant {
 
   /** 怪物重生事件 */
   long MONSTER_REBORN_PERIOD = 20000;
+
+  /** 场景定时器延时 */
+  long SCENE_DELAY = 1000;
+
+  /** 场景定时器周期 */
+  long SCENE_PERIOD = 100;
 }

@@ -12,11 +12,11 @@ import java.util.List;
 
 /**
  * @author wengj
- * @description：治疗buff
+ * @description：中毒buff
  * @date 2019/7/4
  */
-public class CureBuff extends Buff {
-  private static final Logger logger = LoggerFactory.getLogger(CureBuff.class);
+public class PoisonBuff extends Buff {
+  private static final Logger logger = LoggerFactory.getLogger(PoisonBuff.class);
 
   @Override
   public void active(CreatureObject owner) {
@@ -34,18 +34,11 @@ public class CureBuff extends Buff {
         logger.info(
             "[{}][{}]血量[{}]", owner.getSceneObjectType(), owner.getId(), hp - owner.getHp());
         owner.setHp(hp);
-        if (owner.getHp() <= 0) {
-          // 对象死亡
-          // EventBusManager.submitEvent();
-        }
       } else if (attribute.getType().equals(AttributeTypeEnum.MP)) {
         long mp = attribute.getValue() + owner.getMp();
         Long maxMp = owner.getAttributeContainer().getAttributeValue(AttributeTypeEnum.MP);
         if (maxMp < mp) {
           mp = maxMp;
-        }
-        if (mp < 0) {
-          mp = 0;
         }
         logger.info(
             "[{}][{}]魔法量[{}]", owner.getSceneObjectType(), owner.getId(), mp - owner.getMp());

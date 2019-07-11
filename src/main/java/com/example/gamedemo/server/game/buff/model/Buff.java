@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.buff.model;
 
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,14 +14,19 @@ import org.slf4j.LoggerFactory;
 public abstract class Buff {
 
   private static final Logger logger = LoggerFactory.getLogger(Buff.class);
+  /** 已经合并的次数 */
+  protected int haveMergeTime = 0;
+  /** buff施加方 */
+  private CreatureObject caster;
   /** buffId; */
   private int buffId;
-
   /** 最近触发时间 */
   private long lastTriggerTime;
-
   /** 失效时间 */
   private long endTime;
+
+  /** 持续时间 */
+  private long duration;
 
   public int getBuffId() {
     return buffId;
@@ -43,6 +50,30 @@ public abstract class Buff {
 
   public void setEndTime(long endTime) {
     this.endTime = endTime;
+  }
+
+  public int getHaveMergeTime() {
+    return haveMergeTime;
+  }
+
+  public void setHaveMergeTime(int haveMergeTime) {
+    this.haveMergeTime = haveMergeTime;
+  }
+
+  public CreatureObject getCaster() {
+    return caster;
+  }
+
+  public void setCaster(CreatureObject caster) {
+    this.caster = caster;
+  }
+
+  public long getDuration() {
+    return duration;
+  }
+
+  public void setDuration(long duration) {
+    this.duration = duration;
   }
 
   /**
@@ -97,5 +128,37 @@ public abstract class Buff {
       return true;
     }
     return false;
+  }
+
+  /**
+   * 合并buff可合并的buff类型需要重写该方法
+   *
+   * @param buff
+   */
+  public void merge(Buff buff) {
+    throw new UnsupportedOperationException();
+  }
+
+  /**
+   * 判断buff能否合并
+   *
+   * @return
+   */
+  public boolean canMerge() {
+    BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(buffId);
+    if (buffResource.getMergeTime() == 0) {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * 合并是否达到上限
+   *
+   * @return
+   */
+  public boolean isMergeFull() {
+    BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(buffId);
+    return canMerge() && haveMergeTime + 1 >= buffResource.getMergeTime();
   }
 }

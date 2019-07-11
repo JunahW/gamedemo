@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.buff.constant;
 
 import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.model.AttributeBuff;
 import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.CureBuff;
@@ -18,7 +19,7 @@ public enum BuffTypeEnum implements AttributeModelId {
   ATTACK_BUFF(1, CureBuff.class),
 
   /** 周期buff */
-  PERIOD_BUFF(2, CureBuff.class),
+  CURE_BUFF(2, CureBuff.class),
 
   /** 修改属性的buff */
   ATTRIBUTE_BUFF(3, AttributeBuff.class) {
@@ -39,25 +40,6 @@ public enum BuffTypeEnum implements AttributeModelId {
     this.buffClazz = buffClazz;
   }
 
-  public static Buff createBuff(int buffType, int buffId, long endTime) {
-    Buff buff = null;
-    for (BuffTypeEnum buffTypeEnum : BuffTypeEnum.values()) {
-      if (buffTypeEnum.getBuffType() == buffType) {
-        try {
-          buff = buffTypeEnum.getBuffClazz().newInstance();
-          buff.setBuffId(buffId);
-          buff.setLastTriggerTime(System.currentTimeMillis());
-          buff.setEndTime(endTime);
-        } catch (InstantiationException e) {
-          e.printStackTrace();
-        } catch (IllegalAccessException e) {
-          e.printStackTrace();
-        }
-      }
-    }
-    return buff;
-  }
-
   /**
    * 通过buffType获取BuffTypeEnum
    *
@@ -71,6 +53,23 @@ public enum BuffTypeEnum implements AttributeModelId {
       }
     }
     return null;
+  }
+
+  public Buff createBuff(CreatureObject caster, int buffId, long endTime, long duration) {
+    Buff buff = null;
+    try {
+      buff = this.getBuffClazz().newInstance();
+      buff.setCaster(caster);
+      buff.setBuffId(buffId);
+      buff.setLastTriggerTime(System.currentTimeMillis());
+      buff.setEndTime(endTime);
+      buff.setDuration(duration);
+    } catch (InstantiationException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return buff;
   }
 
   public int getBuffType() {

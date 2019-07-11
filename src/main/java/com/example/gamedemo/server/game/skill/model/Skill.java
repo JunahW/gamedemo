@@ -46,9 +46,10 @@ public abstract class Skill {
   public abstract void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet);
 
   public void useSkillProgress(Player attacker, Set<CreatureObject> targetSet) {
-    beforeUseSkillProgress(attacker, targetSet);
+    // TODO 中间变量传递
+    beforeUseSkill(attacker, targetSet);
     useSkill(attacker, targetSet);
-    addBuff2Target(targetSet);
+    afterUseSkill(attacker, targetSet);
   }
 
   /**
@@ -57,7 +58,7 @@ public abstract class Skill {
    * @param attacker
    * @param targetSet
    */
-  private void beforeUseSkillProgress(Player attacker, Set<CreatureObject> targetSet) {
+  private void beforeUseSkill(Player attacker, Set<CreatureObject> targetSet) {
     SkillResource skillResource =
         SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
     // 设置cd
@@ -66,23 +67,51 @@ public abstract class Skill {
         .setSkillCd(skillId, System.currentTimeMillis() + skillResource.getCd());
     // 减少mp
     attacker.setMp(attacker.getMp() - skillResource.getMp());
+    int[] casterBeforeBuffArray = skillResource.getCasterBeforeBuffArray();
+    addBuff2Target(attacker, attacker, casterBeforeBuffArray);
+    addBuff2TargetSet(attacker, targetSet, skillResource.getBeforeBuffArray());
+  }
+
+  /**
+   * 技能使用后
+   *
+   * @param attacker
+   * @param targetSet
+   */
+  public void afterUseSkill(Player attacker, Set<CreatureObject> targetSet) {
+    SkillResource skillResource =
+        SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
+    int[] casterAfterBuffArray = skillResource.getCasterAfterBuffArray();
+    addBuff2Target(attacker, attacker, casterAfterBuffArray);
+    addBuff2TargetSet(attacker, targetSet, skillResource.getAfterBuffArray());
   }
 
   /**
    * 为目标物添加buff
    *
+   * @param caster
    * @param targetSet
+   * @param buffArray
    */
-  private void addBuff2Target(Set<CreatureObject> targetSet) {
-    SkillResource skillResource =
-        SpringContext.getSkillService().getSkillResourceById(this.getSkillId());
-    int[] buffArray = skillResource.getBuffArray();
-    for (CreatureObject target : targetSet) {
-      if (buffArray == null) {
-        break;
+  private void addBuff2TargetSet(
+      CreatureObject caster, Set<CreatureObject> targetSet, int[] buffArray) {
+    if (buffArray != null) {
+      for (CreatureObject owner : targetSet) {
+        SpringContext.getBuffService().addBuffsByBuffIdArray(caster, owner, buffArray);
       }
-      target.getBuffContainer().addBuffsByBuffIdArray(buffArray);
-      // target.addBuffsByBuffIdArray(buffArray);
+    }
+  }
+
+  /**
+   * 为目标物添加buff
+   *
+   * @param caster
+   * @param target
+   * @param buffArray
+   */
+  private void addBuff2Target(CreatureObject caster, CreatureObject target, int[] buffArray) {
+    if (buffArray != null) {
+      SpringContext.getBuffService().addBuffsByBuffIdArray(caster, target, buffArray);
     }
   }
 }

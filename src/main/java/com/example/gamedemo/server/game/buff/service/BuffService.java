@@ -24,11 +24,12 @@ public interface BuffService {
   /**
    * 添加buff
    *
-   * @param creature
-   * @param buff
+   * @param caster
+   * @param owner
+   * @param buffId
    * @return
    */
-  boolean addBuff(CreatureObject creature, Buff buff);
+  Buff addBuff(CreatureObject caster, CreatureObject owner, int buffId);
 
   /**
    * 获取buff的配置资源
@@ -37,4 +38,10 @@ public interface BuffService {
    * @return
    */
   BuffResource getBuffResourceById(Integer id);
+
+  /**
+   * @param caster
+   * @param buffArray
+   */
+  void addBuffsByBuffIdArray(CreatureObject caster, CreatureObject owner, int[] buffArray);
 }

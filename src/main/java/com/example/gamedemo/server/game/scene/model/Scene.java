@@ -1,8 +1,12 @@
 package com.example.gamedemo.server.game.scene.model;
 
+import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.monster.resource.MonsterResource;
+import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -164,5 +168,30 @@ public class Scene {
       return (CreatureObject) sceneObject;
     }
     return null;
+  }
+
+  /** 场景开始 */
+  public void start() {
+    SpringContext.getSceneExecutorService()
+        .submit(
+            SceneBuffRateCommand.valueOf(
+                sceneResourceId, GameConstant.SCENE_DELAY, GameConstant.SCENE_PERIOD));
+  }
+
+  /** 初始化怪物 */
+  public void initMonster() {
+    Map<Integer, MonsterResource> monsterResourceMap =
+        SpringContext.getSceneService().getMonsterResourceMapBySceneId(sceneResourceId);
+    // 初始化怪物
+    if (monsterResourceMap != null) {
+      for (Map.Entry<Integer, MonsterResource> entry : monsterResourceMap.entrySet()) {
+        MonsterResource monsterResource = entry.getValue();
+        // 生成多个怪物
+        for (int i = 0; i < monsterResource.getQuantity(); i++) {
+          SpringContext.getMonsterService()
+              .createMonster(sceneResourceId, monsterResource.getMonsterId());
+        }
+      }
+    }
   }
 }

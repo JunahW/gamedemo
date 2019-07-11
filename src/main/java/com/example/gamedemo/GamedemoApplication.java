@@ -18,7 +18,11 @@ public class GamedemoApplication {
   public static void main(String[] args) {
 
     SpringApplication.run(GamedemoApplication.class, args);
-    SpringContext.getSceneService().startSceneTimer();
+    try {
+      SpringContext.getGlobalService().onStart();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     new MyServer().start(args);
   }
 }

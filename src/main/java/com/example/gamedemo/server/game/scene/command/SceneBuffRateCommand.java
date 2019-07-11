@@ -42,7 +42,7 @@ public class SceneBuffRateCommand extends AbstractSceneRateCommand {
       SceneObject sceneObject = entry.getValue();
       if (sceneObject instanceof CreatureObject) {
         CreatureObject creatureObject = (CreatureObject) sceneObject;
-        creatureObject.executeBuff();
+        creatureObject.getBuffContainer().executeBuff();
       }
     }
   }

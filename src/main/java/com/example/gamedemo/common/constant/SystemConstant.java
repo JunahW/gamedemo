@@ -23,5 +23,5 @@ public interface SystemConstant {
   String SPLIT_TOKEN_COMMA = ",";
 
   /** 技能槽的位置数 */
-  int SKILL_SLOT_SIZE = 4;
+  int SKILL_SLOT_SIZE = 6;
 }
