@@ -88,7 +88,7 @@ public class FightServiceImpl implements FightService {
         }
       }
     }
-    Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
+    Scene scene = SpringContext.getSceneService().getSceneById(player, player.getSceneId());
     // 主目标
     CreatureObject target = scene.getCreatureObjectById(targetId);
     return target;

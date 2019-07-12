@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.dungeon.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.common.executer.Command;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
@@ -9,7 +10,10 @@ import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * @author: wengj
@@ -20,20 +24,35 @@ import org.springframework.stereotype.Service;
 public class DungeonServiceImpl implements DungeonService {
   private static final Logger logger = LoggerFactory.getLogger(DungeonServiceImpl.class);
 
+  @Autowired private DungeonManager dungeonManager;
+
   @Override
   public void enterDungeon(Player player, int sceneId) {
     // 创建副本
     MapResource sceneResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
-
     if (sceneResource == null
         || !sceneResource.getSceneTypeEnum().equals(SceneTypeEnum.DUNGEON_SCENE)) {
       logger.info("该场景配置资源不存在");
       RequestException.throwException(I18nId.SCENE_RESOURCE_NO_EXIST);
     }
-
     Scene scene = Scene.valueOf(sceneId);
+
+    dungeonManager.putScene(player.getId(), scene);
   }
 
   @Override
-  public void leaveDungeon(Player player) {}
+  public void leaveDungeon(Player player) {
+    Scene scene = SpringContext.getSceneService().getSceneById(player, player.getSceneId());
+
+    Map<Class<? extends Command>, Command> commandMap = scene.getCommandMap();
+    for (Command command : commandMap.values()) {
+      command.cancel();
+    }
+    dungeonManager.removeScene(player.getId());
+  }
+
+  @Override
+  public Scene getDungeonSceneByPlayerId(Long playerId) {
+    return dungeonManager.getSceneByPlayerId(playerId);
+  }
 }

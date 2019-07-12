@@ -1,5 +1,7 @@
 package com.example.gamedemo.common.executer.scene.impl;
 
+import com.example.gamedemo.server.game.scene.model.Scene;
+
 /**
  * @author wengj
  * @description：场景周期指令
@@ -17,8 +19,19 @@ public abstract class AbstractSceneRateCommand extends AbstractSceneCommand {
     this.period = period;
   }
 
+  public AbstractSceneRateCommand(Scene scene, long period) {
+    super(scene.getSceneResourceId());
+    this.period = period;
+  }
+
   public AbstractSceneRateCommand(int sceneId, long delay, long period) {
     super(sceneId);
+    this.delay = delay;
+    this.period = period;
+  }
+
+  public AbstractSceneRateCommand(Scene scene, long delay, long period) {
+    super(scene.getSceneResourceId());
     this.delay = delay;
     this.period = period;
   }

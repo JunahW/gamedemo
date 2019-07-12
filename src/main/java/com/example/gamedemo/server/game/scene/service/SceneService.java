@@ -33,12 +33,13 @@ public interface SceneService {
   boolean gotoScene(Player player, int sceneId);
 
   /**
-   * 通过ID获取场景
+   * 获取场景
    *
+   * @param creature
    * @param sceneId
    * @return
    */
-  Scene getSceneById(int sceneId);
+  Scene getSceneById(CreatureObject creature, int sceneId);
 
   /**
    * 客户端请求切图
@@ -95,10 +96,10 @@ public interface SceneService {
   /**
    * 怪物死亡，创建掉落物
    *
-   * @param sceneId
+   * @param scene
    * @param monsterResourceId
    */
-  void createDropObject(int sceneId, int monsterResourceId);
+  void createDropObject(Scene scene, int monsterResourceId);
 
   /**
    * @param sceneId
@@ -110,12 +111,12 @@ public interface SceneService {
    * 处理怪物死亡事件
    *
    * @param attacker
-   * @param sceneId
+   * @param scene
    * @param monsterId
    * @param monsterResourceId
    */
   void handMonsterDeadEvent(
-      CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId);
+      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId);
 
   /** 开启场景线程 */
   void sceneStart();

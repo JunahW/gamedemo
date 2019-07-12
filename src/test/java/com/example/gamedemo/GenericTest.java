@@ -7,8 +7,9 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Set;
 
 /**
  * @author wengj
@@ -27,14 +28,15 @@ public class GenericTest {
 
   @Test
   public void testHashMap() {
-    Map<Integer, Integer> hashMap = new ConcurrentHashMap<>();
+    Map<Integer, Integer> hashMap = new HashMap<>();
     hashMap.put(1, 1);
     hashMap.put(2, 1);
     hashMap.put(3, 1);
     hashMap.put(4, 1);
     hashMap.put(5, 1);
+    Set<Map.Entry<Integer, Integer>> entries = hashMap.entrySet();
     for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
-      hashMap.put(6, 6);
+      // hashMap.put(6, 6);
       hashMap.remove(5);
     }
   }

@@ -1,5 +1,7 @@
 package com.example.gamedemo.common.executer.scene.impl;
 
+import com.example.gamedemo.server.game.scene.model.Scene;
+
 /**
  * @author wengj
  * @description：场景延时指令
@@ -11,6 +13,11 @@ public abstract class AbstractSceneDelayCommand extends AbstractSceneCommand {
 
   public AbstractSceneDelayCommand(int sceneId, long delay) {
     super(sceneId);
+    this.delay = delay;
+  }
+
+  public AbstractSceneDelayCommand(Scene scene, long delay) {
+    super(scene.getSceneResourceId());
     this.delay = delay;
   }
 

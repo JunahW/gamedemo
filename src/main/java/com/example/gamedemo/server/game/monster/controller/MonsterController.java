@@ -31,8 +31,9 @@ public class MonsterController {
    */
   @HandlerMethod(cmd = "checkMonster")
   public void checkMonsters(TSession session, CM_CheckMonster req) {
+    Player player = session.getPlayer();
     Map<Long, SceneObject> monsters =
-        SpringContext.getMonsterService().getMonsters(req.getSceneId());
+        SpringContext.getMonsterService().getMonsters(player, req.getSceneId());
     SessionManager.sendMessage(session, monsters);
   }
 

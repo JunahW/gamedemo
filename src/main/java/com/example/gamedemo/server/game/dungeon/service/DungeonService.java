@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.dungeon.service;
 
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 
 /**
  * @author: wengj
@@ -22,4 +23,12 @@ public interface DungeonService {
    * @param player
    */
   void leaveDungeon(Player player);
+
+  /**
+   * 获取副本地图
+   *
+   * @param playerId
+   * @return
+   */
+  Scene getDungeonSceneByPlayerId(Long playerId);
 }

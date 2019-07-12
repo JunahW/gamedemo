@@ -4,6 +4,7 @@ import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 
 import java.util.Map;
 
@@ -16,18 +17,19 @@ public interface MonsterService {
   /**
    * 获取怪物集合
    *
+   * @param player
    * @param sceneId
    * @return
    */
-  Map<Long, SceneObject> getMonsters(int sceneId);
+  Map<Long, SceneObject> getMonsters(Player player, int sceneId);
 
   /**
    * 生成怪物
    *
-   * @param sceneId
+   * @param scene
    * @param monsterResourceId
    */
-  void createMonster(int sceneId, int monsterResourceId);
+  void createMonster(Scene scene, int monsterResourceId);
 
   /**
    * 移除场景中的怪物

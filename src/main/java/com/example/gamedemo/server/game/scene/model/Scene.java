@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.scene.model;
 
+import com.example.gamedemo.common.executer.Command;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
@@ -26,6 +27,9 @@ public class Scene {
   /** 场景中的对象 */
   private Map<Long, SceneObject> sceneObjectMap = new HashMap<>();
 
+  /** 场景内的任务 */
+  private Map<Class<? extends Command>, Command> commandMap = new HashMap<>();
+
   public Scene(int sceneResourceId) {
     this.sceneResourceId = sceneResourceId;
   }
@@ -49,6 +53,14 @@ public class Scene {
 
   public void setSceneObjectMap(Map<Long, SceneObject> sceneObjectMap) {
     this.sceneObjectMap = sceneObjectMap;
+  }
+
+  public Map<Class<? extends Command>, Command> getCommandMap() {
+    return commandMap;
+  }
+
+  public void setCommandMap(Map<Class<? extends Command>, Command> commandMap) {
+    this.commandMap = commandMap;
   }
 
   /**
@@ -175,7 +187,7 @@ public class Scene {
     SpringContext.getSceneExecutorService()
         .submit(
             SceneBuffRateCommand.valueOf(
-                sceneResourceId, GameConstant.SCENE_DELAY, GameConstant.SCENE_PERIOD));
+                this, GameConstant.SCENE_DELAY, GameConstant.SCENE_PERIOD));
   }
 
   /** 初始化怪物 */
@@ -188,8 +200,7 @@ public class Scene {
         MonsterResource monsterResource = entry.getValue();
         // 生成多个怪物
         for (int i = 0; i < monsterResource.getQuantity(); i++) {
-          SpringContext.getMonsterService()
-              .createMonster(sceneResourceId, monsterResource.getMonsterId());
+          SpringContext.getMonsterService().createMonster(this, monsterResource.getMonsterId());
         }
       }
     }

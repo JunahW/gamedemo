@@ -48,7 +48,7 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public boolean gotoScene(Player player, int sceneId) {
-    Scene targetScene = getSceneById(sceneId);
+    Scene targetScene = getSceneById(player, sceneId);
     if (targetScene == null) {
       logger.info("[{}]场景不存在", sceneId);
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
@@ -59,8 +59,11 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public Scene getSceneById(int sceneId) {
+  public Scene getSceneById(CreatureObject creature, int sceneId) {
     Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
+    if (scene == null) {
+      scene = SpringContext.getDungeonService().getDungeonSceneByPlayerId(creature.getId());
+    }
     if (scene == null) {
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
     }
@@ -163,14 +166,13 @@ public class SceneServiceImpl implements SceneService {
   public void createMonsters4Scene(int sceneId) {
     Set<Integer> monsterSet = sceneManager.getMonsterSetBySceneId(sceneId);
     for (Integer monsterResourceId : monsterSet) {
-      SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
+      // SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
     }
     logger.info("[{}]场景生成怪物[{}]", sceneId, monsterSet);
   }
 
   @Override
-  public void createDropObject(int sceneId, int monsterResourceId) {
-    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+  public void createDropObject(Scene scene, int monsterResourceId) {
 
     MonsterResource monsterResource =
         SpringContext.getMonsterService().getMonsterResourceById(monsterResourceId);
@@ -180,7 +182,7 @@ public class SceneServiceImpl implements SceneService {
       boolean randomBoolean = RandomUtils.getRandomBoolean(chance);
       if (randomBoolean) {
         DropObject dropObject = DropObject.valueOf(drop.getItemId(), drop.getQuantity());
-        dropObject.setSceneId(sceneId);
+        dropObject.setSceneId(scene.getSceneResourceId());
         scene.enterScene(dropObject);
         AbstractItem item = dropObject.getItem();
         logger.info("掉落物[{}*{}]", item.getItemResourceId(), item.getQuantity());
@@ -190,22 +192,21 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public void handMonsterDeadEvent(
-      CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId) {
-    logger.info("场景[{}]的[{}]怪物已经死亡", sceneId, monsterId);
+      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId) {
+    logger.info("场景[{}]的[{}]怪物已经死亡", scene.getSceneResourceId(), monsterId);
     // 掉落装备
-    createDropObject(sceneId, monsterResourceId);
+    createDropObject(scene, monsterResourceId);
     // 新增经验
     MonsterResource monsterResource =
         SpringContext.getMonsterService().getMonsterResourceById(monsterResourceId);
     attacker.setExp(attacker.getExp() + monsterResource.getExp());
 
-    Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
     scene.leaveScene(monsterId);
 
     SpringContext.getSceneExecutorService()
         .submit(
             SceneMonsterRebornDelayCommand.valueOf(
-                sceneId, GameConstant.MONSTER_REBORN_PERIOD, monsterResourceId));
+                scene, GameConstant.MONSTER_REBORN_PERIOD, monsterResourceId));
   }
 
   @Override

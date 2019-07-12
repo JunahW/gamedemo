@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.scene.command;
 
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneDelayCommand;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,22 +15,24 @@ public class SceneMonsterRebornDelayCommand extends AbstractSceneDelayCommand {
   private static final Logger logger =
       LoggerFactory.getLogger(SceneMonsterRebornDelayCommand.class);
   private int monsterResourceId;
+  private Scene scene;
 
-  public SceneMonsterRebornDelayCommand(int sceneId, long delay, int monsterResourceId) {
-    super(sceneId, delay);
+  public SceneMonsterRebornDelayCommand(Scene scene, long delay, int monsterResourceId) {
+    super(scene, delay);
     this.monsterResourceId = monsterResourceId;
+    this.scene = scene;
   }
 
   /**
-   * @param sceneId
+   * @param scene
    * @param delay
    * @param monsterResourceId
    * @return
    */
   public static SceneMonsterRebornDelayCommand valueOf(
-      int sceneId, long delay, int monsterResourceId) {
+      Scene scene, long delay, int monsterResourceId) {
     SceneMonsterRebornDelayCommand sceneMonsterRebornDelayCommand =
-        new SceneMonsterRebornDelayCommand(sceneId, delay, monsterResourceId);
+        new SceneMonsterRebornDelayCommand(scene, delay, monsterResourceId);
     return sceneMonsterRebornDelayCommand;
   }
 
@@ -41,10 +44,18 @@ public class SceneMonsterRebornDelayCommand extends AbstractSceneDelayCommand {
     this.monsterResourceId = monsterResourceId;
   }
 
+  public Scene getScene() {
+    return scene;
+  }
+
+  public void setScene(Scene scene) {
+    this.scene = scene;
+  }
+
   @Override
   public void doAction() {
     logger.info("[{}]重新生成怪物[{}]开始", getSceneId(), monsterResourceId);
-    SpringContext.getMonsterService().createMonster(getSceneId(), monsterResourceId);
+    SpringContext.getMonsterService().createMonster(scene, monsterResourceId);
     logger.info("[{}]重新生成怪物[{}]完成", getSceneId(), monsterResourceId);
   }
 }

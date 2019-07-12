@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.monster.event;
 
 import com.example.gamedemo.common.event.Event;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.scene.model.Scene;
 
 /**
  * @author wengj
@@ -12,8 +13,8 @@ public class MonsterDeadEvent implements Event {
   /** 归属者 */
   private CreatureObject attacker;
 
-  /** 场景id */
-  private int sceneId;
+  /** 场景 */
+  private Scene scene;
 
   /** 怪物id */
   private long monsterId;
@@ -22,26 +23,26 @@ public class MonsterDeadEvent implements Event {
   private int monsterResourceId;
 
   /**
-   * @param sceneId
+   * @param scene
    * @param monsterId
    * @return
    */
   public static MonsterDeadEvent valueOf(
-      CreatureObject attacker, int sceneId, long monsterId, int monsterResourceId) {
+      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId) {
     MonsterDeadEvent monsterDeadEvent = new MonsterDeadEvent();
     monsterDeadEvent.setAttacker(attacker);
-    monsterDeadEvent.setSceneId(sceneId);
+    monsterDeadEvent.setScene(scene);
     monsterDeadEvent.setMonsterId(monsterId);
     monsterDeadEvent.setMonsterResourceId(monsterResourceId);
     return monsterDeadEvent;
   }
 
-  public int getSceneId() {
-    return sceneId;
+  public Scene getScene() {
+    return scene;
   }
 
-  public void setSceneId(int sceneId) {
-    this.sceneId = sceneId;
+  public void setScene(Scene scene) {
+    this.scene = scene;
   }
 
   public long getMonsterId() {
@@ -70,6 +71,6 @@ public class MonsterDeadEvent implements Event {
 
   @Override
   public Object getOwnerId() {
-    return sceneId;
+    return attacker.getId();
   }
 }

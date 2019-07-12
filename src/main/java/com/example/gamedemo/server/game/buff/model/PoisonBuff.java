@@ -8,6 +8,7 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,7 @@ public class PoisonBuff extends AbstractBuff {
   @Override
   public void active(CreatureObject owner) {
     logger.info("[{}][{}]buff[{}]执行", owner.getSceneObjectType(), owner.getId(), getBuffId());
+    Scene scene = SpringContext.getSceneService().getSceneById(getCaster(), owner.getSceneId());
     /** 添加buff */
     BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(getBuffId());
     List<Attribute> effectList = buffResource.getEffectList();
@@ -43,10 +45,7 @@ public class PoisonBuff extends AbstractBuff {
             Monster monster = (Monster) owner;
             EventBusManager.submitEvent(
                 MonsterDeadEvent.valueOf(
-                    getCaster(),
-                    monster.getSceneId(),
-                    monster.getId(),
-                    monster.getMonsterResourceId()));
+                    getCaster(), scene, monster.getId(), monster.getMonsterResourceId()));
           }
         }
       } else if (attribute.getType().equals(AttributeTypeEnum.MP)) {

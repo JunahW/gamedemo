@@ -1,11 +1,13 @@
 package com.example.gamedemo.server.game.fight.progress;
 
 import com.example.gamedemo.common.event.EventBusManager;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.skill.model.Skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +27,7 @@ public class AttackTargetHandler {
    * @param skill
    */
   public static void handle(Player attacker, CreatureObject target, Skill skill) {
+    Scene scene = SpringContext.getSceneService().getSceneById(attacker, attacker.getSceneId());
     // 计算攻击力
     long attack = attacker.getAttack();
     long defense = target.getDefense();
@@ -39,10 +42,7 @@ public class AttackTargetHandler {
         // 怪物死亡 触发事件
         EventBusManager.submitEvent(
             MonsterDeadEvent.valueOf(
-                attacker,
-                target.getSceneId(),
-                target.getId(),
-                ((Monster) target).getMonsterResourceId()));
+                attacker, scene, target.getId(), ((Monster) target).getMonsterResourceId()));
       }
     }
   }

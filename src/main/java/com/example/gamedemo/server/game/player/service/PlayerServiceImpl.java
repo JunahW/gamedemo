@@ -68,7 +68,7 @@ public class PlayerServiceImpl implements PlayerService {
       // 初始化玩家属性
       getPlayerAttrByPlayerId(player, playerId);
       /** 触发事件 */
-      Scene scene = SpringContext.getSceneService().getSceneById(player.getSceneId());
+      Scene scene = SpringContext.getSceneService().getSceneById(player, player.getSceneId());
       // 初始化hp和mp
       player.setMp(player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.MP));
       player.setHp(player.getAttributeContainer().getAttributeValue(AttributeTypeEnum.HP));

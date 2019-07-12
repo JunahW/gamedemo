@@ -7,6 +7,7 @@ import com.example.gamedemo.server.common.service.GlobalService;
 import com.example.gamedemo.server.game.account.service.AccountService;
 import com.example.gamedemo.server.game.bag.service.ItemService;
 import com.example.gamedemo.server.game.buff.service.BuffService;
+import com.example.gamedemo.server.game.dungeon.service.DungeonService;
 import com.example.gamedemo.server.game.equip.service.EquipmentService;
 import com.example.gamedemo.server.game.fight.service.FightService;
 import com.example.gamedemo.server.game.monster.service.MonsterService;
@@ -42,6 +43,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private ISceneExecutorService sceneExecutorService;
   @Autowired private IAccountExecutorService accountExecutorService;
   @Autowired private ScheduleService scheduleService;
+  @Autowired private DungeonService dungeonService;
   @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
@@ -90,6 +92,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static ScheduleService getScheduleService() {
     return instance.scheduleService;
+  }
+
+  public static DungeonService getDungeonService() {
+    return instance.dungeonService;
   }
 
   public static GlobalService getGlobalService() {

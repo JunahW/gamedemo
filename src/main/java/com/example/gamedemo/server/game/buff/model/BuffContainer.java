@@ -7,9 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author wengj
@@ -22,7 +22,7 @@ public class BuffContainer<T extends CreatureObject> {
   @JsonIgnore private T owner;
 
   /** buffer集合 */
-  private Map<Integer, AbstractBuff> buffMap = new HashMap<>();
+  private Map<Integer, AbstractBuff> buffMap = new ConcurrentHashMap<>();
 
   public BuffContainer() {}
 

@@ -27,15 +27,14 @@ public class MonsterServiceImpl implements MonsterService {
   @Autowired private MonsterManager monsterManager;
 
   @Override
-  public Map<Long, SceneObject> getMonsters(int sceneId) {
-    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+  public Map<Long, SceneObject> getMonsters(Player player, int sceneId) {
+    Scene scene = SpringContext.getSceneService().getSceneById(player, sceneId);
     return scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER);
   }
 
   @Override
-  public void createMonster(int sceneId, int monsterResourceId) {
+  public void createMonster(Scene scene, int monsterResourceId) {
     MonsterResource monsterResource = monsterManager.getMonsterResource(monsterResourceId);
-    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
     List<Attribute> attributeList = monsterResource.getAttributeList();
 
     Monster monster = Monster.valueOf(monsterResourceId);
@@ -46,14 +45,14 @@ public class MonsterServiceImpl implements MonsterService {
     monster.setMp(attributeContainer.getAttributeValue(AttributeTypeEnum.MP));
     monster.setX(monsterResource.getX());
     monster.setY(monsterResource.getY());
-    monster.setSceneId(sceneId);
+    monster.setSceneId(scene.getSceneResourceId());
     scene.enterScene(monster);
   }
 
   @Override
   public void removeMonster(int sceneId, long guid) {
-    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
-    scene.leaveScene(guid);
+    /* Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+    scene.leaveScene(guid);*/
   }
 
   @Override
@@ -64,7 +63,7 @@ public class MonsterServiceImpl implements MonsterService {
   @Override
   public Monster getMonsterById(Player player, Long monsterId) {
     int sceneId = player.getSceneId();
-    Scene scene = SpringContext.getSceneService().getSceneById(sceneId);
+    Scene scene = SpringContext.getSceneService().getSceneById(player, sceneId);
     Map<Long, SceneObject> sceneObjectMap = scene.getSceneObjectMap();
     return (Monster) sceneObjectMap.get(monsterId);
   }

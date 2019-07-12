@@ -1,7 +1,6 @@
 package com.example.gamedemo.server.game.scene.command;
 
 import com.example.gamedemo.common.executer.scene.impl.AbstractSceneRateCommand;
-import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -18,25 +17,36 @@ import java.util.Map;
 public class SceneBuffRateCommand extends AbstractSceneRateCommand {
   private static final Logger logger = LoggerFactory.getLogger(SceneBuffRateCommand.class);
 
-  public SceneBuffRateCommand(int sceneId, long period) {
-    super(sceneId, period);
+  private Scene scene;
+
+  public SceneBuffRateCommand(Scene scene, long period) {
+    super(scene, period);
+    this.scene = scene;
   }
 
-  public SceneBuffRateCommand(int sceneId, long delay, long period) {
-    super(sceneId, delay, period);
+  public SceneBuffRateCommand(Scene scene, long delay, long period) {
+    super(scene, delay, period);
+    this.scene = scene;
   }
 
   /**
-   * @param sceneId
+   * @param scene
    * @return
    */
-  public static SceneBuffRateCommand valueOf(int sceneId, long delay, long period) {
-    return new SceneBuffRateCommand(sceneId, delay, period);
+  public static SceneBuffRateCommand valueOf(Scene scene, long delay, long period) {
+    return new SceneBuffRateCommand(scene, delay, period);
+  }
+
+  public Scene getScene() {
+    return scene;
+  }
+
+  public void setScene(Scene scene) {
+    this.scene = scene;
   }
 
   @Override
   public void doAction() {
-    Scene scene = SpringContext.getSceneService().getSceneById(getSceneId());
     Map<Long, SceneObject> sceneObjectMap = scene.getSceneObjectMap();
     for (Map.Entry<Long, SceneObject> entry : sceneObjectMap.entrySet()) {
       SceneObject sceneObject = entry.getValue();
