@@ -88,6 +88,7 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
    *
    * @return
    */
+  @JsonIgnore
   public long getAttack() {
     Long attackLower = getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK_LOWER);
     Long attackUpper = getAttributeContainer().getAttributeValue(AttributeTypeEnum.ATTACK_UPPER);
@@ -100,6 +101,7 @@ public abstract class CreatureObject<T extends CreatureObject> extends SceneObje
    *
    * @return
    */
+  @JsonIgnore
   public long getDefense() {
     Long defenseLower = getAttributeContainer().getAttributeValue(AttributeTypeEnum.DEFENSE_LOWER);
     Long defenseUpper = getAttributeContainer().getAttributeValue(AttributeTypeEnum.DEFENSE_UPPER);

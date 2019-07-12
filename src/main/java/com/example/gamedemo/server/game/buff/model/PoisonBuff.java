@@ -15,7 +15,7 @@ import java.util.List;
  * @description：中毒buff
  * @date 2019/7/4
  */
-public class PoisonBuff extends Buff {
+public class PoisonBuff extends AbstractBuff {
   private static final Logger logger = LoggerFactory.getLogger(PoisonBuff.class);
 
   @Override
@@ -48,7 +48,7 @@ public class PoisonBuff extends Buff {
   }
 
   @Override
-  public void merge(Buff buff) {
+  public void merge(AbstractBuff buff) {
     haveMergeTime++;
     setDuration(getDuration() + buff.getDuration());
     setEndTime(getEndTime() + buff.getDuration());

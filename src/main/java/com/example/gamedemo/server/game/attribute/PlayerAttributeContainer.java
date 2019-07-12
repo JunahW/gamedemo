@@ -16,6 +16,8 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
     super(player);
   }
 
+  public PlayerAttributeContainer() {}
+
   /** 计算玩家战力 */
   @Override
   public void computeCombatIndex() {

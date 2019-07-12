@@ -15,10 +15,6 @@ import java.util.Map;
 public class SM_PlayerAttrs {
   List<Attribute> attributes;
 
-  public SM_PlayerAttrs(List<Attribute> attributes) {
-    this.attributes = attributes;
-  }
-
   public static SM_PlayerAttrs valueOf(Map<AttributeTypeEnum, Attribute> attributeMap) {
     LinkedList<Attribute> attributes = new LinkedList<>();
     for (Map.Entry<AttributeTypeEnum, Attribute> entry : attributeMap.entrySet()) {
@@ -27,7 +23,9 @@ public class SM_PlayerAttrs {
         attributes.add(attribute);
       }
     }
-    return new SM_PlayerAttrs(attributes);
+    SM_PlayerAttrs sm_playerAttrs = new SM_PlayerAttrs();
+    sm_playerAttrs.setAttributes(attributes);
+    return sm_playerAttrs;
   }
 
   public List<Attribute> getAttributes() {

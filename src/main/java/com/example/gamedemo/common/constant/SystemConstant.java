@@ -24,4 +24,7 @@ public interface SystemConstant {
 
   /** 技能槽的位置数 */
   int SKILL_SLOT_SIZE = 6;
+
+  /** class和json字符串的分割符 */
+  String CLASS_JSON_SPLIT_TOKEN = "#";
 }

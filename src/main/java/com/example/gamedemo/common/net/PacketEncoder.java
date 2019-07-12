@@ -26,6 +26,10 @@ public class PacketEncoder extends MessageToMessageEncoder<Object> {
       resultString = JsonUtils.serializeEntity(msg);
     }
     logger.info(resultString);
-    out.add(resultString + SystemConstant.MSG_END_TOKEN);
+    out.add(
+        msg.getClass().getName()
+            + SystemConstant.CLASS_JSON_SPLIT_TOKEN
+            + resultString
+            + SystemConstant.MSG_END_TOKEN);
   }
 }

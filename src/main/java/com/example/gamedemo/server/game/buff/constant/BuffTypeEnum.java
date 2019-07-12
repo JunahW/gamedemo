@@ -1,9 +1,8 @@
 package com.example.gamedemo.server.game.buff.constant;
 
-import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.buff.model.AbstractBuff;
 import com.example.gamedemo.server.game.buff.model.AttributeBuff;
-import com.example.gamedemo.server.game.buff.model.Buff;
 import com.example.gamedemo.server.game.buff.model.CureBuff;
 
 /**
@@ -11,7 +10,7 @@ import com.example.gamedemo.server.game.buff.model.CureBuff;
  * @date: 2019/7/1
  * @description: buff类型
  */
-public enum BuffTypeEnum implements AttributeModelId {
+public enum BuffTypeEnum {
   /** 眩晕buff */
   DURATION_BUFF(0, CureBuff.class),
 
@@ -22,20 +21,15 @@ public enum BuffTypeEnum implements AttributeModelId {
   CURE_BUFF(2, CureBuff.class),
 
   /** 修改属性的buff */
-  ATTRIBUTE_BUFF(3, AttributeBuff.class) {
-    @Override
-    public String getModelName() {
-      return "ATTRIBUTE_BUFF";
-    }
-  };
+  ATTRIBUTE_BUFF(3, AttributeBuff.class) {};
 
   /** buff类型 */
   private int buffType;
 
   /** buff名称 */
-  private Class<? extends Buff> buffClazz;
+  private Class<? extends AbstractBuff> buffClazz;
 
-  BuffTypeEnum(int buffType, Class<? extends Buff> buffClazz) {
+  BuffTypeEnum(int buffType, Class<? extends AbstractBuff> buffClazz) {
     this.buffType = buffType;
     this.buffClazz = buffClazz;
   }
@@ -55,8 +49,8 @@ public enum BuffTypeEnum implements AttributeModelId {
     return null;
   }
 
-  public Buff createBuff(CreatureObject caster, int buffId, long endTime, long duration) {
-    Buff buff = null;
+  public AbstractBuff createBuff(CreatureObject caster, int buffId, long endTime, long duration) {
+    AbstractBuff buff = null;
     try {
       buff = this.getBuffClazz().newInstance();
       buff.setCaster(caster);
@@ -80,16 +74,11 @@ public enum BuffTypeEnum implements AttributeModelId {
     this.buffType = buffType;
   }
 
-  public Class<? extends Buff> getBuffClazz() {
+  public Class<? extends AbstractBuff> getBuffClazz() {
     return buffClazz;
   }
 
-  public void setBuffClazz(Class<? extends Buff> buffClazz) {
+  public void setBuffClazz(Class<? extends AbstractBuff> buffClazz) {
     this.buffClazz = buffClazz;
-  }
-
-  @Override
-  public String getModelName() {
-    return null;
   }
 }

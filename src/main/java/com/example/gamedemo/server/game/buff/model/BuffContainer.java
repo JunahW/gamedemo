@@ -22,7 +22,9 @@ public class BuffContainer<T extends CreatureObject> {
   @JsonIgnore private T owner;
 
   /** buffer集合 */
-  private Map<Integer, Buff> buffMap = new HashMap<>();
+  private Map<Integer, AbstractBuff> buffMap = new HashMap<>();
+
+  public BuffContainer() {}
 
   public BuffContainer(T owner) {
     this.owner = owner;
@@ -36,11 +38,11 @@ public class BuffContainer<T extends CreatureObject> {
     this.owner = owner;
   }
 
-  public Map<Integer, Buff> getBuffMap() {
+  public Map<Integer, AbstractBuff> getBuffMap() {
     return buffMap;
   }
 
-  public void setBuffMap(Map<Integer, Buff> buffMap) {
+  public void setBuffMap(Map<Integer, AbstractBuff> buffMap) {
     this.buffMap = buffMap;
   }
 
@@ -49,7 +51,7 @@ public class BuffContainer<T extends CreatureObject> {
    *
    * @param buff
    */
-  public void putBuff(Buff buff) {
+  public void putBuff(AbstractBuff buff) {
     logger.info(
         "[{}][{}]新增buff[{}]",
         getOwner().getSceneObjectType(),
@@ -65,22 +67,23 @@ public class BuffContainer<T extends CreatureObject> {
    * @param buffId
    */
   public void removeBuff(Integer buffId) {
-    Buff buff = buffMap.remove(buffId);
+    AbstractBuff buff = buffMap.remove(buffId);
     if (buff != null) {
       buff.loseBuff(owner);
     }
+    logger.info("[{}][{}]失去buff[{}]", owner.getSceneObjectType(), owner.getId(), buff.getBuffId());
   }
 
-  public void addBuff(Buff buff) {
-    Buff sameBuff = buffMap.get(buff.getBuffId());
+  public void addBuff(AbstractBuff buff) {
+    AbstractBuff sameBuff = buffMap.get(buff.getBuffId());
     if (sameBuff != null) {
       if (buff.canMerge()) {
         merge(buff, sameBuff);
+        return;
       } else {
         cover(buff, sameBuff);
+        return;
       }
-    } else {
-
     }
     putBuff(buff);
   }
@@ -91,11 +94,11 @@ public class BuffContainer<T extends CreatureObject> {
    * @param buff
    * @param buffBeMerge
    */
-  private void merge(Buff buff, Buff buffBeMerge) {
+  private void merge(AbstractBuff buff, AbstractBuff buffBeMerge) {
     if (buff.isMergeFull()) {
       BuffResource buffResource =
           SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
-      logger.info("[{}][{}]叠加已经拿了，无法继续叠加", buffResource.getBuffName(), buff.getBuffId());
+      logger.info("[{}][{}]叠加已经满了，无法继续叠加", buffResource.getBuffName(), buff.getBuffId());
       return;
     }
     buff.merge(buffBeMerge);
@@ -107,7 +110,7 @@ public class BuffContainer<T extends CreatureObject> {
    * @param buff
    * @param sameBuff
    */
-  private void cover(Buff buff, Buff sameBuff) {
+  private void cover(AbstractBuff buff, AbstractBuff sameBuff) {
     removeBuff(buff.getBuffId());
     putBuff(sameBuff);
     logger.info("buff[{}]覆盖", buff.getBuffId());
@@ -115,9 +118,9 @@ public class BuffContainer<T extends CreatureObject> {
 
   /** 执行buff */
   public void executeBuff() {
-    Set<Map.Entry<Integer, Buff>> entries = this.getBuffMap().entrySet();
-    for (Map.Entry<Integer, Buff> entry : entries) {
-      Buff buff = entry.getValue();
+    Set<Map.Entry<Integer, AbstractBuff>> entries = this.getBuffMap().entrySet();
+    for (Map.Entry<Integer, AbstractBuff> entry : entries) {
+      AbstractBuff buff = entry.getValue();
       BuffResource buffResource =
           SpringContext.getBuffService().getBuffResourceById(buff.getBuffId());
       // buff是否已经结束，结束则移除

@@ -3,6 +3,7 @@ package com.example.gamedemo.common.net;
 import com.example.gamedemo.common.utils.DecoderUtils;
 import com.example.gamedemo.common.utils.ParameterCheckUtils;
 import com.example.gamedemo.server.common.MsgPacket;
+import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
@@ -19,7 +20,8 @@ public class PacketDecoder extends MessageToMessageDecoder<String> {
   protected void decode(ChannelHandlerContext ctx, String msg, List<Object> out) throws Exception {
     boolean checkCmd = ParameterCheckUtils.checkCmd(msg);
     if (!checkCmd) {
-      ctx.writeAndFlush("指令有误");
+      SM_NoticeMessge message = SM_NoticeMessge.valueOf("指令有误");
+      ctx.writeAndFlush(message);
       return;
     }
 
@@ -28,7 +30,8 @@ public class PacketDecoder extends MessageToMessageDecoder<String> {
       MsgPacket msgPacket = DecoderUtils.transformMsg2MsgPacket(msg);
       out.add(msgPacket);
     } else {
-      ctx.writeAndFlush("请求参数有误");
+      SM_NoticeMessge message = SM_NoticeMessge.valueOf("请求参数有误");
+      ctx.writeAndFlush(message);
     }
   }
 }

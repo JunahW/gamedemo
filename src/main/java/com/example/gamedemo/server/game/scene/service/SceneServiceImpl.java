@@ -2,11 +2,13 @@ package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.monster.model.DropObject;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
@@ -14,6 +16,7 @@ import com.example.gamedemo.server.game.scene.command.ChangeSceneCommand;
 import com.example.gamedemo.server.game.scene.command.EnterSceneCommand;
 import com.example.gamedemo.server.game.scene.command.SceneMonsterRebornDelayCommand;
 import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.packet.SM_Aoi;
 import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
 import org.slf4j.Logger;
@@ -49,17 +52,8 @@ public class SceneServiceImpl implements SceneService {
       logger.info("[{}]场景不存在", sceneId);
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
     }
-    // 当前场景
-    int currentSceneId = player.getSceneId();
-    Scene currentScene = sceneManager.getSceneBySceneResourceId(currentSceneId);
-    currentScene.leaveScene(player.getId());
-
-    MapResource mapResource = sceneManager.getSceneResourceById(sceneId);
-    player.setSceneId(sceneId);
-    player.setX(mapResource.getX());
-    player.setY(mapResource.getY());
-
-    logger.info("{}进入{}", player.getId(), sceneId);
+    SpringContext.getSceneExecutorService()
+        .submit(ChangeSceneCommand.valueOf(player.getSceneId(), player, sceneId));
     return true;
   }
 
@@ -223,5 +217,23 @@ public class SceneServiceImpl implements SceneService {
   @Override
   public Map<Integer, MonsterResource> getMonsterResourceMapBySceneId(int sceneId) {
     return sceneManager.getMonsterResourceMapBySceneId(sceneId);
+  }
+
+  @Override
+  public void aoi(Player player) {
+    SceneObjectView sceneObjectView = player.getSceneObjectView();
+    MapResource mapResource =
+        SpringContext.getSceneService().getSceneResourceById(player.getSceneId());
+    LandformResource landformResource =
+        sceneManager.getLandformResourceById(mapResource.getLandformId());
+    SM_Aoi sm_aoi =
+        SM_Aoi.valueOf(
+            sceneObjectView, landformResource.getMapArray(), player.getX(), player.getY());
+    SessionManager.sendMessage(player, sm_aoi);
+  }
+
+  @Override
+  public LandformResource getLandformResourceById(int id) {
+    return sceneManager.getLandformResourceById(id);
   }
 }

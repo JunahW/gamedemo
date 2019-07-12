@@ -1,5 +1,8 @@
 package com.example.gamedemo.client.utils;
 
+import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.scene.packet.SM_Aoi;
+
 /**
  * @author wengj
  * @description:json格式化工具
@@ -91,5 +94,23 @@ public class JsonFormatterUtils {
   public static void main(String[] args) {
     printJson(
         "{\"size\":50,\"abstractItems\":[{\"@class\":\"com.example.gamedemo.server.game.bag.model.CommonItem\",\"objectId\":248866250028093440,\"itemResourceId\":2001,\"itemName\":\"铁矿石\",\"quantity\":5},{\"@class\":\"com.example.gamedemo.server.game.bag.model.CommonItem\",\"objectId\":248905471958847488,\"itemResourceId\":1001,\"itemName\":\"普通道具1\",\"quantity\":1},{\"@class\":\"com.example.gamedemo.server.game.bag.model.EquipItem\",\"objectId\":248905671507054592,\"itemResourceId\":1009,\"itemName\":\"绝世羽衣\",\"quantity\":1},{\"@class\":\"com.example.gamedemo.server.game.bag.model.EquipItem\",\"objectId\":248906011501531136,\"itemResourceId\":1009,\"itemName\":\"绝世羽衣\",\"quantity\":1},{\"@class\":\"com.example.gamedemo.server.game.bag.model.EquipItem\",\"objectId\":248906567209062400,\"itemResourceId\":1010,\"itemName\":\"极品战靴\",\"quantity\":1},null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}\n");
+  }
+
+  public static void printObjectJsonString(Object o) {
+    String jsonString = JsonUtils.serializeEntity(o);
+    System.out.println(formatJson(jsonString));
+  }
+
+  /**
+   * 输出object
+   *
+   * @param object
+   */
+  public static void printObject(Object object) {
+    if (object instanceof SM_Aoi) {
+      System.out.println(object);
+    } else {
+      System.out.println(object);
+    }
   }
 }

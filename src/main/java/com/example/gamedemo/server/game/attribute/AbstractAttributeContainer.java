@@ -4,17 +4,18 @@ import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.attribute.utils.AttributeUtils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
 
 /**
  * @author wengj
  * @description：属性容器
  * @date 2019/6/3
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, visible = false)
 public abstract class AbstractAttributeContainer<T> {
 
   /** 属性容器所属者 */
@@ -149,20 +150,11 @@ public abstract class AbstractAttributeContainer<T> {
     this.finalAttributeMap = finalAttributeMap;
   }
 
-  public void setFinalAttributeMap(ConcurrentMap<AttributeTypeEnum, Attribute> finalAttributeMap) {
-    this.finalAttributeMap = finalAttributeMap;
-  }
-
   public Map<AttributeModelId, AttributeSet> getModelAttributeListMap() {
     return modelAttributeListMap;
   }
 
   public void setModelAttributeListMap(Map<AttributeModelId, AttributeSet> modelAttributeListMap) {
-    this.modelAttributeListMap = modelAttributeListMap;
-  }
-
-  public void setModelAttributeListMap(
-      ConcurrentMap<AttributeModelId, AttributeSet> modelAttributeListMap) {
     this.modelAttributeListMap = modelAttributeListMap;
   }
 

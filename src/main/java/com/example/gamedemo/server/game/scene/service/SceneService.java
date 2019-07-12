@@ -4,6 +4,7 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.scene.resource.LandformResource;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
 
 import java.util.List;
@@ -126,4 +127,19 @@ public interface SceneService {
    * @return
    */
   Map<Integer, MonsterResource> getMonsterResourceMapBySceneId(int sceneId);
+
+  /**
+   * aoi
+   *
+   * @param player
+   */
+  void aoi(Player player);
+
+  /**
+   * 获取地形
+   *
+   * @param id
+   * @return
+   */
+  LandformResource getLandformResourceById(int id);
 }

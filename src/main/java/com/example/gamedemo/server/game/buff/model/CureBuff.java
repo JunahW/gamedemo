@@ -15,7 +15,7 @@ import java.util.List;
  * @description：治疗buff
  * @date 2019/7/4
  */
-public class CureBuff extends Buff {
+public class CureBuff extends AbstractBuff {
   private static final Logger logger = LoggerFactory.getLogger(CureBuff.class);
 
   @Override
@@ -55,7 +55,7 @@ public class CureBuff extends Buff {
   }
 
   @Override
-  public void merge(Buff buff) {
+  public void merge(AbstractBuff buff) {
     haveMergeTime++;
     setDuration(getDuration() + buff.getDuration());
     setEndTime(getEndTime() + buff.getDuration());

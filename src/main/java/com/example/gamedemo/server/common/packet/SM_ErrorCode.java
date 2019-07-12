@@ -8,12 +8,10 @@ package com.example.gamedemo.server.common.packet;
 public class SM_ErrorCode {
   private int errorCode;
 
-  public SM_ErrorCode(int errorCode) {
-    this.errorCode = errorCode;
-  }
-
   public static SM_ErrorCode valueOf(int errorCode) {
-    return new SM_ErrorCode(errorCode);
+    SM_ErrorCode sm_errorCode = new SM_ErrorCode();
+    sm_errorCode.setErrorCode(errorCode);
+    return sm_errorCode;
   }
 
   public int getErrorCode() {

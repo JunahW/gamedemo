@@ -1,6 +1,6 @@
 package com.example.gamedemo.client;
 
-import com.example.gamedemo.client.utils.JsonFormatterUtils;
+import com.example.gamedemo.client.dispatcher.MessageDispatcher;
 import com.example.gamedemo.common.constant.SystemConstant;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -41,14 +41,15 @@ public class MyClient {
                   "framer", new DelimiterBasedFrameDecoder(1024 * 8, Delimiters.lineDelimiter()));
               pipeline.addLast("decoder", new StringDecoder(Charset.forName("UTF-8")));
               pipeline.addLast("encoder", new StringEncoder());
+              pipeline.addLast("stringToPacket", new ClientDecoder());
 
               pipeline.addLast(
                   "handler",
-                  new SimpleChannelInboundHandler<String>() {
+                  new SimpleChannelInboundHandler<Object>() {
                     @Override
-                    protected void channelRead0(ChannelHandlerContext ctx, String msg)
+                    protected void channelRead0(ChannelHandlerContext ctx, Object msg)
                         throws Exception {
-                      JsonFormatterUtils.printJson(msg);
+                      MessageDispatcher.execute(msg);
                     }
                   });
             }

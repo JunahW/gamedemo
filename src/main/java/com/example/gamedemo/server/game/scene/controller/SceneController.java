@@ -14,7 +14,12 @@ import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.packet.CM_MovePosition;
 import com.example.gamedemo.server.game.scene.event.PlayerEnterSceneEvent;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.scene.packet.*;
+import com.example.gamedemo.server.game.scene.packet.CM_AoiScene;
+import com.example.gamedemo.server.game.scene.packet.CM_GotoScene;
+import com.example.gamedemo.server.game.scene.packet.CM_ListScene;
+import com.example.gamedemo.server.game.scene.packet.CM_MoveScene;
+import com.example.gamedemo.server.game.scene.service.SceneManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -27,6 +32,8 @@ import java.util.List;
 @Component
 @HandlerClass
 public class SceneController {
+
+  @Autowired private SceneManager sceneManager;
 
   /**
    * 获取场景列表
@@ -121,7 +128,7 @@ public class SceneController {
   public void getSceneObject(TSession session, CM_AoiScene req) {
     // 获取当前的账户信息
     Player player = session.getPlayer();
-    SessionManager.sendMessage(session, SM_Aoi.valueOf(player.getSceneObjectView()));
+    SpringContext.getSceneService().aoi(player);
   }
 
   @ReceiverHandler

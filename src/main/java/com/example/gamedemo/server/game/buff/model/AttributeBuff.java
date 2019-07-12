@@ -14,7 +14,7 @@ import java.util.List;
  * @description：修改属性的buff
  * @date 2019/7/8
  */
-public class AttributeBuff extends Buff {
+public class AttributeBuff extends AbstractBuff {
   private static final Logger logger = LoggerFactory.getLogger(AttributeBuff.class);
 
   @Override
@@ -25,9 +25,7 @@ public class AttributeBuff extends Buff {
 
     BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(getBuffId());
     List<Attribute> effectList = buffResource.getEffectList();
-    owner
-        .getAttributeContainer()
-        .putAndComputeAttributes(buffResource.getBuffTypeEnum(), effectList);
+    owner.getAttributeContainer().putAndComputeAttributes(this, effectList);
     logger.info(
         "[{}][{}]获得buff[{}]增强属性[{}]",
         owner.getSceneObjectType(),
@@ -39,7 +37,7 @@ public class AttributeBuff extends Buff {
   @Override
   public void loseBuff(CreatureObject owner) {
     BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(getBuffId());
-    owner.getAttributeContainer().removeAndComputeAttributeSet(buffResource.getBuffTypeEnum());
+    owner.getAttributeContainer().removeAndComputeAttributeSet(this);
     logger.info(
         "[{}][{}]buff[{}]移除，减弱属性[{}]",
         owner.getSceneObjectType(),

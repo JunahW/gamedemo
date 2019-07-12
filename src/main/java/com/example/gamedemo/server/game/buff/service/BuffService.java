@@ -2,8 +2,9 @@ package com.example.gamedemo.server.game.buff.service;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
-import com.example.gamedemo.server.game.buff.model.Buff;
+import com.example.gamedemo.server.game.buff.model.AbstractBuff;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
+import com.example.gamedemo.server.game.player.model.Player;
 
 /**
  * @author: wengj
@@ -29,7 +30,7 @@ public interface BuffService {
    * @param buffId
    * @return
    */
-  Buff addBuff(CreatureObject caster, CreatureObject owner, int buffId);
+  AbstractBuff addBuff(CreatureObject caster, CreatureObject owner, int buffId);
 
   /**
    * 获取buff的配置资源
@@ -40,8 +41,11 @@ public interface BuffService {
   BuffResource getBuffResourceById(Integer id);
 
   /**
+   * 添加buffs
+   *
    * @param caster
+   * @param owner
    * @param buffArray
    */
-  void addBuffsByBuffIdArray(CreatureObject caster, CreatureObject owner, int[] buffArray);
+  void addBuffsByBuffIdArray(Player caster, CreatureObject owner, int[] buffArray);
 }

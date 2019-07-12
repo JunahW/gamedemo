@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.base.gameobject;
 
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author wengj
@@ -46,6 +47,7 @@ public abstract class SceneObject extends GameObject {
    *
    * @return
    */
+  @JsonIgnore
   public abstract SceneObjectTypeEnum getSceneObjectType();
 
   @Override

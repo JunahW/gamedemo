@@ -93,8 +93,7 @@ public abstract class Skill {
    * @param targetSet
    * @param buffArray
    */
-  private void addBuff2TargetSet(
-      CreatureObject caster, Set<CreatureObject> targetSet, int[] buffArray) {
+  private void addBuff2TargetSet(Player caster, Set<CreatureObject> targetSet, int[] buffArray) {
     if (buffArray != null) {
       for (CreatureObject owner : targetSet) {
         SpringContext.getBuffService().addBuffsByBuffIdArray(caster, owner, buffArray);
@@ -109,7 +108,7 @@ public abstract class Skill {
    * @param target
    * @param buffArray
    */
-  private void addBuff2Target(CreatureObject caster, CreatureObject target, int[] buffArray) {
+  private void addBuff2Target(Player caster, CreatureObject target, int[] buffArray) {
     if (buffArray != null) {
       SpringContext.getBuffService().addBuffsByBuffIdArray(caster, target, buffArray);
     }

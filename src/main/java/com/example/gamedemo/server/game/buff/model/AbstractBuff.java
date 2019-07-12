@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.buff.model;
 
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.attribute.constant.AttributeModelId;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import org.slf4j.Logger;
@@ -11,9 +12,9 @@ import org.slf4j.LoggerFactory;
  * @description：buff模型
  * @date 2019/6/25
  */
-public abstract class Buff {
+public abstract class AbstractBuff implements AttributeModelId {
 
-  private static final Logger logger = LoggerFactory.getLogger(Buff.class);
+  private static final Logger logger = LoggerFactory.getLogger(AbstractBuff.class);
   /** 已经合并的次数 */
   protected int haveMergeTime = 0;
   /** buff施加方 */
@@ -135,7 +136,7 @@ public abstract class Buff {
    *
    * @param buff
    */
-  public void merge(Buff buff) {
+  public void merge(AbstractBuff buff) {
     throw new UnsupportedOperationException();
   }
 
@@ -160,5 +161,10 @@ public abstract class Buff {
   public boolean isMergeFull() {
     BuffResource buffResource = SpringContext.getBuffService().getBuffResourceById(buffId);
     return canMerge() && haveMergeTime + 1 >= buffResource.getMergeTime();
+  }
+
+  @Override
+  public String getModelName() {
+    return Integer.toString(buffId);
   }
 }

@@ -8,12 +8,10 @@ package com.example.gamedemo.server.common.packet;
 public class SM_NoticeMessge {
   private String content;
 
-  public SM_NoticeMessge(String content) {
-    this.content = content;
-  }
-
   public static SM_NoticeMessge valueOf(String content) {
-    return new SM_NoticeMessge(content);
+    SM_NoticeMessge sm_noticeMessge = new SM_NoticeMessge();
+    sm_noticeMessge.setContent(content);
+    return sm_noticeMessge;
   }
 
   public String getContent() {

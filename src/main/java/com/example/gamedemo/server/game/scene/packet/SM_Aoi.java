@@ -16,8 +16,11 @@ import java.util.Set;
  */
 public class SM_Aoi {
   private List<SceneObjectVo> sceneObjectVoList;
+  private int[][] mapArray;
+  private int x;
+  private int y;
 
-  public static SM_Aoi valueOf(SceneObjectView sceneObjectView) {
+  public static SM_Aoi valueOf(SceneObjectView sceneObjectView, int[][] mapArray, int x, int y) {
     SM_Aoi sm_aoi = new SM_Aoi();
     ArrayList<SceneObjectVo> sceneObjectVos = new ArrayList<>();
     Set<Map.Entry<Long, SceneObject>> entries = sceneObjectView.getSceneObjectMap().entrySet();
@@ -29,6 +32,9 @@ public class SM_Aoi {
       sceneObjectVos.add(sceneObjectVo);
     }
     sm_aoi.setSceneObjectVoList(sceneObjectVos);
+    sm_aoi.setMapArray(mapArray);
+    sm_aoi.setX(x);
+    sm_aoi.setY(y);
     return sm_aoi;
   }
 
@@ -38,5 +44,29 @@ public class SM_Aoi {
 
   public void setSceneObjectVoList(List<SceneObjectVo> sceneObjectVoList) {
     this.sceneObjectVoList = sceneObjectVoList;
+  }
+
+  public int[][] getMapArray() {
+    return mapArray;
+  }
+
+  public void setMapArray(int[][] mapArray) {
+    this.mapArray = mapArray;
+  }
+
+  public int getX() {
+    return x;
+  }
+
+  public void setX(int x) {
+    this.x = x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
+  public void setY(int y) {
+    this.y = y;
   }
 }

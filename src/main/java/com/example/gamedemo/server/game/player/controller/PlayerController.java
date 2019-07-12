@@ -42,7 +42,7 @@ public class PlayerController {
     if (player == null) {
       SessionManager.sendMessage(session, SM_NoticeMessge.valueOf("未选择角色"));
     } else {
-      SessionManager.sendMessage(session, player);
+      SessionManager.sendMessage(session, SM_Player.valueOf(player));
     }
   }
 
