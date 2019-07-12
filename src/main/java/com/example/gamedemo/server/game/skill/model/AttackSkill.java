@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.skill.model;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.fight.progress.AttackTargetHandler;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,7 @@ public class AttackSkill extends Skill {
   private static final Logger logger = LoggerFactory.getLogger(AttackSkill.class);
 
   @Override
-  public void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet) {
+  public void useSkill(Player attacker, Set<CreatureObject> targetSet) {
     for (CreatureObject target : targetSet) {
       // 处理攻击
       if (target == null) {

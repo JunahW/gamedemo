@@ -5,6 +5,7 @@ import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.skill.model.Skill;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public class AttackTargetHandler {
    * @param target
    * @param skill
    */
-  public static void handle(CreatureObject attacker, CreatureObject target, Skill skill) {
+  public static void handle(Player attacker, CreatureObject target, Skill skill) {
     // 计算攻击力
     long attack = attacker.getAttack();
     long defense = target.getDefense();

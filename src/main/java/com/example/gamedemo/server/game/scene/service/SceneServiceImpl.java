@@ -7,6 +7,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.common.utils.RandomUtils;
+import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.monster.model.DropObject;
@@ -181,6 +182,8 @@ public class SceneServiceImpl implements SceneService {
         DropObject dropObject = DropObject.valueOf(drop.getItemId(), drop.getQuantity());
         dropObject.setSceneId(sceneId);
         scene.enterScene(dropObject);
+        AbstractItem item = dropObject.getItem();
+        logger.info("掉落物[{}*{}]", item.getItemResourceId(), item.getQuantity());
       }
     }
   }

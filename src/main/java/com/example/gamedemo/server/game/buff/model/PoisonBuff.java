@@ -1,10 +1,13 @@
 package com.example.gamedemo.server.game.buff.model;
 
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.attribute.Attribute;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
+import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +37,18 @@ public class PoisonBuff extends AbstractBuff {
         logger.info(
             "[{}][{}]血量[{}]", owner.getSceneObjectType(), owner.getId(), hp - owner.getHp());
         owner.setHp(hp);
+        if (owner.getHp() <= 0) {
+          // 对象死亡
+          if (owner instanceof Monster) {
+            Monster monster = (Monster) owner;
+            EventBusManager.submitEvent(
+                MonsterDeadEvent.valueOf(
+                    getCaster(),
+                    monster.getSceneId(),
+                    monster.getId(),
+                    monster.getMonsterResourceId()));
+          }
+        }
       } else if (attribute.getType().equals(AttributeTypeEnum.MP)) {
         long mp = attribute.getValue() + owner.getMp();
         Long maxMp = owner.getAttributeContainer().getAttributeValue(AttributeTypeEnum.MP);

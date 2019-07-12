@@ -34,10 +34,6 @@ public class CureBuff extends AbstractBuff {
         logger.info(
             "[{}][{}]血量[{}]", owner.getSceneObjectType(), owner.getId(), hp - owner.getHp());
         owner.setHp(hp);
-        if (owner.getHp() <= 0) {
-          // 对象死亡
-          // EventBusManager.submitEvent();
-        }
       } else if (attribute.getType().equals(AttributeTypeEnum.MP)) {
         long mp = attribute.getValue() + owner.getMp();
         Long maxMp = owner.getAttributeContainer().getAttributeValue(AttributeTypeEnum.MP);

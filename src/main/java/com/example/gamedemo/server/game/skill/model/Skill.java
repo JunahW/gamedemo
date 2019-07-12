@@ -43,10 +43,9 @@ public abstract class Skill {
    * @param attacker
    * @param targetSet
    */
-  public abstract void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet);
+  public abstract void useSkill(Player attacker, Set<CreatureObject> targetSet);
 
   public void useSkillProgress(Player attacker, Set<CreatureObject> targetSet) {
-    // TODO 中间变量传递
     beforeUseSkill(attacker, targetSet);
     useSkill(attacker, targetSet);
     afterUseSkill(attacker, targetSet);

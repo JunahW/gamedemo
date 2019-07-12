@@ -1,9 +1,11 @@
 package com.example.gamedemo.server.game.buff.service;
 
+import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.constant.BuffTypeEnum;
 import com.example.gamedemo.server.game.buff.model.AbstractBuff;
+import com.example.gamedemo.server.game.buff.packet.SM_AddBuff;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
@@ -59,6 +61,7 @@ public class BuffServiceImpl implements BuffService {
           caster.getId(),
           owner.getId(),
           buffId);
+      SessionManager.sendMessage(caster, SM_AddBuff.valueOf(owner.getId(), buffId));
     }
   }
 }

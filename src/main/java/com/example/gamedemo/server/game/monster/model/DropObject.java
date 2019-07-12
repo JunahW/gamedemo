@@ -27,6 +27,7 @@ public class DropObject extends SceneObject {
     AbstractItem item = ItemType.create(itemResource.getItemType());
     item.setId(UniqueIdUtils.nextId());
     item.setQuantity(quantity);
+    dropObject.setItem(item);
     dropObject.setId(UniqueIdUtils.nextId());
     return dropObject;
   }

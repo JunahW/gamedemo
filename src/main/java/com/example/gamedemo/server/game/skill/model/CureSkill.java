@@ -2,6 +2,7 @@ package com.example.gamedemo.server.game.skill.model;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.fight.progress.CureTargetHandler;
+import com.example.gamedemo.server.game.player.model.Player;
 
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import java.util.Set;
  */
 public class CureSkill extends Skill {
   @Override
-  public void useSkill(CreatureObject attacker, Set<CreatureObject> targetSet) {
+  public void useSkill(Player attacker, Set<CreatureObject> targetSet) {
     for (CreatureObject target : targetSet) {
       CureTargetHandler.handle(attacker, target, this);
     }

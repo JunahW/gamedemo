@@ -4,6 +4,7 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.model.AbstractBuff;
 import com.example.gamedemo.server.game.buff.model.AttributeBuff;
 import com.example.gamedemo.server.game.buff.model.CureBuff;
+import com.example.gamedemo.server.game.buff.model.PoisonBuff;
 
 /**
  * @author: wengj
@@ -21,8 +22,10 @@ public enum BuffTypeEnum {
   CURE_BUFF(2, CureBuff.class),
 
   /** 修改属性的buff */
-  ATTRIBUTE_BUFF(3, AttributeBuff.class) {};
+  ATTRIBUTE_BUFF(3, AttributeBuff.class) {},
 
+  /** 中毒buff */
+  POISON_BUFF(4, PoisonBuff.class);
   /** buff类型 */
   private int buffType;
 
