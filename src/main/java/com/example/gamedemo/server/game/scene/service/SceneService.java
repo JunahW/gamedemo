@@ -60,6 +60,13 @@ public interface SceneService {
   boolean serverChangeScene(Player player, int sceneId);
 
   /**
+   * 离开地图
+   *
+   * @param player
+   */
+  void leaveScene(Player player);
+
+  /**
    * 进入场景
    *
    * @param player
@@ -143,4 +150,12 @@ public interface SceneService {
    * @return
    */
   LandformResource getLandformResourceById(int id);
+
+  /**
+   * 创建副本场景
+   *
+   * @param sceneId
+   * @return
+   */
+  Scene createDungeonSceneBySceneId(int sceneId);
 }

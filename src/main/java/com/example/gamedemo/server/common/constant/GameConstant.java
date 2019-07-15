@@ -24,4 +24,7 @@ public interface GameConstant {
 
   /** 场景定时器周期 */
   long SCENE_PERIOD = 100;
+
+  /** 副本场景倒计时 */
+  int DUNGEON_COUNT_DOWN = 10000;
 }

@@ -35,6 +35,9 @@ public class Player extends CreatureObject<Player> implements Serializable {
   /** 玩家属性容器 */
   // private PlayerAttributeContainer playerAttributeContainer = new PlayerAttributeContainer(this);
 
+  /** 进入副本前的场景id */
+  private int beforeSceneId;
+
   /** cd组件 */
   private CoolDownComponent cdComponent = new CoolDownComponent();
 
@@ -92,6 +95,14 @@ public class Player extends CreatureObject<Player> implements Serializable {
 
   public void setCdComponent(CoolDownComponent cdComponent) {
     this.cdComponent = cdComponent;
+  }
+
+  public int getBeforeSceneId() {
+    return beforeSceneId;
+  }
+
+  public void setBeforeSceneId(int beforeSceneId) {
+    this.beforeSceneId = beforeSceneId;
   }
 
   /**

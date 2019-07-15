@@ -45,6 +45,10 @@ public class MapResource implements Serializable, ResourceInterface {
   @ExcelColumn(columnName = "landformId")
   private int landformId;
 
+  /** 地图持续时间 */
+  @ExcelColumn(columnName = "duration")
+  private long duration;
+
   /** 场景类型 */
   @ExcelColumn(columnName = "sceneType")
   private int sceneType;
@@ -116,6 +120,14 @@ public class MapResource implements Serializable, ResourceInterface {
 
   public void setLandformId(int landformId) {
     this.landformId = landformId;
+  }
+
+  public long getDuration() {
+    return duration;
+  }
+
+  public void setDuration(long duration) {
+    this.duration = duration;
   }
 
   public SceneTypeEnum getSceneTypeEnum() {

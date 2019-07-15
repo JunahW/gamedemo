@@ -205,4 +205,13 @@ public class Scene {
       }
     }
   }
+
+  /**
+   * 添加command
+   *
+   * @param command
+   */
+  public void putCommand(Command command) {
+    commandMap.put(command.getClass(), command);
+  }
 }
