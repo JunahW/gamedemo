@@ -14,6 +14,7 @@ import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
 import com.example.gamedemo.server.game.scene.service.SceneService;
 import com.example.gamedemo.server.game.skill.service.SkillService;
+import com.example.gamedemo.server.game.task.service.TaskService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -44,6 +45,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private IAccountExecutorService accountExecutorService;
   @Autowired private ScheduleService scheduleService;
   @Autowired private DungeonService dungeonService;
+  @Autowired private TaskService taskService;
   @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
@@ -96,6 +98,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static DungeonService getDungeonService() {
     return instance.dungeonService;
+  }
+
+  public static TaskService getTaskService() {
+    return instance.taskService;
   }
 
   public static GlobalService getGlobalService() {
