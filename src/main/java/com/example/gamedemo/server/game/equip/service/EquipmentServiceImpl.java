@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.equip.service;
 
 import com.example.gamedemo.common.constant.I18nId;
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.model.Consume;
@@ -19,6 +20,8 @@ import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
+import com.example.gamedemo.server.game.task.event.TaskEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +73,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     // 装备物品
-    AbstractItem preEquip = player.getEquipBar().equip(equipItem);
+    EquipStorage equipBar = player.getEquipBar();
+    AbstractItem preEquip = equipBar.equip(equipItem);
     // 替代装备,将旧装备放回背包
     if (preEquip != null) {
       player.getPack().addStorageItem(preEquip);
@@ -87,6 +91,10 @@ public class EquipmentServiceImpl implements EquipmentService {
     saveEquipmentStorageEnt(player);
     // 保存背包
     SpringContext.getItemService().saveItemStorageEnt(player);
+
+    // 抛出任务事件
+    EventBusManager.submitEvent(
+        TaskEvent.valueOf(player, TaskTypeEnum.EQUIP_QUANTITY, equipBar.getEquipQuantity()));
     logger.info("已穿上[{}]装备", itemResource.getName());
     return true;
   }
@@ -98,8 +106,8 @@ public class EquipmentServiceImpl implements EquipmentService {
       logger.info("请求从参数有误position[{}]", position);
       RequestException.throwException(I18nId.POSITION_NO_DEFINE);
     }
-
-    AbstractItem equipItem = player.getEquipBar().unEquip(position);
+    EquipStorage equipBar = player.getEquipBar();
+    AbstractItem equipItem = equipBar.unEquip(position);
     if (equipItem == null) {
       logger.info("该部位不存在物件", EquipmentType.getEquipmentTypeId(position));
       RequestException.throwException(I18nId.POSITION_NO_EXIST_EQUIPMENT);
@@ -115,7 +123,9 @@ public class EquipmentServiceImpl implements EquipmentService {
     // 更细属性容器
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
     player.getAttributeContainer().removeAndComputeAttributeSet(equipmentType);
-
+    // 抛出任务事件
+    EventBusManager.submitEvent(
+        TaskEvent.valueOf(player, TaskTypeEnum.EQUIP_QUANTITY, equipBar.getEquipQuantity()));
     logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getId());
     return true;
   }

@@ -5,6 +5,7 @@ import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.model.EquipItem;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.model.Slot;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Arrays;
 
@@ -113,5 +114,21 @@ public class EquipStorage {
 
   public void setSlots(Slot[] slots) {
     this.slots = slots;
+  }
+
+  /**
+   * 获取已经穿戴的装备数
+   *
+   * @return
+   */
+  @JsonIgnore
+  public int getEquipQuantity() {
+    int quantity = 0;
+    for (Slot slot : slots) {
+      if (slot.getEquipItem() != null) {
+        quantity++;
+      }
+    }
+    return quantity;
   }
 }

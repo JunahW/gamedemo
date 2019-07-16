@@ -43,7 +43,10 @@ public class TaskServiceImpl implements TaskService {
       TaskResource taskResource = taskManager.getTaskResource(task.getTaskId());
       TaskVO taskVO =
           TaskVO.valueOf(
-              task.getTaskId(), task.getProgress(), taskResource.getTaskCondition().getValue());
+              task.getTaskId(),
+              task.getProgress(),
+              taskResource.getTaskCondition().getValue(),
+              taskResource.getTaskCondition().getType());
       sm_taskDetail.addTaskVo(taskVO);
     }
     SessionManager.sendMessage(player, sm_taskDetail);
@@ -149,6 +152,7 @@ public class TaskServiceImpl implements TaskService {
     AbstractProcessor processor = AbstractProcessor.getProcessor(taskCondition.getType());
     processor.initProgress(taskCondition, task, player);
     player.getTaskStorage().putTask(task);
+    doAfterRefreshProgress(player, task);
     // 保存任务
     saveTaskStorage(player);
   }

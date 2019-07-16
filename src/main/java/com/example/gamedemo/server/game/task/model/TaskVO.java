@@ -1,5 +1,7 @@
 package com.example.gamedemo.server.game.task.model;
 
+import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
+
 /**
  * @author wengj
  * @description:任务vo
@@ -15,17 +17,20 @@ public class TaskVO {
   /** 任务完成进度 */
   private int finishValue;
 
+  private TaskTypeEnum taskType;
+
   /**
    * @param taskId
    * @param progress
    * @param finishValue
    * @return
    */
-  public static TaskVO valueOf(int taskId, int progress, int finishValue) {
+  public static TaskVO valueOf(int taskId, int progress, int finishValue, TaskTypeEnum taskType) {
     TaskVO taskVO = new TaskVO();
     taskVO.setTaskId(taskId);
     taskVO.setProgress(progress);
     taskVO.setFinishValue(finishValue);
+    taskVO.setTaskType(taskType);
     return taskVO;
   }
 
@@ -51,5 +56,13 @@ public class TaskVO {
 
   public void setFinishValue(int finishValue) {
     this.finishValue = finishValue;
+  }
+
+  public TaskTypeEnum getTaskType() {
+    return taskType;
+  }
+
+  public void setTaskType(TaskTypeEnum taskType) {
+    this.taskType = taskType;
   }
 }
