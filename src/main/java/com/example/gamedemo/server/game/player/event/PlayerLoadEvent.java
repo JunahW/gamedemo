@@ -23,7 +23,7 @@ public class PlayerLoadEvent implements Event {
    * @param player
    * @return
    */
-  public static PlayerLoadEvent valueof(Player player) {
+  public static PlayerLoadEvent valueOf(Player player) {
     return new PlayerLoadEvent(player);
   }
 

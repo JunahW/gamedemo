@@ -8,7 +8,10 @@ import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.buff.resource.BuffResource;
 import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
+import com.example.gamedemo.server.game.task.event.TaskEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +49,9 @@ public class PoisonBuff extends AbstractBuff {
             EventBusManager.submitEvent(
                 MonsterDeadEvent.valueOf(
                     getCaster(), scene, monster.getId(), monster.getMonsterResourceId()));
+            // 任务事件
+            EventBusManager.submitEvent(
+                TaskEvent.valueOf((Player) getCaster(), TaskTypeEnum.KILL_MONSTER_QUANTITY, 1));
           }
         }
       } else if (attribute.getType().equals(AttributeTypeEnum.MP)) {

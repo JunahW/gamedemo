@@ -117,4 +117,12 @@ public interface I18nId {
 
   /** 找不到目标物 */
   int TARGET_NO_FOUND = 80000;
+
+  /** ==========================任务相关=========================* */
+
+  /** 任务资源不存在 */
+  int TASK_RESOURCE_NO_EXIST = 90000;
+
+  /** 该任务未完成 */
+  int TASK_NO_FINISH = 90001;
 }

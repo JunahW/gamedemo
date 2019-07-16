@@ -110,7 +110,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     /** 触发事件，交给各个receiver处理 */
     Player checkedPlayer = playerEnt.getPlayer();
-    EventBusManager.submitEvent(PlayerLoadEvent.valueof(checkedPlayer));
+    EventBusManager.submitEvent(PlayerLoadEvent.valueOf(checkedPlayer));
 
     // 计算属性的值
     PlayerAttributeContainer playerAttributeContainer = checkedPlayer.getAttributeContainer();

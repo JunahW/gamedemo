@@ -57,4 +57,23 @@ public class TaskManager {
             });
     return taskStorageEnt;
   }
+
+  /**
+   * 获取任务配置资源
+   *
+   * @param taskId
+   * @return
+   */
+  public TaskResource getTaskResource(Integer taskId) {
+    return taskResource.get(taskId);
+  }
+
+  /**
+   * 保存技能栏
+   *
+   * @param taskStorageEnt
+   */
+  public void savetaskStorageEnt(TaskStorageEnt taskStorageEnt) {
+    entityCacheService.writeBack(taskStorageEnt.getEntityId(), taskStorageEnt);
+  }
 }

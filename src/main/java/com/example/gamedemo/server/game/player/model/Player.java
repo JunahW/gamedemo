@@ -11,6 +11,7 @@ import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.skill.entity.SkillStorageEnt;
 import com.example.gamedemo.server.game.skill.storage.SkillStorage;
+import com.example.gamedemo.server.game.task.entity.TaskStorageEnt;
 import com.example.gamedemo.server.game.task.storage.TaskStorage;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -148,10 +149,8 @@ public class Player extends CreatureObject<Player> implements Serializable {
    */
   @JsonIgnore
   public TaskStorage getTaskStorage() {
-    /*SkillStorageEnt skillStorageEnt =
-            SpringContext.getSkillService().getSkillStorageEnt(super.getId());
-    return skillStorageEnt.getSkillStorage();*/
-    return null;
+    TaskStorageEnt taskStorageEnt = SpringContext.getTaskService().getTaskStorageEnt(super.getId());
+    return taskStorageEnt.getTaskStorage();
   }
 
   @Override

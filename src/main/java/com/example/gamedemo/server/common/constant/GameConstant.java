@@ -27,4 +27,7 @@ public interface GameConstant {
 
   /** 副本场景倒计时 */
   int DUNGEON_COUNT_DOWN = 10000;
+
+  /** 首次登陆任务id */
+  int FIRST_TASK = 1001;
 }
