@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.account.service;
 
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 
 /**
  * @author wengj
@@ -24,4 +25,11 @@ public interface AccountService {
    * @return
    */
   Account loginAccount(String accountId);
+
+  /**
+   * 退出登录
+   *
+   * @param player
+   */
+  void logoutAccount(Player player);
 }

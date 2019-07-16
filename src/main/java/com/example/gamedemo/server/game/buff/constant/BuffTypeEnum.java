@@ -12,13 +12,7 @@ import com.example.gamedemo.server.game.buff.model.PoisonBuff;
  * @description: buff类型
  */
 public enum BuffTypeEnum {
-  /** 眩晕buff */
-  DURATION_BUFF(0, CureBuff.class),
-
-  /** 攻击buff */
-  ATTACK_BUFF(1, CureBuff.class),
-
-  /** 周期buff */
+  /** 治疗buff */
   CURE_BUFF(2, CureBuff.class),
 
   /** 修改属性的buff */

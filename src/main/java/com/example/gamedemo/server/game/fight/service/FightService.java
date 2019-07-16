@@ -1,6 +1,10 @@
 package com.example.gamedemo.server.game.fight.service;
 
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.skill.model.Skill;
+
+import java.util.Set;
 
 /**
  * @author: wengj
@@ -17,4 +21,13 @@ public interface FightService {
    * @return
    */
   boolean useSkill(Player player, int index, Long targetId);
+
+  /**
+   * 真正的使用技能
+   *
+   * @param player
+   * @param skill
+   * @param targetSet
+   */
+  void doUseSkill(Player player, Skill skill, Set<CreatureObject> targetSet);
 }

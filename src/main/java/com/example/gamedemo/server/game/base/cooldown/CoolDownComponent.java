@@ -1,4 +1,4 @@
-package com.example.gamedemo.server.game.cooldown;
+package com.example.gamedemo.server.game.base.cooldown;
 
 import java.util.HashMap;
 import java.util.Map;

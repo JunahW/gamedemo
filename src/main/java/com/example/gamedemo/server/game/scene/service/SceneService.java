@@ -94,13 +94,6 @@ public interface SceneService {
   boolean move2Coordinate(Player player, int x, int y);
 
   /**
-   * 为场景创建怪物
-   *
-   * @param sceneId
-   */
-  void createMonsters4Scene(int sceneId);
-
-  /**
    * 怪物死亡，创建掉落物
    *
    * @param scene

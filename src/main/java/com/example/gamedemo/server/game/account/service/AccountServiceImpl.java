@@ -2,8 +2,10 @@ package com.example.gamedemo.server.game.account.service;
 
 import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.account.entity.AccountEnt;
 import com.example.gamedemo.server.game.account.model.Account;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +51,12 @@ public class AccountServiceImpl implements AccountService {
       RequestException.throwException(I18nId.ACCOUNT_NO_EXIST);
     }
     return null;
+  }
+
+  @Override
+  public void logoutAccount(Player player) {
+    // 退出场景
+    SpringContext.getSceneService().leaveScene(player);
+    SpringContext.getPlayerService().savePlayerEnt(player);
   }
 }

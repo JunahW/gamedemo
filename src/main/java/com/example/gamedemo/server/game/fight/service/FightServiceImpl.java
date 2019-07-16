@@ -9,6 +9,7 @@ import com.example.gamedemo.server.game.fight.constant.FightConstant;
 import com.example.gamedemo.server.game.fight.constant.SkillAreaTypeEnum;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
+import com.example.gamedemo.server.game.skill.command.UseSkillSceneCommand;
 import com.example.gamedemo.server.game.skill.model.Skill;
 import com.example.gamedemo.server.game.skill.resource.SkillResource;
 import com.example.gamedemo.server.game.skill.storage.SkillStorage;
@@ -55,11 +56,15 @@ public class FightServiceImpl implements FightService {
 
     // 获取技能的目标集合
     Set<CreatureObject> targetSet = getTargetSet(player, target, skillResource);
-
     // 技能使用
-    skill.useSkillProgress(player, targetSet);
-
+    SpringContext.getSceneExecutorService()
+        .submit(UseSkillSceneCommand.valueOf(player.getSceneId(), player, skill, targetSet));
     return true;
+  }
+
+  @Override
+  public void doUseSkill(Player player, Skill skill, Set<CreatureObject> targetSet) {
+    skill.useSkillProgress(player, targetSet);
   }
 
   /**

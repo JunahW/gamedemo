@@ -29,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author: wengj
@@ -134,13 +133,6 @@ public class SceneServiceImpl implements SceneService {
     MapResource sceneResource = sceneManager.getSceneResourceById(sceneId);
     AbstractMapHandler handler = AbstractMapHandler.getHandler(sceneResource.getSceneTypeEnum());
     handler.enterMap(player, sceneId);
-    /*Scene targetScene = sceneManager.getSceneBySceneResourceId(sceneId);
-    MapResource mapResource = sceneManager.getSceneResourceById(sceneId);
-    player.setSceneId(sceneId);
-    player.setX(mapResource.getX());
-    player.setY(mapResource.getY());
-    targetScene.enterScene(player);
-    logger.info("[{}][{}]进入[{}]", player.getSceneObjectType(), player.getId(), sceneId);*/
     return true;
   }
 
@@ -179,15 +171,6 @@ public class SceneServiceImpl implements SceneService {
   @Override
   public MapResource getSceneResourceById(int sceneId) {
     return sceneManager.getSceneResourceById(sceneId);
-  }
-
-  @Override
-  public void createMonsters4Scene(int sceneId) {
-    Set<Integer> monsterSet = sceneManager.getMonsterSetBySceneId(sceneId);
-    for (Integer monsterResourceId : monsterSet) {
-      // SpringContext.getMonsterService().createMonster(sceneId, monsterResourceId);
-    }
-    logger.info("[{}]场景生成怪物[{}]", sceneId, monsterSet);
   }
 
   @Override

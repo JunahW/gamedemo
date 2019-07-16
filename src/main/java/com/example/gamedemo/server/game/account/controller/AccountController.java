@@ -76,12 +76,8 @@ public class AccountController {
    */
   @HandlerMethod(cmd = "logout")
   public void logout(TSession session, CM_LogoutAccount req) {
-    String returnMsg = null;
-    Account account = session.getAccount();
     // 异步保存用户信息
-    SpringContext.getPlayerService().savePlayerEnt(session.getPlayer());
-    returnMsg = account.getAccountName() + "注销登录";
-    SessionManager.sendMessage(session, returnMsg);
+    SpringContext.getAccountService().logoutAccount(session.getPlayer());
     SessionManager.close(session.getChannel());
   }
 }
