@@ -4,11 +4,15 @@ import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
+import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -52,6 +56,11 @@ public class MapResource implements Serializable, ResourceInterface {
   /** 场景类型 */
   @ExcelColumn(columnName = "sceneType")
   private int sceneType;
+
+  @ExcelColumn(columnName = "rewardString")
+  private String rewardString;
+
+  private List<RewardDef> rewardDefs;
 
   private SceneTypeEnum sceneTypeEnum;
 
@@ -138,6 +147,14 @@ public class MapResource implements Serializable, ResourceInterface {
     this.sceneTypeEnum = sceneTypeEnum;
   }
 
+  public List<RewardDef> getRewardDefs() {
+    return rewardDefs;
+  }
+
+  public void setRewardDefs(List<RewardDef> rewardDefs) {
+    this.rewardDefs = rewardDefs;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -172,5 +189,8 @@ public class MapResource implements Serializable, ResourceInterface {
       neighborArray = neighborTmp;
     }
     sceneTypeEnum = SceneTypeEnum.getSceneTypeEnumBySceneType(sceneType);
+    if (!StringUtils.isEmpty(rewardString)) {
+      rewardDefs = JsonUtils.getListByString(rewardString, new TypeReference<List<RewardDef>>() {});
+    }
   }
 }

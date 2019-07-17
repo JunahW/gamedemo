@@ -4,8 +4,12 @@ import com.example.gamedemo.common.anno.ExcelColumn;
 import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
 import com.example.gamedemo.server.game.task.model.TaskCondition;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * @author wengj
@@ -35,6 +39,8 @@ public class TaskResource implements ResourceInterface {
   /** 完成奖励 */
   @ExcelColumn(columnName = "rewardString")
   private String rewardString;
+
+  private List<RewardDef> rewardDefs;
 
   @Override
   public Object getId() {
@@ -73,18 +79,21 @@ public class TaskResource implements ResourceInterface {
     this.taskCondition = taskCondition;
   }
 
-  public String getRewardString() {
-    return rewardString;
+  public List<RewardDef> getRewardDefs() {
+    return rewardDefs;
   }
 
-  public void setRewardString(String rewardString) {
-    this.rewardString = rewardString;
+  public void setRewardDefs(List<RewardDef> rewardDefs) {
+    this.rewardDefs = rewardDefs;
   }
 
   @Override
   public void postInit() {
     if (!StringUtils.isEmpty(finishConditionString)) {
       taskCondition = JsonUtils.deSerializeEntity(finishConditionString, TaskCondition.class);
+    }
+    if (!StringUtils.isEmpty(rewardString)) {
+      rewardDefs = JsonUtils.getListByString(rewardString, new TypeReference<List<RewardDef>>() {});
     }
   }
 }

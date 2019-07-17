@@ -55,4 +55,13 @@ public interface MonsterService {
    * @return
    */
   Monster getMonsterById(Player player, Long monsterId);
+
+  /**
+   * 处理怪物死亡a
+   *
+   * @param player
+   * @param scene
+   * @param monster
+   */
+  void handleMonsterDead(Player player, Scene scene, Monster monster);
 }

@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.scene.handler.impl;
 
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.example.gamedemo.server.game.scene.handler.AbstractMapHandler;
@@ -42,4 +43,7 @@ public class CommonMapHandler extends AbstractMapHandler {
     // 退出当前场景
     currentScene.leaveScene(player.getId());
   }
+
+  @Override
+  public void handleMonsterDead(Player player, Scene scene, Monster monster) {}
 }

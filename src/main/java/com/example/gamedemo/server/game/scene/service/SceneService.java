@@ -1,6 +1,7 @@
 package com.example.gamedemo.server.game.scene.service;
 
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -112,11 +113,9 @@ public interface SceneService {
    *
    * @param attacker
    * @param scene
-   * @param monsterId
-   * @param monsterResourceId
+   * @param monster
    */
-  void handMonsterDeadEvent(
-      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId);
+  void handMonsterDeadEvent(Player attacker, Scene scene, Monster monster);
 
   /** 开启场景线程 */
   void sceneStart();

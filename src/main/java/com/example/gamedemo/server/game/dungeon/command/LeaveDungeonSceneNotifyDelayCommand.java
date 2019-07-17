@@ -47,10 +47,13 @@ public class LeaveDungeonSceneNotifyDelayCommand extends AbstractSceneDelayComma
 
   @Override
   public void doAction() {
+    LeaveDungeonSceneDelayCommand command =
+        LeaveDungeonSceneDelayCommand.valueOf(getSceneId(), countDown, player);
+    Scene scene = SpringContext.getSceneService().getSceneById(player, getSceneId());
+    scene.putCommand(command);
     // 通知客户端
     SessionManager.sendMessage(player, SM_DungeonCountDown.valueOf(countDown));
     // 提交退出副本任务
-    SpringContext.getSceneExecutorService()
-        .submit(LeaveDungeonSceneDelayCommand.valueOf(getSceneId(), countDown, player));
+    SpringContext.getSceneExecutorService().submit(command);
   }
 }

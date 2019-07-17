@@ -1,16 +1,12 @@
 package com.example.gamedemo.server.game.fight.progress;
 
-import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
-import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.skill.model.Skill;
-import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
-import com.example.gamedemo.server.game.task.event.TaskEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,13 +37,7 @@ public class AttackTargetHandler {
     logger.info("[{}]受到攻击,减少血量[{}]", target.getId(), damage);
     if (target.getHp() <= 0) {
       if (target instanceof Monster) {
-        // 怪物死亡 触发事件
-        EventBusManager.submitEvent(
-            MonsterDeadEvent.valueOf(
-                attacker, scene, target.getId(), ((Monster) target).getMonsterResourceId()));
-        // 任务事件
-        EventBusManager.submitEvent(
-            TaskEvent.valueOf(attacker, TaskTypeEnum.KILL_MONSTER_QUANTITY, 1));
+        SpringContext.getMonsterService().handleMonsterDead(attacker, scene, (Monster) target);
       }
     }
   }

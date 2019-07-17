@@ -1,7 +1,9 @@
 package com.example.gamedemo.server.game.scene.handler;
 
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
+import com.example.gamedemo.server.game.scene.model.Scene;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -53,4 +55,20 @@ public abstract class AbstractMapHandler {
    * @param player
    */
   public abstract void leaveMap(Player player);
+
+  /**
+   * 副本结束进行操作
+   *
+   * @param player
+   */
+  public void doEnd(Player player) {}
+
+  /**
+   * 处理怪物死亡
+   *
+   * @param player
+   * @param scene
+   * @param monster
+   */
+  public abstract void handleMonsterDead(Player player, Scene scene, Monster monster);
 }

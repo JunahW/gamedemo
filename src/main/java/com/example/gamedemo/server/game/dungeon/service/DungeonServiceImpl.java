@@ -3,7 +3,12 @@ package com.example.gamedemo.server.game.dungeon.service;
 import com.example.gamedemo.common.executer.Command;
 import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.constant.GameConstant;
+import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
+import com.example.gamedemo.server.game.base.gameobject.SceneObject;
+import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
+import com.example.gamedemo.server.game.base.utils.RewardUtils;
 import com.example.gamedemo.server.game.dungeon.command.LeaveDungeonSceneNotifyDelayCommand;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
 import com.example.gamedemo.server.game.scene.model.Scene;
@@ -13,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,14 +49,14 @@ public class DungeonServiceImpl implements DungeonService {
         SceneBuffRateCommand.valueOf(scene, GameConstant.SCENE_DELAY, GameConstant.SCENE_PERIOD);
     SpringContext.getSceneExecutorService().submit(command);
     scene.putCommand(command);
-
-    SpringContext.getSceneExecutorService()
-        .submit(
-            LeaveDungeonSceneNotifyDelayCommand.valueOf(
-                sceneId,
-                mapResource.getDuration() - GameConstant.DUNGEON_COUNT_DOWN,
-                GameConstant.DUNGEON_COUNT_DOWN,
-                player));
+    LeaveDungeonSceneNotifyDelayCommand delayCommand =
+        LeaveDungeonSceneNotifyDelayCommand.valueOf(
+            sceneId,
+            mapResource.getDuration() - GameConstant.DUNGEON_COUNT_DOWN,
+            GameConstant.DUNGEON_COUNT_DOWN,
+            player);
+    scene.putCommand(delayCommand);
+    SpringContext.getSceneExecutorService().submit(delayCommand);
   }
 
   @Override
@@ -72,5 +78,22 @@ public class DungeonServiceImpl implements DungeonService {
   @Override
   public Scene getDungeonSceneByPlayerId(Long playerId) {
     return dungeonManager.getSceneByPlayerId(playerId);
+  }
+
+  @Override
+  public void handleMonsterDead(Player player, Scene scene, Monster monster) {
+    Map<Long, SceneObject> sceneObjectByType =
+        scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER);
+    if (sceneObjectByType.size() == 0) {
+      logger.info("挑战副本成功");
+      // 副本挑战成功 发放奖励
+      MapResource mapResource =
+          SpringContext.getSceneService().getSceneResourceById(scene.getSceneResourceId());
+      List<RewardDef> rewardDefs = mapResource.getRewardDefs();
+      logger.info("获得奖励[{}]", rewardDefs);
+      RewardUtils.reward(player, rewardDefs);
+      // 离开地图
+      SpringContext.getSceneService().changeScene(player, player.getBeforeSceneId());
+    }
   }
 }

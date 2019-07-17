@@ -134,4 +134,10 @@ public class BuffContainer<T extends CreatureObject> {
       }
     }
   }
+
+  /** 清理buff */
+  public void clear() {
+    buffMap.clear();
+    logger.info("[{}][{}]清理buff", owner.getSceneObjectType(), owner.getId());
+  }
 }

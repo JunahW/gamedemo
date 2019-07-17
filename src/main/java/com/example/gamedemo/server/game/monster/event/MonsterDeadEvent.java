@@ -1,7 +1,8 @@
 package com.example.gamedemo.server.game.monster.event;
 
 import com.example.gamedemo.common.event.Event;
-import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
+import com.example.gamedemo.server.game.monster.model.Monster;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
 /**
@@ -11,29 +12,25 @@ import com.example.gamedemo.server.game.scene.model.Scene;
  */
 public class MonsterDeadEvent implements Event {
   /** 归属者 */
-  private CreatureObject attacker;
+  private Player attacker;
 
   /** 场景 */
   private Scene scene;
 
-  /** 怪物id */
-  private long monsterId;
-
-  /** 怪物资源id */
-  private int monsterResourceId;
+  /** 怪物 */
+  private Monster monster;
 
   /**
+   * @param attacker
    * @param scene
-   * @param monsterId
+   * @param monster
    * @return
    */
-  public static MonsterDeadEvent valueOf(
-      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId) {
+  public static MonsterDeadEvent valueOf(Player attacker, Scene scene, Monster monster) {
     MonsterDeadEvent monsterDeadEvent = new MonsterDeadEvent();
     monsterDeadEvent.setAttacker(attacker);
     monsterDeadEvent.setScene(scene);
-    monsterDeadEvent.setMonsterId(monsterId);
-    monsterDeadEvent.setMonsterResourceId(monsterResourceId);
+    monsterDeadEvent.setMonster(monster);
     return monsterDeadEvent;
   }
 
@@ -45,28 +42,20 @@ public class MonsterDeadEvent implements Event {
     this.scene = scene;
   }
 
-  public long getMonsterId() {
-    return monsterId;
-  }
-
-  public void setMonsterId(long monsterId) {
-    this.monsterId = monsterId;
-  }
-
-  public CreatureObject getAttacker() {
+  public Player getAttacker() {
     return attacker;
   }
 
-  public void setAttacker(CreatureObject attacker) {
+  public void setAttacker(Player attacker) {
     this.attacker = attacker;
   }
 
-  public int getMonsterResourceId() {
-    return monsterResourceId;
+  public Monster getMonster() {
+    return monster;
   }
 
-  public void setMonsterResourceId(int monsterResourceId) {
-    this.monsterResourceId = monsterResourceId;
+  public void setMonster(Monster monster) {
+    this.monster = monster;
   }
 
   @Override

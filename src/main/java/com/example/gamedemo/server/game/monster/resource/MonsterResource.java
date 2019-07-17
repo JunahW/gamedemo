@@ -61,6 +61,10 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "defense")
   private int defense;
 
+  /** 复活时间 */
+  @ExcelColumn(columnName = "rebornTime")
+  private long rebornTime;
+
   /** 死亡经验值 */
   @ExcelColumn(columnName = "exp")
   private long exp;
@@ -178,6 +182,14 @@ public class MonsterResource implements ResourceInterface {
 
   public void setDefense(int defense) {
     this.defense = defense;
+  }
+
+  public long getRebornTime() {
+    return rebornTime;
+  }
+
+  public void setRebornTime(long rebornTime) {
+    this.rebornTime = rebornTime;
   }
 
   public long getExp() {

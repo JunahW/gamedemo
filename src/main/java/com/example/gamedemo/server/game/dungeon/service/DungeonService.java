@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.dungeon.service;
 
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
 
@@ -31,4 +32,13 @@ public interface DungeonService {
    * @return
    */
   Scene getDungeonSceneByPlayerId(Long playerId);
+
+  /**
+   * 处理怪物死亡
+   *
+   * @param player
+   * @param scene
+   * @param monster
+   */
+  void handleMonsterDead(Player player, Scene scene, Monster monster);
 }

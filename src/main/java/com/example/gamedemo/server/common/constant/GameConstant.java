@@ -30,4 +30,7 @@ public interface GameConstant {
 
   /** 首次登陆任务id */
   int FIRST_TASK = 1001;
+
+  /** 冒号分割符 */
+  String SPLIT_TOKEN_COLON = ":";
 }

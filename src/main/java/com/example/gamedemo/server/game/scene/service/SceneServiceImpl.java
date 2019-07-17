@@ -4,13 +4,13 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.server.common.SpringContext;
-import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.common.model.Drop;
 import com.example.gamedemo.server.common.utils.RandomUtils;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.base.model.SceneObjectView;
 import com.example.gamedemo.server.game.monster.model.DropObject;
+import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.command.ChangeSceneCommand;
@@ -123,6 +123,8 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public void leaveScene(Player player) {
+    // 清理buff
+    player.getBuffContainer().clear();
     MapResource sceneResource = sceneManager.getSceneResourceById(player.getSceneId());
     AbstractMapHandler handler = AbstractMapHandler.getHandler(sceneResource.getSceneTypeEnum());
     handler.leaveMap(player);
@@ -193,22 +195,29 @@ public class SceneServiceImpl implements SceneService {
   }
 
   @Override
-  public void handMonsterDeadEvent(
-      CreatureObject attacker, Scene scene, long monsterId, int monsterResourceId) {
-    logger.info("场景[{}]的[{}]怪物已经死亡", scene.getSceneResourceId(), monsterId);
+  public void handMonsterDeadEvent(Player attacker, Scene scene, Monster monster) {
+
+    logger.info("场景[{}]的[{}]怪物已经死亡", scene.getSceneResourceId(), monster.getId());
     // 掉落装备
+    int monsterResourceId = monster.getMonsterResourceId();
     createDropObject(scene, monsterResourceId);
     // 新增经验
     MonsterResource monsterResource =
         SpringContext.getMonsterService().getMonsterResourceById(monsterResourceId);
     attacker.setExp(attacker.getExp() + monsterResource.getExp());
 
-    scene.leaveScene(monsterId);
+    scene.leaveScene(monster.getId());
 
-    SpringContext.getSceneExecutorService()
-        .submit(
-            SceneMonsterRebornDelayCommand.valueOf(
-                scene, GameConstant.MONSTER_REBORN_PERIOD, monsterResourceId));
+    // 怪物重生
+    long rebornTime = monsterResource.getRebornTime();
+    if (rebornTime > 0) {
+      SpringContext.getSceneExecutorService()
+          .submit(SceneMonsterRebornDelayCommand.valueOf(scene, rebornTime, monsterResourceId));
+    }
+
+    MapResource sceneResource = sceneManager.getSceneResourceById(scene.getSceneResourceId());
+    AbstractMapHandler handler = AbstractMapHandler.getHandler(sceneResource.getSceneTypeEnum());
+    handler.handleMonsterDead(attacker, scene, monster);
   }
 
   @Override

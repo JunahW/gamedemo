@@ -93,7 +93,7 @@ public class TaskServiceImpl implements TaskService {
       RequestException.throwException(I18nId.TASK_NO_FINISH);
     }
     // TODO 奖励
-    taskResource.getRewardString();
+    // taskResource.getRewardString();
 
     // 开始新任务
     int nextTaskId = taskResource.getNextTaskId();

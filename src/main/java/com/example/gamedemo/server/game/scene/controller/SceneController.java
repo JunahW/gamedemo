@@ -139,10 +139,6 @@ public class SceneController {
   @ReceiverHandler
   public void handleMonsterDeadEvent(MonsterDeadEvent event) {
     SpringContext.getSceneService()
-        .handMonsterDeadEvent(
-            event.getAttacker(),
-            event.getScene(),
-            event.getMonsterId(),
-            event.getMonsterResourceId());
+        .handMonsterDeadEvent(event.getAttacker(), event.getScene(), event.getMonster());
   }
 }
