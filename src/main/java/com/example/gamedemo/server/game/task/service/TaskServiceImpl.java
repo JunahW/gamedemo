@@ -4,6 +4,8 @@ import com.example.gamedemo.common.constant.I18nId;
 import com.example.gamedemo.common.exception.RequestException;
 import com.example.gamedemo.common.session.SessionManager;
 import com.example.gamedemo.server.common.constant.GameConstant;
+import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
+import com.example.gamedemo.server.game.base.utils.RewardUtils;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.task.entity.TaskStorageEnt;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -92,17 +95,15 @@ public class TaskServiceImpl implements TaskService {
       logger.error("该请求非法，该任务还无完成");
       RequestException.throwException(I18nId.TASK_NO_FINISH);
     }
-    // TODO 奖励
-    // taskResource.getRewardString();
-
+    List<RewardDef> rewardDefs = taskResource.getRewardDefs();
+    RewardUtils.reward(player, rewardDefs);
+    logger.info("获得奖励[{}]", rewardDefs);
     // 开始新任务
     int nextTaskId = taskResource.getNextTaskId();
-
     // 移除旧任务
     taskStorage.removeTask(taskId);
     // 接受新任务
     acceptNewTask(player, nextTaskId);
-
     return true;
   }
 
