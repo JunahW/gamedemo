@@ -40,6 +40,9 @@ public class Player extends CreatureObject<Player> implements Serializable {
   /** 进入副本前的场景id */
   private int beforeSceneId;
 
+  /** 公会id */
+  private Long guild;
+
   /** cd组件 */
   private CoolDownComponent cdComponent = new CoolDownComponent();
 
@@ -105,6 +108,14 @@ public class Player extends CreatureObject<Player> implements Serializable {
 
   public void setBeforeSceneId(int beforeSceneId) {
     this.beforeSceneId = beforeSceneId;
+  }
+
+  public Long getGuild() {
+    return guild;
+  }
+
+  public void setGuild(Long guild) {
+    this.guild = guild;
   }
 
   /**

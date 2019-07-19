@@ -53,6 +53,8 @@ public class DecoderUtils {
           if (value.length() > 0) {
             declaredFields[i].set(packet, value.charAt(0));
           }
+        } else if (Boolean.TYPE == fieldType) {
+          declaredFields[i].set(packet, Boolean.valueOf(value));
         }
       }
       msgPacket.setMsg(packet);

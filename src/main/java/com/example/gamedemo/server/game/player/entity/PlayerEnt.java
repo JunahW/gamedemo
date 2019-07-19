@@ -45,6 +45,9 @@ public class PlayerEnt implements Entity<Long> {
   /** 经验 */
   private long exp;
 
+  /** 公会id */
+  private Long guildId;
+
   /**
    * 获取player的存储对象
    *
@@ -138,6 +141,14 @@ public class PlayerEnt implements Entity<Long> {
     this.level = level;
   }
 
+  public Long getGuildId() {
+    return guildId;
+  }
+
+  public void setGuildId(Long guildId) {
+    this.guildId = guildId;
+  }
+
   @Override
   public Long getEntityId() {
     return this.id;
@@ -168,6 +179,7 @@ public class PlayerEnt implements Entity<Long> {
     this.setMapId(player.getSceneId());
     this.setLevel(player.getLevel());
     this.setExp(player.getExp());
+    this.setGuildId(player.getGuild());
     return true;
   }
 
@@ -184,6 +196,7 @@ public class PlayerEnt implements Entity<Long> {
     player.setSceneId(getMapId());
     player.setLevel(getLevel());
     player.setExp(getExp());
+    player.setGuild(getGuildId());
     this.setPlayer(player);
     return true;
   }

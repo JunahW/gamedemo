@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
@@ -133,6 +134,15 @@ public class EntityCacheServiceImpl<PK extends Comparable<PK> & Serializable, V 
       e.printStackTrace();
     }
     return entity;
+  }
+
+  @Override
+  public List<V> getEntityList() {
+    List<V> entityList = accessor.getEntityList(clazz);
+    for (V entity : entityList) {
+      entity.deSerialize();
+    }
+    return entityList;
   }
 
   public Accessor getAccessor() {

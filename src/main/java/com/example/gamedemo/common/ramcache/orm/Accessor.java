@@ -3,6 +3,7 @@ package com.example.gamedemo.common.ramcache.orm;
 import com.example.gamedemo.common.ramcache.Entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author: wengj
@@ -53,4 +54,13 @@ public interface Accessor {
    * @return
    */
   <PK extends Serializable, T extends Entity> void saveOrUpdate(Class<T> clazz, T entity);
+
+  /**
+   * 获取实体集合
+   *
+   * @param clazz
+   * @param <T>
+   * @return
+   */
+  <T extends Entity> List<T> getEntityList(Class<T> clazz);
 }

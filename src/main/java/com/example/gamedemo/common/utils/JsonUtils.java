@@ -2,6 +2,7 @@ package com.example.gamedemo.common.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -68,5 +69,51 @@ public class JsonUtils {
       e.printStackTrace();
     }
     return list;
+  }
+
+  /**
+   * 反序列化Map
+   *
+   * @param mapClass
+   * @param keyClass
+   * @param valueClass
+   * @param value
+   * @param <M>
+   * @param <K>
+   * @param <V>
+   * @return
+   */
+  public static <M, K, V> M deSerializeMap(
+      Class<M> mapClass, Class<K> keyClass, Class<V> valueClass, String value) {
+    JavaType javaType =
+        mapper.getTypeFactory().constructParametricType(mapClass, keyClass, valueClass);
+    M m = null;
+    try {
+      m = (M) mapper.readValue(value, javaType);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return m;
+  }
+
+  /**
+   * 反序列化set
+   *
+   * @param setClass
+   * @param valueClass
+   * @param value
+   * @param <S>
+   * @param <V>
+   * @return
+   */
+  public static <S, V> S deSerializeSet(Class<S> setClass, Class<V> valueClass, String value) {
+    JavaType javaType = mapper.getTypeFactory().constructParametricType(setClass, valueClass);
+    S s = null;
+    try {
+      s = (S) mapper.readValue(value, javaType);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return s;
   }
 }

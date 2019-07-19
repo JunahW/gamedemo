@@ -3,6 +3,7 @@ package com.example.gamedemo.common.ramcache.service;
 import com.example.gamedemo.common.ramcache.Entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author: wengj
@@ -31,7 +32,16 @@ public interface EntityCacheService<
    * 加载或创建
    *
    * @param id
+   * @param builder
    * @return
    */
   V loadOrCreate(PK id, EntityBuilder<PK, V> builder);
+
+  /**
+   * 获取实体集合
+   *
+   * @param <T>
+   * @return
+   */
+  List<V> getEntityList();
 }

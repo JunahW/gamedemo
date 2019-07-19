@@ -125,4 +125,21 @@ public interface I18nId {
 
   /** 该任务未完成 */
   int TASK_NO_FINISH = 90001;
+
+  /** ==========================公会相关=========================* */
+
+  /** 公会已经存在 */
+  int GUILD_HAS_EXISTED = 11000;
+
+  /** 该公会不存在 */
+  int GUILD_NO_EXIST = 11001;
+
+  /** 玩家还未加入行会 */
+  int PLAYER_NO_JOIN_GUILD = 11002;
+
+  /** 玩家没有权限 */
+  int PLAYER_NO_PERMISSION = 11003;
+
+  /** 玩家已经加入行会 */
+  int PLAYER_HAS_JOIN_GUILD = 11004;
 }

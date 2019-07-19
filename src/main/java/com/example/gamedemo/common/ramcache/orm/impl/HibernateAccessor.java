@@ -3,6 +3,7 @@ package com.example.gamedemo.common.ramcache.orm.impl;
 import com.example.gamedemo.common.ramcache.Entity;
 import com.example.gamedemo.common.ramcache.orm.Accessor;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.DetachedCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author wengj
@@ -48,5 +50,10 @@ public class HibernateAccessor extends HibernateDaoSupport implements Accessor {
   @Override
   public <PK extends Serializable, T extends Entity> void saveOrUpdate(Class<T> clazz, T entity) {
     getHibernateTemplate().saveOrUpdate(entity);
+  }
+
+  @Override
+  public <T extends Entity> List<T> getEntityList(Class<T> clazz) {
+    return (List<T>) getHibernateTemplate().findByCriteria(DetachedCriteria.forClass(clazz));
   }
 }

@@ -4,12 +4,16 @@ import com.example.gamedemo.common.utils.JsonUtils;
 import com.example.gamedemo.server.game.bag.model.*;
 import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
+import com.example.gamedemo.server.game.player.model.Player;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author wengj
@@ -58,5 +62,25 @@ public class JsonTest {
     Map<String, Integer> map = JsonUtils.deSerializeEntity("{\"radius\":4}", Map.class);
     Integer integer = map.get("radius");
     System.out.println(integer);
+  }
+
+  @Test
+  public void testMapJsonTranslate() {
+    Map<Integer, Player> map = new HashMap<>();
+    map.put(1, new Player());
+    String s = JsonUtils.serializeEntity(map);
+    Map<Integer, Player> map1 = JsonUtils.deSerializeMap(Map.class, Integer.class, Player.class, s);
+    Player player = map1.get(1);
+    System.out.println(player);
+    System.out.println(map1);
+  }
+
+  @Test
+  public void tesSetJsonTranslate() {
+    TreeSet<Long> longs = new TreeSet<>();
+    longs.add(564456L);
+    String s = JsonUtils.serializeEntity(longs);
+    Set set = JsonUtils.deSerializeSet(Set.class, Long.class, s);
+    System.out.println(set);
   }
 }
