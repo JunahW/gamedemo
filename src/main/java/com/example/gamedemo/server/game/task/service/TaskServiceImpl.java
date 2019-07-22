@@ -58,6 +58,7 @@ public class TaskServiceImpl implements TaskService {
   @Override
   public void handleTaskEvent(TaskEvent event) {
     logger.info("处理任务事件");
+    // TODO
     AbstractProcessor processor = AbstractProcessor.getProcessor(event.getTaskType());
     Player player = event.getPlayer();
     TaskStorage taskStorage = player.getTaskStorage();
@@ -90,18 +91,21 @@ public class TaskServiceImpl implements TaskService {
     Task task = taskStorage.getTaskById(taskId);
     TaskResource taskResource = taskManager.getTaskResource(taskId);
     TaskCondition taskCondition = taskResource.getTaskCondition();
-    // 判断任务是否真的已经完成
+    // 判断任务是否真的已经完成 TODO
     if (!isTaskFinish(task, taskCondition)) {
       logger.error("该请求非法，该任务还无完成");
       RequestException.throwException(I18nId.TASK_NO_FINISH);
     }
     List<RewardDef> rewardDefs = taskResource.getRewardDefs();
+    // TODO
     RewardUtils.reward(player, rewardDefs);
     logger.info("获得奖励[{}]", rewardDefs);
     // 开始新任务
     int nextTaskId = taskResource.getNextTaskId();
     // 移除旧任务
     taskStorage.removeTask(taskId);
+
+    saveTaskStorage(player);
     // 接受新任务
     acceptNewTask(player, nextTaskId);
     return true;

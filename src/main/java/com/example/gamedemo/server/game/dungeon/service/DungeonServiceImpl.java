@@ -91,6 +91,7 @@ public class DungeonServiceImpl implements DungeonService {
           SpringContext.getSceneService().getSceneResourceById(scene.getSceneResourceId());
       List<RewardDef> rewardDefs = mapResource.getRewardDefs();
       logger.info("获得奖励[{}]", rewardDefs);
+      // TODO
       RewardUtils.reward(player, rewardDefs);
       // 离开地图
       SpringContext.getSceneService().changeScene(player, player.getBeforeSceneId());

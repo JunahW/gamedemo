@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author wengj
@@ -32,6 +34,9 @@ public class GuildServiceImpl implements GuildService {
   @Autowired private GuildManager guildManager;
 
   @Autowired private PlayerGuildManager playerGuildManager;
+
+  /** 行会锁 */
+  private ConcurrentHashMap<Long, ReentrantLock> guilLocks = new ConcurrentHashMap<>();
 
   @Override
   public void createGuild(Player player, Long guildId, String guildName) {
@@ -110,6 +115,7 @@ public class GuildServiceImpl implements GuildService {
 
   @Override
   public void quitGuild(Player player) {
+    // 加锁
     PlayerGuildEnt playerGuildEnt = playerGuildManager.getPlayerGuildEnt(player.getId());
     Long guildId = playerGuildEnt.getGuildId();
     if (guildId == null) {
