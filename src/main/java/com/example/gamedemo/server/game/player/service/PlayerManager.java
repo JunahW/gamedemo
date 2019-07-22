@@ -4,12 +4,15 @@ import com.example.gamedemo.common.ramcache.orm.Accessor;
 import com.example.gamedemo.common.ramcache.service.EntityCacheServiceImpl;
 import com.example.gamedemo.common.resource.ResourceManager;
 import com.example.gamedemo.server.game.player.entity.PlayerEnt;
+import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.player.resource.BaseAttributeResource;
 import com.example.gamedemo.server.game.player.resource.PlayerResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,5 +77,19 @@ public class PlayerManager {
    */
   public void savePlayerEnt(PlayerEnt playerEnt) {
     entityCacheService.writeBack(playerEnt.getId(), playerEnt);
+  }
+
+  /**
+   * 获取玩家列表
+   *
+   * @return
+   */
+  public List<Player> getPlayerList() {
+    List<PlayerEnt> entityList = entityCacheService.getEntityList();
+    LinkedList<Player> players = new LinkedList<>();
+    for (PlayerEnt playerEnt : entityList) {
+      players.add(playerEnt.getPlayer());
+    }
+    return players;
   }
 }

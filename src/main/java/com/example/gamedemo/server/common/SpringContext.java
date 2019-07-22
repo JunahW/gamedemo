@@ -13,6 +13,7 @@ import com.example.gamedemo.server.game.fight.service.FightService;
 import com.example.gamedemo.server.game.guild.service.GuildService;
 import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
+import com.example.gamedemo.server.game.rank.service.RankService;
 import com.example.gamedemo.server.game.scene.service.SceneService;
 import com.example.gamedemo.server.game.skill.service.SkillService;
 import com.example.gamedemo.server.game.task.service.TaskService;
@@ -48,6 +49,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private DungeonService dungeonService;
   @Autowired private TaskService taskService;
   @Autowired private GuildService guildService;
+  @Autowired private RankService rankService;
   @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
@@ -108,6 +110,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static GuildService getGuildService() {
     return instance.guildService;
+  }
+
+  public static RankService getRankService() {
+    return instance.rankService;
   }
 
   public static GlobalService getGlobalService() {

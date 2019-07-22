@@ -1,8 +1,11 @@
 package com.example.gamedemo.server.game.attribute;
 
+import com.example.gamedemo.common.event.EventBusManager;
 import com.example.gamedemo.server.game.attribute.constant.AttributeTypeEnum;
 import com.example.gamedemo.server.game.attribute.utils.AttributeUtils;
 import com.example.gamedemo.server.game.player.model.Player;
+import com.example.gamedemo.server.game.rank.event.ChangeBattleScoreEvent;
+import com.example.gamedemo.server.game.rank.model.BattleScoreRankInfo;
 
 import java.util.Map;
 
@@ -26,5 +29,8 @@ public class PlayerAttributeContainer extends AbstractAttributeContainer<Player>
     /** 计算战力 */
     long combatIndex = AttributeUtils.computeCombatIndex(finalAttributeMap);
     owner.setCombatIndex(combatIndex);
+    // 抛出更新战力事件
+    BattleScoreRankInfo rankInfo = BattleScoreRankInfo.valueOf(owner.getId(), combatIndex);
+    EventBusManager.submitEvent(ChangeBattleScoreEvent.valueOf(rankInfo));
   }
 }
