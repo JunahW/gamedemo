@@ -36,32 +36,40 @@ public class GuildServiceImpl implements GuildService {
   @Autowired private PlayerGuildManager playerGuildManager;
 
   /** 行会锁 */
-  private ConcurrentHashMap<Long, ReentrantLock> guilLocks = new ConcurrentHashMap<>();
+  private ConcurrentHashMap<Long, ReentrantLock> guildLocks = new ConcurrentHashMap<>();
 
   @Override
   public void createGuild(Player player, Long guildId, String guildName) {
-    Guild guild = guildManager.getGuildById(guildId);
-    PlayerGuildEnt playerGuildEnt = playerGuildManager.getPlayerGuildEnt(player.getId());
-    if (playerGuildEnt.getGuildId() != null) {
-      logger.info("玩家[{}]已经加入行会[{}]无法创建行会", player.getId(), player.getGuild());
-      RequestException.throwException(I18nId.PLAYER_HAS_JOIN_GUILD);
-    }
-    if (guild != null) {
-      logger.info("该公会[{}]已经存在", guildId);
-      RequestException.throwException(I18nId.GUILD_HAS_EXISTED);
-    }
-    guild = Guild.valueOf(guildId, guildName, player.getId());
-    guild.setPresident(player.getId());
-    guild.addMember(player.getId(), PositionTypeEnum.PRESIDENT);
-    guild.setId(guildId);
-    GuildEnt guildEnt = GuildEnt.valueOf(guild);
+    ReentrantLock reentrantLock = getLockByGuildId(guildId);
 
-    playerGuildEnt.setGuildId(guildId);
-    playerGuildEnt.setPosition(PositionTypeEnum.PRESIDENT.getTypeId());
-    playerGuildManager.savePlayerGuildEnt(playerGuildEnt);
-    guildManager.saveGuildEnt(guildEnt);
+    try {
+      Guild guild = guildManager.getGuildById(guildId);
+      PlayerGuildEnt playerGuildEnt = playerGuildManager.getPlayerGuildEnt(player.getId());
+      if (playerGuildEnt.getGuildId() != null) {
+        logger.info("玩家[{}]已经加入行会[{}]无法创建行会", player.getId(), player.getGuild());
+        RequestException.throwException(I18nId.PLAYER_HAS_JOIN_GUILD);
+      }
+      if (guild != null) {
+        logger.info("该公会[{}]已经存在", guildId);
+        RequestException.throwException(I18nId.GUILD_HAS_EXISTED);
+      }
+      guild = Guild.valueOf(guildId, guildName, player.getId());
+      guild.setPresident(player.getId());
+      guild.addMember(player.getId(), PositionTypeEnum.PRESIDENT);
+      guild.setId(guildId);
+      GuildEnt guildEnt = GuildEnt.valueOf(guild);
 
-    SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("创建公会成功"));
+      playerGuildEnt.setGuildId(guildId);
+      playerGuildEnt.setPosition(PositionTypeEnum.PRESIDENT.getTypeId());
+      playerGuildManager.savePlayerGuildEnt(playerGuildEnt);
+      guildManager.saveGuildEnt(guildEnt);
+
+      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("创建公会成功"));
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      reentrantLock.unlock();
+    }
   }
 
   @Override
@@ -73,14 +81,22 @@ public class GuildServiceImpl implements GuildService {
 
   @Override
   public void joinGuild(Player player, Long guildId) {
-    Guild guild = guildManager.getGuildById(guildId);
-    if (guild == null) {
-      logger.info("该公会[{}]不存在", guildId);
-      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("该公会不存在"));
-      RequestException.throwException(I18nId.GUILD_NO_EXIST);
+    ReentrantLock reentrantLock = getLockByGuildId(guildId);
+    try {
+      reentrantLock.lock();
+      Guild guild = guildManager.getGuildById(guildId);
+      if (guild == null) {
+        logger.info("该公会[{}]不存在", guildId);
+        SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("该公会不存在"));
+        RequestException.throwException(I18nId.GUILD_NO_EXIST);
+      }
+      guild.addApply(player.getId());
+      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已提交申请，会长审核方可加入"));
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      reentrantLock.unlock();
     }
-    guild.addApply(player.getId());
-    SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已提交申请，会长审核方可加入"));
   }
 
   @Override
@@ -91,26 +107,34 @@ public class GuildServiceImpl implements GuildService {
       logger.info("玩家[{}]还未加入公会");
       RequestException.throwException(I18nId.PLAYER_NO_JOIN_GUILD);
     }
-    Guild guild = guildManager.getGuildById(guildId);
-    PositionTypeEnum positionType = guild.getMemberPositionType(player.getId());
-    if (positionType == null || !positionType.equals(PositionTypeEnum.PRESIDENT)) {
-      logger.info("您没有权限处理");
-      RequestException.throwException(I18nId.PLAYER_NO_PERMISSION);
-    }
 
-    if (!agree) {
+    ReentrantLock reentrantLock = getLockByGuildId(guildId);
+    try {
+      Guild guild = guildManager.getGuildById(guildId);
+      PositionTypeEnum positionType = guild.getMemberPositionType(player.getId());
+      if (positionType == null || !positionType.equals(PositionTypeEnum.PRESIDENT)) {
+        logger.info("您没有权限处理");
+        RequestException.throwException(I18nId.PLAYER_NO_PERMISSION);
+      }
+
+      if (!agree) {
+        guild.removeApply(applyPlayerId);
+        SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已拒绝加入"));
+        return;
+      }
+      PlayerGuildEnt applyPlayerGuildEnt = playerGuildManager.getPlayerGuildEnt(applyPlayerId);
+
+      guild.addMember(applyPlayerId, PositionTypeEnum.MEMBER);
       guild.removeApply(applyPlayerId);
-      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已拒绝加入"));
-      return;
+      applyPlayerGuildEnt.setGuildId(guildId);
+      applyPlayerGuildEnt.setPosition(PositionTypeEnum.MEMBER.getTypeId());
+      playerGuildManager.savePlayerGuildEnt(applyPlayerGuildEnt);
+      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已同意加入"));
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      reentrantLock.unlock();
     }
-    PlayerGuildEnt applyPlayerGuildEnt = playerGuildManager.getPlayerGuildEnt(applyPlayerId);
-
-    guild.addMember(applyPlayerId, PositionTypeEnum.MEMBER);
-    guild.removeApply(applyPlayerId);
-    applyPlayerGuildEnt.setGuildId(guildId);
-    applyPlayerGuildEnt.setPosition(PositionTypeEnum.MEMBER.getTypeId());
-    playerGuildManager.savePlayerGuildEnt(applyPlayerGuildEnt);
-    SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("已同意加入"));
   }
 
   @Override
@@ -122,13 +146,21 @@ public class GuildServiceImpl implements GuildService {
       logger.info("还未加入公会");
       RequestException.throwException(I18nId.PLAYER_NO_JOIN_GUILD);
     }
-    Guild guild = guildManager.getGuildById(guildId);
-    // 退出公会
-    playerGuildEnt.setGuildId(null);
-    playerGuildEnt.setPosition(null);
-    guild.removeMember(player.getId());
-    guildManager.saveGuildEnt(GuildEnt.valueOf(guild));
-    playerGuildManager.savePlayerGuildEnt(playerGuildEnt);
+    ReentrantLock reentrantLock = getLockByGuildId(guildId);
+
+    try {
+      Guild guild = guildManager.getGuildById(guildId);
+      // 退出公会
+      playerGuildEnt.setGuildId(null);
+      playerGuildEnt.setPosition(null);
+      guild.removeMember(player.getId());
+      guildManager.saveGuildEnt(GuildEnt.valueOf(guild));
+      playerGuildManager.savePlayerGuildEnt(playerGuildEnt);
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      reentrantLock.unlock();
+    }
   }
 
   @Override
@@ -156,5 +188,18 @@ public class GuildServiceImpl implements GuildService {
     Guild guild = guildManager.getGuildById(guildId);
     Map<Long, PositionTypeEnum> members = guild.getMembers();
     SessionManager.sendMessage(player, SM_MemberList.valueOf(members));
+  }
+
+  /**
+   * 获取对应的锁
+   *
+   * @param guildId
+   * @return
+   */
+  private ReentrantLock getLockByGuildId(Long guildId) {
+    if (guildLocks.get(guildId) == null) {
+      guildLocks.putIfAbsent(guildId, new ReentrantLock());
+    }
+    return guildLocks.get(guildId);
   }
 }
