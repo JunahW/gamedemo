@@ -59,6 +59,26 @@ public abstract class AbstractProcessor {
   public abstract boolean canReplace();
 
   /**
+   * 刷新触发器
+   *
+   * @param triggerCondition
+   * @param event
+   * @param task
+   * @return
+   */
+  public boolean refreshTrigger(TaskCondition triggerCondition, TaskEvent event, Task task) {
+    if (triggerCondition == null) {
+      return false;
+    }
+    if (!triggerCondition.getType().equals(event.getTaskType())) {
+      return false;
+    }
+    int value = getValue(event, triggerCondition);
+    task.changeTriggerProgress(value, canReplace());
+    return true;
+  }
+
+  /**
    * 刷新进度
    *
    * @param taskCondition
@@ -69,10 +89,9 @@ public abstract class AbstractProcessor {
     if (!taskCondition.getType().equals(event.getTaskType())) {
       return;
     }
-    if (taskCondition.getValue() > task.getProgress()) {
-      int value = event.getValue();
-      task.changeProgress(value, canReplace());
-    }
+
+    int changeValue = this.getValue(event, taskCondition);
+    task.changeExecuteProgress(changeValue, canReplace());
   }
 
   /**
@@ -83,4 +102,13 @@ public abstract class AbstractProcessor {
    * @param player
    */
   public abstract void initProgress(TaskCondition taskCondition, Task task, Player player);
+
+  /**
+   * 初始化待触发任务
+   *
+   * @param triggerCondition
+   * @param task
+   * @param player
+   */
+  public abstract void initTrigger(TaskCondition triggerCondition, Task task, Player player);
 }

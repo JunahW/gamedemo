@@ -13,8 +13,6 @@ import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.monster.resource.MonsterResource;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.model.Scene;
-import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
-import com.example.gamedemo.server.game.task.event.TaskEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +73,5 @@ public class MonsterServiceImpl implements MonsterService {
   @Override
   public void handleMonsterDead(Player player, Scene scene, Monster monster) {
     EventBusManager.submitEvent(MonsterDeadEvent.valueOf(player, scene, monster));
-    // 任务事件
-    EventBusManager.submitEvent(TaskEvent.valueOf(player, TaskTypeEnum.KILL_MONSTER_QUANTITY, 1));
   }
 }

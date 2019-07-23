@@ -37,9 +37,11 @@ public class BattleScoreRankHandler extends AbstractRankHandler<BattleScoreRankI
       rankInfos.add(rankInfo);
     }
     Collections.sort(rankInfos);
-    rankInfos =
-        (CopyOnWriteArrayList<BattleScoreRankInfo>)
-            rankInfos.subList(0, GameConstant.BATTLE_SCORE_LENGTH);
+    if (rankInfos.size() > GameConstant.BATTLE_SCORE_LENGTH) {
+      rankInfos =
+          (CopyOnWriteArrayList<BattleScoreRankInfo>)
+              rankInfos.subList(0, GameConstant.BATTLE_SCORE_LENGTH);
+    }
     super.setRankInfos(rankInfos);
   }
 

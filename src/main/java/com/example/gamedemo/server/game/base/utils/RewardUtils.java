@@ -27,4 +27,16 @@ public class RewardUtils {
     }
     return true;
   }
+
+  /**
+   * 判断背包是否满足
+   *
+   * @param player
+   * @param rewardDefs
+   * @return
+   */
+  public static boolean isEnoughPackSize(Player player, List<RewardDef> rewardDefs) {
+
+    return true;
+  }
 }

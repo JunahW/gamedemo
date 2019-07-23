@@ -5,6 +5,9 @@ import com.example.gamedemo.common.anno.HandlerMethod;
 import com.example.gamedemo.common.anno.ReceiverHandler;
 import com.example.gamedemo.common.session.TSession;
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.equip.event.TakeOffEquipmentEvent;
+import com.example.gamedemo.server.game.equip.event.WearEquipmentEvent;
+import com.example.gamedemo.server.game.monster.event.MonsterDeadEvent;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.task.event.TaskEvent;
 import com.example.gamedemo.server.game.task.packet.CM_GetTask;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Component;
 @Component
 @HandlerClass
 public class TaskController {
+
   /**
    * 监听玩家加载事件
    *
@@ -58,6 +62,36 @@ public class TaskController {
    */
   @ReceiverHandler
   public void handleTaskEvent(TaskEvent event) {
-    SpringContext.getTaskService().handleTaskEvent(event);
+    SpringContext.getTaskReceiverHandler().handleTaskEvent(event);
+  }
+
+  /**
+   * 处理怪物死亡事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handleMonsterDeadEvent(MonsterDeadEvent event) {
+    SpringContext.getTaskReceiverHandler().handleMonsterDeadEvent(event);
+  }
+
+  /**
+   * 处理穿装备事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handleWearEquipmentEvent(WearEquipmentEvent event) {
+    SpringContext.getTaskReceiverHandler().handleWearEquipmentEvent(event);
+  }
+
+  /**
+   * 处理脱装备事件
+   *
+   * @param event
+   */
+  @ReceiverHandler
+  public void handleTakeOffEquipmentEvent(TakeOffEquipmentEvent event) {
+    SpringContext.getTaskReceiverHandler().handleTakeOffEquipmentEvent(event);
   }
 }

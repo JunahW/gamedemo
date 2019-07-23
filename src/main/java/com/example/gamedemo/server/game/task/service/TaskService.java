@@ -4,6 +4,8 @@ import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.task.entity.TaskStorageEnt;
 import com.example.gamedemo.server.game.task.event.TaskEvent;
+import com.example.gamedemo.server.game.task.model.Task;
+import com.example.gamedemo.server.game.task.resource.TaskResource;
 
 /**
  * @author: wengj
@@ -54,4 +56,28 @@ public interface TaskService {
    * @param player
    */
   void saveTaskStorage(Player player);
+
+  /**
+   * 推进触发
+   *
+   * @param task
+   * @param player
+   */
+  void doAfterTriggerProgress(Task task, Player player);
+
+  /**
+   * 推进任务
+   *
+   * @param task
+   * @param player
+   */
+  void doAfterExecuteProgress(Task task, Player player);
+
+  /**
+   * 获取任务配置资源
+   *
+   * @param taskId
+   * @return
+   */
+  TaskResource getTaskResource(Integer taskId);
 }

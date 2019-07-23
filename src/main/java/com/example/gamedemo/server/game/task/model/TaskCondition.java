@@ -1,6 +1,9 @@
 package com.example.gamedemo.server.game.task.model;
 
+import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.util.StringUtils;
 
 /**
  * @author wengj
@@ -12,7 +15,19 @@ public class TaskCondition {
   private TaskTypeEnum type;
 
   /** 任务参数 */
-  private int value;
+  private String value;
+
+  /** 分割参数 */
+  private transient String[] values;
+
+  @JsonIgnore
+  public String[] getValues() {
+    if (!StringUtils.isEmpty(value)) {
+      // 分号分割
+      values = value.split(GameConstant.SPLIT_TOKEN_COLON);
+    }
+    return values;
+  }
 
   public TaskTypeEnum getType() {
     return type;
@@ -22,11 +37,11 @@ public class TaskCondition {
     this.type = type;
   }
 
-  public int getValue() {
+  public String getValue() {
     return value;
   }
 
-  public void setValue(int value) {
+  public void setValue(String value) {
     this.value = value;
   }
 }

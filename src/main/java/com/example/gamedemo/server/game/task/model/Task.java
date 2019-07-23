@@ -1,5 +1,8 @@
 package com.example.gamedemo.server.game.task.model;
 
+import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.task.resource.TaskResource;
+
 /**
  * @author wengj
  * @description:任务模型
@@ -8,9 +11,10 @@ package com.example.gamedemo.server.game.task.model;
 public class Task {
   /** 任务id，读配置表 唯一 */
   private int taskId;
-
-  /** 进度 */
-  private int progress;
+  /** 执行进度 */
+  private int executeProgress;
+  /** 触发进度 */
+  private int triggerProgress;
 
   /**
    * @param taskId
@@ -30,25 +34,53 @@ public class Task {
     this.taskId = taskId;
   }
 
-  public int getProgress() {
-    return progress;
+  public int getExecuteProgress() {
+    return executeProgress;
   }
 
-  public void setProgress(int progress) {
-    this.progress = progress;
+  public void setExecuteProgress(int executeProgress) {
+    this.executeProgress = executeProgress;
+  }
+
+  public int getTriggerProgress() {
+    return triggerProgress;
+  }
+
+  public void setTriggerProgress(int triggerProgress) {
+    this.triggerProgress = triggerProgress;
   }
 
   /**
-   * 推进任务
+   * 推进执行中任务
    *
    * @param value
    * @param canReplace
    */
-  public void changeProgress(int value, boolean canReplace) {
+  public void changeExecuteProgress(int value, boolean canReplace) {
+    TaskResource taskResource = SpringContext.getTaskService().getTaskResource(taskId);
+    int executeFinishValue = taskResource.getExecuteFinishValue();
     if (canReplace) {
-      this.progress = value;
+      if (executeFinishValue >= value) {
+        this.executeProgress = value;
+      }
     } else {
-      this.progress += value;
+      if (executeFinishValue > this.executeProgress) {
+        this.executeProgress += value;
+      }
+    }
+  }
+
+  /**
+   * 推进待触发的任务
+   *
+   * @param value
+   * @param canReplace
+   */
+  public void changeTriggerProgress(int value, boolean canReplace) {
+    if (canReplace) {
+      this.triggerProgress = value;
+    } else {
+      this.triggerProgress += value;
     }
   }
 }

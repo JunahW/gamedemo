@@ -1,7 +1,9 @@
 package com.example.gamedemo.task;
 
 import com.example.gamedemo.common.resource.ResourceManager;
+import com.example.gamedemo.server.game.task.model.Task;
 import com.example.gamedemo.server.game.task.resource.TaskResource;
+import com.example.gamedemo.server.game.task.storage.TaskStorage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,5 +24,13 @@ public class TaskTest {
   public void testResource() {
     Map<Object, TaskResource> resourceMap = ResourceManager.getResourceMap(TaskResource.class);
     System.out.println(resourceMap);
+  }
+
+  @Test
+  public void testJson() {
+    TaskStorage taskStorage = new TaskStorage();
+    taskStorage.putExecuteTask(Task.valueOf(1));
+    taskStorage.addFinishTask(2);
+    System.out.println(taskStorage);
   }
 }

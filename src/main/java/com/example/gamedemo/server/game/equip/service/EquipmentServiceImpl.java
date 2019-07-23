@@ -14,14 +14,14 @@ import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.equip.constant.EquipmentEnhanceType;
 import com.example.gamedemo.server.game.equip.constant.EquipmentType;
 import com.example.gamedemo.server.game.equip.entity.EquipStorageEnt;
+import com.example.gamedemo.server.game.equip.event.TakeOffEquipmentEvent;
+import com.example.gamedemo.server.game.equip.event.WearEquipmentEvent;
 import com.example.gamedemo.server.game.equip.model.Slot;
 import com.example.gamedemo.server.game.equip.resource.EquipAttrResource;
 import com.example.gamedemo.server.game.equip.resource.EquipEnhanceResource;
 import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.event.PlayerLoadEvent;
 import com.example.gamedemo.server.game.player.model.Player;
-import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
-import com.example.gamedemo.server.game.task.event.TaskEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,9 +92,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     // 保存背包
     SpringContext.getItemService().saveItemStorageEnt(player);
 
-    // 抛出任务事件
-    EventBusManager.submitEvent(
-        TaskEvent.valueOf(player, TaskTypeEnum.EQUIP_QUANTITY, equipBar.getEquipQuantity()));
+    // 抛出事件
+    EventBusManager.submitEvent(WearEquipmentEvent.valueOf(player, equipItem));
     logger.info("已穿上[{}]装备", itemResource.getName());
     return true;
   }
@@ -123,9 +122,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     // 更细属性容器
     EquipmentType equipmentType = EquipmentType.getEquipmentTypeId(itemResource.getItemType());
     player.getAttributeContainer().removeAndComputeAttributeSet(equipmentType);
-    // 抛出任务事件
-    EventBusManager.submitEvent(
-        TaskEvent.valueOf(player, TaskTypeEnum.EQUIP_QUANTITY, equipBar.getEquipQuantity()));
+    // 抛出事件
+    EventBusManager.submitEvent(TakeOffEquipmentEvent.valueOf(player, (EquipItem) equipItem));
     logger.info("[{}]部位已移除装备[{}]", EquipmentType.getEquipmentTypeId(position), equipItem.getId());
     return true;
   }

@@ -37,7 +37,7 @@ public class EquipmentController {
     try {
       equip = SpringContext.getEquipmentService().equip(player, req.getGuid());
     } catch (RequestException e) {
-      SessionManager.sendMessage(session, "装备失败：错误码->" + e.getErrorCode() + "\r\n");
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -59,7 +59,7 @@ public class EquipmentController {
     try {
       flag = SpringContext.getEquipmentService().unEquip(player, req.getPosition());
     } catch (RequestException e) {
-      SessionManager.sendMessage(session, "脱下装备失败：错误码->" + e.getErrorCode() + "\r\n");
+      SessionManager.sendMessage(session, SM_ErrorCode.valueOf(e.getErrorCode()));
     } catch (Exception e) {
       e.printStackTrace();
     }

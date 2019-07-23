@@ -22,7 +22,7 @@ public class KillMonsterProcessor extends AbstractProcessor {
 
   @Override
   public int getValue(TaskEvent event, TaskCondition taskCondition) {
-    return 0;
+    return event.getValue();
   }
 
   @Override
@@ -32,4 +32,7 @@ public class KillMonsterProcessor extends AbstractProcessor {
 
   @Override
   public void initProgress(TaskCondition taskCondition, Task task, Player player) {}
+
+  @Override
+  public void initTrigger(TaskCondition taskCondition, Task task, Player player) {}
 }

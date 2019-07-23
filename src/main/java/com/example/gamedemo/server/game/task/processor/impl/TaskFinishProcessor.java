@@ -1,24 +1,27 @@
 package com.example.gamedemo.server.game.task.processor.impl;
 
-import com.example.gamedemo.server.game.equip.storage.EquipStorage;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.task.constant.TaskTypeEnum;
 import com.example.gamedemo.server.game.task.event.TaskEvent;
 import com.example.gamedemo.server.game.task.model.Task;
 import com.example.gamedemo.server.game.task.model.TaskCondition;
 import com.example.gamedemo.server.game.task.processor.AbstractProcessor;
+import com.example.gamedemo.server.game.task.storage.TaskStorage;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author wengj
- * @description：装备数量处理进程
- * @date 2019/7/16
+ * @description
+ * @date 2019/7/22
  */
 @Component
-public class EquipQuantityProcessor extends AbstractProcessor {
+public class TaskFinishProcessor extends AbstractProcessor {
+
   @Override
   public TaskTypeEnum getTaskTypeEnum() {
-    return TaskTypeEnum.EQUIP_QUANTITY;
+    return TaskTypeEnum.TASK_FINISH;
   }
 
   @Override
@@ -28,17 +31,18 @@ public class EquipQuantityProcessor extends AbstractProcessor {
 
   @Override
   public boolean canReplace() {
-    return true;
+    return false;
   }
 
   @Override
-  public void initProgress(TaskCondition taskCondition, Task task, Player player) {
-    EquipStorage equipBar = player.getEquipBar();
-    int equipQuantity = equipBar.getEquipQuantity();
-    int value = Integer.parseInt(taskCondition.getValue());
-    task.setExecuteProgress(Math.min(equipQuantity, value));
-  }
+  public void initProgress(TaskCondition taskCondition, Task task, Player player) {}
 
   @Override
-  public void initTrigger(TaskCondition taskCondition, Task task, Player player) {}
+  public void initTrigger(TaskCondition triggerCondition, Task task, Player player) {
+    TaskStorage taskStorage = player.getTaskStorage();
+    List<Integer> finishTaskList = taskStorage.getFinishTaskList();
+    if (finishTaskList.contains(triggerCondition.getValues()[1])) {
+      task.setTriggerProgress(1);
+    }
+  }
 }

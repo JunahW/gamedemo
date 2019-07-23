@@ -8,7 +8,10 @@ package com.example.gamedemo.server.game.task.constant;
 public enum TaskTypeEnum {
   /** 杀死怪物数量 */
   KILL_MONSTER_QUANTITY,
-
   /** 穿装备数量 */
-  EQUIP_QUANTITY
+  EQUIP_QUANTITY,
+  /** 初始化任务 */
+  FIRST_TASK,
+  /** 任务完成 */
+  TASK_FINISH
 }

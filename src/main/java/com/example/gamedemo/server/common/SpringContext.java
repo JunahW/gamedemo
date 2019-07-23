@@ -16,6 +16,7 @@ import com.example.gamedemo.server.game.player.service.PlayerService;
 import com.example.gamedemo.server.game.rank.service.RankService;
 import com.example.gamedemo.server.game.scene.service.SceneService;
 import com.example.gamedemo.server.game.skill.service.SkillService;
+import com.example.gamedemo.server.game.task.receiver.TaskReceiverHandler;
 import com.example.gamedemo.server.game.task.service.TaskService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private TaskService taskService;
   @Autowired private GuildService guildService;
   @Autowired private RankService rankService;
+  @Autowired private TaskReceiverHandler taskReceiverHandler;
   @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
@@ -114,6 +116,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static RankService getRankService() {
     return instance.rankService;
+  }
+
+  public static TaskReceiverHandler getTaskReceiverHandler() {
+    return instance.taskReceiverHandler;
   }
 
   public static GlobalService getGlobalService() {
