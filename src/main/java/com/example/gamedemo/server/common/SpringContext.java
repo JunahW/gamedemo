@@ -11,6 +11,7 @@ import com.example.gamedemo.server.game.dungeon.service.DungeonService;
 import com.example.gamedemo.server.game.equip.service.EquipmentService;
 import com.example.gamedemo.server.game.fight.service.FightService;
 import com.example.gamedemo.server.game.guild.service.GuildService;
+import com.example.gamedemo.server.game.mapinfo.service.PlayerMapInfoService;
 import com.example.gamedemo.server.game.monster.service.MonsterService;
 import com.example.gamedemo.server.game.player.service.PlayerService;
 import com.example.gamedemo.server.game.rank.service.RankService;
@@ -52,6 +53,7 @@ public class SpringContext implements ApplicationContextAware {
   @Autowired private GuildService guildService;
   @Autowired private RankService rankService;
   @Autowired private TaskReceiverHandler taskReceiverHandler;
+  @Autowired private PlayerMapInfoService playerMapInfoService;
   @Autowired private GlobalService globalService;
 
   public static ItemService getItemService() {
@@ -120,6 +122,10 @@ public class SpringContext implements ApplicationContextAware {
 
   public static TaskReceiverHandler getTaskReceiverHandler() {
     return instance.taskReceiverHandler;
+  }
+
+  public static PlayerMapInfoService getPlayerMapInfoService() {
+    return instance.playerMapInfoService;
   }
 
   public static GlobalService getGlobalService() {

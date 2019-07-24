@@ -107,8 +107,13 @@ public class TaskServiceImpl implements TaskService {
     }
     List<RewardDef> rewardDefs = taskResource.getRewardDefs();
     // TODO 校验背包是否足够
-    RewardUtils.reward(player, rewardDefs);
-    logger.info("获得奖励[{}]", rewardDefs);
+    boolean enoughPackSize = RewardUtils.isEnoughPackSize(player, rewardDefs);
+    if (enoughPackSize) {
+      RewardUtils.reward(player, rewardDefs);
+      logger.info("获得奖励[{}]", rewardDefs);
+    } else {
+      logger.info("{玩家[{}]背包无法装完奖励道具", player.getId());
+    }
 
     // 移除旧任务
     taskStorage.removeExecuteTTask(taskId);
@@ -126,7 +131,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   public void saveTaskStorage(Player player) {
-    taskManager.savetaskStorageEnt(getTaskStorageEnt(player.getId()));
+    taskManager.saveTaskStorageEnt(getTaskStorageEnt(player.getId()));
   }
 
   @Override

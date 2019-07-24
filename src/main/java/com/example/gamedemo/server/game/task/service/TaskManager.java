@@ -73,7 +73,7 @@ public class TaskManager {
    *
    * @param taskStorageEnt
    */
-  public void savetaskStorageEnt(TaskStorageEnt taskStorageEnt) {
+  public void saveTaskStorageEnt(TaskStorageEnt taskStorageEnt) {
     entityCacheService.writeBack(taskStorageEnt.getEntityId(), taskStorageEnt);
   }
 }

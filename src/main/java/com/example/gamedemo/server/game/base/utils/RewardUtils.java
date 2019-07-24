@@ -1,5 +1,6 @@
 package com.example.gamedemo.server.game.base.utils;
 
+import com.example.gamedemo.server.game.bag.storage.ItemStorage;
 import com.example.gamedemo.server.game.base.resource.RewardTypeEnum;
 import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
 import com.example.gamedemo.server.game.player.model.Player;
@@ -36,7 +37,16 @@ public class RewardUtils {
    * @return
    */
   public static boolean isEnoughPackSize(Player player, List<RewardDef> rewardDefs) {
-
-    return true;
+    ItemStorage pack = player.getPack();
+    int needTotalSize = 0;
+    for (RewardDef rewardDef : rewardDefs) {
+      RewardTypeEnum type = rewardDef.getType();
+      needTotalSize += type.needPackSize(rewardDef.getValue());
+    }
+    int packEmptySize = pack.getPackEmptySize();
+    if (packEmptySize >= needTotalSize) {
+      return true;
+    }
+    return false;
   }
 }

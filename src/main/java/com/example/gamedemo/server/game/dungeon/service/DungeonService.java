@@ -41,4 +41,13 @@ public interface DungeonService {
    * @param monster
    */
   void handleMonsterDead(Player player, Scene scene, Monster monster);
+
+  /**
+   * 判断是否可以
+   *
+   * @param player
+   * @param sceneId
+   * @return
+   */
+  boolean canEnterScene(Player player, int sceneId);
 }

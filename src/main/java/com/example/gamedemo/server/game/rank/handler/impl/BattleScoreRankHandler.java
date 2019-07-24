@@ -38,11 +38,12 @@ public class BattleScoreRankHandler extends AbstractRankHandler<BattleScoreRankI
     }
     Collections.sort(rankInfos);
     if (rankInfos.size() > GameConstant.BATTLE_SCORE_LENGTH) {
-      rankInfos =
-          (CopyOnWriteArrayList<BattleScoreRankInfo>)
-              rankInfos.subList(0, GameConstant.BATTLE_SCORE_LENGTH);
+      for (int i = 0; i < GameConstant.BATTLE_SCORE_LENGTH; i++) {
+        super.getRankInfos().add(rankInfos.get(i));
+      }
+    } else {
+      super.setRankInfos(rankInfos);
     }
-    super.setRankInfos(rankInfos);
   }
 
   @Override
@@ -56,7 +57,7 @@ public class BattleScoreRankHandler extends AbstractRankHandler<BattleScoreRankI
       if (rankInfos.size() < GameConstant.BATTLE_SCORE_LENGTH) {
         rankInfos.add(rankInfo);
       } else {
-        BattleScoreRankInfo lastRankInfo = rankInfos.get(GameConstant.BATTLE_SCORE_LENGTH);
+        BattleScoreRankInfo lastRankInfo = rankInfos.get(GameConstant.BATTLE_SCORE_LENGTH - 1);
         if (lastRankInfo.getBattleScore() < rankInfo.getBattleScore()) {
           rankInfos.remove(lastRankInfo);
           rankInfos.add(rankInfo);

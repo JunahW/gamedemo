@@ -35,5 +35,5 @@ public interface GameConstant {
   String SPLIT_TOKEN_COLON = ":";
 
   /** 战力板长度 */
-  int BATTLE_SCORE_LENGTH = 100;
+  int BATTLE_SCORE_LENGTH = 3;
 }

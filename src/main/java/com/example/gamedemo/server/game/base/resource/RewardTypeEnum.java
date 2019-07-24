@@ -1,6 +1,8 @@
 package com.example.gamedemo.server.game.base.resource;
 
+import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
+import com.example.gamedemo.server.game.bag.resource.ItemResource;
 import com.example.gamedemo.server.game.base.resource.reward.ItemReward;
 import com.example.gamedemo.server.game.player.model.Player;
 
@@ -19,6 +21,26 @@ public enum RewardTypeEnum {
       AbstractItem item = itemReward.getItem();
       player.getPack().addStorageItem(item);
       return true;
+    }
+
+    @Override
+    public int needPackSize(String value) {
+      ItemReward itemReward = new ItemReward();
+      itemReward.doParse(value);
+      AbstractItem item = itemReward.getItem();
+      ItemResource resource =
+          SpringContext.getItemService().getItemResourceByItemResourceId(item.getItemResourceId());
+      int overLimit = resource.getOverLimit();
+      int quantity = item.getQuantity();
+      int size = 0;
+      while (true) {
+        size++;
+        quantity = quantity - overLimit;
+        if (quantity <= 0) {
+          break;
+        }
+      }
+      return size;
     }
   },
 
@@ -40,5 +62,15 @@ public enum RewardTypeEnum {
    */
   public boolean reward(Player player, String value) {
     return true;
+  }
+
+  /**
+   * 需要的背包格子数
+   *
+   * @param value
+   * @return
+   */
+  public int needPackSize(String value) {
+    return 0;
   }
 }

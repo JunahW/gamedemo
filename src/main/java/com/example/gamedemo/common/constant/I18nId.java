@@ -87,6 +87,9 @@ public interface I18nId {
   /** 场景不存在 */
   int SCENE_RESOURCE_NO_EXIST = 60004;
 
+  /** 场景条件不符 */
+  int SCENE_CONDITION_NO_ENOUGH = 60005;
+
   /** ==========================技能相关=========================* */
 
   /** 技能还未学习 */

@@ -4,6 +4,7 @@ import com.example.gamedemo.server.common.SpringContext;
 import com.example.gamedemo.server.common.model.Consume;
 import com.example.gamedemo.server.game.bag.model.AbstractItem;
 import com.example.gamedemo.server.game.bag.resource.ItemResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Arrays;
 import java.util.List;
@@ -269,5 +270,21 @@ public class ItemStorage {
       int quantity = consume.getQuantity();
       reduceStorageItemByItemResourceId(itemId, quantity);
     }
+  }
+
+  /**
+   * 获取背包的空格数
+   *
+   * @return
+   */
+  @JsonIgnore
+  public int getPackEmptySize() {
+    int size = 0;
+    for (AbstractItem item : abstractItems) {
+      if (item == null) {
+        size++;
+      }
+    }
+    return size;
   }
 }

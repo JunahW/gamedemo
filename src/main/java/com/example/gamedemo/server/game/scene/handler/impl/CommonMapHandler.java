@@ -1,14 +1,17 @@
 package com.example.gamedemo.server.game.scene.handler.impl;
 
 import com.example.gamedemo.server.common.SpringContext;
+import com.example.gamedemo.server.game.base.gameobject.CreatureObject;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.example.gamedemo.server.game.scene.handler.AbstractMapHandler;
 import com.example.gamedemo.server.game.scene.model.Scene;
 import com.example.gamedemo.server.game.scene.resource.MapResource;
+import com.example.gamedemo.server.game.scene.service.SceneManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CommonMapHandler extends AbstractMapHandler {
   private static final Logger logger = LoggerFactory.getLogger(CommonMapHandler.class);
+
+  @Autowired private SceneManager sceneManager;
 
   @Override
   public SceneTypeEnum getSceneTypeEnum() {
@@ -46,4 +51,9 @@ public class CommonMapHandler extends AbstractMapHandler {
 
   @Override
   public void handleMonsterDead(Player player, Scene scene, Monster monster) {}
+
+  @Override
+  public Scene getScene(CreatureObject creature, int sceneId) {
+    return sceneManager.getSceneBySceneResourceId(sceneId);
+  }
 }

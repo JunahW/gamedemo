@@ -60,6 +60,10 @@ public class MapResource implements Serializable, ResourceInterface {
   @ExcelColumn(columnName = "rewardString")
   private String rewardString;
 
+  /** cd时间 */
+  @ExcelColumn(columnName = "cd")
+  private long cd;
+
   private List<RewardDef> rewardDefs;
 
   private SceneTypeEnum sceneTypeEnum;
@@ -153,6 +157,14 @@ public class MapResource implements Serializable, ResourceInterface {
 
   public void setRewardDefs(List<RewardDef> rewardDefs) {
     this.rewardDefs = rewardDefs;
+  }
+
+  public long getCd() {
+    return cd;
+  }
+
+  public void setCd(long cd) {
+    this.cd = cd;
   }
 
   @Override

@@ -61,13 +61,10 @@ public class SceneServiceImpl implements SceneService {
 
   @Override
   public Scene getSceneById(CreatureObject creature, int sceneId) {
-    Scene scene = sceneManager.getSceneBySceneResourceId(sceneId);
-    if (scene == null) {
-      scene = SpringContext.getDungeonService().getDungeonSceneByPlayerId(creature.getId());
-    }
-    if (scene == null) {
-      RequestException.throwException(I18nId.SCENE_NO_EXIST);
-    }
+    MapResource resource = getSceneResourceById(sceneId);
+    SceneTypeEnum sceneTypeEnum = resource.getSceneTypeEnum();
+    AbstractMapHandler handler = AbstractMapHandler.getHandler(sceneTypeEnum);
+    Scene scene = handler.getScene(creature, sceneId);
     return scene;
   }
 
@@ -77,6 +74,15 @@ public class SceneServiceImpl implements SceneService {
     if (targetMapResource == null) {
       logger.info("场景[{}]不存在", sceneId);
       RequestException.throwException(I18nId.SCENE_NO_EXIST);
+    }
+
+    // 校验进度地图条件
+    AbstractMapHandler handler =
+        AbstractMapHandler.getHandler(targetMapResource.getSceneTypeEnum());
+    boolean enterMap = handler.canEnterMap(player, sceneId);
+    if (!enterMap) {
+      logger.info("不能进入场景");
+      RequestException.throwException(I18nId.SCENE_CONDITION_NO_ENOUGH);
     }
 
     // 如果进入的是副本
