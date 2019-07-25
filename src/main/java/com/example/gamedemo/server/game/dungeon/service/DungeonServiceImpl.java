@@ -7,11 +7,12 @@ import com.example.gamedemo.server.common.constant.GameConstant;
 import com.example.gamedemo.server.common.packet.SM_NoticeMessge;
 import com.example.gamedemo.server.game.base.constant.SceneObjectTypeEnum;
 import com.example.gamedemo.server.game.base.gameobject.SceneObject;
-import com.example.gamedemo.server.game.base.model.AbstractMapInfo;
+import com.example.gamedemo.server.game.base.resource.bean.CheckPointDef;
 import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
 import com.example.gamedemo.server.game.base.utils.RewardUtils;
 import com.example.gamedemo.server.game.dungeon.command.LeaveDungeonSceneNotifyDelayCommand;
 import com.example.gamedemo.server.game.dungeon.model.DungeonMapInfo;
+import com.example.gamedemo.server.game.dungeon.packet.SM_FinshRount;
 import com.example.gamedemo.server.game.monster.model.Monster;
 import com.example.gamedemo.server.game.player.model.Player;
 import com.example.gamedemo.server.game.scene.command.SceneBuffRateCommand;
@@ -43,10 +44,18 @@ public class DungeonServiceImpl implements DungeonService {
     logger.info("[{}][{}]进入副本地图[{}]", player.getSceneObjectType(), player.getId(), sceneId);
     AbstractMapHandler mapHandler = getMapHandler();
     // 地图信息
-    AbstractMapInfo mapInfo = mapHandler.getMapInfo(player);
+    DungeonMapInfo mapInfo = mapHandler.getMapInfo(player);
+    mapInfo.setRound(1);
 
     Scene scene = SpringContext.getSceneService().createDungeonSceneBySceneId(sceneId);
     MapResource mapResource = SpringContext.getSceneService().getSceneResourceById(sceneId);
+    // 刷怪
+    List<CheckPointDef> checkPointDefList = mapResource.getCheckPointDefList();
+    CheckPointDef checkPointDef = checkPointDefList.get(mapInfo.getRound() - 1);
+    for (int i = 0; i < checkPointDef.getQuantity(); i++) {
+      SpringContext.getMonsterService().createMonster(scene, checkPointDef.getMonsterId());
+    }
+
     // 进入场景
     player.setBeforeSceneId(player.getSceneId());
     player.setSceneId(sceneId);
@@ -99,26 +108,51 @@ public class DungeonServiceImpl implements DungeonService {
 
   @Override
   public void handleMonsterDead(Player player, Scene scene, Monster monster) {
+
     Map<Long, SceneObject> sceneObjectByType =
         scene.getSceneObjectByType(SceneObjectTypeEnum.MONSTER);
     if (sceneObjectByType.size() == 0) {
-      logger.info("挑战副本成功");
-      // 副本挑战成功 发放奖励
       MapResource mapResource =
           SpringContext.getSceneService().getSceneResourceById(scene.getSceneResourceId());
-      List<RewardDef> rewardDefs = mapResource.getRewardDefs();
-      logger.info("获得奖励[{}]", rewardDefs);
-      // TODO
-      boolean enoughPackSize = RewardUtils.isEnoughPackSize(player, rewardDefs);
-      if (enoughPackSize) {
-        RewardUtils.reward(player, rewardDefs);
+      List<CheckPointDef> checkPointDefList = mapResource.getCheckPointDefList();
+      // 判断是否还有回合
+      // 地图信息
+      AbstractMapHandler mapHandler = getMapHandler();
+      DungeonMapInfo mapInfo = mapHandler.getMapInfo(player);
+      if (mapInfo.getRound() == checkPointDefList.size()) {
+        logger.info("挑战副本成功");
+        SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("挑战副本成功"));
+        // 副本挑战成功 发放奖励
+        List<RewardDef> rewardDefs = mapResource.getRewardDefs();
         logger.info("获得奖励[{}]", rewardDefs);
+        // TODO
+        boolean enoughPackSize = RewardUtils.isEnoughPackSize(player, rewardDefs);
+        if (enoughPackSize) {
+          RewardUtils.reward(player, rewardDefs);
+          logger.info("获得奖励[{}]", rewardDefs);
+        } else {
+          logger.info("{玩家[{}]背包无法装完奖励道具", player.getId());
+        }
+        // 离开地图
+        SpringContext.getSceneService().changeScene(player, player.getBeforeSceneId());
       } else {
-        logger.info("{玩家[{}]背包无法装完奖励道具", player.getId());
+        // 发回合奖励
+        List<RewardDef> rewardDefs = checkPointDefList.get(mapInfo.getRound() - 1).getRewardDefs();
+        boolean enoughPackSize = RewardUtils.isEnoughPackSize(player, rewardDefs);
+        SessionManager.sendMessage(player, SM_FinshRount.valueOf(mapInfo.getRound()));
+        if (enoughPackSize) {
+          RewardUtils.reward(player, rewardDefs);
+          logger.info("完成第[{}]回合获得奖励[{}]", mapInfo.getRound(), rewardDefs);
+        } else {
+          logger.info("{玩家[{}]背包无法装完奖励道具", player.getId());
+        }
+        // 进行下一回合
+        mapInfo.setRound(mapInfo.getRound() + 1);
+        CheckPointDef checkPointDef = checkPointDefList.get(mapInfo.getRound() - 1);
+        for (int i = 0; i < checkPointDef.getQuantity(); i++) {
+          SpringContext.getMonsterService().createMonster(scene, checkPointDef.getMonsterId());
+        }
       }
-
-      // 离开地图
-      SpringContext.getSceneService().changeScene(player, player.getBeforeSceneId());
     }
   }
 

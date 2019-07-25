@@ -45,6 +45,10 @@ public class MonsterResource implements ResourceInterface {
   @ExcelColumn(columnName = "mapId")
   private int mapId;
 
+  /** 是否初始化到地图上 */
+  @ExcelColumn(columnName = "isInit")
+  private boolean isInit;
+
   /** 血量 */
   @ExcelColumn(columnName = "hp")
   private int hp;
@@ -150,6 +154,14 @@ public class MonsterResource implements ResourceInterface {
 
   public void setMapId(int mapId) {
     this.mapId = mapId;
+  }
+
+  public boolean isInit() {
+    return isInit;
+  }
+
+  public void setInit(boolean init) {
+    isInit = init;
   }
 
   public int getHp() {

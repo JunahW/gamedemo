@@ -5,6 +5,7 @@ import com.example.gamedemo.common.anno.Resource;
 import com.example.gamedemo.common.constant.SystemConstant;
 import com.example.gamedemo.common.resource.ResourceInterface;
 import com.example.gamedemo.common.utils.JsonUtils;
+import com.example.gamedemo.server.game.base.resource.bean.CheckPointDef;
 import com.example.gamedemo.server.game.base.resource.bean.RewardDef;
 import com.example.gamedemo.server.game.scene.constant.SceneTypeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -67,6 +69,12 @@ public class MapResource implements Serializable, ResourceInterface {
   private List<RewardDef> rewardDefs;
 
   private SceneTypeEnum sceneTypeEnum;
+
+  @ExcelColumn(columnName = "checkPointString")
+  private String checkPointString;
+
+  /** 回合定义 链表结构 */
+  private List<CheckPointDef> checkPointDefList;
 
   public MapResource() {}
 
@@ -167,6 +175,14 @@ public class MapResource implements Serializable, ResourceInterface {
     this.cd = cd;
   }
 
+  public List<CheckPointDef> getCheckPointDefList() {
+    return checkPointDefList;
+  }
+
+  public void setCheckPointDefList(List<CheckPointDef> checkPointDefList) {
+    this.checkPointDefList = checkPointDefList;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -203,6 +219,13 @@ public class MapResource implements Serializable, ResourceInterface {
     sceneTypeEnum = SceneTypeEnum.getSceneTypeEnumBySceneType(sceneType);
     if (!StringUtils.isEmpty(rewardString)) {
       rewardDefs = JsonUtils.getListByString(rewardString, new TypeReference<List<RewardDef>>() {});
+    }
+
+    if (!StringUtils.isEmpty(checkPointString)) {
+      checkPointDefList =
+          JsonUtils.getListByString(checkPointString, new TypeReference<List<CheckPointDef>>() {});
+    } else {
+      checkPointDefList = new ArrayList<>();
     }
   }
 }

@@ -155,16 +155,19 @@ public class SceneManager {
     Map<Integer, Map<Integer, MonsterResource>> mapMonsterResourceMap = new HashMap<>(16);
 
     Set<Map.Entry<Integer, MonsterResource>> entries = monsterResource.entrySet();
-    for (Map.Entry<Integer, MonsterResource> enhanceResourceEntry : entries) {
-      MonsterResource resourceValue = enhanceResourceEntry.getValue();
-      int mapId = resourceValue.getMapId();
+    for (Map.Entry<Integer, MonsterResource> resourceEntry : entries) {
+      MonsterResource monsterResource = resourceEntry.getValue();
+      if (!monsterResource.isInit()) {
+        break;
+      }
+      int mapId = monsterResource.getMapId();
       if (!mapMonsterResourceMap.containsKey(mapId)) {
         mapMonsterResourceMap.put(mapId, new HashMap<>(16));
       }
       Map<Integer, MonsterResource> npcResourceMap = mapMonsterResourceMap.get(mapId);
-      int npcId = resourceValue.getMonsterId();
-      if (!npcResourceMap.containsKey(npcId)) {
-        npcResourceMap.put(npcId, resourceValue);
+      int monsterId = monsterResource.getMonsterId();
+      if (!npcResourceMap.containsKey(monsterId)) {
+        npcResourceMap.put(monsterId, monsterResource);
       }
     }
     this.mapMonsterMap = mapMonsterResourceMap;
