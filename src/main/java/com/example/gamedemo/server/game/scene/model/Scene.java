@@ -23,10 +23,8 @@ public class Scene {
   private static final Logger logger = LoggerFactory.getLogger(Scene.class);
   /** 场景id */
   private int sceneResourceId;
-
   /** 场景中的对象 */
   private Map<Long, SceneObject> sceneObjectMap = new HashMap<>();
-
   /** 场景内的任务 */
   private Map<Class<? extends Command>, Command> commandMap = new HashMap<>();
 
@@ -213,5 +211,19 @@ public class Scene {
    */
   public void putCommand(Command command) {
     commandMap.put(command.getClass(), command);
+  }
+
+  /**
+   * 判断场景的怪物是否都死亡
+   *
+   * @return
+   */
+  public boolean isAllMonsterDead() {
+    for (SceneObject sceneObject : sceneObjectMap.values()) {
+      if (sceneObject.getSceneObjectType() == SceneObjectTypeEnum.MONSTER) {
+        return false;
+      }
+    }
+    return true;
   }
 }

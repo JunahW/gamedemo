@@ -57,6 +57,7 @@ public class GuildServiceImpl implements GuildService {
     ReentrantLock guildLock = getLockByGuildId(guildId);
     ReentrantLock playerLock = getLockByPlayerId(player.getId());
     try {
+      guildLock.lock();
       // 二次验证
       if (playerGuildEnt.getGuildId() != null) {
         logger.info("玩家[{}]已经加入行会[{}]无法创建行会", player.getId(), player.getGuild());
@@ -106,7 +107,7 @@ public class GuildServiceImpl implements GuildService {
 
     PlayerGuildEnt playerGuildEnt = playerGuildManager.getPlayerGuildEnt(player.getId());
     if (playerGuildEnt != null && playerGuildEnt.getGuildId() != null) {
-      logger.info("玩家[{}]已经加入行会[{}]无法创建行会", player.getId(), player.getGuild());
+      logger.info("玩家[{}]已经加入行会[{}]无法加入其它行会", player.getId(), player.getGuild());
       RequestException.throwException(I18nId.PLAYER_HAS_JOIN_GUILD);
     }
     ReentrantLock reentrantLock = getLockByGuildId(guildId);
@@ -149,7 +150,7 @@ public class GuildServiceImpl implements GuildService {
     PlayerGuildEnt applyPlayerGuildEnt = playerGuildManager.getPlayerGuildEnt(applyPlayerId);
     if (applyPlayerGuildEnt != null && applyPlayerGuildEnt.getGuildId() != null) {
       logger.info(
-          "玩家[{}]已经加入行会[{}]无法创建行会",
+          "玩家[{}]已经加入行会[{}],请勿重复处理",
           applyPlayerGuildEnt.getPlayerId(),
           applyPlayerGuildEnt.getGuildId());
       RequestException.throwException(I18nId.PLAYER_HAS_JOIN_GUILD);
@@ -177,8 +178,7 @@ public class GuildServiceImpl implements GuildService {
       }
       guild.addMember(applyPlayerId, PositionTypeEnum.MEMBER);
       guild.removeApply(applyPlayerId);
-      // 玩家锁
-      playerLock.lock();
+
       applyPlayerGuildEnt.setGuildId(guildId);
       applyPlayerGuildEnt.setPosition(PositionTypeEnum.MEMBER.getTypeId());
       playerGuildManager.savePlayerGuildEnt(applyPlayerGuildEnt);
@@ -219,6 +219,7 @@ public class GuildServiceImpl implements GuildService {
       guild.removeMember(player.getId());
       guildManager.saveGuildEnt(GuildEnt.valueOf(guild));
       playerGuildManager.savePlayerGuildEnt(playerGuildEnt);
+      SessionManager.sendMessage(player, SM_NoticeMessge.valueOf("退出公会成功"));
     } catch (Exception e) {
       e.printStackTrace();
     } finally {
